@@ -1,0 +1,17 @@
+.attribute {
+    background-image: url("/assets/images/dota2/stat_sheet.png");
+    background-repeat: no-repeat;
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+}
+
+.attribute.strength {
+    background-position: calc(-32px * 0) calc(-32px * 0);
+}
+.attribute.agility {
+    background-position: calc(-32px * 1) calc(-32px * 0);
+}
+.attribute.intelligence {
+    background-position: calc(-32px * 2) calc(-32px * 0);
+}

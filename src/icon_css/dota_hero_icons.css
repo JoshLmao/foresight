@@ -1,0 +1,169 @@
+.hero {
+    background-image: url("/assets/images/dota2/minimap_hero_sheet.png");
+    background-repeat: no-repeat;
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+}
+
+/* Row 1 */
+.hero.axe { background-position: calc(-32px * 0) calc(-32px * 0); }
+.hero.antimage { background-position: calc(-32px * 1) calc(-32px * 0); }
+.hero.crystal-maiden { background-position: calc(-32px * 2) calc(-32px * 0); }
+.hero.ancient-apparition { background-position: calc(-32px * 3) calc(-32px * 0); }
+.hero.batrider { background-position: calc(-32px * 4) calc(-32px * 0); }
+.hero.beastmaster { background-position: calc(-32px * 5) calc(-32px * 0); }
+.hero.bloodseeker { background-position: calc(-32px * 6) calc(-32px * 0); }
+.hero.bounty-hunter { background-position: calc(-32px * 7) calc(-32px * 0); }
+.hero.broodmother { background-position: calc(-32px * 8) calc(-32px * 0); }
+.hero.chen { background-position: calc(-32px * 9) calc(-32px * 0); }
+.hero.dark-seer { background-position: calc(-32px * 10) calc(-32px * 0); }
+.hero.dazzle { background-position: calc(-32px * 11) calc(-32px * 0); }
+.hero.death-prophet { background-position: calc(-32px * 12) calc(-32px * 0); }
+.hero.doom { background-position: calc(-32px * 13) calc(-32px * 0); }
+.hero.dragon-knight { background-position: calc(-32px * 14) calc(-32px * 0); }
+.hero.alchemist { background-position: calc(-32px * 15) calc(-32px * 0); }
+
+/* Row 2 */
+.hero.drow-ranger { background-position: calc(-32px * 0) calc(-32px * 1); }
+.hero.earthshaker { background-position: calc(-32px * 1) calc(-32px * 1); }
+.hero.enchantress { background-position: calc(-32px * 2) calc(-32px * 1); }
+.hero.enigma { background-position: calc(-32px * 3) calc(-32px * 1); }
+.hero.faceless-void { background-position: calc(-32px * 4) calc(-32px * 1); }
+.hero.natures-propthet { background-position: calc(-32px * 5) calc(-32px * 1); }
+.hero.huskar { background-position: calc(-32px * 6) calc(-32px * 1); }
+.hero.juggernaut { background-position: calc(-32px * 7) calc(-32px * 1); }
+.hero.kunkka { background-position: calc(-32px * 8) calc(-32px * 1); }
+.hero.leshrac { background-position: calc(-32px * 9) calc(-32px * 1); }
+.hero.lich { background-position: calc(-32px * 10) calc(-32px * 1); }
+.hero.lifestealer { background-position: calc(-32px * 11) calc(-32px * 1); }
+.hero.lina { background-position: calc(-32px * 12) calc(-32px * 1); }
+.hero.lion { background-position: calc(-32px * 13) calc(-32px * 1); }
+.hero.mirana { background-position: calc(-32px * 14) calc(-32px * 1); }
+.hero.morphling { background-position: calc(-32px * 15) calc(-32px * 1); }
+
+/* Row 3 */
+.hero.necrophos { background-position: calc(-32px * 0) calc(-32px * 2); }
+.hero.shadow-fiend { background-position: calc(-32px * 1) calc(-32px * 2); }
+.hero.night-stalker { background-position: calc(-32px * 2) calc(-32px * 2); }
+.hero.omniknight { background-position: calc(-32px * 3) calc(-32px * 2); }
+.hero.puck { background-position: calc(-32px * 4) calc(-32px * 2); }
+.hero.pudge { background-position: calc(-32px * 5) calc(-32px * 2); }
+.hero.pugna { background-position: calc(-32px * 6) calc(-32px * 2); }
+.hero.qop { background-position: calc(-32px * 7) calc(-32px * 2); }
+.hero.clockwerk { background-position: calc(-32px * 8) calc(-32px * 2); }
+.hero.razor { background-position: calc(-32px * 9) calc(-32px * 2); }
+.hero.riki { background-position: calc(-32px * 10) calc(-32px * 2); }
+.hero.sand-king { background-position: calc(-32px * 11) calc(-32px * 2); }
+.hero.shadow-shaman { background-position: calc(-32px * 12) calc(-32px * 2); }
+.hero.silencer { background-position: calc(-32px * 13) calc(-32px * 2); }
+.hero.wraith-king { background-position: calc(-32px * 14) calc(-32px * 2); }
+.hero.slardar { background-position: calc(-32px * 15) calc(-32px * 2); }
+
+/* Row 4 */
+.hero.sniper { background-position: calc(-32px * 0) calc(-32px * 3); }
+.hero.spectre { background-position: calc(-32px * 1) calc(-32px * 3); }
+.hero.spirit-breaker { background-position: calc(-32px * 2) calc(-32px * 3); }
+.hero.storm-spirit { background-position: calc(-32px * 3) calc(-32px * 3); }
+.hero.sven { background-position: calc(-32px * 4) calc(-32px * 3); }
+.hero.tidehunter { background-position: calc(-32px * 5) calc(-32px * 3); }
+.hero.tinker { background-position: calc(-32px * 6) calc(-32px * 3); }
+.hero.tiny { background-position: calc(-32px * 7) calc(-32px * 3); }
+.hero.jakiro { background-position: calc(-32px * 8) calc(-32px * 3); }
+.hero.ursa { background-position: calc(-32px * 9) calc(-32px * 3); }
+.hero.vengeful-spirit { background-position: calc(-32px * 10) calc(-32px * 3); }
+.hero.venomancer { background-position: calc(-32px * 11) calc(-32px * 3); }
+.hero.viper { background-position: calc(-32px * 12) calc(-32px * 3); }
+.hero.warlock { background-position: calc(-32px * 13) calc(-32px * 3); }
+.hero.weaver { background-position: calc(-32px * 14) calc(-32px * 3); }
+.hero.windranger { background-position: calc(-32px * 15) calc(-32px * 3); }
+
+/* Row 5 */
+.hero.witch-doctor { background-position: calc(-32px * 0) calc(-32px * 4); }
+.hero.zeus { background-position: calc(-32px * 1) calc(-32px * 4); }
+.hero.invoker { background-position: calc(-32px * 2) calc(-32px * 4); }
+.hero.clinkz { background-position: calc(-32px * 3) calc(-32px * 4); }
+.hero.outwork-devourer { background-position: calc(-32px * 4) calc(-32px * 4); }
+.hero.bane { background-position: calc(-32px * 5) calc(-32px * 4); }
+.hero.shadow-demon { background-position: calc(-32px * 6) calc(-32px * 4); }
+.hero.lycan { background-position: calc(-32px * 7) calc(-32px * 4); }
+.hero.lone-druid { background-position: calc(-32px * 8) calc(-32px * 4); }
+.hero.brewmaster { background-position: calc(-32px * 9) calc(-32px * 4); }
+.hero.brewmaster-fire-spirit { background-position: calc(-32px * 10) calc(-32px * 4); }
+.hero.brewmaster-ember-spirit { background-position: calc(-32px * 11) calc(-32px * 4); }
+.hero.brewmaster-earth-spirit { background-position: calc(-32px * 12) calc(-32px * 4); }
+.hero.phantom-lancer { background-position: calc(-32px * 13) calc(-32px * 4); }
+.hero.chaos-knight { background-position: calc(-32px * 14) calc(-32px * 4); }
+.hero.phantom-assassin { background-position: calc(-32px * 15) calc(-32px * 4); }
+
+/* Row 6 */
+.hero.treant-protector { background-position: calc(-32px * 0) calc(-32px * 5); }
+.hero.luna { background-position: calc(-32px * 1) calc(-32px * 5); }
+.hero.ogre-magi { background-position: calc(-32px * 2) calc(-32px * 5); }
+.hero.gyrocopter { background-position: calc(-32px * 3) calc(-32px * 5); }
+.hero.rubick { background-position: calc(-32px * 4) calc(-32px * 5); }
+.hero.io { background-position: calc(-32px * 5) calc(-32px * 5); }
+.hero.disruptor { background-position: calc(-32px * 6) calc(-32px * 5); }
+.hero.undying { background-position: calc(-32px * 7) calc(-32px * 5); }
+.hero.naga-siren { background-position: calc(-32px * 8) calc(-32px * 5); }
+.hero.templar-assassin { background-position: calc(-32px * 9) calc(-32px * 5); }
+.hero.nyx-assassin { background-position: calc(-32px * 10) calc(-32px * 5); }
+.hero.keeper-of-the-light { background-position: calc(-32px * 11) calc(-32px * 5); }
+.hero.visage { background-position: calc(-32px * 12) calc(-32px * 5); }
+.hero.magnus { background-position: calc(-32px * 13) calc(-32px * 5); }
+.hero.meepo { background-position: calc(-32px * 14) calc(-32px * 5); }
+.hero.centaur-warunner { background-position: calc(-32px * 15) calc(-32px * 5); }
+
+/* Row 7 */
+.hero.slark { background-position: calc(-32px * 0) calc(-32px * 6); }
+.hero.medusa { background-position: calc(-32px * 1) calc(-32px * 6); }
+.hero.timbersaw { background-position: calc(-32px * 2) calc(-32px * 6); }
+.hero.troll { background-position: calc(-32px * 3) calc(-32px * 6); }
+.hero.tusk { background-position: calc(-32px * 4) calc(-32px * 6); }
+.hero.bristleback { background-position: calc(-32px * 5) calc(-32px * 6); }
+.hero.skywrath-mage { background-position: calc(-32px * 6) calc(-32px * 6); }
+.hero.elder-titan { background-position: calc(-32px * 7) calc(-32px * 6); }
+.hero.abaddon { background-position: calc(-32px * 8) calc(-32px * 6); }
+.hero.ember-spirit { background-position: calc(-32px * 9) calc(-32px * 6); }
+.hero.legion-commander { background-position: calc(-32px * 10) calc(-32px * 6); }
+.hero.earth-spirit { background-position: calc(-32px * 11) calc(-32px * 6); }
+.hero.terrorblade { background-position: calc(-32px * 12) calc(-32px * 6); }
+.hero.phoenix { background-position: calc(-32px * 13) calc(-32px * 6); }
+.hero.techies { background-position: calc(-32px * 14) calc(-32px * 6); }
+.hero.winter-wyvern { background-position: calc(-32px * 15) calc(-32px * 6); }
+
+/* Row 8 */
+.hero.underlord { background-position: calc(-32px * 0) calc(-32px * 7); }
+.hero.monkey-king { background-position: calc(-32px * 1) calc(-32px * 7); }
+.hero.oracle { background-position: calc(-32px * 2) calc(-32px * 7); }
+.hero.arc-warden { background-position: calc(-32px * 3) calc(-32px * 7); }
+.hero.monkey-king.arcana { background-position: calc(-32px * 4) calc(-32px * 7); }
+.hero.pangolier { background-position: calc(-32px * 5) calc(-32px * 7); }
+.hero.io.arcana { background-position: calc(-32px * 6) calc(-32px * 7); }
+.hero.juggernaut.arcana { background-position: calc(-32px * 7) calc(-32px * 7); }
+.hero.zeus.arcana { background-position: calc(-32px * 8) calc(-32px * 7); }
+.hero.crystal-maiden.arcana { background-position: calc(-32px * 9) calc(-32px * 7); }
+.hero.phantom-assassin.arcana { background-position: calc(-32px * 10) calc(-32px * 7); }
+.hero.shadow-fiend.arcana { background-position: calc(-32px * 11) calc(-32px * 7); }
+.hero.techies.arcana { background-position: calc(-32px * 12) calc(-32px * 7); }
+.hero.terrorblade.arcana { background-position: calc(-32px * 13) calc(-32px * 7); }
+.hero.legion-commander.arcana { background-position: calc(-32px * 14) calc(-32px * 7); }
+.hero.lina.arcana { background-position: calc(-32px * 15) calc(-32px * 7); }
+
+/* Row 9 */
+.hero.dark-willow { background-position: calc(-32px * 0) calc(-32px * 8); }
+.hero.pudge.arcana { background-position: calc(-32px * 1) calc(-32px * 8); }
+.hero.arc-warden.tempest-double { background-position: calc(-32px * 2) calc(-32px * 8); }
+.hero.grimstroke { background-position: calc(-32px * 3) calc(-32px * 8); }
+.hero.rubick.arcana { background-position: calc(-32px * 4) calc(-32px * 8); }
+.hero.mars { background-position: calc(-32px * 5) calc(-32px * 8); }
+.hero.earthshaker.arcana.style1 { background-position: calc(-32px * 6) calc(-32px * 8); }
+.hero.earthshaker.arcana.style2 { background-position: calc(-32px * 7) calc(-32px * 8); }
+.hero.invoker.persona { background-position: calc(-32px * 8) calc(-32px * 8); }
+/* .hero. { background-position: calc(-32px * 9) calc(-32px * 8); }
+.hero. { background-position: calc(-32px * 10) calc(-32px * 8); }
+.hero.{ background-position: calc(-32px * 11) calc(-32px * 8); }
+.hero. { background-position: calc(-32px * 12) calc(-32px * 8); }
+.hero. { background-position: calc(-32px * 13) calc(-32px * 8); }
+.hero. { background-position: calc(-32px * 14) calc(-32px * 8); }
+.hero. { background-position: calc(-32px * 15) calc(-32px * 8); } */
