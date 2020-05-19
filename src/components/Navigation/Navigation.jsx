@@ -22,7 +22,7 @@ class Navigation extends Component {
                             <Nav.Link to="/app" as={Link}>calculator</Nav.Link>
                         </Nav>
                         <a href="https://github.com/JoshLmao/foresight">
-                            <Button outline variant="outline-secondary">
+                            <Button variant="outline-secondary">
                                 <FontAwesomeIcon icon={faGithub} />
                             </Button>
                         </a>

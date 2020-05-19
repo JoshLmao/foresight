@@ -1,0 +1,1901 @@
+.sprite {
+    background-image: url("/images/dota2/items_sheet.png");
+    background-repeat: no-repeat;
+    display: block;
+}
+
+.sprite-abyssal_blade_png {
+    width: 88px;
+    height: 64px;
+    background-position: -5px -5px;
+}
+
+.sprite-aegis_png {
+    width: 88px;
+    height: 64px;
+    background-position: -103px -5px;
+}
+
+.sprite-aeon_disk_png {
+    width: 88px;
+    height: 64px;
+    background-position: -201px -5px;
+}
+
+.sprite-aether_lens_png {
+    width: 88px;
+    height: 64px;
+    background-position: -299px -5px;
+}
+
+.sprite-ancient_janggo_png {
+    width: 88px;
+    height: 64px;
+    background-position: -397px -5px;
+}
+
+.sprite-apex_png {
+    width: 88px;
+    height: 64px;
+    background-position: -495px -5px;
+}
+
+.sprite-arcane_boots2_png {
+    width: 88px;
+    height: 64px;
+    background-position: -593px -5px;
+}
+
+.sprite-arcane_boots_png {
+    width: 88px;
+    height: 64px;
+    background-position: -691px -5px;
+}
+
+.sprite-arcane_ring_png {
+    width: 88px;
+    height: 64px;
+    background-position: -789px -5px;
+}
+
+.sprite-armlet_active_png {
+    width: 88px;
+    height: 64px;
+    background-position: -887px -5px;
+}
+
+.sprite-armlet_png {
+    width: 88px;
+    height: 64px;
+    background-position: -985px -5px;
+}
+
+.sprite-assault_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1083px -5px;
+}
+
+.sprite-ballista_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1181px -5px;
+}
+
+.sprite-band_of_elvenskin_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1279px -5px;
+}
+
+.sprite-basher_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1377px -5px;
+}
+
+.sprite-belt_of_strength_png {
+    width: 88px;
+    height: 64px;
+    background-position: -5px -79px;
+}
+
+.sprite-bfury_png {
+    width: 88px;
+    height: 64px;
+    background-position: -103px -79px;
+}
+
+.sprite-black_king_bar_png {
+    width: 88px;
+    height: 64px;
+    background-position: -201px -79px;
+}
+
+.sprite-blade_mail_axe_pw_png {
+    width: 88px;
+    height: 64px;
+    background-position: -299px -79px;
+}
+
+.sprite-blade_mail_png {
+    width: 88px;
+    height: 64px;
+    background-position: -397px -79px;
+}
+
+.sprite-blade_of_alacrity_png {
+    width: 88px;
+    height: 64px;
+    background-position: -495px -79px;
+}
+
+.sprite-blades_of_attack_png {
+    width: 88px;
+    height: 64px;
+    background-position: -593px -79px;
+}
+
+.sprite-blight_stone_png {
+    width: 88px;
+    height: 64px;
+    background-position: -691px -79px;
+}
+
+.sprite-blink_png {
+    width: 88px;
+    height: 64px;
+    background-position: -789px -79px;
+}
+
+.sprite-bloodstone_png {
+    width: 88px;
+    height: 64px;
+    background-position: -887px -79px;
+}
+
+.sprite-bloodthorn_png {
+    width: 88px;
+    height: 64px;
+    background-position: -985px -79px;
+}
+
+.sprite-boots_of_elves_png {
+    width: 86px;
+    height: 64px;
+    background-position: -1083px -79px;
+}
+
+.sprite-boots_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1179px -79px;
+}
+
+.sprite-bottle_arcane_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1277px -79px;
+}
+
+.sprite-bottle_bounty_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1375px -79px;
+}
+
+.sprite-bottle_doubledamage_png {
+    width: 90px;
+    height: 64px;
+    background-position: -5px -153px;
+}
+
+.sprite-bottle_empty_png {
+    width: 88px;
+    height: 64px;
+    background-position: -105px -153px;
+}
+
+.sprite-bottle_haste_png {
+    width: 88px;
+    height: 64px;
+    background-position: -203px -153px;
+}
+
+.sprite-bottle_illusion_png {
+    width: 88px;
+    height: 64px;
+    background-position: -301px -153px;
+}
+
+.sprite-bottle_invisibility_png {
+    width: 88px;
+    height: 64px;
+    background-position: -399px -153px;
+}
+
+.sprite-bottle_medium_png {
+    width: 88px;
+    height: 64px;
+    background-position: -497px -153px;
+}
+
+.sprite-bottle_png {
+    width: 88px;
+    height: 64px;
+    background-position: -595px -153px;
+}
+
+.sprite-bottle_regeneration_png {
+    width: 88px;
+    height: 64px;
+    background-position: -693px -153px;
+}
+
+.sprite-bottle_small_png {
+    width: 89px;
+    height: 64px;
+    background-position: -791px -153px;
+}
+
+.sprite-bracer_png {
+    width: 88px;
+    height: 64px;
+    background-position: -890px -153px;
+}
+
+.sprite-branches_png {
+    width: 87px;
+    height: 64px;
+    background-position: -988px -153px;
+}
+
+.sprite-broadsword_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1085px -153px;
+}
+
+.sprite-broom_handle_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1183px -153px;
+}
+
+.sprite-buckler_active_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1281px -153px;
+}
+
+.sprite-buckler_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1379px -153px;
+}
+
+.sprite-butterfly_png {
+    width: 88px;
+    height: 64px;
+    background-position: -5px -227px;
+}
+
+.sprite-chainmail_png {
+    width: 85px;
+    height: 64px;
+    background-position: -103px -227px;
+}
+
+.sprite-cheese_png {
+    width: 88px;
+    height: 64px;
+    background-position: -198px -227px;
+}
+
+.sprite-circlet_png {
+    width: 88px;
+    height: 64px;
+    background-position: -296px -227px;
+}
+
+.sprite-clarity_png {
+    width: 88px;
+    height: 64px;
+    background-position: -394px -227px;
+}
+
+.sprite-claymore_png {
+    width: 88px;
+    height: 64px;
+    background-position: -492px -227px;
+}
+
+.sprite-cloak_png {
+    width: 88px;
+    height: 64px;
+    background-position: -590px -227px;
+}
+
+.sprite-clumsy_net_png {
+    width: 88px;
+    height: 64px;
+    background-position: -688px -227px;
+}
+
+.sprite-combo_breaker_png {
+    width: 88px;
+    height: 64px;
+    background-position: -786px -227px;
+}
+
+.sprite-courier_dire_flying_png {
+    width: 88px;
+    height: 64px;
+    background-position: -884px -227px;
+}
+
+.sprite-courier_dire_png {
+    width: 88px;
+    height: 64px;
+    background-position: -982px -227px;
+}
+
+.sprite-courier_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1080px -227px;
+}
+
+.sprite-courier_radiant_flying_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1178px -227px;
+}
+
+.sprite-courier_radiant_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1276px -227px;
+}
+
+.sprite-craggy_coat_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1374px -227px;
+}
+
+.sprite-crimson_guard_png {
+    width: 86px;
+    height: 64px;
+    background-position: -5px -301px;
+}
+
+.sprite-crimson_robe_png {
+    width: 86px;
+    height: 64px;
+    background-position: -101px -301px;
+}
+
+.sprite-crown_png {
+    width: 88px;
+    height: 64px;
+    background-position: -197px -301px;
+}
+
+.sprite-cyclone_2_png {
+    width: 88px;
+    height: 64px;
+    background-position: -295px -301px;
+}
+
+.sprite-cyclone_png {
+    width: 88px;
+    height: 64px;
+    background-position: -393px -301px;
+}
+
+.sprite-dagon_2_png {
+    width: 88px;
+    height: 64px;
+    background-position: -491px -301px;
+}
+
+.sprite-dagon_3_png {
+    width: 88px;
+    height: 64px;
+    background-position: -589px -301px;
+}
+
+.sprite-dagon_4_png {
+    width: 88px;
+    height: 64px;
+    background-position: -687px -301px;
+}
+
+.sprite-dagon_5_png {
+    width: 88px;
+    height: 64px;
+    background-position: -785px -301px;
+}
+
+.sprite-dagon_png {
+    width: 88px;
+    height: 64px;
+    background-position: -883px -301px;
+}
+
+.sprite-default_png {
+    width: 88px;
+    height: 64px;
+    background-position: -981px -301px;
+}
+
+.sprite-demon_edge_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1079px -301px;
+}
+
+.sprite-demonicon_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1177px -301px;
+}
+
+.sprite-desolator_2_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1275px -301px;
+}
+
+.sprite-desolator_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1373px -301px;
+}
+
+.sprite-diffusal_blade_png {
+    width: 88px;
+    height: 64px;
+    background-position: -5px -375px;
+}
+
+.sprite-dimensional_doorway_png {
+    width: 88px;
+    height: 64px;
+    background-position: -103px -375px;
+}
+
+.sprite-dragon_lance_png {
+    width: 88px;
+    height: 64px;
+    background-position: -201px -375px;
+}
+
+.sprite-dragon_scale_png {
+    width: 88px;
+    height: 64px;
+    background-position: -299px -375px;
+}
+
+.sprite-dust_png {
+    width: 88px;
+    height: 64px;
+    background-position: -397px -375px;
+}
+
+.sprite-eagle_png {
+    width: 88px;
+    height: 64px;
+    background-position: -495px -375px;
+}
+
+.sprite-echo_sabre_png {
+    width: 88px;
+    height: 64px;
+    background-position: -593px -375px;
+}
+
+.sprite-elixer1_png {
+    width: 88px;
+    height: 64px;
+    background-position: -691px -375px;
+}
+
+.sprite-elixer2_png {
+    width: 88px;
+    height: 64px;
+    background-position: -789px -375px;
+}
+
+.sprite-elixer3_png {
+    width: 88px;
+    height: 64px;
+    background-position: -887px -375px;
+}
+
+.sprite-elixer4_png {
+    width: 88px;
+    height: 64px;
+    background-position: -985px -375px;
+}
+
+.sprite-elixer_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1083px -375px;
+}
+
+.sprite-emptyitembg_png {
+    width: 87px;
+    height: 64px;
+    background-position: -1181px -375px;
+}
+
+.sprite-enchanted_mango_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1278px -375px;
+}
+
+.sprite-enchanted_quiver_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1376px -375px;
+}
+
+.sprite-energy_booster_png {
+    width: 88px;
+    height: 64px;
+    background-position: -5px -449px;
+}
+
+.sprite-es_arcana_blink_png {
+    width: 88px;
+    height: 64px;
+    background-position: -103px -449px;
+}
+
+.sprite-es_arcana_blink_ult2_png {
+    width: 88px;
+    height: 64px;
+    background-position: -201px -449px;
+}
+
+.sprite-essence_ring_png {
+    width: 88px;
+    height: 64px;
+    background-position: -299px -449px;
+}
+
+.sprite-ethereal_blade_png {
+    width: 88px;
+    height: 64px;
+    background-position: -397px -449px;
+}
+
+.sprite-ex_machina_png {
+    width: 88px;
+    height: 64px;
+    background-position: -495px -449px;
+}
+
+.sprite-faded_broach_png {
+    width: 88px;
+    height: 64px;
+    background-position: -593px -449px;
+}
+
+.sprite-faerie_fire_png {
+    width: 88px;
+    height: 62px;
+    background-position: -691px -449px;
+}
+
+.sprite-fallen_sky_png {
+    width: 88px;
+    height: 64px;
+    background-position: -789px -449px;
+}
+
+.sprite-firecrackers_png {
+    width: 86px;
+    height: 64px;
+    background-position: -887px -449px;
+}
+
+.sprite-firework_mine_png {
+    width: 86px;
+    height: 64px;
+    background-position: -983px -449px;
+}
+
+.sprite-flask2_png {
+    width: 87px;
+    height: 64px;
+    background-position: -1079px -449px;
+}
+
+.sprite-flask_png {
+    width: 87px;
+    height: 64px;
+    background-position: -1176px -449px;
+}
+
+.sprite-flicker_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1273px -449px;
+}
+
+.sprite-flying_courier_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1371px -449px;
+}
+
+.sprite-force_boots_png {
+    width: 88px;
+    height: 64px;
+    background-position: -5px -523px;
+}
+
+.sprite-force_staff_png {
+    width: 88px;
+    height: 64px;
+    background-position: -103px -523px;
+}
+
+.sprite-fusion_rune_png {
+    width: 88px;
+    height: 64px;
+    background-position: -201px -523px;
+}
+
+.sprite-gauntlets_png {
+    width: 81px;
+    height: 64px;
+    background-position: -299px -523px;
+}
+
+.sprite-gem_of_true_sight_png {
+    width: 88px;
+    height: 64px;
+    background-position: -390px -523px;
+}
+
+.sprite-gem_png {
+    width: 88px;
+    height: 64px;
+    background-position: -488px -523px;
+}
+
+.sprite-ghost_png {
+    width: 86px;
+    height: 64px;
+    background-position: -586px -523px;
+}
+
+.sprite-ghost_scepter_png {
+    width: 88px;
+    height: 64px;
+    background-position: -682px -523px;
+}
+
+.sprite-glimmer_cape_png {
+    width: 88px;
+    height: 62px;
+    background-position: -780px -523px;
+}
+
+.sprite-gloves_of_haste_png {
+    width: 88px;
+    height: 64px;
+    background-position: -878px -523px;
+}
+
+.sprite-gloves_png {
+    width: 86px;
+    height: 64px;
+    background-position: -976px -523px;
+}
+
+.sprite-greater_clarity_png {
+    width: 87px;
+    height: 64px;
+    background-position: -1072px -523px;
+}
+
+.sprite-greater_crit_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1169px -523px;
+}
+
+.sprite-greater_faerie_fire_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1267px -523px;
+}
+
+.sprite-greater_mango_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1365px -523px;
+}
+
+.sprite-greater_salve_png {
+    width: 87px;
+    height: 64px;
+    background-position: -5px -597px;
+}
+
+.sprite-grove_bow_png {
+    width: 88px;
+    height: 64px;
+    background-position: -102px -597px;
+}
+
+.sprite-guardian_greaves_png {
+    width: 88px;
+    height: 64px;
+    background-position: -200px -597px;
+}
+
+.sprite-hand_of_midas_ogre_arcana_png {
+    width: 88px;
+    height: 64px;
+    background-position: -298px -597px;
+}
+
+.sprite-hand_of_midas_png {
+    width: 88px;
+    height: 64px;
+    background-position: -396px -597px;
+}
+
+.sprite-havoc_hammer_png {
+    width: 88px;
+    height: 64px;
+    background-position: -494px -597px;
+}
+
+.sprite-headdress_png {
+    width: 88px;
+    height: 64px;
+    background-position: -592px -597px;
+}
+
+.sprite-heart_png {
+    width: 88px;
+    height: 64px;
+    background-position: -690px -597px;
+}
+
+.sprite-heavens_halberd_png {
+    width: 88px;
+    height: 64px;
+    background-position: -788px -597px;
+}
+
+.sprite-helm_of_iron_will_png {
+    width: 88px;
+    height: 64px;
+    background-position: -886px -597px;
+}
+
+.sprite-helm_of_the_dominator_png {
+    width: 88px;
+    height: 64px;
+    background-position: -984px -597px;
+}
+
+.sprite-helm_of_the_undying_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1082px -597px;
+}
+
+.sprite-holy_locket_enemy_png {
+    width: 86px;
+    height: 62px;
+    background-position: -1180px -597px;
+}
+
+.sprite-holy_locket_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1276px -597px;
+}
+
+.sprite-hood_of_defiance_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1374px -597px;
+}
+
+.sprite-horizon_png {
+    width: 88px;
+    height: 64px;
+    background-position: -5px -671px;
+}
+
+.sprite-hurricane_pike_png {
+    width: 88px;
+    height: 64px;
+    background-position: -103px -671px;
+}
+
+.sprite-hyperstone_png {
+    width: 88px;
+    height: 64px;
+    background-position: -201px -671px;
+}
+
+.sprite-illusionsts_cape_png {
+    width: 88px;
+    height: 64px;
+    background-position: -299px -671px;
+}
+
+.sprite-imp_claw_png {
+    width: 88px;
+    height: 64px;
+    background-position: -397px -671px;
+}
+
+.sprite-infused_raindrop_png {
+    width: 88px;
+    height: 64px;
+    background-position: -495px -671px;
+}
+
+.sprite-invis_sword_png {
+    width: 88px;
+    height: 64px;
+    background-position: -593px -671px;
+}
+
+.sprite-iron_talon_png {
+    width: 88px;
+    height: 64px;
+    background-position: -691px -671px;
+}
+
+.sprite-ironwood_tree_png {
+    width: 88px;
+    height: 64px;
+    background-position: -789px -671px;
+}
+
+.sprite-javelin_png {
+    width: 88px;
+    height: 64px;
+    background-position: -887px -671px;
+}
+
+.sprite-kaya_and_sange_png {
+    width: 88px;
+    height: 64px;
+    background-position: -985px -671px;
+}
+
+.sprite-kaya_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1083px -671px;
+}
+
+.sprite-keen_optic_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1181px -671px;
+}
+
+.sprite-lesser_crit_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1279px -671px;
+}
+
+.sprite-lifesteal_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1377px -671px;
+}
+
+.sprite-lotus_orb_png {
+    width: 88px;
+    height: 64px;
+    background-position: -5px -745px;
+}
+
+.sprite-maelstrom_png {
+    width: 88px;
+    height: 64px;
+    background-position: -103px -745px;
+}
+
+.sprite-magic_stick_png {
+    width: 88px;
+    height: 64px;
+    background-position: -201px -745px;
+}
+
+.sprite-magic_wand_png {
+    width: 88px;
+    height: 64px;
+    background-position: -299px -745px;
+}
+
+.sprite-mango_tree_png {
+    width: 88px;
+    height: 64px;
+    background-position: -397px -745px;
+}
+
+.sprite-manta_png {
+    width: 88px;
+    height: 64px;
+    background-position: -495px -745px;
+}
+
+.sprite-mantle_png {
+    width: 87px;
+    height: 64px;
+    background-position: -593px -745px;
+}
+
+.sprite-mask_of_madness_png {
+    width: 88px;
+    height: 64px;
+    background-position: -690px -745px;
+}
+
+.sprite-medallion_of_courage_png {
+    width: 88px;
+    height: 64px;
+    background-position: -788px -745px;
+}
+
+.sprite-mekansm_png {
+    width: 88px;
+    height: 64px;
+    background-position: -886px -745px;
+}
+
+.sprite-meteor_hammer_png {
+    width: 86px;
+    height: 62px;
+    background-position: -984px -745px;
+}
+
+.sprite-mind_breaker_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1080px -745px;
+}
+
+.sprite-minotaur_horn_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1178px -745px;
+}
+
+.sprite-mirror_shield_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1276px -745px;
+}
+
+.sprite-mithril_hammer_png {
+    width: 87px;
+    height: 64px;
+    background-position: -1374px -745px;
+}
+
+.sprite-mjollnir_arc-000_png {
+    width: 128px;
+    height: 128px;
+    background-position: -5px -819px;
+}
+
+.sprite-mjollnir_arc-001_png {
+    width: 128px;
+    height: 128px;
+    background-position: -143px -819px;
+}
+
+.sprite-mjollnir_arc-002_png {
+    width: 128px;
+    height: 128px;
+    background-position: -281px -819px;
+}
+
+.sprite-mjollnir_png {
+    width: 88px;
+    height: 64px;
+    background-position: -419px -819px;
+}
+
+.sprite-monkey_king_bar_png {
+    width: 84px;
+    height: 64px;
+    background-position: -517px -819px;
+}
+
+.sprite-moon_shard_png {
+    width: 88px;
+    height: 64px;
+    background-position: -611px -819px;
+}
+
+.sprite-mutation_tombstone_png {
+    width: 88px;
+    height: 64px;
+    background-position: -709px -819px;
+}
+
+.sprite-mystic_staff_png {
+    width: 88px;
+    height: 64px;
+    background-position: -807px -819px;
+}
+
+.sprite-necronomicon_2_png {
+    width: 88px;
+    height: 64px;
+    background-position: -905px -819px;
+}
+
+.sprite-necronomicon_3_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1003px -819px;
+}
+
+.sprite-necronomicon_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1101px -819px;
+}
+
+.sprite-nether_shawl_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1199px -819px;
+}
+
+.sprite-neutral_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1297px -819px;
+}
+
+.sprite-nian_flag_trap_png {
+    width: 86px;
+    height: 64px;
+    background-position: -1395px -819px;
+}
+
+.sprite-ninja_gear_png {
+    width: 88px;
+    height: 64px;
+    background-position: -419px -893px;
+}
+
+.sprite-null_talisman_png {
+    width: 88px;
+    height: 64px;
+    background-position: -517px -893px;
+}
+
+.sprite-nullifier_png {
+    width: 86px;
+    height: 62px;
+    background-position: -615px -893px;
+}
+
+.sprite-oblivion_staff_png {
+    width: 88px;
+    height: 64px;
+    background-position: -711px -893px;
+}
+
+.sprite-ocean_heart_png {
+    width: 88px;
+    height: 64px;
+    background-position: -809px -893px;
+}
+
+.sprite-octarine_core_png {
+    width: 88px;
+    height: 64px;
+    background-position: -907px -893px;
+}
+
+.sprite-ogre_axe_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1005px -893px;
+}
+
+.sprite-orb_of_destruction_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1103px -893px;
+}
+
+.sprite-orb_of_venom_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1201px -893px;
+}
+
+.sprite-orchid_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1299px -893px;
+}
+
+.sprite-paladin_sword_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1397px -893px;
+}
+
+.sprite-panic_button_png {
+    width: 88px;
+    height: 64px;
+    background-position: -5px -967px;
+}
+
+.sprite-pers_png {
+    width: 88px;
+    height: 64px;
+    background-position: -103px -967px;
+}
+
+.sprite-phase_boots_png {
+    width: 88px;
+    height: 64px;
+    background-position: -201px -967px;
+}
+
+.sprite-philosophers_stone_png {
+    width: 88px;
+    height: 64px;
+    background-position: -299px -967px;
+}
+
+.sprite-phoenix_ash_png {
+    width: 88px;
+    height: 64px;
+    background-position: -397px -967px;
+}
+
+.sprite-pipe_png {
+    width: 88px;
+    height: 64px;
+    background-position: -495px -967px;
+}
+
+.sprite-pirate_hat_png {
+    width: 88px;
+    height: 64px;
+    background-position: -593px -967px;
+}
+
+.sprite-place_building_png {
+    width: 74px;
+    height: 64px;
+    background-position: -691px -967px;
+}
+
+.sprite-platemail_png {
+    width: 88px;
+    height: 64px;
+    background-position: -775px -967px;
+}
+
+.sprite-pocket_roshan_png {
+    width: 88px;
+    height: 64px;
+    background-position: -873px -967px;
+}
+
+.sprite-pocket_tower_png {
+    width: 74px;
+    height: 64px;
+    background-position: -971px -967px;
+}
+
+.sprite-point_booster_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1055px -967px;
+}
+
+.sprite-poor_mans_shield_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1153px -967px;
+}
+
+.sprite-power_treads_agi_colorblind_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1251px -967px;
+}
+
+.sprite-power_treads_agi_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1349px -967px;
+}
+
+.sprite-power_treads_int_png {
+    width: 88px;
+    height: 64px;
+    background-position: -5px -1041px;
+}
+
+.sprite-power_treads_png {
+    width: 88px;
+    height: 64px;
+    background-position: -103px -1041px;
+}
+
+.sprite-power_treads_str_png {
+    width: 88px;
+    height: 64px;
+    background-position: -201px -1041px;
+}
+
+.sprite-princes_knife_png {
+    width: 88px;
+    height: 64px;
+    background-position: -299px -1041px;
+}
+
+.sprite-pupils_gift_png {
+    width: 88px;
+    height: 64px;
+    background-position: -397px -1041px;
+}
+
+.sprite-quarterstaff_png {
+    width: 88px;
+    height: 64px;
+    background-position: -495px -1041px;
+}
+
+.sprite-quelling_blade_png {
+    width: 88px;
+    height: 64px;
+    background-position: -593px -1041px;
+}
+
+.sprite-quickening_charm_png {
+    width: 88px;
+    height: 64px;
+    background-position: -691px -1041px;
+}
+
+.sprite-radiance_inactive_png {
+    width: 88px;
+    height: 64px;
+    background-position: -789px -1041px;
+}
+
+.sprite-radiance_png {
+    width: 88px;
+    height: 64px;
+    background-position: -887px -1041px;
+}
+
+.sprite-rapier_png {
+    width: 88px;
+    height: 64px;
+    background-position: -985px -1041px;
+}
+
+.sprite-reaver_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1083px -1041px;
+}
+
+.sprite-recipe_opacity_mask_nopurchase_psd {
+    width: 88px;
+    height: 64px;
+    background-position: -1181px -1041px;
+}
+
+.sprite-recipe_opacity_mask_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1279px -1041px;
+}
+
+.sprite-recipe_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1377px -1041px;
+}
+
+.sprite-recipe_scroll_png {
+    width: 98px;
+    height: 64px;
+    background-position: -5px -1115px;
+}
+
+.sprite-refresher_png {
+    width: 88px;
+    height: 64px;
+    background-position: -113px -1115px;
+}
+
+.sprite-refresher_shard_png {
+    width: 88px;
+    height: 64px;
+    background-position: -211px -1115px;
+}
+
+.sprite-relic_png {
+    width: 88px;
+    height: 64px;
+    background-position: -309px -1115px;
+}
+
+.sprite-repair_kit_png {
+    width: 88px;
+    height: 64px;
+    background-position: -407px -1115px;
+}
+
+.sprite-ring_of_aquila_active_png {
+    width: 88px;
+    height: 64px;
+    background-position: -505px -1115px;
+}
+
+.sprite-ring_of_aquila_png {
+    width: 88px;
+    height: 64px;
+    background-position: -603px -1115px;
+}
+
+.sprite-ring_of_basilius_active_png {
+    width: 88px;
+    height: 64px;
+    background-position: -701px -1115px;
+}
+
+.sprite-ring_of_basilius_png {
+    width: 88px;
+    height: 64px;
+    background-position: -799px -1115px;
+}
+
+.sprite-ring_of_health_png {
+    width: 88px;
+    height: 64px;
+    background-position: -897px -1115px;
+}
+
+.sprite-ring_of_protection_png {
+    width: 88px;
+    height: 64px;
+    background-position: -995px -1115px;
+}
+
+.sprite-ring_of_regen_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1093px -1115px;
+}
+
+.sprite-ring_of_tarrasque_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1191px -1115px;
+}
+
+.sprite-river_painter2_png {
+    width: 86px;
+    height: 62px;
+    background-position: -1289px -1115px;
+}
+
+.sprite-river_painter3_png {
+    width: 86px;
+    height: 62px;
+    background-position: -1385px -1115px;
+}
+
+.sprite-river_painter4_png {
+    width: 86px;
+    height: 62px;
+    background-position: -1289px -1187px;
+}
+
+.sprite-river_painter5_png {
+    width: 86px;
+    height: 62px;
+    background-position: -1385px -1187px;
+}
+
+.sprite-river_painter6_png {
+    width: 86px;
+    height: 62px;
+    background-position: -5px -1259px;
+}
+
+.sprite-river_painter7_png {
+    width: 86px;
+    height: 62px;
+    background-position: -101px -1259px;
+}
+
+.sprite-river_painter_png {
+    width: 86px;
+    height: 62px;
+    background-position: -197px -1259px;
+}
+
+.sprite-robe_png {
+    width: 88px;
+    height: 64px;
+    background-position: -293px -1259px;
+}
+
+.sprite-rod_of_atos_png {
+    width: 88px;
+    height: 64px;
+    background-position: -391px -1259px;
+}
+
+.sprite-royal_jelly1_png {
+    width: 88px;
+    height: 64px;
+    background-position: -489px -1259px;
+}
+
+.sprite-royal_jelly2_png {
+    width: 88px;
+    height: 64px;
+    background-position: -587px -1259px;
+}
+
+.sprite-royal_jelly_png {
+    width: 88px;
+    height: 64px;
+    background-position: -685px -1259px;
+}
+
+.sprite-salve_png {
+    width: 88px;
+    height: 64px;
+    background-position: -783px -1259px;
+}
+
+.sprite-sange_and_yasha_png {
+    width: 88px;
+    height: 64px;
+    background-position: -881px -1259px;
+}
+
+.sprite-sange_png {
+    width: 88px;
+    height: 64px;
+    background-position: -979px -1259px;
+}
+
+.sprite-satanic_png {
+    width: 87px;
+    height: 64px;
+    background-position: -1077px -1259px;
+}
+
+.sprite-seer_stone_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1174px -1259px;
+}
+
+.sprite-shadow_amulet_png {
+    width: 86px;
+    height: 62px;
+    background-position: -1272px -1259px;
+}
+
+.sprite-sheepstick_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1368px -1259px;
+}
+
+.sprite-shivas_guard_png {
+    width: 88px;
+    height: 64px;
+    background-position: -5px -1333px;
+}
+
+.sprite-silver_edge_png {
+    width: 88px;
+    height: 64px;
+    background-position: -103px -1333px;
+}
+
+.sprite-skadi_png {
+    width: 88px;
+    height: 64px;
+    background-position: -201px -1333px;
+}
+
+.sprite-slippers_of_halcyon_png {
+    width: 88px;
+    height: 64px;
+    background-position: -299px -1333px;
+}
+
+.sprite-slippers_png {
+    width: 88px;
+    height: 64px;
+    background-position: -397px -1333px;
+}
+
+.sprite-smoke_of_deceit_png {
+    width: 88px;
+    height: 64px;
+    background-position: -495px -1333px;
+}
+
+.sprite-sobi_mask_png {
+    width: 88px;
+    height: 64px;
+    background-position: -593px -1333px;
+}
+
+.sprite-solar_crest_png {
+    width: 88px;
+    height: 64px;
+    background-position: -691px -1333px;
+}
+
+.sprite-soul_booster_png {
+    width: 88px;
+    height: 64px;
+    background-position: -789px -1333px;
+}
+
+.sprite-soul_ring_png {
+    width: 88px;
+    height: 64px;
+    background-position: -887px -1333px;
+}
+
+.sprite-spell_prism_png {
+    width: 88px;
+    height: 64px;
+    background-position: -985px -1333px;
+}
+
+.sprite-sphere_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1083px -1333px;
+}
+
+.sprite-spider_legs_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1181px -1333px;
+}
+
+.sprite-spirit_vessel_png {
+    width: 86px;
+    height: 62px;
+    background-position: -1279px -1333px;
+}
+
+.sprite-spy_gadget_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1375px -1333px;
+}
+
+.sprite-staff_of_wizardry_png {
+    width: 88px;
+    height: 64px;
+    background-position: -5px -1407px;
+}
+
+.sprite-stout_shield_png {
+    width: 88px;
+    height: 64px;
+    background-position: -103px -1407px;
+}
+
+.sprite-super_blink_png {
+    width: 88px;
+    height: 64px;
+    background-position: -201px -1407px;
+}
+
+.sprite-talisman_of_evasion_png {
+    width: 88px;
+    height: 64px;
+    background-position: -299px -1407px;
+}
+
+.sprite-tango_png {
+    width: 88px;
+    height: 64px;
+    background-position: -397px -1407px;
+}
+
+.sprite-tango_single_png {
+    width: 88px;
+    height: 64px;
+    background-position: -495px -1407px;
+}
+
+.sprite-the_leveller_png {
+    width: 88px;
+    height: 64px;
+    background-position: -593px -1407px;
+}
+
+.sprite-third_eye_png {
+    width: 88px;
+    height: 64px;
+    background-position: -691px -1407px;
+}
+
+.sprite-timeless_relic_png {
+    width: 88px;
+    height: 64px;
+    background-position: -789px -1407px;
+}
+
+.sprite-titan_sliver_png {
+    width: 88px;
+    height: 64px;
+    background-position: -887px -1407px;
+}
+
+.sprite-tombstone_png {
+    width: 88px;
+    height: 64px;
+    background-position: -985px -1407px;
+}
+
+.sprite-tome_of_aghanim_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1083px -1407px;
+}
+
+.sprite-tome_of_knowledge_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1181px -1407px;
+}
+
+.sprite-tpscroll_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1279px -1407px;
+}
+
+.sprite-tranquil_boots_active_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1377px -1407px;
+}
+
+.sprite-tranquil_boots_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1475px -5px;
+}
+
+.sprite-travel_boots_2_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1473px -79px;
+}
+
+.sprite-travel_boots_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1477px -153px;
+}
+
+.sprite-travel_boots_tinker_png {
+    width: 93px;
+    height: 64px;
+    background-position: -1472px -227px;
+}
+
+.sprite-travel_slippers_png {
+    width: 99px;
+    height: 64px;
+    background-position: -1471px -301px;
+}
+
+.sprite-trident_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1474px -375px;
+}
+
+.sprite-trusty_shovel_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1469px -449px;
+}
+
+.sprite-ultimate_orb_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1463px -523px;
+}
+
+.sprite-ultimate_scepter_2_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1472px -597px;
+}
+
+.sprite-ultimate_scepter_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1475px -671px;
+}
+
+.sprite-urn_of_shadows_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1471px -745px;
+}
+
+.sprite-vambrace_agi_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1491px -819px;
+}
+
+.sprite-vambrace_int_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1495px -893px;
+}
+
+.sprite-vambrace_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1447px -967px;
+}
+
+.sprite-vambrace_str_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1475px -1041px;
+}
+
+.sprite-vampire_fangs_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1481px -1115px;
+}
+
+.sprite-vanguard_png {
+    width: 87px;
+    height: 64px;
+    background-position: -1481px -1189px;
+}
+
+.sprite-veil_of_discord_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1473px -1263px;
+}
+
+.sprite-vitality_booster_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1475px -1337px;
+}
+
+.sprite-vladmir_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1475px -1411px;
+}
+
+.sprite-void_stone_png {
+    width: 88px;
+    height: 64px;
+    background-position: -5px -1485px;
+}
+
+.sprite-ward_dispenser_png {
+    width: 88px;
+    height: 64px;
+    background-position: -103px -1485px;
+}
+
+.sprite-ward_dispenser_sentry_png {
+    width: 88px;
+    height: 64px;
+    background-position: -201px -1485px;
+}
+
+.sprite-ward_observer_png {
+    width: 88px;
+    height: 64px;
+    background-position: -299px -1485px;
+}
+
+.sprite-ward_sentry_png {
+    width: 88px;
+    height: 64px;
+    background-position: -397px -1485px;
+}
+
+.sprite-wind_lace_png {
+    width: 88px;
+    height: 64px;
+    background-position: -495px -1485px;
+}
+
+.sprite-winter_coal_png {
+    width: 86px;
+    height: 62px;
+    background-position: -593px -1485px;
+}
+
+.sprite-winter_snowball_png {
+    width: 86px;
+    height: 62px;
+    background-position: -689px -1485px;
+}
+
+.sprite-winter_woolies_png {
+    width: 86px;
+    height: 62px;
+    background-position: -785px -1485px;
+}
+
+.sprite-witless_shako_png {
+    width: 88px;
+    height: 64px;
+    background-position: -881px -1485px;
+}
+
+.sprite-woodland_striders_png {
+    width: 88px;
+    height: 64px;
+    background-position: -979px -1485px;
+}
+
+.sprite-wraith_band_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1077px -1485px;
+}
+
+.sprite-yasha_and_kaya_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1175px -1485px;
+}
+
+.sprite-yasha_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1273px -1485px;
+}

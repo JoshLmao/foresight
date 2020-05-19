@@ -1,4 +1,4 @@
-# DotA 2 Data: Useful Paths
+# DotA 2 Data: Useful Paths & Tools
 
 All paths start at the default install directory of Dota 2.
 
@@ -24,6 +24,13 @@ You will need [GCFScape](https://developer.valvesoftware.com/wiki/GCFScape) to a
 
 #### "root/scripts/npc/*"
 
-# Converting .vdf to .json
+- items.txt
+- neutral_items.txt
+
+## Converting .vdf to .json
 
 To convert the Valve .vdf file format to .json, you need to use the [online VDF-Parser](https://rgp.io/vdf-parser/)
+
+## Packing Images into Spritesheet
+
+You can use [Stitches](https://draeton.github.io/stitches/) by Draeton to merge many images into one stylesheet. Once complete, click "Downloads" and download both stylesheet and spritesheet. Replace the data inside the stylesheet with a url to the spritesheet inside public
