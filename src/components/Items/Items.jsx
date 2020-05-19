@@ -20,9 +20,9 @@ class Items extends Component {
     getItemIcon(item, width, height, scale) {
         // Width and height of each item in item_stylesheet
         if (item.item === "none") {
-            return <span style={{ backgroundColor: "#212121", width: width, height: height, transform: `scale(${scale}, ${scale})`, display: "block" }} />
+            return <span style={{ backgroundColor: "#212121", width: width, height: height, transform: `scale(${scale}, ${scale})`, display: "block", transformOrigin: "top left" }} />
         } else {
-            return <span className={ 'sprite sprite-' + item.item + '_png '} alt={item.item} style={{ transform: `scale(${scale}, ${scale})` }} />
+            return <span className={ 'sprite sprite-' + item.item + '_png '} alt={item.item} style={{ transform: `scale(${scale}, ${scale})`, transformOrigin: "top left" }} />
         }
     }
 

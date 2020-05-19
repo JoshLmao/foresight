@@ -27,6 +27,10 @@ You will need [GCFScape](https://developer.valvesoftware.com/wiki/GCFScape) to a
 - items.txt
 - neutral_items.txt
 
+#### "root/panarama/images/heroes"
+
+- npc_dota_hero_*_png
+
 ## Converting .vdf to .json
 
 To convert the Valve .vdf file format to .json, you need to use the [online VDF-Parser](https://rgp.io/vdf-parser/)

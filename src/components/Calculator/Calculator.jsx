@@ -7,48 +7,17 @@ import {
 
 import Abilities from "../Abilities";
 import Items from "../Items";
+import Attributes from "../Attributes";
+import Statistics from "../Statistics";
 
 /* DotA 2 Import Data */
-import { DOTAAbilities } from "../../data/dota2/json/npc_abilities.json";
 import { DOTAHeroes } from "../../data/dota2/json/npc_heroes.json";
 
 import "../../css/dota_hero_icons.css";
 import "../../css/dota_attributes.css";
 import "../../css/dota_items.css";
-
-function Attribute(props) {
-    return (
-        <div className="d-flex my-2">
-            <span className={'attribute ' + props.type + " mr-2"} alt="attribute" />
-            <div>{props.value}</div>
-            <div className="px-1">+</div>
-            <div>{props.per}</div>
-            <div className="px-1">per level</div>
-        </div>
-    );
-}
-
-function StatArray(props) {
-    return (
-        <div style={{ backgroundColor: "#171717", color: "white", fontSize: "0.85rem" }} className="p-2 h-100">
-            <h6 className="ml-auto">{props.title}</h6>
-            {
-                props.stats &&
-                    props.stats.map((value) => {
-                        return (<Row key={value.name}>
-                            <Col md={7}>
-                                {value.name}
-                            </Col>
-                            <Col md={5}>
-                                {value.value}
-                            </Col>
-                        </Row>
-                        );
-                    })
-            }
-        </div>
-    );
-}
+import "../../css/dota_hero_icons_big.css";
+import "./Calculator.css";
 
 function TalentTree(props) {
     return (
@@ -66,6 +35,19 @@ class Calculator extends Component {
         this.state = {
             selectedHero: DOTAHeroes.npc_dota_hero_zuus,
         };
+
+        this.parseName = this.parseName.bind(this);
+    }
+
+    componentDidMount() {
+        this.setState({
+            selectedHeroName: this.state.selectedHero ? this.parseName(this.state.selectedHero.Model) : "?",
+        })
+    }
+
+    parseName(modelString) {
+        var dashSplit = modelString.split('.')[0].split('/');
+        return dashSplit[dashSplit.length - 1];
     }
 
     render() {
@@ -76,63 +58,33 @@ class Calculator extends Component {
                     <Row>
                         {/* Main Hero Info */}
                         <Col className="d-flex my-auto" md={3}>
-                            <img 
-                                className="mx-3"
+                            <span 
+                                className={`hero-icon-big hero-icon-big-npc_dota_hero_${this.state.selectedHeroName}_png mx-3`}
                                 height={50}
-                                src="/images/dota2/heroes/zeus-banner.png" 
                                 alt="hero banner" />
                             <h5 className="my-auto">
-                                Zeus
+                                {this.state.selectedHeroName}
                             </h5>
                         </Col>
                         {/* Small Stats */}
                         <Col md={3}>
-                            <h5>STATS</h5>
-                            <h6>ATTRIBUTES</h6>
-                            <Attribute 
-                                type="strength" 
-                                value={this.state.selectedHero.AttributeBaseStrength} 
-                                per={this.state.selectedHero.AttributeStrengthGain} />
-
-                            <Attribute 
-                                type="agility"
-                                value={this.state.selectedHero.AttributeBaseAgility}
-                                per={this.state.selectedHero.AttributeAgilityGain} />
-
-                            <Attribute 
-                                type="intelligence" 
-                                value={this.state.selectedHero.AttributeBaseIntelligence}
-                                per={this.state.selectedHero.AttributeIntelligenceGain} />
+                            <Attributes 
+                                baseStrength={this.state.selectedHero.AttributeBaseStrength}
+                                strengthGain={this.state.selectedHero.AttributeStrengthGain}
+                                baseAgility={this.state.selectedHero.AttributeBaseAgility}
+                                agilityGain={this.state.selectedHero.AttributeAgilityGain}
+                                baseIntelligence={this.state.selectedHero.AttributeBaseIntelligence}
+                                intelligenceGain={this.state.selectedHero.AttributeIntelligenceGain}
+                                primaryAttribute={this.state.selectedHero.AttributePrimary} />
                         </Col>
                         {/* Final Attack/Defence Stats */}
                         <Col md={5}>
-                            <Row>
-                                <Col md={6}>
-                                    <StatArray title="ATTACK" stats={[
-                                        { name: "attack speed", value: 111 },
-                                        { name: "damage", value: `${this.state.selectedHero.AttackDamageMin} - ${this.state.selectedHero.AttackDamageMax}` },
-                                        { name: "attack range", value: this.state.selectedHero.AttackRange },
-                                        { name: "move speed", value: this.state.selectedHero.MovementSpeed },
-                                        { name: "spell amp", value: 0 },
-                                        { name: "mana regen", value: 1.35 },
-                                    ]} />
-                                </Col>
-                                <Col md={6}>
-                                    <StatArray title="DEFENCE" stats={[
-                                        { name: "armor", value: 2.8 },
-                                        { name: "physical resist", value: 25 },
-                                        { name: "magic resist", value: 25 },
-                                        { name: "status resist", value: 0 },
-                                        { name: "evasion", value: 0 },
-                                        { name: "health regen", value: 2.10 },
-                                    ]}/>
-                                </Col>
-                            </Row>
+                            <Statistics hero={this.state.selectedHero} />
                         </Col>
                     </Row>
 
                     {/* Items/Talent */}
-                    <Row className="my-5">
+                    <Row className="items-row my-5">
                         <Col md={9}>
                             <Items items={[
                                 { slot: 0, item: "abyssal_blade" },
@@ -154,10 +106,12 @@ class Calculator extends Component {
 
                     {/* Abilities */}
                     <Abilities abilities={[
-                        { name: "zuus_arc_lightning", data: DOTAAbilities.zuus_arc_lightning },
-                        { name: "zuus_lightning_bolt", data: DOTAAbilities.zuus_lightning_bolt },
-                        { name: "zuus_cloud", data: DOTAAbilities.zuus_cloud },
-                        { name: "zuus_thundergods_wrath", data: DOTAAbilities.zuus_thundergods_wrath },
+                        // { name: "zuus_arc_lightning", data: DOTAAbilities.zuus_arc_lightning },
+                        // { name: "zuus_lightning_bolt", data: DOTAAbilities.zuus_lightning_bolt },
+                        // { name: "zuus_cloud", data: DOTAAbilities.zuus_cloud },
+                        // { name: "zuus_thundergods_wrath", data: DOTAAbilities.zuus_thundergods_wrath },
+                        this.state.selectedHero.Ability1, this.state.selectedHero.Ability2, this.state.selectedHero.Ability3, this.state.selectedHero.Ability4,
+                        this.state.selectedHero.Ability5, this.state.selectedHero.Ability6, this.state.selectedHero.Ability7
                     ]} />
                 </Container>
             </div>
