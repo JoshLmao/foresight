@@ -1,0 +1,15 @@
+.levelled {
+    width: 15px;
+    height: 15px;
+    /* margin-left: 7px;
+    margin-right: 7px; */
+    background-color: yellow;
+}
+
+.unlevelled {
+    width: 15px;
+    height: 15px;
+    /* margin-left: 7px;
+    margin-right: 7px; */
+    background-color: grey;
+}
