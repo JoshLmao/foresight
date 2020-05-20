@@ -7,11 +7,11 @@ import {
 
 import { DOTAAbilities } from "../../data/dota2/json/npc_abilities.json";
 
+import DamageOutput from "./DamageOutput";
 import "./Abilities.css";
 
-function getAbilityLevel (lvls, abilityIndex, abilityInfo, onLevelChanged) {
-    var lvl = lvls.find(abilVal => abilVal.ability == abilityIndex);
-    if (lvl && abilityInfo)
+function getAbilityLevel (levelInfo, abilityIndex, abilityInfo, onLevelChanged) {
+    if (levelInfo && abilityInfo)
     {
         /// Determine max level of ability
         var maxLvl = abilityInfo.AbilityType === "DOTA_ABILITY_TYPE_ULTIMATE" ? 3 : 4;
@@ -25,9 +25,9 @@ function getAbilityLevel (lvls, abilityIndex, abilityInfo, onLevelChanged) {
                     key={i} 
                     variant="outline-secondary"
                     onClick={(e) => onLevelChanged(e)}
-                    data-lvlIndex={abilityIndex}
-                    data-btnIndex={i}>
-                    <div className={ i < lvl.level ? "levelled" : "unlevelled"}></div>
+                    data-lvlindex={abilityIndex}
+                    data-btnindex={i}>
+                    <div className={ i < levelInfo.level ? "levelled" : "unlevelled"}></div>
                 </Button>
             );
         }
@@ -37,34 +37,6 @@ function getAbilityLevel (lvls, abilityIndex, abilityInfo, onLevelChanged) {
     {
         return <div>?</div>
     }
-}
-
-function getAbilityDmg(lvls, abilityIndex, abilityInfo) {
-    var lvl = lvls.find(abilVal => abilVal.ability == abilityIndex);
-    if (lvl)
-    {
-        var dmgVals = abilityInfo.AbilityDamage;
-        if(dmgVals) {
-            return dmgVals.split(' ')[lvl.level - 1];
-        }
-        else if (abilityInfo.AbilitySpecial) 
-        {
-            for (var i = 0; i < abilityInfo.AbilitySpecial.length; i++) {
-                var abil = abilityInfo.AbilitySpecial[i];
-                // Zeus Zrc Lightning
-                if (abil.arc_damage) {
-                    return abil.arc_damage.split(' ')[lvl.level - 1];
-                }
-
-                // Normal Damage
-                if (abil.damage) {
-                    return abil.damage.split(' ')[lvl.level - 1];
-                }
-            }
-        }
-    }
-    
-    return "?";
 }
 
 class Abilities extends Component {
@@ -94,8 +66,12 @@ class Abilities extends Component {
     }
 
     onLevelChanged(e) {
-        //e.persist();
         //console.log(e);
+
+        // If click on inner element
+        if (e.target.tagName.toLowerCase() != "button") {
+            e.target = e.target.parentElement;
+        }
 
         var levelIndex = parseInt(e.target.dataset.lvlindex);
         var abilities = this.state.abilityLevels;
@@ -109,10 +85,14 @@ class Abilities extends Component {
 
     render() {
         return (
-            <Row style={{ height: "200px" }}>
+            <Row>
                 {
                     this.state.abilities && this.state.abilities.map((value, index) => {
+                        // Info about the ability
                         var ability = DOTAAbilities[value];
+                        // Current level of the ability
+                        var levelInfo = this.state.abilityLevels.find(abilVal => abilVal.ability == index);
+                        console.log(levelInfo);
                         if (!ability && value) {
                             return <div key={value}>?</div>
                         }
@@ -129,15 +109,15 @@ class Abilities extends Component {
                                 }
                                 <div className="align-self-center pt-2 d-flex">
                                     {
-                                        this.state.abilityLevels ? getAbilityLevel(this.state.abilityLevels, index, ability, this.onLevelChanged) : <div>!</div>    
+                                        this.state.abilityLevels ? getAbilityLevel(levelInfo, index, ability, this.onLevelChanged) : <div>!</div>    
                                     }
                                 </div>
-                                <div>
-                                    <h6>
+                                <div className="mx-auto mt-2">
                                         {
-                                            this.state.abilityLevels ? getAbilityDmg(this.state.abilityLevels, index, ability) : "?"
+                                            <DamageOutput 
+                                                abilityInfo={ability} 
+                                                levelInfo={levelInfo} />
                                         }
-                                    </h6>
                                 </div>
                             </Col>
                         );
