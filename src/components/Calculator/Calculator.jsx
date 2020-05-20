@@ -2,13 +2,16 @@ import React, { Component } from 'react';
 import {
     Container,
     Row,
-    Col
+    Col,
+    Button
 } from 'react-bootstrap';
+import { connect } from "react-redux";
 
 import Abilities from "../Abilities";
 import Items from "../Items";
 import Attributes from "../Attributes";
 import Statistics from "../Statistics";
+import SelectHero from "./SelectHero";
 
 /* DotA 2 Import Data */
 import { DOTAHeroes } from "../../data/dota2/json/npc_heroes.json";
@@ -32,22 +35,14 @@ class Calculator extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            selectedHero: DOTAHeroes.npc_dota_hero_zuus,
-        };
-
-        this.parseName = this.parseName.bind(this);
+        this.onHeroSelected = this.onHeroSelected.bind(this);
     }
 
-    componentDidMount() {
-        this.setState({
-            selectedHeroName: this.state.selectedHero ? this.parseName(this.state.selectedHero.Model) : "?",
-        })
-    }
+    onHeroSelected(heroName) {
+        var targetHero = DOTAHeroes[heroName];
+        console.log("Hero Selected " + heroName);
 
-    parseName(modelString) {
-        var dashSplit = modelString.split('.')[0].split('/');
-        return dashSplit[dashSplit.length - 1];
+        this.props.dispatch({ type: "SELECTEDHERO", value: targetHero });
     }
 
     render() {
@@ -57,29 +52,32 @@ class Calculator extends Component {
                     {/* Top row, Inital Hero Information */}
                     <Row>
                         {/* Main Hero Info */}
-                        <Col className="d-flex my-auto" md={3}>
+                        <Col className="my-auto" md={3}>
                             <span 
-                                className={`hero-icon-big hero-icon-big-npc_dota_hero_${this.state.selectedHeroName}_png mx-3`}
+                                className={`hero-icon-big hero-icon-big-npc_dota_hero_${this.props.selectedHeroName}_png mx-3`}
                                 height={50}
                                 alt="hero banner" />
-                            <h5 className="my-auto">
-                                {this.state.selectedHeroName}
-                            </h5>
+                            <div className="d-flex mt-3">
+                                <h5 className="my-auto px-3">
+                                    {this.props.selectedHeroName}
+                                </h5>
+                                <SelectHero onSelectHero={this.onHeroSelected}/>
+                            </div>
                         </Col>
                         {/* Small Stats */}
                         <Col md={3}>
                             <Attributes 
-                                baseStrength={this.state.selectedHero.AttributeBaseStrength}
-                                strengthGain={this.state.selectedHero.AttributeStrengthGain}
-                                baseAgility={this.state.selectedHero.AttributeBaseAgility}
-                                agilityGain={this.state.selectedHero.AttributeAgilityGain}
-                                baseIntelligence={this.state.selectedHero.AttributeBaseIntelligence}
-                                intelligenceGain={this.state.selectedHero.AttributeIntelligenceGain}
-                                primaryAttribute={this.state.selectedHero.AttributePrimary} />
+                                baseStrength={this.props.selectedHero.AttributeBaseStrength}
+                                strengthGain={this.props.selectedHero.AttributeStrengthGain}
+                                baseAgility={this.props.selectedHero.AttributeBaseAgility}
+                                agilityGain={this.props.selectedHero.AttributeAgilityGain}
+                                baseIntelligence={this.props.selectedHero.AttributeBaseIntelligence}
+                                intelligenceGain={this.props.selectedHero.AttributeIntelligenceGain}
+                                primaryAttribute={this.props.selectedHero.AttributePrimary} />
                         </Col>
                         {/* Final Attack/Defence Stats */}
                         <Col md={5}>
-                            <Statistics hero={this.state.selectedHero} />
+                            <Statistics hero={this.props.selectedHero} />
                         </Col>
                     </Row>
 
@@ -105,18 +103,17 @@ class Calculator extends Component {
                     </Row>
 
                     {/* Abilities */}
-                    <Abilities abilities={[
-                        // { name: "zuus_arc_lightning", data: DOTAAbilities.zuus_arc_lightning },
-                        // { name: "zuus_lightning_bolt", data: DOTAAbilities.zuus_lightning_bolt },
-                        // { name: "zuus_cloud", data: DOTAAbilities.zuus_cloud },
-                        // { name: "zuus_thundergods_wrath", data: DOTAAbilities.zuus_thundergods_wrath },
-                        this.state.selectedHero.Ability1, this.state.selectedHero.Ability2, this.state.selectedHero.Ability3, this.state.selectedHero.Ability4,
-                        this.state.selectedHero.Ability5, this.state.selectedHero.Ability6, this.state.selectedHero.Ability7
-                    ]} />
+                    <Abilities abilities={this.props.selectedHeroAbilities} />
                 </Container>
             </div>
         );
     }
 }
 
-export default Calculator;
+const mapStateToProps = (state) => ({
+    selectedHero: state.selectedHero,
+    selectedHeroName: state.selectedHeroName,
+    selectedHeroAbilities: state.selectedHeroAbilities,
+});
+
+export default connect(mapStateToProps)(Calculator);

@@ -43,13 +43,7 @@ class Abilities extends Component {
     constructor(props) {
         super(props);
         
-        // Remove any undefined, hidden abilities
-        var abils = props.abilities;
-        if (props.abilities) {
-            abils = props.abilities.filter(function (val) {
-                return val && val !== "generic_hidden";
-            });
-        }
+        var abils = this.filterAbilities(props.abilities);
 
         this.state = {
             abilities: abils,
@@ -63,6 +57,26 @@ class Abilities extends Component {
         };
         
         this.onLevelChanged = this.onLevelChanged.bind(this);
+        this.filterAbilities = this.filterAbilities.bind(this);
+    }
+
+    componentDidUpdate(prevProps) {
+        //console.log("ABILITIES UPDATED");
+        //console.log(this.props.abilities);
+
+        //Update if previous props have changed
+        if (prevProps.abilities != this.props.abilities) {
+            this.setState({
+                abilities: this.filterAbilities(this.props.abilities),
+            });
+        }
+    }
+    
+    // Remove any undefined, hidden abilities
+    filterAbilities(abils) {
+        return abils.filter(function (val) {
+            return val && val !== "generic_hidden";
+        });
     }
 
     onLevelChanged(e) {
@@ -92,7 +106,7 @@ class Abilities extends Component {
                         var ability = DOTAAbilities[value];
                         // Current level of the ability
                         var levelInfo = this.state.abilityLevels.find(abilVal => abilVal.ability == index);
-                        console.log(levelInfo);
+                        //console.log(levelInfo);
                         if (!ability && value) {
                             return <div key={value}>?</div>
                         }

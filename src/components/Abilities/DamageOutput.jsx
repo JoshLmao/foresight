@@ -7,7 +7,7 @@ function getDmgValue(dmgValues, index) {
 
 function getAbilityDmg(index, level, abilityInfo) {
 
-    console.log("updating " + index + " at level " + level);
+    //console.log("updating " + index + " at level " + level);
 
     var dmgVals = abilityInfo.AbilityDamage;
     if(dmgVals) {
