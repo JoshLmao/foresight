@@ -3,12 +3,11 @@ import {
     Container,
     Row,
     Col,
-    Button
 } from 'react-bootstrap';
 import { connect } from "react-redux";
 
 import Abilities from "../Abilities";
-import Items from "../Items";
+import ItemsBar from "../ItemsBar";
 import Attributes from "../Attributes";
 import Statistics from "../Statistics";
 import ChangeHeroBtn from "../ChangeHeroBtn";
@@ -84,18 +83,7 @@ class Calculator extends Component {
                     {/* Items/Talent */}
                     <Row className="items-row my-5">
                         <Col md={9}>
-                            <Items items={[
-                                { slot: 0, item: "abyssal_blade" },
-                                { slot: 1, item: "black_king_bar" },
-                                { slot: 2, item: "manta" },
-                                { slot: 3, item: "tranquil_boots" },
-                                { slot: 4, item: "none" },
-                                { slot: 5, item: "spirit_vessel" },
-                            ]} backpack={[
-                                { slot: 0, item: "none" },
-                                { slot: 2, item: "none" },
-                                { slot: 3, item: "orb_of_venom" },
-                            ]} neutral={{ slot: 0, item: "orb_of_destruction" }} />
+                            <ItemsBar items={this.props.items} backpack={this.props.backpack} neutral={this.props.neutralItem} />
                         </Col>
                         <Col md={3}>
                             <TalentTree />
@@ -114,6 +102,9 @@ const mapStateToProps = (state) => ({
     selectedHero: state.selectedHero,
     selectedHeroName: state.selectedHeroName,
     selectedHeroAbilities: state.selectedHeroAbilities,
+    items: state.items,
+    backpack: state.backpack,
+    neutralItem: state.neutralItem,
 });
 
 export default connect(mapStateToProps)(Calculator);

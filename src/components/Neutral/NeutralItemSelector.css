@@ -1,0 +1,9 @@
+.neutral-item-card {
+    font-size: 0.75rem;
+    color: black;   
+}
+
+.neutral-item-card .header {
+    height: 50px;
+    border-bottom: 1px solid grey;
+}

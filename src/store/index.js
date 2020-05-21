@@ -16,10 +16,23 @@ const initialState = {
     selectedHero: DOTAHeroes.npc_dota_hero_zuus,
     selectedHeroName: parseName(DOTAHeroes.npc_dota_hero_zuus.Model),
     selectedHeroAbilities: getHeroAbilities(DOTAHeroes.npc_dota_hero_zuus),
+    items: [
+        { slot: 0, item: "abyssal_blade" },
+        { slot: 1, item: "" },
+        { slot: 2, item: "" },
+        { slot: 3, item: "" },
+        { slot: 4, item: "" },
+        { slot: 5, item: "" },
+    ],
+    backpack: [
+        { slot: 0, item: "" },
+        { slot: 1, item: "" },
+        { slot: 2, item: "" },
+    ],
+    neutralItem: { item: "orb_of_destruction" },
 };
 
 function reducer(state = initialState, action) {
-    console.log(action.value);
     switch(action.type)
     {
         case "SELECTEDHERO":

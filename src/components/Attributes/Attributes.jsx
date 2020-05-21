@@ -39,7 +39,7 @@ class Attributes extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.baseStrength != this.props.baseStrength || prevProps.baseAgility != this.props.baseAgility || prevProps.baseIntelligence != this.props.baseIntelligence) {
+        if (prevProps.baseStrength !== this.props.baseStrength || prevProps.baseAgility !== this.props.baseAgility || prevProps.baseIntelligence !== this.props.baseIntelligence) {
             this.setState({
                 primaryAttribute: this.props.primaryAttribute,
 

@@ -65,7 +65,7 @@ class Abilities extends Component {
         //console.log(this.props.abilities);
 
         //Update if previous props have changed
-        if (prevProps.abilities != this.props.abilities) {
+        if (prevProps.abilities !== this.props.abilities) {
             this.setState({
                 abilities: this.filterAbilities(this.props.abilities),
             });
@@ -83,7 +83,7 @@ class Abilities extends Component {
         //console.log(e);
 
         // If click on inner element
-        if (e.target.tagName.toLowerCase() != "button") {
+        if (e.target.tagName.toLowerCase() !== "button") {
             e.target = e.target.parentElement;
         }
 
@@ -105,7 +105,7 @@ class Abilities extends Component {
                         // Info about the ability
                         var ability = DOTAAbilities[value];
                         // Current level of the ability
-                        var levelInfo = this.state.abilityLevels.find(abilVal => abilVal.ability == index);
+                        var levelInfo = this.state.abilityLevels.find(abilVal => abilVal.ability === index);
                         //console.log(levelInfo);
                         if (!ability && value) {
                             return <div key={value}>?</div>

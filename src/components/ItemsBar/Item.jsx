@@ -22,10 +22,10 @@ class Item extends Component {
 
     getItemIcon(item, width, height, scale) {
         // Width and height of each item in item_stylesheet
-        if (item === "none") {
-            return <span style={{ backgroundColor: "#212121", width: width, height: height, transform: `scale(${scale}, ${scale})`, display: "block", transformOrigin: "top left" }} />
-        } else {
+        if (item) {
             return <span className={ 'sprite sprite-' + item + '_png '} alt={item} style={{ transform: `scale(${scale}, ${scale})`, transformOrigin: "top left" }} />
+        } else {
+            return <span style={{ backgroundColor: "#212121", width: width, height: height, transform: `scale(${scale}, ${scale})`, display: "block", transformOrigin: "top left" }} />
         }
     }
 

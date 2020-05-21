@@ -15,7 +15,6 @@ function getItemsByQuality(itemsArray, matchArray) {
     return itemsArray.filter((itemInfo) => {
         var quality = itemInfo.item.ItemQuality;
         if (quality) { //(quality === "consumable" || quality === "component" || quality === "secret_shop")) {
-
             for(var i = 0; i < matchArray.length; i++) {
                 if (quality === matchArray[i]) {
                     return itemInfo;
@@ -32,10 +31,10 @@ function getItemIcon(item, width, height, scale) {
     item = item.join('_');
 
     // Width and height of each item in item_stylesheet
-    if (item === "none") {
-        return <span style={{ backgroundColor: "#212121", width: width, height: height, transform: `scale(${scale}, ${scale})`, display: "block", transformOrigin: "top left" }} />
-    } else {
+    if (item) {
         return <span className={ 'sprite sprite-' + item + '_png '} alt={item} data-item={item} style={{ transform: `scale(${scale}, ${scale})`, transformOrigin: "top left" }} />
+    } else {
+        return <span style={{ backgroundColor: "#212121", width: width, height: height, transform: `scale(${scale}, ${scale})`, display: "block", transformOrigin: "top left" }} />
     }
 }
 
@@ -94,8 +93,8 @@ class ItemSelector extends Component {
                 <div className="item-card header d-flex">
                     <h5 className="my-auto">CHOOSE AN ITEM</h5>
                     <div className="ml-auto">
-                        <Button data-item="none" variant="outline-danger" onClick={this.state.onSelectedItem}>
-                            <FontAwesomeIcon icon={faMinus} data-item="none" />
+                        <Button data-item={null} variant="outline-danger" onClick={this.state.onSelectedItem}>
+                            <FontAwesomeIcon icon={faMinus} data-item={null} />
                         </Button>
                     </div>
                 </div>

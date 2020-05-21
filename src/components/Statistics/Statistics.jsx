@@ -88,7 +88,7 @@ class Statistics extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.hero != this.props.hero) {
+        if (prevProps.hero !== this.props.hero) {
             this.setState({
                 hero: this.props.hero,
             });
@@ -100,21 +100,21 @@ class Statistics extends Component {
             <Row>
                 <Col md={6}>
                     <StatArray title="ATTACK" stats={[
-                        { name: "attack speed", value: 111 },
+                        { name: "attack speed", value: -1 },
                         { name: "damage", value: `${parse(this.state.hero.AttackDamageMin) + determinePrimaryAttribute(this.state.hero)} - ${parse(this.state.hero.AttackDamageMax) + determinePrimaryAttribute(this.state.hero)}` },
                         { name: "attack range", value: parse(this.state.hero.AttackRange) },
                         { name: "move speed", value: parse(this.state.hero.MovementSpeed) },
-                        { name: "spell amp", value: 0 },
+                        { name: "spell amp", value: -1 },
                         { name: "mana regen", value: calculateManaRegen(this.state.hero.AttributeBaseIntelligence, this.state.level, this.state.hero.StatusManaRegen) },
                     ]} />
                 </Col>
                 <Col md={6}>
                     <StatArray title="DEFENCE" stats={[
                         { name: "armor", value: calcMainArmor(this.state.hero.ArmorPhysical, this.state.hero.AttributeBaseAgility, this.state.hero.AttributeAgilityGain, this.state.level) },
-                        { name: "physical resist", value: 25 },
+                        { name: "physical resist", value: -1 },
                         { name: "magic resist", value: parse(BASE_HERO.MagicalResistance) },
-                        { name: "status resist", value: 0 },
-                        { name: "evasion", value: 0 },
+                        { name: "status resist", value: -1 },
+                        { name: "evasion", value: -1 },
                         { name: "health regen", value: calculateHealthRegen(this.state.hero.AttributeBaseStrength, this.state.level, this.state.hero.StatusHealthRegen) },
                     ]}/>
                 </Col>
