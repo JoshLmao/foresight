@@ -6,6 +6,10 @@ import {
 } from 'react-bootstrap';
 import { connect } from "react-redux";
 
+import {
+    SELECTED_HERO
+} from "../../constants/actionTypes";
+
 import Abilities from "../Abilities";
 import ItemsBar from "../ItemsBar";
 import Attributes from "../Attributes";
@@ -41,7 +45,7 @@ class Calculator extends Component {
         var targetHero = DOTAHeroes[heroName];
         console.log("Hero Selected " + heroName);
 
-        this.props.dispatch({ type: "SELECTEDHERO", value: targetHero });
+        this.props.dispatch({ type: SELECTED_HERO, value: targetHero });
     }
 
     render() {

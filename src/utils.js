@@ -42,3 +42,16 @@ export function itemNameToElement (itemInfo, scale) {
         );
     }
 }
+
+/// Parses a display name from a hero info Model string
+export function parseNameFromModel (modelString) {
+    var dashSplit = modelString.split('.')[0].split('/');
+    return dashSplit[dashSplit.length - 1];
+};
+
+/// Gets all hero abilities from a hero info
+export function getAllHeroAbilities (heroInfo) {
+    return [
+        heroInfo.Ability1, heroInfo.Ability2, heroInfo.Ability3, heroInfo.Ability4, heroInfo.Ability5, heroInfo.Ability6, heroInfo.Ability7,
+    ];
+}

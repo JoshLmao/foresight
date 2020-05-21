@@ -1,0 +1,3 @@
+export const SELECTED_HERO = "SELECT_HERO";
+export const SELECTED_NEUTRAL = "SELECTED_NEUTRAL";
+export const SELECTED_ITEM = "SELECTED_ITEM";
