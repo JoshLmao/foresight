@@ -4,6 +4,8 @@ import {
     Col
 } from "react-bootstrap";
 
+import Item from "./Item";
+
 class Items extends Component {
     constructor(props) {
         super(props);
@@ -43,16 +45,12 @@ class Items extends Component {
                     <Col md={itemsColWidth} className="d-flex">
                         {
                             this.state.items && this.state.items.map((value) => {
-                                var scale = 0.7;
-                                var width = "88px";
-                                var height = "64px";
                                 return (
-                                <div
-                                    key={value.slot}
-                                    className="mx-1" 
-                                    style={{ width: `calc(88px * ${scale})`, height: `calc(64px * ${scale})` }}>
-                                    { this.getItemIcon(value, width, height, 0.7) }
-                                </div>)
+                                    <Item 
+                                        key={value.slot}
+                                        slot={value.slot}
+                                        item={value.item} />
+                                )
                             })
                         }
                     </Col>
@@ -63,12 +61,10 @@ class Items extends Component {
                                     var width = "88px";
                                     var height = "64px";
                                     return (
-                                        <div 
+                                        <Item
                                             key={value.slot}
-                                            className="mx-1" 
-                                            style={{ width: `calc(88px * ${scale})`, height: `calc(64px * ${scale})` }}>
-                                            { this.getItemIcon(value, width, height, scale) }
-                                        </div>
+                                            slot={value.slot}
+                                            item={value.item} />
                                     )
                                 })
                             }

@@ -1,19 +1,18 @@
 import React, { Component } from 'react';
 import {
-    Button,
-    Form
+    Button
 } from "react-bootstrap";
 import Popup from "reactjs-popup";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPencilAlt, faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 
 import HeroSelector from "./HeroSelector";
 
 import { DOTAHeroes } from "../../data/dota2/json/npc_heroes.json";
 
-import "./SelectHero.css";
+import "./ChangeHeroBtn.css";
 
-class SelectHero extends Component {
+class ChangeHeroBtn extends Component {
     constructor(props){
         super(props);
 
@@ -82,4 +81,4 @@ class SelectHero extends Component {
     }
 }
 
-export default SelectHero;
+export default ChangeHeroBtn;

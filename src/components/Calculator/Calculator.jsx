@@ -11,7 +11,7 @@ import Abilities from "../Abilities";
 import Items from "../Items";
 import Attributes from "../Attributes";
 import Statistics from "../Statistics";
-import SelectHero from "../SelectHero";
+import ChangeHeroBtn from "../ChangeHeroBtn";
 
 /* DotA 2 Import Data */
 import { DOTAHeroes } from "../../data/dota2/json/npc_heroes.json";
@@ -61,7 +61,7 @@ class Calculator extends Component {
                                 <h5 className="my-auto px-3">
                                     {this.props.selectedHeroName}
                                 </h5>
-                                <SelectHero onSelectHero={this.onHeroSelected}/>
+                                <ChangeHeroBtn onSelectHero={this.onHeroSelected}/>
                             </div>
                         </Col>
                         {/* Small Stats */}

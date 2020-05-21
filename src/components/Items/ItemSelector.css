@@ -1,0 +1,13 @@
+.item-card {
+    font-size: 0.75rem;
+    color: black;
+}
+
+.item-card .header {
+    height: 50px;
+    border-bottom: 1px solid grey;
+}
+
+/* .item-card .content {
+    
+} */

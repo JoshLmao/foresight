@@ -31,8 +31,8 @@ class HeroSelector extends Component {
     render() {
         var iconScale = 0.5;
         return (
-            <div className="card">
-                <div className="header d-flex">
+            <div className="hero-card">
+                <div className="hero-card header d-flex">
                     <h5 className="my-auto ml-2">CHOOSE A HERO</h5>
                     <div className="ml-auto p-1">
                         <Form.Control type="text" placeholder="" onChange={this.onSearchChanged} />
