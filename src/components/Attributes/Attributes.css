@@ -1,0 +1,14 @@
+:root {
+    --border-width: 3px;
+}
+
+.primary-attribute {
+    border: var(--border-width) solid red;
+    border-radius:50%;
+    -moz-border-radius:50%;
+    -webkit-border-radius:50%;
+
+    /*Original atrribute size is 32px, add border width on both sides*/
+    width: calc(32px + (var(--border-width) * 2));
+    height: calc(32px + (var(--border-width) * 2));
+}

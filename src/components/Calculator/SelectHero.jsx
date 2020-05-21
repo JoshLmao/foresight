@@ -51,11 +51,14 @@ class SelectHero extends Component {
                     trigger={<Button onClick={this.onToggleHeroSelect}><FontAwesomeIcon icon={faPencilAlt} /></Button>} 
                     position="bottom center"
                     contentStyle={{ overflowY: "auto", overflowX: "hidden", height: "450px" }}>
-                    {
-                        this.state.heroes && this.state.heroes.map((value) => {
-                            return <Button className="p-0" variant="outline-secondary" key={value} data-hero={value} onClick={this.onSelectHero}>{value}</Button>
-                        })
-                    }
+                    <div>
+                        {
+                            this.state.heroes && this.state.heroes.map((value) => {
+                                return <Button className="p-0" variant="outline-secondary" key={value} data-hero={value} onClick={this.onSelectHero}>{value}</Button>
+                            })
+                        }
+                    </div>
+                    
                 </Popup>
             </div>
         );
