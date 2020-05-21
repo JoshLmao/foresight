@@ -11,7 +11,7 @@ import Abilities from "../Abilities";
 import Items from "../Items";
 import Attributes from "../Attributes";
 import Statistics from "../Statistics";
-import SelectHero from "./SelectHero";
+import SelectHero from "../SelectHero";
 
 /* DotA 2 Import Data */
 import { DOTAHeroes } from "../../data/dota2/json/npc_heroes.json";

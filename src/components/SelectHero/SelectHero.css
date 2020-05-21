@@ -1,0 +1,11 @@
+.card {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.card .header {
+    height: 50px;
+    font-size: 14px;
+    border-bottom: 1px solid grey;
+}
