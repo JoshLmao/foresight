@@ -16,7 +16,30 @@ class ItemsBar extends Component {
             backpack: props.backpack,
             neutral: props.neutral,
             iconScale: 0.7,
+
+            onNeutralChanged: props.onNeutralChanged,
         };
+    }
+
+    componentDidUpdate(prevProps) {
+        //Update if previous props have changed
+        if (prevProps.items !== this.props.items) {
+            this.setState({
+                items: this.props.items,
+            });
+        }
+
+        if (prevProps.backpack !== this.props.backpack) {
+            this.setState({
+                backpack: this.props.backpack,
+            });
+        }
+
+        if (prevProps.neutral !== this.props.neutral) {
+            this.setState({
+                neutral: this.props.neutral,
+            });
+        }
     }
 
     render() {
@@ -58,7 +81,7 @@ class ItemsBar extends Component {
                         }
                         {/* Neutral Item */}
                         <div className="ml-3">
-                            <Neutral neutralItem={this.state.neutral} />
+                            <Neutral neutralItem={this.state.neutral} onNewNeutralSelected={this.state.onNeutralChanged} />
                         </div>
                     </Col>
                 </Row>

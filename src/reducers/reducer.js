@@ -41,9 +41,12 @@ function reducer(state = initialState, action) {
                 selectedHeroAbilities: getAllHeroAbilities(action.value),
             };
         case SELECTED_ITEM: 
-            return state;
+            return {
+                ...state,
+            };
         case SELECTED_NEUTRAL:
             return {
+                ...state,
                 neutralItem: action.value,
             };
         default:

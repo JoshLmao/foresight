@@ -61,9 +61,6 @@ class Abilities extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        //console.log("ABILITIES UPDATED");
-        //console.log(this.props.abilities);
-
         //Update if previous props have changed
         if (prevProps.abilities !== this.props.abilities) {
             this.setState({

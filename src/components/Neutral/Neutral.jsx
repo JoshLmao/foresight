@@ -12,17 +12,16 @@ class Neutral extends Component {
         this.state = {
             neutralItem: props.neutralItem,
             iconScale: 0.7,
+            onNewNeutralSelected: props.onNewNeutralSelected,
         };
-
-        this.onNeutralSelected = this.onNeutralSelected.bind(this);
     }
 
-    onNeutralSelected(e) {
-        var neutral = e.target.parentElement.parentElement.dataset.neutral;
-
-        this.setState({
-            neutralItem: { item: neutral },
-        });
+    componentDidUpdate (prevProps) {
+        if (prevProps !== this.props) {
+            this.setState({
+                neutralItem: this.props.neutralItem,
+            });
+        }
     }
 
     render() {
@@ -34,7 +33,7 @@ class Neutral extends Component {
                     }}
                     position="right center"
                     contentStyle={{ width: "325px", overflowY: "auto" }}>
-                    <NeutralItemSelector onNeutralSelected={this.onNeutralSelected} />
+                    <NeutralItemSelector onNeutralSelected={this.state.onNewNeutralSelected} />
                 </Popup>
             </div>
         );

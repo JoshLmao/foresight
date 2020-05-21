@@ -7,7 +7,9 @@ import {
 import { connect } from "react-redux";
 
 import {
-    SELECTED_HERO
+    SELECTED_HERO,
+    SELECTED_ITEM,
+    SELECTED_NEUTRAL
 } from "../../constants/actionTypes";
 
 import Abilities from "../Abilities";
@@ -39,6 +41,8 @@ class Calculator extends Component {
         super(props);
 
         this.onHeroSelected = this.onHeroSelected.bind(this);
+        this.onItemSelected = this.onItemSelected.bind(this);
+        this.onNeutralSelected = this.onNeutralSelected.bind(this);
     }
 
     onHeroSelected(heroName) {
@@ -46,6 +50,14 @@ class Calculator extends Component {
         console.log("Hero Selected " + heroName);
 
         this.props.dispatch({ type: SELECTED_HERO, value: targetHero });
+    }
+
+    onItemSelected (e) {
+        this.props.dispatch({ type: SELECTED_ITEM, value: { slot: 0, item: "" }});
+    }
+
+    onNeutralSelected(neutralItem) {
+        this.props.dispatch({ type: SELECTED_NEUTRAL, value: neutralItem });
     }
 
     render() {
@@ -87,7 +99,12 @@ class Calculator extends Component {
                     {/* Items/Talent */}
                     <Row className="items-row my-5">
                         <Col md={9}>
-                            <ItemsBar items={this.props.items} backpack={this.props.backpack} neutral={this.props.neutralItem} />
+                            <ItemsBar
+                                items={this.props.items} 
+                                backpack={this.props.backpack} 
+                                neutral={this.props.neutralItem} 
+                                onItemChanged={this.onItemSelected}
+                                onNeutralChanged={this.onNeutralSelected} />
                         </Col>
                         <Col md={3}>
                             <TalentTree />

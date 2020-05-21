@@ -121,7 +121,7 @@ class ItemSelector extends Component {
                                     this.state.upgradesItems && this.state.upgradesItems.map((item) => {
                                         return (
                                             <ItemFromInfo 
-                                                keyName={item.item.ID}
+                                                key={item.item.ID}
                                                 item={item}
                                                 onClick={this.state.onSelectedItem} 
                                                 scale={scale} />

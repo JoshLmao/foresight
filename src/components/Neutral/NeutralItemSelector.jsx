@@ -47,8 +47,15 @@ class NeutralItemSelector extends Component {
         this.state = {
             allNeutrals: selectableNeutrals,
             iconScale: 0.5,
-            onNeutralSelected: props.onNeutralSelected,
+            onNewNeutralSelected: props.onNeutralSelected,
         };
+
+        this.onNeutralSelected = this.onNeutralSelected.bind(this);
+    }
+
+    onNeutralSelected(e) {
+        var neutral = e.target.parentElement.parentElement.dataset.neutral;
+        this.state.onNewNeutralSelected({ item: neutral });
     }
 
     render() {
@@ -56,7 +63,7 @@ class NeutralItemSelector extends Component {
             <div className="neutral-item-card" style={{ color: "black" }}>
                 <div className="neutral-item-card header d-flex">
                     <h5 className="my-auto">NEUTRAL ITEMS</h5>
-                    <Button className="ml-auto" variant="outline-danger" onClick={this.state.onNeutralSelected} data-neutral={null}>
+                    <Button className="ml-auto" variant="outline-danger" onClick={this.onNeutralSelected} data-neutral={null}>
                         <FontAwesomeIcon icon={faMinus} data-neutral={null} />
                     </Button>
                 </div>
@@ -68,7 +75,7 @@ class NeutralItemSelector extends Component {
                                     <div 
                                         className="m-1" 
                                         key={itemInfo.item} 
-                                        onClick={this.props.onNeutralSelected} 
+                                        onClick={this.onNeutralSelected} 
                                         title={itemInfo.item}
                                         data-neutral={itemInfo.item}>
                                         { itemNameToElement(itemInfo, this.state.iconScale) }
