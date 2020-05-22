@@ -7,7 +7,10 @@ function getDmgValue(dmgValues, index) {
 
 function getAbilityDmg(index, level, abilityInfo) {
 
-    //console.log("updating " + index + " at level " + level);
+    if (!level || !abilityInfo) {
+        debugger;
+        return "?";
+    }
 
     var dmgVals = abilityInfo.AbilityDamage;
     if(dmgVals) {
@@ -50,14 +53,14 @@ class DamageOutput extends Component {
 
         this.state = {
             abilityInfo: props.abilityInfo,
-            level: props.levelInfo,
+            levelInfo: props.levelInfo,
         };
     }
 
     render() {
         return (
             <h6>
-                { getAbilityDmg(this.state.level.ability, this.state.level.level, this.state.abilityInfo) }
+                { getAbilityDmg(this.state.levelInfo?.ability, this.state.levelInfo?.level, this.state.abilityInfo) }
             </h6>
         );
     }

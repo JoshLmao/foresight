@@ -125,7 +125,7 @@ class Calculator extends Component {
                     </Row>
 
                     {/* Abilities */}
-                    <Abilities abilities={this.props.selectedHeroAbilities} />
+                    <Abilities abilities={this.props.heroAbilities} />
                 </Container>
             </div>
         );
@@ -135,7 +135,7 @@ class Calculator extends Component {
 const mapStateToProps = (state) => ({
     selectedHero: state.selectedHero,
     selectedHeroName: state.selectedHeroName,
-    selectedHeroAbilities: state.selectedHeroAbilities,
+    heroAbilities: state.heroAbilities,
     selectedTalents: state.selectedTalents,
     
     items: state.items,

@@ -39,21 +39,26 @@ function getAbilityLevel (levelInfo, abilityIndex, abilityInfo, onLevelChanged) 
     }
 }
 
+function getLevelInfo (abilities) {
+    if (abilities) {
+        return abilities.map((abil, index) => {
+            return { ability: index, level: 1 };
+        });
+    }
+    return [ ];
+}
+
 class Abilities extends Component {
     constructor(props) {
         super(props);
         
         var abils = this.filterAbilities(props.abilities);
+        var abilLevels = getLevelInfo(abils);
+        debugger;
 
         this.state = {
             abilities: abils,
-            abilityLevels: [
-                { ability: 0, level: 1 },
-                { ability: 1, level: 2 },
-                { ability: 2, level: 3 },
-                { ability: 3, level: 1 },
-                { ability: 4, level: 2 },
-            ]
+            abilityLevels: abilLevels,
         };
         
         this.onLevelChanged = this.onLevelChanged.bind(this);
@@ -63,8 +68,10 @@ class Abilities extends Component {
     componentDidUpdate(prevProps) {
         //Update if previous props have changed
         if (prevProps.abilities !== this.props.abilities) {
+            var abils = this.filterAbilities(this.props.abilities);
             this.setState({
-                abilities: this.filterAbilities(this.props.abilities),
+                abilities: abils,
+                abilityLevels: getLevelInfo(abils),
             });
         }
     }
@@ -77,8 +84,6 @@ class Abilities extends Component {
     }
 
     onLevelChanged(e) {
-        //console.log(e);
-
         // If click on inner element
         if (e.target.tagName.toLowerCase() !== "button") {
             e.target = e.target.parentElement;
@@ -101,8 +106,15 @@ class Abilities extends Component {
                     this.state.abilities && this.state.abilities.map((value, index) => {
                         // Info about the ability
                         var ability = DOTAAbilities[value];
+                        if (!ability) {
+                            debugger;
+                        }
                         // Current level of the ability
                         var levelInfo = this.state.abilityLevels.find(abilVal => abilVal.ability === index);
+                        if (!levelInfo) {
+                            debugger;
+                        }
+
                         //console.log(levelInfo);
                         if (!ability && value) {
                             return <div key={value}>?</div>

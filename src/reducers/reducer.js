@@ -43,7 +43,7 @@ const initialState = {
     /// display name of the selectedHero
     selectedHeroName: parseNameFromModel(DOTAHeroes.npc_dota_hero_zuus.Model),
     /// Array of abilities of the selectedHero
-    selectedHeroAbilities: getAllHeroAbilities(DOTAHeroes.npc_dota_hero_zuus),
+    heroAbilities: getAllHeroAbilities(DOTAHeroes.npc_dota_hero_zuus),
     /// Array of talents of the selectedHero
     heroTalents: getHeroTalents(DOTAHeroes.npc_dota_hero_zuus),
     /// Array of talents selected by the user
@@ -76,11 +76,11 @@ function reducer(state = initialState, action) {
                 ...state,
                 selectedHero: action.value,
                 selectedHeroName: parseNameFromModel(action.value.Model),
-                selectedHeroAbilities: getAllHeroAbilities(action.value),
+                heroAbilities: getAllHeroAbilities(action.value),
                 heroTalents: getHeroTalents(action.value),
                 
                 // reset selected talents when new hero selected
-                selectedTalents: null,
+                selectedTalents: [ ],
             };
         case SELECTED_ITEM:
             return {
