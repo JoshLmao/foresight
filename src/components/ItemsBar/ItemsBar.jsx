@@ -18,6 +18,7 @@ class ItemsBar extends Component {
             iconScale: 0.7,
 
             onNeutralChanged: props.onNeutralChanged,
+            onItemChanged: props.onItemChanged,
         };
     }
 
@@ -36,6 +37,7 @@ class ItemsBar extends Component {
         }
 
         if (prevProps.neutral !== this.props.neutral) {
+            debugger;
             this.setState({
                 neutral: this.props.neutral,
             });
@@ -63,7 +65,8 @@ class ItemsBar extends Component {
                                     <Item 
                                         key={value.slot}
                                         slot={value.slot}
-                                        item={value.item} />
+                                        item={value.item} 
+                                        onItemChanged={this.state.onItemChanged} />
                                 )
                             })
                         }
@@ -75,7 +78,10 @@ class ItemsBar extends Component {
                                     <Item
                                         key={value.slot}
                                         slot={value.slot}
-                                        item={value.item} />
+                                        item={value.item}
+
+                                        isBackpack={true}
+                                        onItemChanged={this.state.onItemChanged} />
                                 )
                             })
                         }

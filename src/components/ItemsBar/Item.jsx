@@ -13,6 +13,9 @@ class Item extends Component {
         this.state = {
             item: props.item,
             slot: props.slot,
+            isBackpack: props.isBackpack,
+
+            onItemChanged: props.onItemChanged,
         };
 
         //console.log(`slot: ${this.state.slot} - item: ${this.state.item}`);
@@ -30,12 +33,30 @@ class Item extends Component {
     }
 
     onSelectedItem (e) {
-        console.log("ItemSelected: " + e.target.dataset.item);
         this.setState({
-            open: !this.state.open,
+            open: false,
+        });
+        
+        this.state.onItemChanged({ 
+            slot: this.state.slot, 
             item: e.target.dataset.item,
+            isBackpack: this.state.isBackpack ? true : false,
         });
     }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.item !== this.props.item) {
+            this.setState({ item: this.props.item, });
+        }
+
+        if (prevProps.slot !== this.props.slot) {
+            this.setState({ slot: this.props.slot });
+        }
+
+        if (prevProps.isBackpack !== this.props.isBackpack) {
+            this.setState({ isBackpack: this.props.isBackpack });
+        }
+    }   
 
     render() {
         var scale = 0.7;
@@ -45,10 +66,11 @@ class Item extends Component {
             <div>
                 <Popup
                     trigger={isOpen => (
-                        <div className="mx-1" style={{ width: `calc(88px * ${scale})`, height: `calc(64px * ${scale})` }}>
+                        <div className="mx-1" style={{ width: `calc(88px * ${scale})`, height: `calc(64px * ${scale})` }}  onClick={() => this.setState({ open: isOpen })}>
                             {  this.getItemIcon(this.state.item, width, height, 0.7) }
                         </div>
                     )}
+                    open={this.state.open}
                     position="right center"
                     contentStyle={{ width: "350px", height: "400px", overflowY: "auto" }}>
                         <ItemSelector onSelectedItem={this.onSelectedItem} />

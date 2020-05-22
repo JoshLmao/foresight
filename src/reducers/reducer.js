@@ -3,6 +3,7 @@ import { DOTAHeroes } from "../data/dota2/json/npc_heroes.json";
 import {
     SELECTED_HERO,
     SELECTED_ITEM,
+    SELECTED_BACKPACK_ITEM,
     SELECTED_NEUTRAL,
 } from "../constants/actionTypes";
 
@@ -10,6 +11,18 @@ import {
     parseNameFromModel,
     getAllHeroAbilities
 } from "../utils";
+
+function getNewItemArray(itemArray, newItem) {
+    /// Remove old slot insert new and sort by Slot
+    var newArray = itemArray.filter((val) => {
+        if (val.slot !== newItem.slot) {
+            return val;
+        }
+    })
+    newArray.push({ slot: newItem.slot, item: newItem.item });
+    newArray.sort((a, b) => (a.slot > b.slot) ? 1 : -1);
+    return newArray;
+}
 
 const initialState = {
     selectedHero: DOTAHeroes.npc_dota_hero_zuus,
@@ -36,14 +49,21 @@ function reducer(state = initialState, action) {
     {
         case SELECTED_HERO:
             return {
+                ...state,
                 selectedHero: action.value,
                 selectedHeroName: parseNameFromModel(action.value.Model),
                 selectedHeroAbilities: getAllHeroAbilities(action.value),
             };
-        case SELECTED_ITEM: 
+        case SELECTED_ITEM:
             return {
                 ...state,
+                items: getNewItemArray(state.items, action.value),
             };
+        case SELECTED_BACKPACK_ITEM:
+            return {
+                ...state,
+                backpack: getNewItemArray(state.backpack, action.value),
+            }
         case SELECTED_NEUTRAL:
             return {
                 ...state,

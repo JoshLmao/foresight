@@ -53,6 +53,12 @@ function ItemFromInfo(props) {
     );
 }
 
+function TabHeading(props) {
+    return (
+        <h6 className="px-3 mb-0">{props.text}</h6>
+    );
+}
+
 class ItemSelector extends Component {
     constructor(props) {
         super(props);
@@ -100,7 +106,7 @@ class ItemSelector extends Component {
                 </div>
                 <div className="item-card content">
                     <Tabs defaultActiveKey="basic" transition={false} id="shop-tabs">
-                        <Tab eventKey="basic" title="Basic">
+                        <Tab eventKey="basic" title={<TabHeading text="BASIC" />}>
                             <div className="d-flex flex-wrap">
                                 {
                                     this.state.basicItems && this.state.basicItems.map((item) => {
@@ -115,7 +121,7 @@ class ItemSelector extends Component {
                                 }
                             </div>
                         </Tab>
-                        <Tab eventKey="upgrades" title="Upgrades">
+                        <Tab eventKey="upgrades" title={<TabHeading text="UPGRADES" />}>
                             <div className="d-flex flex-wrap">
                                 {
                                     this.state.upgradesItems && this.state.upgradesItems.map((item) => {

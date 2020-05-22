@@ -9,7 +9,8 @@ import { connect } from "react-redux";
 import {
     SELECTED_HERO,
     SELECTED_ITEM,
-    SELECTED_NEUTRAL
+    SELECTED_NEUTRAL,
+    SELECTED_BACKPACK_ITEM,
 } from "../../constants/actionTypes";
 
 import Abilities from "../Abilities";
@@ -47,16 +48,26 @@ class Calculator extends Component {
 
     onHeroSelected(heroName) {
         var targetHero = DOTAHeroes[heroName];
-        console.log("Hero Selected " + heroName);
+        console.log(`${SELECTED_HERO}: ${heroName}`);
 
         this.props.dispatch({ type: SELECTED_HERO, value: targetHero });
     }
 
-    onItemSelected (e) {
-        this.props.dispatch({ type: SELECTED_ITEM, value: { slot: 0, item: "" }});
+    onItemSelected (item) {
+        if (item.isBackpack) 
+        {
+            console.log(`${SELECTED_BACKPACK_ITEM}: Slot: ${item.slot} Item: ${item.item}`);
+            this.props.dispatch({ type: SELECTED_BACKPACK_ITEM, value: item });
+        }
+        else
+        {
+            console.log(`${SELECTED_ITEM}: Slot: ${item.slot} Item: ${item.item}`);
+            this.props.dispatch({ type: SELECTED_ITEM, value: item });
+        }
     }
 
     onNeutralSelected(neutralItem) {
+        console.log(`${SELECTED_NEUTRAL}: ${neutralItem.item}`);
         this.props.dispatch({ type: SELECTED_NEUTRAL, value: neutralItem });
     }
 
