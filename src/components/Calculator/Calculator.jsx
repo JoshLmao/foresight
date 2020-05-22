@@ -11,6 +11,7 @@ import {
     SELECTED_ITEM,
     SELECTED_NEUTRAL,
     SELECTED_BACKPACK_ITEM,
+    SELECTED_TALENT,
 } from "../../constants/actionTypes";
 
 import Abilities from "../Abilities";
@@ -18,6 +19,7 @@ import ItemsBar from "../ItemsBar";
 import Attributes from "../Attributes";
 import Statistics from "../Statistics";
 import ChangeHeroBtn from "../ChangeHeroBtn";
+import TalentTree from "../TalentTree";
 
 /* DotA 2 Import Data */
 import { DOTAHeroes } from "../../data/dota2/json/npc_heroes.json";
@@ -28,15 +30,6 @@ import "../../css/dota_items.css";
 import "../../css/dota_hero_icons_big.css";
 import "./Calculator.css";
 
-function TalentTree(props) {
-    return (
-        <div>
-            <h6>Talents</h6>
-            <img src="/images/dota2/talent.jpg" alt="talent tree" />
-        </div>
-    );
-}
-
 class Calculator extends Component {
     constructor(props) {
         super(props);
@@ -44,6 +37,7 @@ class Calculator extends Component {
         this.onHeroSelected = this.onHeroSelected.bind(this);
         this.onItemSelected = this.onItemSelected.bind(this);
         this.onNeutralSelected = this.onNeutralSelected.bind(this);
+        this.onTalentSelected = this.onTalentSelected.bind(this);
     }
 
     onHeroSelected(heroName) {
@@ -69,6 +63,11 @@ class Calculator extends Component {
     onNeutralSelected(neutralItem) {
         console.log(`${SELECTED_NEUTRAL}: ${neutralItem.item}`);
         this.props.dispatch({ type: SELECTED_NEUTRAL, value: neutralItem });
+    }
+
+    onTalentSelected (talent) {
+        console.log(`${SELECTED_TALENT}: ${talent.name}`);
+        this.props.dispatch({ type: SELECTED_TALENT, value: talent });
     }
 
     render() {
@@ -109,7 +108,7 @@ class Calculator extends Component {
 
                     {/* Items/Talent */}
                     <Row className="items-row my-5">
-                        <Col md={9}>
+                        <Col md={7}>
                             <ItemsBar
                                 items={this.props.items} 
                                 backpack={this.props.backpack} 
@@ -117,8 +116,11 @@ class Calculator extends Component {
                                 onItemChanged={this.onItemSelected}
                                 onNeutralChanged={this.onNeutralSelected} />
                         </Col>
-                        <Col md={3}>
-                            <TalentTree />
+                        <Col md={5}>
+                            <TalentTree
+                                talents={this.props.heroTalents} 
+                                selectedTalents={this.props.selectedTalents}
+                                onTalentSelected={this.onTalentSelected} />
                         </Col>
                     </Row>
 
@@ -134,9 +136,12 @@ const mapStateToProps = (state) => ({
     selectedHero: state.selectedHero,
     selectedHeroName: state.selectedHeroName,
     selectedHeroAbilities: state.selectedHeroAbilities,
+    selectedTalents: state.selectedTalents,
+    
     items: state.items,
     backpack: state.backpack,
     neutralItem: state.neutralItem,
+    heroTalents: state.heroTalents,
 });
 
 export default connect(mapStateToProps)(Calculator);

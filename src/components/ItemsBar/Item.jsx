@@ -66,7 +66,7 @@ class Item extends Component {
             <div>
                 <Popup
                     trigger={isOpen => (
-                        <div className="mx-1" style={{ width: `calc(88px * ${scale})`, height: `calc(64px * ${scale})` }}  onClick={() => this.setState({ open: isOpen })}>
+                        <div className="m-1" style={{ width: `calc(88px * ${scale})`, height: `calc(64px * ${scale})` }}  onClick={() => this.setState({ open: isOpen })}>
                             {  this.getItemIcon(this.state.item, width, height, 0.7) }
                         </div>
                     )}

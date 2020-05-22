@@ -5,11 +5,13 @@ import {
     SELECTED_ITEM,
     SELECTED_BACKPACK_ITEM,
     SELECTED_NEUTRAL,
+    SELECTED_TALENT,
 } from "../constants/actionTypes";
 
 import {
     parseNameFromModel,
-    getAllHeroAbilities
+    getAllHeroAbilities,
+    getHeroTalents,
 } from "../utils";
 
 function getNewItemArray(itemArray, newItem) {
@@ -24,10 +26,30 @@ function getNewItemArray(itemArray, newItem) {
     return newArray;
 }
 
+function getNewTalentArray(talentArray, newTalent) {
+    var newArray = talentArray.filter((val) => {
+        if (val.level !== newTalent.level) {
+            return val;
+        }
+    });
+    newArray.push(newTalent);
+    newArray.sort((a, b) => a.level < b.level ? 1 : -1);
+    return newArray;
+}
+
 const initialState = {
+    /// Current selected hero by the user
     selectedHero: DOTAHeroes.npc_dota_hero_zuus,
+    /// display name of the selectedHero
     selectedHeroName: parseNameFromModel(DOTAHeroes.npc_dota_hero_zuus.Model),
+    /// Array of abilities of the selectedHero
     selectedHeroAbilities: getAllHeroAbilities(DOTAHeroes.npc_dota_hero_zuus),
+    /// Array of talents of the selectedHero
+    heroTalents: getHeroTalents(DOTAHeroes.npc_dota_hero_zuus),
+    /// Array of talents selected by the user
+    selectedTalents: [ ],
+
+    /// Current items that have been selected
     items: [
         { slot: 0, item: "abyssal_blade" },
         { slot: 1, item: "" },
@@ -36,11 +58,13 @@ const initialState = {
         { slot: 4, item: "" },
         { slot: 5, item: "" },
     ],
+    /// Current backpack selected by user
     backpack: [
         { slot: 0, item: "" },
         { slot: 1, item: "" },
         { slot: 2, item: "" },
     ],
+    /// Current neutral item selected by user
     neutralItem: { item: "orb_of_destruction" },
 };
 
@@ -53,6 +77,10 @@ function reducer(state = initialState, action) {
                 selectedHero: action.value,
                 selectedHeroName: parseNameFromModel(action.value.Model),
                 selectedHeroAbilities: getAllHeroAbilities(action.value),
+                heroTalents: getHeroTalents(action.value),
+                
+                // reset selected talents when new hero selected
+                selectedTalents: null,
             };
         case SELECTED_ITEM:
             return {
@@ -69,6 +97,11 @@ function reducer(state = initialState, action) {
                 ...state,
                 neutralItem: action.value,
             };
+        case SELECTED_TALENT:
+            return {
+                ...state,
+               selectedTalents: getNewTalentArray(state.selectedTalents, action.value),
+            }
         default:
             return state;
     }

@@ -10,6 +10,7 @@ export function itemNameToElement (itemInfo, scale) {
         // Return item icon
         return (
             <div 
+                className="m-1"
                 style={{ 
                     width: `calc(${width} * ${scale})`, 
                     height: `calc(${height} * ${scale})`}}>
@@ -51,7 +52,51 @@ export function parseNameFromModel (modelString) {
 
 /// Gets all hero abilities from a hero info
 export function getAllHeroAbilities (heroInfo) {
-    return [
-        heroInfo.Ability1, heroInfo.Ability2, heroInfo.Ability3, heroInfo.Ability4, heroInfo.Ability5, heroInfo.Ability6, heroInfo.Ability7,
-    ];
+    var keys = Object.keys(heroInfo);
+    var abilities = [];
+    for(var i = 0; i < keys.length; i++) {
+        if (keys[i].includes("Ability") && !keys[i].includes("AbilityDraft")) {
+            var ability = heroInfo[keys[i]];
+            if (ability && !ability.includes("special_bonus") && ability !== "generic_hidden") {
+                abilities.push(ability);
+            }
+        }
+    }
+    return abilities;
+}
+
+/// Gets all hero talents from a hero info
+export function getHeroTalents (heroInfo) {
+    // Get simple array of all talents from npc_heroes.json
+    // All abilities are stored in npc_heroes.json as "Ability?", where ? is a number. 
+    // Not always in numberical order like 1, 2, 3
+
+    var keys = Object.keys(heroInfo);
+    var talents = [];
+    for(var i = 0; i < keys.length; i++) {
+        if (keys[i].includes("Ability") && !keys[i].includes("AbilityDraft")) {
+            var ability = heroInfo[keys[i]];
+            if (ability && ability.includes("special_bonus")) {
+                talents.push(ability);
+            }
+        }
+    }
+
+    // sort into nice list
+    var mappedTalents = [];
+    var lvlRow = 0;
+    for (i = 0 ; i < talents.length; i += 2) {
+        mappedTalents.push({
+            lvl: 10 + (5 * lvlRow),
+            rightTalent: talents[i],
+            leftTalent: talents[i + 1]
+        });
+
+        lvlRow++;
+    }
+
+    // Sort by lvl 25 talents first
+    mappedTalents.sort((a, b) => a.lvl < b.lvl ? 1 : -1);
+
+    return mappedTalents;
 }

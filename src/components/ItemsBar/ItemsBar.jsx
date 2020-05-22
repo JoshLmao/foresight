@@ -45,48 +45,50 @@ class ItemsBar extends Component {
     }
 
     render() {
-        var itemsColWidth = 6;
-        var backpackColWidth = 6;
+        var itemsColWidth = 5;
+        var backpackColWidth = 5;
+        var neutralColWidth = 2;
         return (
             <div>
                 <Row>
                     <Col md={itemsColWidth}>
                         <h6>ITEMS</h6>
+                        <div className="d-flex flex-wrap">
+                            {
+                                this.state.items && this.state.items.map((value) => {
+                                    return (
+                                        <Item 
+                                            key={value.slot}
+                                            slot={value.slot}
+                                            item={value.item} 
+                                            onItemChanged={this.state.onItemChanged} />
+                                    )
+                                })
+                            }
+                        </div>
                     </Col>
                     <Col md={backpackColWidth}>
                         <h6>BACKPACK</h6>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col md={itemsColWidth} className="d-flex">
-                        {
-                            this.state.items && this.state.items.map((value) => {
-                                return (
-                                    <Item 
-                                        key={value.slot}
-                                        slot={value.slot}
-                                        item={value.item} 
-                                        onItemChanged={this.state.onItemChanged} />
-                                )
-                            })
-                        }
-                    </Col>
-                    <Col md={backpackColWidth} className="d-flex">
-                        {
-                            this.state.backpack && this.state.backpack.map((value) => {
-                                return (
-                                    <Item
-                                        key={value.slot}
-                                        slot={value.slot}
-                                        item={value.item}
+                        <div className="d-flex flex-wrap">
+                            {
+                                this.state.backpack && this.state.backpack.map((value) => {
+                                    return (
+                                        <Item
+                                            key={value.slot}
+                                            slot={value.slot}
+                                            item={value.item}
 
-                                        isBackpack={true}
-                                        onItemChanged={this.state.onItemChanged} />
-                                )
-                            })
-                        }
+                                            isBackpack={true}
+                                            onItemChanged={this.state.onItemChanged} />
+                                    )
+                                })
+                            }
+                        </div>
+                    </Col>
+                    <Col md={neutralColWidth}>
+                        <h6>NEUTRAL</h6>
                         {/* Neutral Item */}
-                        <div className="ml-3">
+                        <div>
                             <Neutral neutralItem={this.state.neutral} onNewNeutralSelected={this.state.onNeutralChanged} />
                         </div>
                     </Col>
