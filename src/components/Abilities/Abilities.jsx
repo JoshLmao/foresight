@@ -54,7 +54,6 @@ class Abilities extends Component {
         
         var abils = this.filterAbilities(props.abilities);
         var abilLevels = getLevelInfo(abils);
-        debugger;
 
         this.state = {
             abilities: abils,

@@ -37,7 +37,6 @@ class ItemsBar extends Component {
         }
 
         if (prevProps.neutral !== this.props.neutral) {
-            debugger;
             this.setState({
                 neutral: this.props.neutral,
             });

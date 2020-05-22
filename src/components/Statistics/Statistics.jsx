@@ -4,7 +4,17 @@ import {
 } from "react-bootstrap";
 
 import { EAttributes } from "../../enums/attributes";
-import { DOTAHeroes } from "../../data/dota2/json/npc_heroes.json";
+
+import {
+    calculateHealthRegen,
+    calculateManaRegen,
+    calculateMainArmor,
+    calculateSpellAmp,
+    calculateStatusResist,
+    calculateMagicResist,
+    calculatePhysicalResist,
+    calculateEvasion
+} from "../../utility/calculate";
 
 function parse(value) {
     return parseInt(value);
@@ -32,25 +42,6 @@ function StatArray(props) {
     );
 }
 
-/* Hero gains +0.1 regen per each point of strength
-* https://dota2.gamepedia.com/Health_regeneration */
-function calculateHealthRegen(baseStrength, heroLvl = 1, additionalHealthRegen) {
-    var hpRegen = (parseInt(baseStrength) * 0.1) * heroLvl;
-    if (additionalHealthRegen) {
-        hpRegen += parseFloat(additionalHealthRegen);
-    }
-    return hpRegen.toFixed(2);
-}
-
-/* Each point of intelligence increases the hero's mana regeneration by 0.05.
- * https://dota2.gamepedia.com/Mana_regeneration */
-function calculateManaRegen(baseIntelligence, heroLvl = 1, additionalHealthRegen) {
-    var manaRegen = (parseInt(baseIntelligence) * 0.05) * heroLvl;
-    if (additionalHealthRegen) {
-        manaRegen += parseFloat(additionalHealthRegen);
-    }
-    return manaRegen.toFixed(2);
-}
 
 /// Returns the base number of the hero's primary attribute
 function determinePrimaryAttribute(heroInfo) {
@@ -66,17 +57,6 @@ function determinePrimaryAttribute(heroInfo) {
     }
 }
 
-// Calculates the main armor of the hero
-function calcMainArmor(baseArmor, baseAgility, agiPerLevel, level) {
-    // Determine bonus agility from perLevel. Then work out main armor
-    var agiPer = (parseFloat(agiPerLevel) * level - 1);
-    var mainArmor = parseInt(baseArmor) + ((parseInt(baseAgility) + agiPer) * 0.16);
-    // Round to one decimal place
-    return mainArmor.toFixed(1);
-}
-
-const BASE_HERO = DOTAHeroes.npc_dota_hero_base;
-
 class Statistics extends Component {
     constructor(props) {
         super(props);
@@ -84,14 +64,37 @@ class Statistics extends Component {
         this.state = {
             hero: props.hero,
             level: 1,
+            talents: props.talents,
+            items: props.items,
+            neutral: props.neutral,
+            abilities: props.abilities,
         };
+    }
+
+    componentDidMount() {
+        this.setState({
+            armor: calculateMainArmor(this.state.hero.ArmorPhysical, this.state.hero.AttributeBaseAgility, this.state.hero.AttributeAgilityGain, this.state.level)
+        });
     }
 
     componentDidUpdate(prevProps) {
         if (prevProps.hero !== this.props.hero) {
-            this.setState({
-                hero: this.props.hero,
+            this.setState({ 
+                hero: this.props.hero, 
+                armor: calculateMainArmor(this.state.hero.ArmorPhysical, this.state.hero.AttributeBaseAgility, this.state.hero.AttributeAgilityGain, this.state.level)
             });
+        }
+        if (prevProps.items !== this.props.items) {
+            this.setState({ items: this.props.items });
+        }
+        if (prevProps.neutral !== this.props.neutral) {
+            this.setState({ neutral: this.props.neutral, });
+        }
+        if (prevProps.talents !== this.props.talents) {
+            this.setState({ talents: this.props.talents });
+        }
+        if (prevProps.abilities !== this.props.abilities) {
+            this.setState({ abilities: this.props.abilities });
         }
     }
 
@@ -104,17 +107,17 @@ class Statistics extends Component {
                         { name: "damage", value: `${parse(this.state.hero.AttackDamageMin) + determinePrimaryAttribute(this.state.hero)} - ${parse(this.state.hero.AttackDamageMax) + determinePrimaryAttribute(this.state.hero)}` },
                         { name: "attack range", value: parse(this.state.hero.AttackRange) },
                         { name: "move speed", value: parse(this.state.hero.MovementSpeed) },
-                        { name: "spell amp", value: -1 },
+                        { name: "spell amp", value: calculateSpellAmp(this.state.talents, this.state.items, this.state.neutral) + "%" },
                         { name: "mana regen", value: calculateManaRegen(this.state.hero.AttributeBaseIntelligence, this.state.level, this.state.hero.StatusManaRegen) },
                     ]} />
                 </Col>
                 <Col md={6}>
                     <StatArray title="DEFENCE" stats={[
-                        { name: "armor", value: calcMainArmor(this.state.hero.ArmorPhysical, this.state.hero.AttributeBaseAgility, this.state.hero.AttributeAgilityGain, this.state.level) },
-                        { name: "physical resist", value: -1 },
-                        { name: "magic resist", value: parse(BASE_HERO.MagicalResistance) },
-                        { name: "status resist", value: -1 },
-                        { name: "evasion", value: -1 },
+                        { name: "armor", value: this.state.armor },
+                        { name: "physical resist", value: calculatePhysicalResist(this.state.armor) + "%" },
+                        { name: "magic resist", value: calculateMagicResist(this.state.items, this.state.neutral, this.state.abilities) + "%" },
+                        { name: "status resist", value: calculateStatusResist(this.state.items, this.state.neutral) + "%" },
+                        { name: "evasion", value: calculateEvasion(this.state.talents, this.state.items, this.state.abilities) + "%" },
                         { name: "health regen", value: calculateHealthRegen(this.state.hero.AttributeBaseStrength, this.state.level, this.state.hero.StatusHealthRegen) },
                     ]}/>
                 </Col>

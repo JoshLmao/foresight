@@ -102,7 +102,12 @@ class Calculator extends Component {
                         </Col>
                         {/* Final Attack/Defence Stats */}
                         <Col md={5}>
-                            <Statistics hero={this.props.selectedHero} />
+                            <Statistics 
+                                hero={this.props.selectedHero} 
+                                talents={this.props.selectedTalents}
+                                items={this.props.items}
+                                neutral={this.props.neutralItem} 
+                                abilities={this.props.heroAbilities} />
                         </Col>
                     </Row>
 
@@ -136,12 +141,12 @@ const mapStateToProps = (state) => ({
     selectedHero: state.selectedHero,
     selectedHeroName: state.selectedHeroName,
     heroAbilities: state.heroAbilities,
-    selectedTalents: state.selectedTalents,
+    heroTalents: state.heroTalents,
     
     items: state.items,
     backpack: state.backpack,
     neutralItem: state.neutralItem,
-    heroTalents: state.heroTalents,
+    selectedTalents: state.selectedTalents,
 });
 
 export default connect(mapStateToProps)(Calculator);
