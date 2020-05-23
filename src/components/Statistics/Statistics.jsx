@@ -92,8 +92,8 @@ class Statistics extends Component {
         this.updateArmor();
     }
 
-    updateArmor() {
-        this.setState({ armor: calculateMainArmor(this.state.hero.ArmorPhysical, this.state.hero.AttributeBaseAgility, this.state.hero.AttributeAgilityGain, this.state.level) })
+    updateArmor(lvl = undefined) {
+        this.setState({ armor: calculateMainArmor(this.state.hero.ArmorPhysical, this.state.hero.AttributeBaseAgility, this.state.hero.AttributeAgilityGain, lvl ? lvl : this.state.level) })
     }
 
     componentDidUpdate(prevProps) {
@@ -115,7 +115,8 @@ class Statistics extends Component {
         }
         if (prevProps.heroLevel !== this.props.heroLevel) {
             this.setState({ level: this.props.heroLevel });
-            this.updateArmor();
+            // Pass value since setState isn't executed yet
+            this.updateArmor(this.props.heroLevel);
         }
     }
 
@@ -134,7 +135,7 @@ class Statistics extends Component {
                 </Col>
                 <Col md={6}>
                     <StatArray title="DEFENCE" stats={[
-                        { name: "armor", value: this.state.armor },
+                        { name: "armor", value:  this.state.armor },
                         { name: "physical resist", value: calculatePhysicalResist(this.state.armor) + "%" },
                         { name: "magic resist", value: calculateMagicResist(this.state.items, this.state.neutral, this.state.abilities) + "%" },
                         { name: "status resist", value: calculateStatusResist(this.state.items, this.state.neutral) + "%" },

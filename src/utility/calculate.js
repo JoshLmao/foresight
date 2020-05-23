@@ -75,7 +75,7 @@ export function calculateManaRegen(baseIntelligence, intelligencePerLvl, additio
 // Calculates the main armor of the hero
 export function calculateMainArmor(baseArmor, baseAgility, agiPerLevel, level) {
     // Determine bonus agility from perLevel. Then work out main armor
-    var agiPer = (parseFloat(agiPerLevel) * level - 1);
+    var agiPer = (parseFloat(agiPerLevel) * (level - 1));
     var mainArmor = parseInt(baseArmor) + ((parseInt(baseAgility) + agiPer) * 0.16);
     // Round to one decimal place
     return mainArmor.toFixed(1);
