@@ -1,0 +1,17 @@
+:root {
+    --bar-height: 100%;
+}
+
+.bar {
+    height: var(--bar-height);
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.health {
+    background-color: lightgreen;
+}
+
+.mana {
+    background-color: lightblue;
+}

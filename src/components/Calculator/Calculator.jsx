@@ -12,6 +12,7 @@ import {
     SELECTED_NEUTRAL,
     SELECTED_BACKPACK_ITEM,
     SELECTED_TALENT,
+    NEW_HERO_LEVEL,
 } from "../../constants/actionTypes";
 
 import Abilities from "../Abilities";
@@ -20,6 +21,8 @@ import Attributes from "../Attributes";
 import Statistics from "../Statistics";
 import ChangeHeroBtn from "../ChangeHeroBtn";
 import TalentTree from "../TalentTree";
+import HealthManaBar from "../HealthManaBar";
+import LevelSelector from "../LevelSelector";
 
 /* DotA 2 Import Data */
 import { DOTAHeroes } from "../../data/dota2/json/npc_heroes.json";
@@ -38,6 +41,7 @@ class Calculator extends Component {
         this.onItemSelected = this.onItemSelected.bind(this);
         this.onNeutralSelected = this.onNeutralSelected.bind(this);
         this.onTalentSelected = this.onTalentSelected.bind(this);
+        this.onHeroLevelChanged = this.onHeroLevelChanged.bind(this);
     }
 
     onHeroSelected(heroName) {
@@ -68,6 +72,11 @@ class Calculator extends Component {
     onTalentSelected (talent) {
         console.log(`${SELECTED_TALENT}: ${talent.name}`);
         this.props.dispatch({ type: SELECTED_TALENT, value: talent });
+    }
+
+    onHeroLevelChanged(newLevel) {
+        //console.log(`${NEW_HERO_LEVEL}: ${newLevel}`);
+        this.props.dispatch({ type: NEW_HERO_LEVEL, value: newLevel });
     }
 
     render() {
@@ -104,6 +113,7 @@ class Calculator extends Component {
                         <Col md={5}>
                             <Statistics 
                                 hero={this.props.selectedHero} 
+                                heroLevel={this.props.heroLevel}
                                 talents={this.props.selectedTalents}
                                 items={this.props.items}
                                 neutral={this.props.neutralItem} 
@@ -111,8 +121,28 @@ class Calculator extends Component {
                         </Col>
                     </Row>
 
+                    {/* Health/Mana and Hero Lvl  */}
+                    <Row className="my-2 py-2">
+                        <Col md={8}>
+                            <HealthManaBar 
+                                baseStrength ={ this.props.selectedHero.AttributeBaseStrength }
+                                strengthGain={ this.props.selectedHero.AttributeStrengthGain } 
+                                baseIntelligence={this.props.selectedHero.AttributeBaseIntelligence }
+                                intelligenceGain={ this.props.selectedHero.AttributeIntelligenceGain }
+                                heroLevel={ this.props.heroLevel } 
+                                primaryAttribute={ this.props.selectedHero.AttributePrimary }
+                                bonusHealthRegen={ this.props.selectedHero.StatusHealthRegen }
+                                bonusManaRegen={ this.props.selectedHero.StatusManaRegen } />
+                        </Col>
+                        <Col md={4}>
+                            <LevelSelector 
+                                heroLevel={ this.props.heroLevel } 
+                                onHeroLevelChanged={ this.onHeroLevelChanged }/>
+                        </Col>
+                    </Row>
+
                     {/* Items/Talent */}
-                    <Row className="items-row my-5">
+                    <Row className="items-row my-4">
                         <Col md={7}>
                             <ItemsBar
                                 items={this.props.items} 
@@ -140,9 +170,11 @@ class Calculator extends Component {
 const mapStateToProps = (state) => ({
     selectedHero: state.selectedHero,
     selectedHeroName: state.selectedHeroName,
+    
     heroAbilities: state.heroAbilities,
     heroTalents: state.heroTalents,
-    
+    heroLevel: state.heroLevel,
+
     items: state.items,
     backpack: state.backpack,
     neutralItem: state.neutralItem,

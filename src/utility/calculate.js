@@ -11,24 +11,65 @@ import {
 import { DOTAHeroes } from "../data/dota2/json/npc_heroes.json";
 import { DOTAAbilities } from "../data/dota2/json/npc_abilities.json";
 
+/// Calculates the health of a hero
+/// https://dota2.gamepedia.com/Health
+export function calculateHealth(baseStrength, strengthGain, heroLevel, isStrength) {
+    var healthPerStrPoint = 20;
+
+    var baseHealth = 0;
+    if (DOTAHeroes && DOTAHeroes.npc_dota_hero_base && DOTAHeroes.npc_dota_hero_base.StatusHealth) {
+        baseHealth = parseInt(DOTAHeroes.npc_dota_hero_base.StatusHealth);
+    } else {
+        console.error("Can't add baseHealth to heroes health pool");
+    }
+
+    var additionalHealth = Math.floor(strengthGain * (heroLevel - 1)) + baseStrength * ( isStrength ? 22.5 : 18);
+    return additionalHealth + baseHealth;
+}
+
+/// Calculates the mana pool of a hero
+/// https://dota2.gamepedia.com/Mana
+export function calculateMana(baseInt, intGain, heroLevel, isIntelligence) {
+    var manaPerIntPoint = 12;
+    
+    var baseMana = 0;
+    if (DOTAHeroes && DOTAHeroes.npc_dota_hero_base && DOTAHeroes.npc_dota_hero_base.StatusMana) {
+        baseMana = parseInt(DOTAHeroes.npc_dota_hero_base.StatusMana);
+    } else {
+        console.error("Can't add baseMana to heroes mana pool");
+    }
+
+    var additionalMana = additionalMana = Math.floor(intGain * (heroLevel - 1)) + baseInt * ( isIntelligence ? 15 : 12);
+    return baseMana + additionalMana;
+}
+
 /* Hero gains +0.1 regen per each point of strength
 * https://dota2.gamepedia.com/Health_regeneration */
-export function calculateHealthRegen(baseStrength, heroLvl = 1, additionalHealthRegen) {
-    var hpRegen = (parseInt(baseStrength) * 0.1) * heroLvl;
+export function calculateHealthRegen(baseStrength, strengthPerLvl, additionalHealthRegen,  heroLvl = 1) {
+    var hpRegenPerStrength = 0.1;
+    var baseStr = parseInt(baseStrength);
+    var strGain = parseFloat(strengthPerLvl);
+
+    var hpRegen = (baseStr + (strGain * (heroLvl - 1))) * hpRegenPerStrength;
     if (additionalHealthRegen) {
         hpRegen += parseFloat(additionalHealthRegen);
     }
-    return hpRegen.toFixed(2);
+    return hpRegen.toFixed(1);
 }
 
 /* Each point of intelligence increases the hero's mana regeneration by 0.05.
  * https://dota2.gamepedia.com/Mana_regeneration */
-export function calculateManaRegen(baseIntelligence, heroLvl = 1, additionalHealthRegen) {
-    var manaRegen = (parseInt(baseIntelligence) * 0.05) * heroLvl;
+export function calculateManaRegen(baseIntelligence, intelligencePerLvl, additionalHealthRegen, heroLvl = 1) {
+    var manaRegenPerInt = 0.05;
+    var baseInt = parseInt(baseIntelligence);
+    var intGain = parseFloat(intelligencePerLvl);
+
+    var manaRegen = (baseInt + (intGain * (heroLvl - 1))) * manaRegenPerInt;
     if (additionalHealthRegen) {
         manaRegen += parseFloat(additionalHealthRegen);
     }
-    return manaRegen.toFixed(2);
+
+    return manaRegen.toFixed(1);
 }
 
 // Calculates the main armor of the hero

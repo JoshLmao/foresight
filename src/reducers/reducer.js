@@ -6,6 +6,7 @@ import {
     SELECTED_BACKPACK_ITEM,
     SELECTED_NEUTRAL,
     SELECTED_TALENT,
+    NEW_HERO_LEVEL,
 } from "../constants/actionTypes";
 
 import {
@@ -48,6 +49,8 @@ const initialState = {
     heroTalents: getHeroTalents(DOTAHeroes.npc_dota_hero_zuus),
     /// Array of talents selected by the user
     selectedTalents: [ ],
+    /// Current level of the hero set by the user
+    heroLevel: 1,
 
     /// Current items that have been selected
     items: [
@@ -102,6 +105,11 @@ function reducer(state = initialState, action) {
                 ...state,
                selectedTalents: getNewTalentArray(state.selectedTalents, action.value),
             }
+        case NEW_HERO_LEVEL:
+            return {
+                ...state,
+                heroLevel: action.value,
+            };
         default:
             return state;
     }

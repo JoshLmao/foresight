@@ -33,11 +33,13 @@ class HeroSelector extends Component {
         return (
             <div className="hero-card">
                 <div className="hero-card header d-flex">
-                    <h5 className="my-auto ml-2">CHOOSE A HERO</h5>
-                    <div className="ml-auto p-1">
-                        <Form.Control type="text" placeholder="" onChange={this.onSearchChanged} />
+                    <div className="d-flex">
+                        <h5 className="my-auto ml-2">CHOOSE A HERO</h5>
+                        <div className="ml-auto p-1">
+                            <Form.Control type="text" placeholder="" onChange={this.onSearchChanged} />
+                        </div>
+                        <FontAwesomeIcon icon={faSearch} className="my-auto mr-2" />
                     </div>
-                    <FontAwesomeIcon icon={faSearch} className="my-auto mr-2" />
                 </div>
                 <div className="content">
                     <div className="d-flex flex-wrap">

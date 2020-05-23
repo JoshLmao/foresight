@@ -63,7 +63,7 @@ class Statistics extends Component {
 
         this.state = {
             hero: props.hero,
-            level: 1,
+            level: props.heroLevel,
             talents: props.talents,
             items: props.items,
             neutral: props.neutral,
@@ -96,6 +96,9 @@ class Statistics extends Component {
         if (prevProps.abilities !== this.props.abilities) {
             this.setState({ abilities: this.props.abilities });
         }
+        if (prevProps.heroLevel !== this.props.heroLevel) {
+            this.setState({ level: this.props.heroLevel });
+        }
     }
 
     render() {
@@ -108,7 +111,7 @@ class Statistics extends Component {
                         { name: "attack range", value: parse(this.state.hero.AttackRange) },
                         { name: "move speed", value: parse(this.state.hero.MovementSpeed) },
                         { name: "spell amp", value: calculateSpellAmp(this.state.talents, this.state.items, this.state.neutral) + "%" },
-                        { name: "mana regen", value: calculateManaRegen(this.state.hero.AttributeBaseIntelligence, this.state.level, this.state.hero.StatusManaRegen) },
+                        { name: "mana regen", value: calculateManaRegen(this.state.hero.AttributeBaseIntelligence, this.state.hero.AttributeIntelligenceGain, this.state.hero.StatusManaRegen, this.state.level) },
                     ]} />
                 </Col>
                 <Col md={6}>
@@ -118,7 +121,7 @@ class Statistics extends Component {
                         { name: "magic resist", value: calculateMagicResist(this.state.items, this.state.neutral, this.state.abilities) + "%" },
                         { name: "status resist", value: calculateStatusResist(this.state.items, this.state.neutral) + "%" },
                         { name: "evasion", value: calculateEvasion(this.state.talents, this.state.items, this.state.abilities) + "%" },
-                        { name: "health regen", value: calculateHealthRegen(this.state.hero.AttributeBaseStrength, this.state.level, this.state.hero.StatusHealthRegen) },
+                        { name: "health regen", value: calculateHealthRegen(this.state.hero.AttributeBaseStrength, this.state.hero.AttributeStrengthGain, this.state.hero.StatusHealthRegen, this.state.level) },
                     ]}/>
                 </Col>
             </Row>
