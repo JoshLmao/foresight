@@ -16,6 +16,9 @@ import { DOTAAbilities } from "../data/dota2/json/npc_abilities.json";
 export function calculateHealth(baseStrength, strengthGain, heroLevel, isStrength) {
     var healthPerStrPoint = 20;
 
+    baseStrength = parseInt(baseStrength);
+    strengthGain = parseFloat(strengthGain);
+
     var baseHealth = 0;
     if (DOTAHeroes && DOTAHeroes.npc_dota_hero_base && DOTAHeroes.npc_dota_hero_base.StatusHealth) {
         baseHealth = parseInt(DOTAHeroes.npc_dota_hero_base.StatusHealth);
@@ -23,8 +26,8 @@ export function calculateHealth(baseStrength, strengthGain, heroLevel, isStrengt
         console.error("Can't add baseHealth to heroes health pool");
     }
 
-    var additionalHealth = Math.floor(strengthGain * (heroLevel - 1)) + baseStrength * ( isStrength ? 22.5 : 18);
-    return additionalHealth + baseHealth;
+    var totalStr = baseStrength + (strengthGain * (heroLevel - 1));
+    return baseHealth + (totalStr * healthPerStrPoint);
 }
 
 /// Calculates the mana pool of a hero
@@ -32,6 +35,9 @@ export function calculateHealth(baseStrength, strengthGain, heroLevel, isStrengt
 export function calculateMana(baseInt, intGain, heroLevel, isIntelligence) {
     var manaPerIntPoint = 12;
     
+    baseInt = parseInt(baseInt);
+    intGain = parseFloat(intGain);
+
     var baseMana = 0;
     if (DOTAHeroes && DOTAHeroes.npc_dota_hero_base && DOTAHeroes.npc_dota_hero_base.StatusMana) {
         baseMana = parseInt(DOTAHeroes.npc_dota_hero_base.StatusMana);
@@ -39,8 +45,8 @@ export function calculateMana(baseInt, intGain, heroLevel, isIntelligence) {
         console.error("Can't add baseMana to heroes mana pool");
     }
 
-    var additionalMana = additionalMana = Math.floor(intGain * (heroLevel - 1)) + baseInt * ( isIntelligence ? 15 : 12);
-    return baseMana + additionalMana;
+    var totalInt = baseInt + (intGain * (heroLevel - 1));
+    return baseMana + (totalInt * manaPerIntPoint);
 }
 
 /* Hero gains +0.1 regen per each point of strength

@@ -52,15 +52,22 @@ class HealthManaBar extends Component {
                 maxHealth: 0,
                 maxMana: 0,
             });
-            this.updateBar();
+            this.updateBar(this.props);
         }
     }
 
-    updateBar() {
-        this.setState({
-            maxHealth: calculateHealth(this.state.baseStrength, this.state.strengthGain, this.state.heroLevel, this.state.primaryAttribute === EAttributes.ATTR_STRENGTH),
-            maxMana: calculateMana(this.state.baseIntelligence, this.state.intelligenceGain, this.state.heroLevel, this.state.primaryAttribute === EAttributes.ATTR_INTELLIGENCE),
-        });
+    updateBar(newProps = undefined) {
+        if (newProps) {
+            this.setState({
+                maxHealth: calculateHealth(newProps.baseStrength, newProps.strengthGain, newProps.heroLevel, newProps.primaryAttribute === EAttributes.ATTR_STRENGTH).toFixed(0),
+                maxMana: calculateMana(newProps.baseIntelligence, newProps.intelligenceGain, newProps.heroLevel, newProps.primaryAttribute === EAttributes.ATTR_INTELLIGENCE).toFixed(0),
+            });
+        } else {
+            this.setState({
+                maxHealth: calculateHealth(this.state.baseStrength, this.state.strengthGain, this.state.heroLevel, this.state.primaryAttribute === EAttributes.ATTR_STRENGTH).toFixed(0),
+                maxMana: calculateMana(this.state.baseIntelligence, this.state.intelligenceGain, this.state.heroLevel, this.state.primaryAttribute === EAttributes.ATTR_INTELLIGENCE).toFixed(0),
+            });
+        }
     }
 
     render() {

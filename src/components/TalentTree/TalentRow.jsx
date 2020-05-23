@@ -4,8 +4,9 @@ import {
     Col
 } from "react-bootstrap";
 
-import { DOTAAbilities } from "../../data/dota2/json/npc_abilities.json";
-import { lang as EnglishStrings } from "../../data/dota2/languages/abilities_english.json";
+import {
+    getTalent
+} from "../../utility/dataHelperTalents";
 
 class TalentRow extends Component {
     constructor(props){
@@ -56,18 +57,14 @@ class TalentRow extends Component {
     }
 
     getTalentDisplayName (talent) {
-        var englishKeys = Object.keys(EnglishStrings.Tokens);
-        var finalKey = englishKeys.filter((key) => {
-            if (key.includes(talent)) {
-                return key;
-            }
-            return null;
-        });
+        var talent = getTalent(talent);
+        if (!talent || !talent?.displayName || !talent?.info) {
+            return "Unknown Talent";
+        }
 
-        var talentInfo = DOTAAbilities[talent];
-        var displayName = EnglishStrings.Tokens[finalKey[0]];
-        if (talentInfo && talentInfo.AbilitySpecial) {
-            displayName = displayName.replace('{s:value}', talentInfo.AbilitySpecial[0].value);
+        var displayName = talent?.displayName;
+        if (displayName && talent.info && talent.info.AbilitySpecial) {
+            displayName = displayName.replace('{s:value}', talent.info.AbilitySpecial[0].value);
         }
 
         return displayName;

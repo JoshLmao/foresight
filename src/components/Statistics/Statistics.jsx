@@ -28,16 +28,16 @@ function parse(value) {
 
 function StatArray(props) {
     return (
-        <div style={{ backgroundColor: "#171717", color: "white", fontSize: "0.85rem" }} className="p-2 h-100">
+        <div style={{ backgroundColor: "#171717", color: "white", fontSize: "0.8rem" }} className="p-2 h-100">
             <h6 className="ml-auto">{props.title}</h6>
             {
                 props.stats &&
                     props.stats.map((value) => {
                         return (<Row key={value.name}>
-                            <Col md={7}>
+                            <Col md={6}>
                                 {value.name}
                             </Col>
-                            <Col md={5}>
+                            <Col md={6}>
                                 {value.value}
                             </Col>
                         </Row>
