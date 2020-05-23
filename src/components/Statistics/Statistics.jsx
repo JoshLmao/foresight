@@ -3,8 +3,6 @@ import {
     Row, Col
 } from "react-bootstrap";
 
-import { EAttributes } from "../../enums/attributes";
-
 import {
     calculateHealthRegen,
     calculateManaRegen,
@@ -13,8 +11,16 @@ import {
     calculateStatusResist,
     calculateMagicResist,
     calculatePhysicalResist,
-    calculateEvasion
+    calculateEvasion,
+    calculateRightClickDamage,
+    calculateAttackTime
 } from "../../utility/calculate";
+import { 
+    getPrimaryAttributeStats,
+    getSpecificAttributeStats,
+    getDotaBaseHero
+} from '../../utility/dataHelperHero';
+import { EAttributes } from '../../enums/attributes';
 
 function parse(value) {
     return parseInt(value);
@@ -42,19 +48,28 @@ function StatArray(props) {
     );
 }
 
+function formatAttackMinMax(heroInfo, lvl) {
+    var minMax = calculateRightClickDamage(heroInfo.AttackDamageMin, heroInfo.AttackDamageMax, getPrimaryAttributeStats(heroInfo), lvl );
+    return `${minMax.min} - ${minMax.max}`;
+}
 
-/// Returns the base number of the hero's primary attribute
-function determinePrimaryAttribute(heroInfo) {
-    switch(heroInfo.AttributePrimary) {
-        case EAttributes.ATTR_STRENGTH:
-            return parseInt(heroInfo.AttributeBaseStrength);
-        case EAttributes.ATTR_AGILITY:
-            return parseInt(heroInfo.AttributeBaseAgility);
-        case EAttributes.ATTR_INTELLIGENCE:
-            return parseInt(heroInfo.AttributeBaseIntelligence);
-        default:
-            return 0;
+function formatAttackTime(heroInfo, lvl) {
+    var attackSpeed = getDotaBaseHero()?.BaseAttackSpeed;
+    var attackRate = getDotaBaseHero()?.AttackRate;
+    if (heroInfo) {
+        // Check if hero has different attack rate or attack speed
+        if (heroInfo.BaseAttackSpeed) {
+            attackSpeed = heroInfo.BaseAttackSpeed;
+        } 
+        if (heroInfo.AttackSpeed) {
+            attackRate = heroInfo.AttackSpeed;
+        }
     }
+    
+    var agilityAttribute = getSpecificAttributeStats(EAttributes.ATTR_AGILITY, heroInfo);
+
+    var attackInfo = calculateAttackTime(attackSpeed, attackRate, agilityAttribute?.base, agilityAttribute?.perLevel, lvl);
+    return `${attackInfo.attackSpeed} (${attackInfo.attackTime} s)`;
 }
 
 class Statistics extends Component {
@@ -69,20 +84,22 @@ class Statistics extends Component {
             neutral: props.neutral,
             abilities: props.abilities,
         };
+
+        this.updateArmor = this.updateArmor.bind(this);
     }
 
     componentDidMount() {
-        this.setState({
-            armor: calculateMainArmor(this.state.hero.ArmorPhysical, this.state.hero.AttributeBaseAgility, this.state.hero.AttributeAgilityGain, this.state.level)
-        });
+        this.updateArmor();
+    }
+
+    updateArmor() {
+        this.setState({ armor: calculateMainArmor(this.state.hero.ArmorPhysical, this.state.hero.AttributeBaseAgility, this.state.hero.AttributeAgilityGain, this.state.level) })
     }
 
     componentDidUpdate(prevProps) {
         if (prevProps.hero !== this.props.hero) {
-            this.setState({ 
-                hero: this.props.hero, 
-                armor: calculateMainArmor(this.state.hero.ArmorPhysical, this.state.hero.AttributeBaseAgility, this.state.hero.AttributeAgilityGain, this.state.level)
-            });
+            this.setState({ hero: this.props.hero });
+            this.updateArmor();
         }
         if (prevProps.items !== this.props.items) {
             this.setState({ items: this.props.items });
@@ -98,6 +115,7 @@ class Statistics extends Component {
         }
         if (prevProps.heroLevel !== this.props.heroLevel) {
             this.setState({ level: this.props.heroLevel });
+            this.updateArmor();
         }
     }
 
@@ -106,8 +124,8 @@ class Statistics extends Component {
             <Row>
                 <Col md={6}>
                     <StatArray title="ATTACK" stats={[
-                        { name: "attack speed", value: -1 },
-                        { name: "damage", value: `${parse(this.state.hero.AttackDamageMin) + determinePrimaryAttribute(this.state.hero)} - ${parse(this.state.hero.AttackDamageMax) + determinePrimaryAttribute(this.state.hero)}` },
+                        { name: "attack speed", value: formatAttackTime(this.state.hero, this.state.level) },
+                        { name: "damage", value: formatAttackMinMax(this.state.hero, this.state.level) },
                         { name: "attack range", value: parse(this.state.hero.AttackRange) },
                         { name: "move speed", value: parse(this.state.hero.MovementSpeed) },
                         { name: "spell amp", value: calculateSpellAmp(this.state.talents, this.state.items, this.state.neutral) + "%" },

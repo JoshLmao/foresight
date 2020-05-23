@@ -11,9 +11,12 @@ import {
 
 import {
     parseNameFromModel,
+} from "../utils";
+
+import {
     getAllHeroAbilities,
     getHeroTalents,
-} from "../utils";
+} from "../utility/dataHelperHero";
 
 function getNewItemArray(itemArray, newItem) {
     /// Remove old slot insert new and sort by Slot

@@ -1,4 +1,6 @@
 
+// * Helper and utility functions to provide for retrieving data from "npc_items.json"
+// * 
 import { DOTAAbilities as DOTAItems } from "../data/dota2/json/items.json";
 
 export function getItemInfoFromName (itemName) {

@@ -1,3 +1,6 @@
+// * Helper and utility functions to provide for retrieving data from "npc_abilities.json"
+// * 
+
 import { DOTAAbilities } from "../data/dota2/json/npc_abilities.json";
 
 export function getAbilityInfoFromName(abilityName) {

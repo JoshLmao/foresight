@@ -276,3 +276,42 @@ export function calculateEvasion(talents, items) {
 
     return totalEvasion;
 }
+
+/// Returns the minimum and maximum right click damage of a hero
+export function calculateRightClickDamage(atkMin, atkMax, primaryAttributeStats, heroLevel = 1) {
+    // Work out how much bonus attack hero recieves from their primary attribute
+    var bonusAtk = primaryAttributeStats.base + (primaryAttributeStats.perLevel * (heroLevel - 1));
+    
+    // Add and return
+    var min = parseInt(atkMin) + bonusAtk;
+    var max = parseInt(atkMax) + bonusAtk;
+    return {
+        /// minimum attack damage of the hero
+        min: Math.floor(min).toFixed(0),
+        /// maximum attack damage of the hero
+        max: Math.floor(max).toFixed(0),
+    };
+}
+
+/// Returns info on the attack time of the hero
+export function calculateAttackTime(attackSpeed, attackRate, baseAgi, agiPerLevel, heroLevel) {
+    attackSpeed = parseInt(attackSpeed);
+    attackRate = parseFloat(attackRate);
+    
+    var agi = baseAgi + (agiPerLevel * (heroLevel - 1));
+
+    var attacksPerSec = ((attackSpeed + agi) * 0.01) / 1.7;
+    var attackTime = 1.7 / ((attackSpeed + agi) * 0.01);
+    attackTime = 1 / attacksPerSec;
+
+    var speed = attackSpeed + agi;
+
+    return {
+        /// Amount of seconds inbetween attacks
+        attackTime: attackTime.toFixed(2),
+        /// Amount of attacks per second
+        attacksPerSecond: attacksPerSec.toFixed(2),
+        /// Attack speed value shown in UI of dota
+        attackSpeed: speed.toFixed(0),
+    };
+}
