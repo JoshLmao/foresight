@@ -32,14 +32,14 @@ class Item extends Component {
         }
     }
 
-    onSelectedItem (e) {
+    onSelectedItem (item) {
         this.setState({
             open: false,
         });
         
         this.state.onItemChanged({ 
             slot: this.state.slot, 
-            item: e.target.dataset.item,
+            item: item,
             isBackpack: this.state.isBackpack ? true : false,
         });
     }

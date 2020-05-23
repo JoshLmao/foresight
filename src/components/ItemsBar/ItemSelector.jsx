@@ -2,14 +2,21 @@ import React, { Component } from 'react';
 import {
     Tabs,
     Tab,
-    Button
+    Button,
+    Form,
+    ListGroup
 } from "react-bootstrap";
 import { DOTAAbilities } from "../../data/dota2/json/items.json";
 
-import "./ItemSelector.css";
-import "../../css/dota_items.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMinus } from '@fortawesome/free-solid-svg-icons';
+
+import {
+    itemNameToElement
+} from "../../utils";
+
+import "./ItemSelector.css";
+import "../../css/dota_items.css";
 
 function getItemsByQuality(itemsArray, matchArray) {
     return itemsArray.filter((itemInfo) => {
@@ -24,11 +31,16 @@ function getItemsByQuality(itemsArray, matchArray) {
     });
 }
 
-function getItemIcon(item, width, height, scale) {
-    // Remove 'item_' prefix, split by _, remove "item" and join again
-    item = item.split('_');
+function filterItemName (name) {
+    var item = name.split('_');
     item.shift();
     item = item.join('_');
+    return item;
+}
+
+function getItemIcon(item, width, height, scale) {
+    // Remove 'item_' prefix, split by _, remove "item" and join again
+    item = filterItemName(item);
 
     // Width and height of each item in item_stylesheet
     if (item) {
@@ -85,58 +97,138 @@ class ItemSelector extends Component {
 
         this.state = {
             allItems: selectableItems,
+            queryItems: null,
+
             onSelectedItem: props.onSelectedItem,
 
             basicItems: basicItems,
             upgradesItems: upgradesItems,
         };
+
+        this.onSearchChanged = this.onSearchChanged.bind(this);
+        this.onSearchItemSelected = this.onSearchItemSelected.bind(this);
+        this.onShopItemSelected = this.onShopItemSelected.bind(this);
+        this.onRemoveItemSelected = this.onRemoveItemSelected.bind(this);
+    }
+
+    onSearchChanged(e) {
+        var query = e.target.value;
+        var filteredItems = null;
+        if (query) {
+            filteredItems = this.state.allItems.filter((item) => {
+                return item.name.indexOf(query.toLowerCase()) !== -1; 
+            });
+        }
+
+        this.setState({
+            queryItems: filteredItems,
+        });
+    }
+
+    onSearchItemSelected(e) {
+        var val = e.target.dataset?.item;
+        this.state.onSelectedItem(val);
+    }
+
+    onShopItemSelected (e) {
+        var item = e.target.dataset?.item;
+        this.state.onSelectedItem(item);
+    }
+
+    onRemoveItemSelected(e) {
+        var item = null;
+        this.state.onSelectedItem(item);
     }
 
     render() {
         var scale = 0.5;
+        var searchIconScale = 0.45;
         return (
             <div className="item-card">
                 <div className="item-card header d-flex">
-                    <h5 className="my-auto">CHOOSE AN ITEM</h5>
+                    <div>
+                        <Form.Control type="text" placeholder="Search..." onChange={this.onSearchChanged}/>
+                    </div>
                     <div className="ml-auto">
-                        <Button data-item={null} variant="outline-danger" onClick={this.state.onSelectedItem}>
-                            <FontAwesomeIcon icon={faMinus} data-item={null} />
+                        <Button variant="outline-danger" onClick={this.onRemoveItemSelected}>
+                            <FontAwesomeIcon icon={faMinus} />
                         </Button>
                     </div>
                 </div>
                 <div className="item-card content">
-                    <Tabs defaultActiveKey="basic" transition={false} id="shop-tabs">
-                        <Tab eventKey="basic" title={<TabHeading text="BASIC" />}>
-                            <div className="d-flex flex-wrap">
-                                {
-                                    this.state.basicItems && this.state.basicItems.map((item) => {
-                                        return (
-                                            <ItemFromInfo 
-                                                key={item.item.ID}
-                                                item={item}
-                                                onClick={this.state.onSelectedItem} 
-                                                scale={scale} />
-                                        )
-                                    })
-                                }
+                    <div className="">
+                        {
+                            this.state.queryItems && 
+                            <div>
+                                <h6>SEARCH RESULTS</h6>
+                                <ListGroup>
+                                    {
+                                        // Query search term
+                                        this.state.queryItems.map((item) => {
+                                            var itemNameDisplay = filterItemName(item.name);
+                                            return (
+                                                <ListGroup.Item 
+                                                    key={item.name} 
+                                                    data-item={itemNameDisplay} 
+                                                    className="py-1 px-3"
+                                                    onClick={this.onSearchItemSelected} 
+                                                    action>
+                                                    <div className="d-flex" data-item={itemNameDisplay}>
+                                                        <ItemFromInfo 
+                                                            item={item}
+                                                            onClick={this.onSearchItemSelected} 
+                                                            scale={searchIconScale}/>
+
+                                                        <h6 className="mx-1 my-auto" data-item={itemNameDisplay}>
+                                                            { itemNameDisplay }
+                                                        </h6>
+                                                    </div>
+                                                </ListGroup.Item>
+                                            )
+                                        })
+                                    }   
+                                </ListGroup>
                             </div>
-                        </Tab>
-                        <Tab eventKey="upgrades" title={<TabHeading text="UPGRADES" />}>
-                            <div className="d-flex flex-wrap">
-                                {
-                                    this.state.upgradesItems && this.state.upgradesItems.map((item) => {
-                                        return (
-                                            <ItemFromInfo 
-                                                key={item.item.ID}
-                                                item={item}
-                                                onClick={this.state.onSelectedItem} 
-                                                scale={scale} />
-                                        );
-                                    })
-                                }
+                        }
+                    </div>
+                    {/* Regular view */}
+                    {
+                        !this.state.queryItems && 
+                            <div>
+                                <Tabs defaultActiveKey="basic" transition={false} id="shop-tabs">
+                                    <Tab eventKey="basic" title={<TabHeading text="BASIC" />}>
+                                        <div className="d-flex flex-wrap">
+                                            {
+                                                this.state.basicItems && this.state.basicItems.map((item) => {
+                                                    return (
+                                                        <ItemFromInfo 
+                                                            key={item.item.ID}
+                                                            item={item}
+                                                            onClick={this.onShopItemSelected} 
+                                                            scale={scale} />
+                                                    )
+                                                })
+                                            }
+                                        </div>
+                                    </Tab>
+                                    <Tab eventKey="upgrades" title={<TabHeading text="UPGRADES" />}>
+                                        <div className="d-flex flex-wrap">
+                                            {
+                                                this.state.upgradesItems && this.state.upgradesItems.map((item) => {
+                                                    return (
+                                                        <ItemFromInfo 
+                                                            key={item.item.ID}
+                                                            item={item}
+                                                            onClick={this.onShopItemSelected} 
+                                                            scale={scale} />
+                                                    );
+                                                })
+                                            }
+                                        </div>
+                                    </Tab>
+                                </Tabs>
                             </div>
-                        </Tab>
-                    </Tabs>
+                    }
                 </div>
             </div>
         );

@@ -36,7 +36,7 @@ class HeroSelector extends Component {
                     <div className="d-flex">
                         <h5 className="my-auto ml-2">CHOOSE A HERO</h5>
                         <div className="ml-auto p-1">
-                            <Form.Control type="text" placeholder="" onChange={this.onSearchChanged} />
+                            <Form.Control type="text" placeholder="Search..." onChange={this.onSearchChanged} />
                         </div>
                         <FontAwesomeIcon icon={faSearch} className="my-auto mr-2" />
                     </div>
