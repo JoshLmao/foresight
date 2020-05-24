@@ -12,6 +12,7 @@ import {
     SELECTED_NEUTRAL,
     SELECTED_BACKPACK_ITEM,
     SELECTED_TALENT,
+    UNSELECTED_TALENT,
     NEW_HERO_LEVEL,
 } from "../../constants/actionTypes";
 
@@ -41,6 +42,7 @@ class Calculator extends Component {
         this.onItemSelected = this.onItemSelected.bind(this);
         this.onNeutralSelected = this.onNeutralSelected.bind(this);
         this.onTalentSelected = this.onTalentSelected.bind(this);
+        this.onTalentUnselected = this.onTalentUnselected.bind(this);
         this.onHeroLevelChanged = this.onHeroLevelChanged.bind(this);
     }
 
@@ -70,8 +72,13 @@ class Calculator extends Component {
     }
 
     onTalentSelected (talent) {
-        console.log(`${SELECTED_TALENT}: ${talent.name}`);
+        console.log(`${SELECTED_TALENT}: ${talent}`);
         this.props.dispatch({ type: SELECTED_TALENT, value: talent });
+    }
+
+    onTalentUnselected (talent) {
+        console.log(`${UNSELECTED_TALENT}: ${talent}`);
+        this.props.dispatch({ type: UNSELECTED_TALENT, value: talent });
     }
 
     onHeroLevelChanged(newLevel) {
@@ -155,7 +162,8 @@ class Calculator extends Component {
                             <TalentTree
                                 talents={this.props.heroTalents} 
                                 selectedTalents={this.props.selectedTalents}
-                                onTalentSelected={this.onTalentSelected} />
+                                onTalentSelected={this.onTalentSelected} 
+                                onTalentUnselected={this.onTalentUnselected} />
                         </Col>
                     </Row>
 

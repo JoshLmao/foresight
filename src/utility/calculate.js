@@ -65,14 +65,14 @@ export function calculateHealthRegen(baseStrength, strengthPerLvl, additionalHea
 
 /* Each point of intelligence increases the hero's mana regeneration by 0.05.
  * https://dota2.gamepedia.com/Mana_regeneration */
-export function calculateManaRegen(baseIntelligence, intelligencePerLvl, additionalHealthRegen, heroLvl = 1) {
+export function calculateManaRegen(baseIntelligence, intelligencePerLvl, additionalManaRegen, heroLvl = 1) {
     var manaRegenPerInt = 0.05;
     var baseInt = parseInt(baseIntelligence);
     var intGain = parseFloat(intelligencePerLvl);
 
     var manaRegen = (baseInt + (intGain * (heroLvl - 1))) * manaRegenPerInt;
-    if (additionalHealthRegen) {
-        manaRegen += parseFloat(additionalHealthRegen);
+    if (additionalManaRegen) {
+        manaRegen += parseFloat(additionalManaRegen);
     }
 
     return manaRegen.toFixed(1);
@@ -93,7 +93,7 @@ export function calculateSpellAmp (talents, items, neutral) {
     
     // Determine if any talents provide spell amp
     if (talents && talents.length > 0) {
-        var ampTalent = talents.find(element => element.name.includes("spell_amplify"));
+        var ampTalent = talents.find(element => element.includes("spell_amplify"));
         if (ampTalent) {
             var talentInfo = DOTAAbilities[ampTalent.name];
             if (talentInfo) {

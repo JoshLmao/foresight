@@ -8,6 +8,10 @@ import {
     getTalent
 } from "../../utility/dataHelperTalents";
 
+function isTalentSelected (selectedTalents, talent) {
+    return selectedTalents?.includes(talent);
+}
+
 class TalentRow extends Component {
     constructor(props){
         super(props);
@@ -17,8 +21,9 @@ class TalentRow extends Component {
             rightTalent: props.rightTalent,
             level: props.lvl,
 
-            selectedTalent: props.selectedTalent,
+            selectedTalents: this.props.selectedTalents,
             onTalentSelected: this.props.onTalentSelected,
+            onTalentUnselected: this.props.onTalentUnselected,
         };
 
         this.onSelectTalent = this.onSelectTalent.bind(this);
@@ -38,22 +43,19 @@ class TalentRow extends Component {
             this.setState({ level: this.props.lvl });
         }
 
-        if (prevProps.selectedTalent !== this.props.selectedTalent) {
-            this.setState({ selectedTalent: this.props.selectedTalent });
+        if (prevProps.selectedTalents !== this.props.selectedTalents) {
+            this.setState({ selectedTalents: this.props.selectedTalents });
         }
     }
 
     onSelectTalent(e) {
         var selectedTalent = e.target.dataset.talent;
         // if clicked twice, unselect the talent
-        if (this.state.selectedTalent === selectedTalent) {
-            selectedTalent = null;
+        if (isTalentSelected(this.state.selectedTalents, selectedTalent)) {
+            this.state.onTalentUnselected(selectedTalent);
+        } else {
+            this.state.onTalentSelected(selectedTalent);
         }
-
-        this.state.onTalentSelected({ 
-            level: this.state.level,
-            name: selectedTalent,
-        });
     }
 
     getTalentDisplayName (talent) {
@@ -77,7 +79,7 @@ class TalentRow extends Component {
                 <Col 
                     md={5}
                     className="text-center"
-                    style={{ color: this.state.leftTalent === this.state.selectedTalent ? "#c4a66f" : "white" }}>
+                    style={{ color: isTalentSelected(this.state.selectedTalents, this.state.leftTalent) ? "#c4a66f" : "white" }}>
                     <div onClick={this.onSelectTalent} data-talent={this.state.leftTalent}>
                         {
                             this.getTalentDisplayName(this.state.leftTalent)
@@ -96,7 +98,7 @@ class TalentRow extends Component {
                 <Col 
                     md={5}
                     className="text-center"
-                    style={{ color: this.state.rightTalent === this.state.selectedTalent ? "#c4a66f" : "white" }}>
+                    style={{ color: isTalentSelected(this.state.selectedTalents, this.state.rightTalent) ? "#c4a66f" : "white" }}>
                     <div onClick={this.onSelectTalent} data-talent={this.state.rightTalent}>
                         {
                             this.getTalentDisplayName(this.state.rightTalent)

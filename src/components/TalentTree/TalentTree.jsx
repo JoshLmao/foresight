@@ -11,6 +11,7 @@ class TalentTree extends Component {
             selectedTalents: this.props.selectedTalents,
 
             onTalentSelected: this.props.onTalentSelected,
+            onTalentUnselected: this.props.onTalentUnselected,
         };
         this.findSelectedTalent = this.findSelectedTalent.bind(this);
     }
@@ -58,8 +59,9 @@ class TalentTree extends Component {
                                                 lvl={talentInfo.lvl}
                                                 leftTalent={talentInfo.leftTalent} 
                                                 rightTalent={talentInfo.rightTalent} 
-                                                selectedTalent={this.findSelectedTalent(talentInfo.leftTalent, talentInfo.rightTalent)}
-                                                onTalentSelected={this.state.onTalentSelected}/>
+                                                selectedTalents={this.state.selectedTalents}
+                                                onTalentSelected={this.state.onTalentSelected}
+                                                onTalentUnselected={this.state.onTalentUnselected} />
                             })
                         }
                 </div>

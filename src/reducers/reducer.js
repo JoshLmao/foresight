@@ -6,6 +6,7 @@ import {
     SELECTED_BACKPACK_ITEM,
     SELECTED_NEUTRAL,
     SELECTED_TALENT,
+    UNSELECTED_TALENT,
     NEW_HERO_LEVEL,
 } from "../constants/actionTypes";
 
@@ -31,14 +32,19 @@ function getNewItemArray(itemArray, newItem) {
 }
 
 function getNewTalentArray(talentArray, newTalent) {
-    var newArray = talentArray.filter((val) => {
-        if (val.level !== newTalent.level) {
-            return val;
+    var newArray = talentArray.map((value => { return value }));
+    newArray.push(newTalent);
+    return newArray;
+}
+
+function removeTalent (talentArray, unselectedTalent) {
+    /// Filter to get all but the unselectedTalent
+    var array = talentArray.filter((talent) => {
+        if (talent && talent !== unselectedTalent) {
+            return talent;
         }
     });
-    newArray.push(newTalent);
-    newArray.sort((a, b) => a.level < b.level ? 1 : -1);
-    return newArray;
+    return array;
 }
 
 const initialState = {
@@ -108,6 +114,11 @@ function reducer(state = initialState, action) {
                 ...state,
                selectedTalents: getNewTalentArray(state.selectedTalents, action.value),
             }
+            case UNSELECTED_TALENT:
+                return {
+                    ...state,
+                    selectedTalents: removeTalent(state.selectedTalents, action.value),
+                }
         case NEW_HERO_LEVEL:
             return {
                 ...state,
