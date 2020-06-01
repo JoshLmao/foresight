@@ -33,7 +33,7 @@ You will need [GCFScape](https://developer.valvesoftware.com/wiki/GCFScape) to a
 
 ## Converting .vdf to .json
 
-To convert the Valve .vdf file format to .json, you need to use the [online VDF-Parser](https://rgp.io/vdf-parser/). Then, `npc_abilties.json` file needs converting so that the "AbilitySpecial" JSON array is converted to a native JSON arrays instead of "01", "02", [use this JSFiddle](https://jsfiddle.net/JoshLmao/c6shzam0/6/)
+To convert the Valve .vdf file format to .json, you need to use the [online VDF-Parser](https://rgp.io/vdf-parser/). Then, `npc_abilties.json` & `items.json` files needs converting so that the "AbilitySpecial" JSON array is converted to a native JSON arrays instead of "01", "02", [use this JSFiddle](https://jsfiddle.net/JoshLmao/c6shzam0/6/)
 
 ## Packing Images into Spritesheet
 

@@ -39,3 +39,43 @@ export function getAbilitySpecialAbilityValue(abilityInfo, specialAbilityKey, ab
         }
     }
 }
+
+/// Gets the standard output damage of an ability from its level
+export function getAbilityOutputDamage(abilityInfo, abilityLevel) {
+    if (abilityInfo && abilityLevel) {
+        var dmgVals = abilityInfo.AbilityDamage;
+        if(dmgVals) {
+            let value = dmgVals.split(' ')[abilityLevel - 1];
+            return parseInt(value);
+        }
+        else if (abilityInfo.AbilitySpecial) 
+        {
+            //console.log(abilityInfo.AbilitySpecial);
+            for (var i = 0; i < abilityInfo.AbilitySpecial.length; i++) {
+                var specAbil = abilityInfo.AbilitySpecial[i];
+    
+                /// Array of AbilitySpecial keys that deal damage
+                var specialAbilityDamageKeys = [
+                    //Generic
+                    "damage",
+                    // Abaddon
+                    "target_damage", "damage_absorb", 
+                    //Alchemist
+                    "max_damage",
+                    
+                    //zeus
+                    "arc_damage",
+                ];
+    
+                // Find matching key in AbilitySpecial
+                for(var j = 0; j < specialAbilityDamageKeys.length; j++) {
+                    if (specAbil[specialAbilityDamageKeys[j]]) {
+                        let value = specAbil[specialAbilityDamageKeys[j]].split(' ')[abilityLevel - 1];
+                        return parseInt(value);
+                    }
+                }
+            }
+        }
+    }
+    return 0;
+}

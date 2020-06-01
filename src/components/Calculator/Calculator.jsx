@@ -168,7 +168,10 @@ class Calculator extends Component {
                     </Row>
 
                     {/* Abilities */}
-                    <Abilities abilities={this.props.heroAbilities} />
+                    <Abilities 
+                        abilities={this.props.heroAbilities}
+                        items={this.props.items}
+                        neutral={this.props.neutralItem} />
                 </Container>
             </div>
         );

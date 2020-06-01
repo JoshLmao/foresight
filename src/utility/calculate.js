@@ -6,6 +6,7 @@ import {
 import {
     getAbilityInfoFromName,
     getAbilitySpecialAbilityValue,
+    getAbilityOutputDamage
 } from "./dataHelperAbilities";
 
 import { DOTAHeroes } from "../data/dota2/json/npc_heroes.json";
@@ -87,8 +88,8 @@ export function calculateMainArmor(baseArmor, baseAgility, agiPerLevel, level) {
     return mainArmor.toFixed(1);
 }
 
-/// Returns the amount of spell amplification as a percentage
-export function calculateSpellAmp (talents, items, neutral) {
+/// Returns the total amount of spell amplification as a percentage applied to the hero
+export function calculateTotalSpellAmp (talents, items, neutral) {
     var totalSpellAmp = 0;
     
     // Determine if any talents provide spell amp
@@ -320,4 +321,54 @@ export function calculateAttackTime(attackSpeed, attackRate, baseAgi, agiPerLeve
         /// Attack speed value shown in UI of dota
         attackSpeed: speed.toFixed(0),
     };
+}
+
+/// Calculates how much output damage an ability will do to an enemy, factoring in any items
+export function calculateSpellDamage(abilityInfo, abilityLevel, items, neutral) {
+    if (!abilityLevel || !abilityInfo) {
+        return -1;
+    }
+
+    // Get normal dmg output of ability
+    let abilityDamage = getAbilityOutputDamage(abilityInfo, abilityLevel);
+    
+    // Add up spellAmp from all bonuses to calculate at end
+    let totalSpellAmpPercent = 0;
+    
+    if (items) {
+        // Add item spell damage increase
+        for(let i = 0; i < items.length; i++) {
+            var itemInfo = getItemInfoFromName(items[i].item);
+            if (itemInfo) {
+                let bonusSpellAmp = getItemSpecialAbilityValue(itemInfo, "spell_amp");
+                if (bonusSpellAmp) {
+                    totalSpellAmpPercent += bonusSpellAmp;
+                }
+            }
+        }
+    }
+
+    if (neutral) {
+        //Add neutral item spell dmg
+        var neutralInfo = getItemInfoFromName(neutral.item);
+        if (neutralInfo && neutralInfo.AbilitySpecial) {
+            for (let i = 0; i < neutralInfo.AbilitySpecial.length; i++) {
+                let special = neutralInfo.AbilitySpecial[i];
+                if (special.bonus_spell_amp) {
+                    var bonusSpellAmp = parseInt(special.bonus_spell_amp);
+                    totalSpellAmpPercent += bonusSpellAmp; 
+                }
+            }
+        }
+    }
+
+    abilityDamage = calculateSpellAmp(abilityDamage, totalSpellAmpPercent);
+    return {
+        damage: abilityDamage,
+    };
+}
+
+/// Calculates and applies spell amp to the spell damage and returns the result
+export function calculateSpellAmp (spellDamage, spellAmpPercent) {
+    return spellDamage + ((spellDamage / 100) * spellAmpPercent);
 }

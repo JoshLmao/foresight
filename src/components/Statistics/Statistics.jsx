@@ -7,7 +7,7 @@ import {
     calculateHealthRegen,
     calculateManaRegen,
     calculateMainArmor,
-    calculateSpellAmp,
+    calculateTotalSpellAmp,
     calculateStatusResist,
     calculateMagicResist,
     calculatePhysicalResist,
@@ -129,7 +129,7 @@ class Statistics extends Component {
                         { name: "damage", value: formatAttackMinMax(this.state.hero, this.state.level) },
                         { name: "attack range", value: parse(this.state.hero.AttackRange) },
                         { name: "move speed", value: parse(this.state.hero.MovementSpeed) },
-                        { name: "spell amp", value: calculateSpellAmp(this.state.talents, this.state.items, this.state.neutral) + "%" },
+                        { name: "spell amp", value: calculateTotalSpellAmp(this.state.talents, this.state.items, this.state.neutral) + "%" },
                         { name: "mana regen", value: calculateManaRegen(this.state.hero.AttributeBaseIntelligence, this.state.hero.AttributeIntelligenceGain, this.state.hero.StatusManaRegen, this.state.level) },
                     ]} />
                 </Col>

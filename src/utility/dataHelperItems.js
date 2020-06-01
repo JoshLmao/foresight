@@ -30,4 +30,5 @@ export function getItemSpecialAbilityValue (itemInfo, specialAbilityValueKey) {
             }
         }
     }
+    return undefined;
 }

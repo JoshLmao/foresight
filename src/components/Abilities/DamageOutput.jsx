@@ -1,50 +1,17 @@
 import React, { Component } from 'react';
 
-/// Parses a string that contains damage values separated with a space
-function getDmgValue(dmgValues, index) {
-    return dmgValues.split(' ')[index];
-}
+import {
+    calculateSpellDamage
+} from "../../utility/calculate";
 
-function getAbilityDmg(index, level, abilityInfo) {
-
-    if (!level || !abilityInfo) {
-        debugger;
-        return "?";
+/// Retrieves ability damage and returns display value
+function parseDamage(abilInfo, abilLvl, items, neutral) {
+    let abilDmg = calculateSpellDamage(abilInfo, abilLvl, items, neutral);
+    if (abilDmg) {
+        return abilDmg.damage;
+    } else {
+        return "Unable to find dmg";
     }
-
-    var dmgVals = abilityInfo.AbilityDamage;
-    if(dmgVals) {
-        return dmgVals.split(' ')[level - 1];
-    }
-    else if (abilityInfo.AbilitySpecial) 
-    {
-        //console.log(abilityInfo.AbilitySpecial);
-        for (var i = 0; i < abilityInfo.AbilitySpecial.length; i++) {
-            var specAbil = abilityInfo.AbilitySpecial[i];
-
-            /// Array of AbilitySpecial keys that deal damage
-            var specialAbilityDamageKeys = [
-                //Generic
-                "damage",
-                // Abaddon
-                "target_damage", "damage_absorb", 
-                //Alchemist
-                "max_damage",
-                
-                //zeus
-                "arc_damage",
-            ];
-
-            // Find matching key in AbilitySpecial
-            for(var j = 0; j < specialAbilityDamageKeys.length; j++) {
-                if (specAbil[specialAbilityDamageKeys[j]]) {
-                    return getDmgValue(specAbil[specialAbilityDamageKeys[j]], level - 1);
-                }
-            }
-        }
-    }
-    
-    return "No Output Damage";
 }
 
 class DamageOutput extends Component {
@@ -54,13 +21,34 @@ class DamageOutput extends Component {
         this.state = {
             abilityInfo: props.abilityInfo,
             levelInfo: props.levelInfo,
+
+            items: props.items,
+            neutral: props.neutral,
         };
+    }
+
+    componentDidUpdate(prevProps) {
+        if(prevProps.abilityInfo !== this.props.abilityInfo) {
+            this.setState({ abilityInfo: this.props.abilityInfo });
+        }
+
+        if (prevProps.levelInfo !== this.props.levelInfo) {
+            this.setState({ levelInfo: this.props.levelInfo });
+        }
+
+        if (prevProps.items !== this.props.items) {
+            this.setState({ items: this.props.items });
+        }
+
+        if (prevProps.neutral !== this.props.neutral) {
+            this.setState({ neutral: this.props.neutral });
+        }
     }
 
     render() {
         return (
             <h6>
-                { getAbilityDmg(this.state.levelInfo?.ability, this.state.levelInfo?.level, this.state.abilityInfo) }
+                { parseDamage(this.state.abilityInfo, this.state.levelInfo?.level, this.state.items, this.state.neutral) }
             </h6>
         );
     }

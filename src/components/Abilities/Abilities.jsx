@@ -58,6 +58,8 @@ class Abilities extends Component {
         this.state = {
             abilities: abils,
             abilityLevels: abilLevels,
+            items: props.items,
+            neutral: props.neutral,
         };
         
         this.onLevelChanged = this.onLevelChanged.bind(this);
@@ -71,6 +73,17 @@ class Abilities extends Component {
             this.setState({
                 abilities: abils,
                 abilityLevels: getLevelInfo(abils),
+            });
+        }
+
+        if (prevProps.items !== this.props.items) {
+            this.setState({
+                items: this.props.items,
+            });
+        }
+        if (prevProps.neutral !== this.props.neutral) {
+            this.setState({
+                neutral: this.props.neutral,
             });
         }
     }
@@ -138,7 +151,9 @@ class Abilities extends Component {
                                         {
                                             <DamageOutput 
                                                 abilityInfo={ability} 
-                                                levelInfo={levelInfo} />
+                                                levelInfo={levelInfo}
+                                                items={this.state.items}
+                                                neutral={this.state.neutral} />
                                         }
                                 </div>
                             </Col>
