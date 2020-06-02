@@ -24,7 +24,7 @@ export function getAbilitySpecialAbilityValue(abilityInfo, specialAbilityKey, ab
 
                 // If value contains a space, it can be levelled up needs to be split up
                 var dataValue = specialAbilityInfo[matchingKey];
-                if (specialAbilityInfo[matchingKey].includes(' ')) {
+                if (typeof dataValue === "string" && dataValue.includes(' ')) {
                     var split = specialAbilityInfo[matchingKey].split(' ');
                     dataValue = split[abilityLevel - 1];
                 }

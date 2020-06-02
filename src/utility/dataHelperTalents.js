@@ -2,7 +2,8 @@ import { lang as EnglishStrings } from "../data/dota2/languages/abilities_englis
 import { DOTAAbilities } from "../data/dota2/json/npc_abilities.json";
 
 /// Gets info and formattable display name of a talent
-export function getTalent(talent) {
+/// Returns both display name of talent and it's info in an object
+export function getTalentInfoFromName(talent) {
     var englishKeys = Object.keys(EnglishStrings.Tokens);
     var matchingKeys = englishKeys.filter((key) => {
         if (key.includes(talent)) {

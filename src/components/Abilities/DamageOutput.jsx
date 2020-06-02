@@ -5,8 +5,8 @@ import {
 } from "../../utility/calculate";
 
 /// Retrieves ability damage and returns display value
-function parseDamage(abilInfo, abilLvl, items, neutral) {
-    let abilDmg = calculateSpellDamage(abilInfo, abilLvl, items, neutral);
+function parseDamage(abilInfo, abilLvl, items, neutral, talents) {
+    let abilDmg = calculateSpellDamage(abilInfo, abilLvl, items, neutral, talents);
     if (abilDmg) {
         return abilDmg.damage;
     } else {
@@ -24,6 +24,7 @@ class DamageOutput extends Component {
 
             items: props.items,
             neutral: props.neutral,
+            selectedTalents: props.selectedTalents,
         };
     }
 
@@ -43,12 +44,16 @@ class DamageOutput extends Component {
         if (prevProps.neutral !== this.props.neutral) {
             this.setState({ neutral: this.props.neutral });
         }
+
+        if (prevProps.selectedTalents !== this.props.selectedTalents) {
+            this.setState({ selectedTalents: this.props.selectedTalents });
+        }
     }
 
     render() {
         return (
             <h6>
-                { parseDamage(this.state.abilityInfo, this.state.levelInfo?.level, this.state.items, this.state.neutral) }
+                { parseDamage(this.state.abilityInfo, this.state.levelInfo?.level, this.state.items, this.state.neutral, this.state.selectedTalents) }
             </h6>
         );
     }

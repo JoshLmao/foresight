@@ -5,7 +5,7 @@ import {
 } from "react-bootstrap";
 
 import {
-    getTalent
+    getTalentInfoFromName
 } from "../../utility/dataHelperTalents";
 
 function isTalentSelected (selectedTalents, talent) {
@@ -59,7 +59,7 @@ class TalentRow extends Component {
     }
 
     getTalentDisplayName (talent) {
-        var talent = getTalent(talent);
+        var talent = getTalentInfoFromName(talent);
         if (!talent || !talent?.displayName || !talent?.info) {
             return "Unknown Talent";
         }

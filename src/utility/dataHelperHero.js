@@ -59,8 +59,10 @@ export function getHeroTalents (heroInfo) {
     for(var i = 0; i < keys.length; i++) {
         if (keys[i].includes("Ability") && !keys[i].includes("AbilityDraft")) {
             var ability = heroInfo[keys[i]];
-            if (ability && ability.includes("special_bonus")) {
-                talents.push(ability);
+            if (ability && typeof ability === "string") {
+                if (ability !== "generic_hidden" && ability.includes("special_bonus")) {
+                    talents.push(ability);
+                }
             }
         }
     }
@@ -91,8 +93,10 @@ export function getAllHeroAbilities (heroInfo) {
     for(var i = 0; i < keys.length; i++) {
         if (keys[i].includes("Ability") && !keys[i].includes("AbilityDraft")) {
             var ability = heroInfo[keys[i]];
-            if (ability && !ability.includes("special_bonus") && ability !== "generic_hidden") {
-                abilities.push(ability);
+            if (ability && typeof ability === "string") {
+                if (ability !== "generic_hidden" && !ability.includes("special_bonus")) {
+                    abilities.push(ability);
+                }
             }
         }
     }

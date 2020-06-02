@@ -60,6 +60,7 @@ class Abilities extends Component {
             abilityLevels: abilLevels,
             items: props.items,
             neutral: props.neutral,
+            selectedTalents: props.selectedTalents,
         };
         
         this.onLevelChanged = this.onLevelChanged.bind(this);
@@ -85,6 +86,9 @@ class Abilities extends Component {
             this.setState({
                 neutral: this.props.neutral,
             });
+        }
+        if (prevProps.selectedTalents !== this.props.selectedTalents) {
+            this.setState({ selectedTalents: this.props.selectedTalents });
         }
     }
     
@@ -153,7 +157,8 @@ class Abilities extends Component {
                                                 abilityInfo={ability} 
                                                 levelInfo={levelInfo}
                                                 items={this.state.items}
-                                                neutral={this.state.neutral} />
+                                                neutral={this.state.neutral} 
+                                                selectedTalents={this.state.selectedTalents} />
                                         }
                                 </div>
                             </Col>

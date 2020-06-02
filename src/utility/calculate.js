@@ -9,6 +9,10 @@ import {
     getAbilityOutputDamage
 } from "./dataHelperAbilities";
 
+import {
+    getTalentInfoFromName
+} from "./dataHelperTalents";
+
 import { DOTAHeroes } from "../data/dota2/json/npc_heroes.json";
 import { DOTAAbilities } from "../data/dota2/json/npc_abilities.json";
 
@@ -324,7 +328,7 @@ export function calculateAttackTime(attackSpeed, attackRate, baseAgi, agiPerLeve
 }
 
 /// Calculates how much output damage an ability will do to an enemy, factoring in any items
-export function calculateSpellDamage(abilityInfo, abilityLevel, items, neutral) {
+export function calculateSpellDamage(abilityInfo, abilityLevel, items, neutral, talents) {
     if (!abilityLevel || !abilityInfo) {
         return -1;
     }
@@ -334,15 +338,27 @@ export function calculateSpellDamage(abilityInfo, abilityLevel, items, neutral) 
     
     // Add up spellAmp from all bonuses to calculate at end
     let totalSpellAmpPercent = 0;
-    
+
     if (items) {
         // Add item spell damage increase
         for(let i = 0; i < items.length; i++) {
             var itemInfo = getItemInfoFromName(items[i].item);
             if (itemInfo) {
-                let bonusSpellAmp = getItemSpecialAbilityValue(itemInfo, "spell_amp");
+                let spellAmp = getItemSpecialAbilityValue(itemInfo, "spell_amp");
+                if (spellAmp) {
+                    totalSpellAmpPercent += spellAmp;
+                }
+
+                let bonusSpellAmp = getItemSpecialAbilityValue(itemInfo, "bonus_spell_amp");
                 if (bonusSpellAmp) {
                     totalSpellAmpPercent += bonusSpellAmp;
+                }
+
+                // Bloodstone, item specific
+                let chargeCount = getItemSpecialAbilityValue(itemInfo, "initial_charges_tooltip");
+                let ampPerCharge = getItemSpecialAbilityValue(itemInfo, "amp_per_charge");
+                if (ampPerCharge && chargeCount) {
+                    totalSpellAmpPercent += (ampPerCharge * chargeCount);
                 }
             }
         }
@@ -354,9 +370,31 @@ export function calculateSpellDamage(abilityInfo, abilityLevel, items, neutral) 
         if (neutralInfo && neutralInfo.AbilitySpecial) {
             for (let i = 0; i < neutralInfo.AbilitySpecial.length; i++) {
                 let special = neutralInfo.AbilitySpecial[i];
+                // Spell amp
                 if (special.bonus_spell_amp) {
-                    var bonusSpellAmp = parseInt(special.bonus_spell_amp);
+                    let bonusSpellAmp = parseInt(special.bonus_spell_amp);
                     totalSpellAmpPercent += bonusSpellAmp; 
+                }
+
+                if (special.spell_amp) {
+                    let bonusSpellAmp = parseInt(special.spell_amp);
+                    totalSpellAmpPercent += bonusSpellAmp;
+                }
+            }
+        }
+    }
+
+    if (talents) {
+        // Add spell amplify from any selected talents
+        for(let i = 0; i < talents.length; i++) {
+            var talentInfo = getTalentInfoFromName(talents[i]);
+            if (talentInfo) {
+                var info = talentInfo.info;
+                if (info && info.AbilitySpecial) {
+                    let ampTalentValue = getAbilitySpecialAbilityValue(info, "value");
+                    if (ampTalentValue) {
+                        totalSpellAmpPercent += ampTalentValue;
+                    }
                 }
             }
         }
