@@ -416,8 +416,68 @@ export function calculateSpellAmp (spellDamage, spellAmpPercent) {
     return spellDamage + ((spellDamage / 100) * spellAmpPercent);
 }
 
-export function calculateManaCost(abilityInfo) {
+/// Calculates ability mana cost with items, neutrals and talents that contain reductions
+export function calculateManaCost(abilityInfo, abilityLevel, items, neutral, talents) {
+    let manaCost = null;
 
+    // Get inital mana cost amount
+    if (abilityInfo && abilityInfo.AbilityManaCost) {
+        let infoManaCost = abilityInfo.AbilityManaCost;
+        if (typeof infoManaCost === "string") {
+            let val = infoManaCost.split(" ")[abilityLevel - 1];
+            manaCost = val;
+        } else {
+            manaCost = infoManaCost;
+        }
+    }
+
+    // Determine mana reductions from items, neutral, talents
+    // Take all percentages and calculate at end
+    let totalManaCostReducePercent = 0;
+
+    if (items) {
+        for(let item of items) {
+            var itemInfo = getItemInfoFromName(item.item);
+            if(itemInfo) {
+                var manaCostReduceAmount = getItemSpecialAbilityValue(itemInfo, "manacost_reduction");
+                if(manaCostReduceAmount) {
+                    totalManaCostReducePercent += manaCostReduceAmount;
+                }
+            }
+        }
+    }
+
+    if (neutral) {
+        let neutralInfo = getItemInfoFromName(neutral);
+        if (neutralInfo) {
+            let costReductionAmount = getItemSpecialAbilityValue(neutralInfo, "manacost_reduction");
+            if (costReductionAmount) {
+                totalManaCostReducePercent += costReductionAmount;
+            }
+        }
+    }
+
+    if (talents) {
+        for(let talent of talents) {
+            // Only apply mana reducing talents
+            if (!talent.includes("mana_reduction")) {
+                continue;
+            }
+
+            let talentInfo = getAbilityInfoFromName(talent);
+            if(talentInfo) {
+                let talentReduceAmount = getAbilitySpecialAbilityValue(talentInfo, "value");
+                if(talentReduceAmount) {
+                    totalManaCostReducePercent += talentReduceAmount;
+                }
+            }
+        }
+    }
+
+    let removeManaAmt = (manaCost / 100) * totalManaCostReducePercent;
+    manaCost -= removeManaAmt;
+
+    return manaCost;
 }
 
 /// Calculates ability cooldown with items, neutrals, talents and abilities

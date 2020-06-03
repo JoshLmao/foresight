@@ -9,6 +9,7 @@ import { DOTAAbilities } from "../../data/dota2/json/npc_abilities.json";
 
 import DamageOutput from "./DamageOutput";
 import Cooldown from "./Cooldown";
+import ManaCost from "./ManaCost";
 import "./Abilities.css";
 
 function getAbilityLevel (levelInfo, abilityIndex, abilityInfo, onLevelChanged) {
@@ -49,31 +50,6 @@ function getLevelInfo (abilities) {
     return [ ];
 }
 
-/// Displays mana cost
-function ManaCost (props) {
-    let manaCost = 0;
-    let level = props.abilityLevel;
-    if (props.manaCost && level) {
-        // If is manaCost values stored as string separated by a space
-        if (typeof props.manaCost === "string") {
-            manaCost = props.manaCost.split(" ")[level - 1];
-        } else {
-            manaCost = props.manaCost;
-        }
-    }
-    
-    return (
-        <div className="mana-cost d-flex">
-            <div className="my-auto mr-1" style={{ 
-                height: "10px",
-                width: "10px",
-                backgroundColor: "rgb(69, 148, 207)",
-            }}/>
-            { manaCost }
-        </div>
-    );
-}
- 
 class Abilities extends Component {
     constructor(props) {
         super(props);
@@ -181,7 +157,12 @@ class Abilities extends Component {
                                     </Col>
                                     <Col md={6}>
                                         {/* Mana Cost */}
-                                        <ManaCost ability={ability} abilityLevel={levelInfo.level} manaCost={ability.AbilityManaCost} />
+                                        <ManaCost 
+                                            ability={ability}
+                                            abilityLevel={levelInfo.level} 
+                                            items={this.state.items}
+                                            neutral={this.state.neutral}
+                                            selectedTalents={this.state.selectedTalents} />
                                     </Col>
                                 </Row>
                                 {
