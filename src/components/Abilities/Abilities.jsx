@@ -8,6 +8,7 @@ import {
 import { DOTAAbilities } from "../../data/dota2/json/npc_abilities.json";
 
 import DamageOutput from "./DamageOutput";
+import Cooldown from "./Cooldown";
 import "./Abilities.css";
 
 function getAbilityLevel (levelInfo, abilityIndex, abilityInfo, onLevelChanged) {
@@ -48,6 +49,31 @@ function getLevelInfo (abilities) {
     return [ ];
 }
 
+/// Displays mana cost
+function ManaCost (props) {
+    let manaCost = 0;
+    let level = props.abilityLevel;
+    if (props.manaCost && level) {
+        // If is manaCost values stored as string separated by a space
+        if (typeof props.manaCost === "string") {
+            manaCost = props.manaCost.split(" ")[level - 1];
+        } else {
+            manaCost = props.manaCost;
+        }
+    }
+    
+    return (
+        <div className="mana-cost d-flex">
+            <div className="my-auto mr-1" style={{ 
+                height: "10px",
+                width: "10px",
+                backgroundColor: "rgb(69, 148, 207)",
+            }}/>
+            { manaCost }
+        </div>
+    );
+}
+ 
 class Abilities extends Component {
     constructor(props) {
         super(props);
@@ -123,7 +149,7 @@ class Abilities extends Component {
                         // Info about the ability
                         var ability = DOTAAbilities[value];
                         if (!ability) {
-                            debugger;
+                            console.log(`Unable to find info on ability '${value}'`);
                         }
                         // Current level of the ability
                         var levelInfo = this.state.abilityLevels.find(abilVal => abilVal.ability === index);
@@ -142,6 +168,22 @@ class Abilities extends Component {
                                     style={{ maxWidth: "90px", maxHeight: "90px" }}
                                     src={`http://cdn.dota2.com/apps/dota2/images/abilities/${value}_hp1.png`} 
                                     alt={ability.ID} />
+                                <Row className="px-5">
+                                    <Col md={6}>
+                                        {/* Cooldown */}
+                                        <Cooldown 
+                                            ability={ability} 
+                                            abilityLevel={levelInfo.level} 
+                                            cooldown={ability.AbilityCooldown}
+                                            items={this.state.items}
+                                            neutral={this.state.neutral}
+                                            selectedTalents={this.state.selectedTalents} />
+                                    </Col>
+                                    <Col md={6}>
+                                        {/* Mana Cost */}
+                                        <ManaCost ability={ability} abilityLevel={levelInfo.level} manaCost={ability.AbilityManaCost} />
+                                    </Col>
+                                </Row>
                                 {
                                     ability.IsGrantedByScepter && 
                                         <div className="align-self-center">aghs</div>

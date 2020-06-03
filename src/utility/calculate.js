@@ -387,6 +387,11 @@ export function calculateSpellDamage(abilityInfo, abilityLevel, items, neutral, 
     if (talents) {
         // Add spell amplify from any selected talents
         for(let i = 0; i < talents.length; i++) {
+            // Only use talents that are spell amp's
+            if (!talents[i].includes("spell_amplify")) {
+                continue;
+            }
+
             var talentInfo = getTalentInfoFromName(talents[i]);
             if (talentInfo) {
                 var info = talentInfo.info;
@@ -409,4 +414,80 @@ export function calculateSpellDamage(abilityInfo, abilityLevel, items, neutral, 
 /// Calculates and applies spell amp to the spell damage and returns the result
 export function calculateSpellAmp (spellDamage, spellAmpPercent) {
     return spellDamage + ((spellDamage / 100) * spellAmpPercent);
+}
+
+export function calculateManaCost(abilityInfo) {
+
+}
+
+/// Calculates ability cooldown with items, neutrals, talents and abilities
+/// https://liquipedia.net/dota2/Cooldown_Reduction
+export function calculateAbilityCooldown(abilityInfo, abilityLevel, items, neutral, talents) {
+    let cooldown = null;
+    
+    if (abilityInfo && abilityInfo.AbilityCooldown) {
+        let infoCooldown = abilityInfo.AbilityCooldown;
+        if (typeof infoCooldown === "string") {
+            let val = infoCooldown.split(" ")[abilityLevel - 1];
+            cooldown = parseFloat(val);
+        } else {
+            cooldown = infoCooldown;
+        }
+    }
+
+    let allReductions = [];
+    if (items) {
+        for (let item of items) {
+            if (item && item.item) {
+                var itemInfo = getItemInfoFromName(item.item);
+                if (itemInfo) {
+                    var bonusCooldown = getItemSpecialAbilityValue(itemInfo, "bonus_cooldown");
+                    if (bonusCooldown) {
+                        allReductions.push({ amount: bonusCooldown, source: item.item });
+                    }
+                }
+            }
+        }
+    }
+
+    if (neutral) {
+        let neutralInfo = getItemInfoFromName(neutral.item);
+        if (neutralInfo) {
+            let bonusCooldown = getItemSpecialAbilityValue(neutralInfo, "bonus_cooldown");
+            if (bonusCooldown) {
+                allReductions.push({ amount: bonusCooldown, source: neutral });
+            } 
+        }
+    }
+
+    if (talents) {
+        for(let talent of talents) {
+            // Ignore talent if it isn't a cd reduction one
+            if (!talent.includes("cooldown_reduction")) {
+                continue;
+            }
+
+            var talentInfo = getTalentInfoFromName(talent)?.info;
+            if (talentInfo) {
+                var talentReduction = getAbilitySpecialAbilityValue(talentInfo, "value");
+                if (talentReduction) {
+                    allReductions.push({ amount: talentReduction, source: talent });
+                }
+            }
+        }
+    }
+
+
+    let sourceOfReductions = [];
+    for(let reduction of allReductions) {
+        let decimal = reduction.amount / 100;
+        sourceOfReductions.push((1 - decimal));
+    }
+
+    let reductionTotal = cooldown;
+    for(let reduce of sourceOfReductions) {
+        reductionTotal *= reduce;
+    }
+
+    return reductionTotal.toFixed(2);
 }
