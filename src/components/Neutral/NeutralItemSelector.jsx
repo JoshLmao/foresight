@@ -5,9 +5,10 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMinus } from "@fortawesome/free-solid-svg-icons";
 
-
 import { itemNameToElement } from "../../utils";
-import { DOTAAbilities as DOTAItems } from "../../data/dota2/json/items.json";
+import {
+    getAllNeutrals
+} from "../../utility/dataHelperItems";
 
 import "./NeutralItemSelector.css";
 
@@ -15,37 +16,8 @@ class NeutralItemSelector extends Component {
     constructor(props) {
         super(props);
 
-        /// Filter out unused or unnecessary keys in items.json
-        var selectableNeutrals = Object.keys(DOTAItems).filter((value) => {
-            var key = value.toLowerCase();
-            var ability = DOTAItems[value];
-            if (key !== "version" && !key.includes("recipe") && !ability.IsObsolete) {
-                if (ability.ItemIsNeutralDrop === "1") {
-                    return true;
-                }
-            }
-            return false;
-        });
-        selectableNeutrals.sort();
-
-        // Map to an object
-        selectableNeutrals = selectableNeutrals.map((key) => {
-            var itemInfo = DOTAItems[key];
-            if (itemInfo.ItemIsNeutralDrop === "1") {
-                // Remove 'item_' prefix, split by _, remove "item" and join again
-                var name = key.split('_');
-                name.shift();
-                name = name.join('_');
-
-                return {
-                    item: name,
-                    itemInfo: itemInfo,
-                };
-            }
-        });
-        
         this.state = {
-            allNeutrals: selectableNeutrals,
+            allNeutrals: getAllNeutrals(),
             iconScale: 0.5,
             onNewNeutralSelected: props.onNeutralSelected,
         };

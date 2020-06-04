@@ -138,13 +138,13 @@ class Abilities extends Component {
                             return <div key={value}>?</div>
                         }
                         return (
-                            <Col key={ability.ID} className="d-flex flex-column justify-content-center">
+                            <Col key={ability.ID} className="d-flex flex-column justify-content-top">
                                 <img
                                     className="h-100 align-self-center"
                                     style={{ maxWidth: "90px", maxHeight: "90px" }}
                                     src={`http://cdn.dota2.com/apps/dota2/images/abilities/${value}_hp1.png`} 
                                     alt={ability.ID} />
-                                <Row className="px-5">
+                                <Row className="px-4">
                                     <Col md={6}>
                                         {/* Cooldown */}
                                         <Cooldown 

@@ -448,7 +448,7 @@ export function calculateManaCost(abilityInfo, abilityLevel, items, neutral, tal
     }
 
     if (neutral) {
-        let neutralInfo = getItemInfoFromName(neutral);
+        let neutralInfo = getItemInfoFromName(neutral.item);
         if (neutralInfo) {
             let costReductionAmount = getItemSpecialAbilityValue(neutralInfo, "manacost_reduction");
             if (costReductionAmount) {
@@ -474,8 +474,11 @@ export function calculateManaCost(abilityInfo, abilityLevel, items, neutral, tal
         }
     }
 
-    let removeManaAmt = (manaCost / 100) * totalManaCostReducePercent;
-    manaCost -= removeManaAmt;
+    // If ability has a mana value and has mana reductions
+    if (manaCost && totalManaCostReducePercent > 0) {
+        let removeManaAmt = (manaCost / 100) * totalManaCostReducePercent;
+        manaCost -= removeManaAmt;
+    }
 
     return manaCost;
 }

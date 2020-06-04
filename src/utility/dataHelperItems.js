@@ -32,3 +32,43 @@ export function getItemSpecialAbilityValue (itemInfo, specialAbilityValueKey) {
     }
     return undefined;
 }
+
+/// Returns all neutral items
+export function getAllNeutrals() {
+     /// Filter out unused or unnecessary keys in items.json
+     var selectableNeutrals = Object.keys(DOTAItems).filter((value) => {
+        var key = value.toLowerCase();
+        var ability = DOTAItems[value];
+        if (key !== "version" && !ability.IsObsolete) {
+            if (ability.ItemIsNeutralDrop === "1") {
+                return true;
+            }
+        }
+        return false;
+    });
+    selectableNeutrals.sort();
+
+    // Map to an object
+    selectableNeutrals = selectableNeutrals.map((key) => {
+        let itemKey = key;
+        if (itemKey.includes("recipe")) {
+            // remove recipe and retrieve item version
+            itemKey = itemKey.replace("_recipe", "");
+        }
+
+        var itemInfo = DOTAItems[itemKey];
+        if (itemInfo.ItemIsNeutralDrop === "1") {
+            // Remove 'item_' prefix, split by _, remove "item" and join again
+            var name = itemKey.split('_');
+            name.shift();
+            name = name.join('_');
+
+            return {
+                item: name,
+                itemInfo: itemInfo,
+            };
+        }
+    });
+
+    return selectableNeutrals;
+}

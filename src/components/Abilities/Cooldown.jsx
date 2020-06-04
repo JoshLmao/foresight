@@ -3,6 +3,9 @@ import {
     calculateAbilityCooldown
 } from "../../utility/calculate";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faClock }from "@fortawesome/free-solid-svg-icons";
+
 class Cooldown extends Component {
     constructor(props) {
         super(props);
@@ -44,9 +47,16 @@ class Cooldown extends Component {
     }
     
     render() {
+        let cooldown = this.updateCooldown();
         return (
             <div>
-                { this.updateCooldown() }
+                {
+                    cooldown &&
+                        <div className="d-flex">
+                            <FontAwesomeIcon className="my-auto mr-1" icon={faClock} />
+                            <div>{cooldown}</div>
+                        </div>
+                }
             </div>
         );
     }
