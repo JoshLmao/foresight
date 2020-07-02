@@ -177,6 +177,7 @@ class Abilities extends Component {
                                 <div className="mx-auto mt-2">
                                         {
                                             <DamageOutput 
+                                                ability={value}
                                                 abilityInfo={ability} 
                                                 levelInfo={levelInfo}
                                                 items={this.state.items}

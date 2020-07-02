@@ -2,6 +2,7 @@
 // * 
 
 import { DOTAAbilities } from "../data/dota2/json/npc_abilities.json";
+import { EAbilityBehaviour, EDamageType, ESpellImmunityType } from "../enums/attributes";
 
 export function getAbilityInfoFromName(abilityName) {
     if (abilityName) {
@@ -78,4 +79,87 @@ export function getAbilityOutputDamage(abilityInfo, abilityLevel) {
         }
     }
     return 0;
+}
+
+/// Gets all behaviour options of an ability such as if it goes through BKB, damage type, etc
+export function getAbilityBehaviours(abilityInfo) {
+    if (!abilityInfo) {
+        return null;
+    }
+
+    let behaviours = [];
+
+    if (abilityInfo.AbilityBehavior) {
+        let value = "";
+        let splitBehaviours = abilityInfo.AbilityBehavior.split(' | ');
+        for(let b of splitBehaviours) {
+            switch(b) {
+                case EAbilityBehaviour.UNIT_TARGET:
+                    value += "Unit";
+                    break;
+                case EAbilityBehaviour.POINT:
+                    value += "Point";
+                    break;
+                case EAbilityBehaviour.PASSIVE:
+                    value += "Passive";
+                    break;
+                case EAbilityBehaviour.NO_TARGET:
+                    value += "No Target";
+                    break;
+            }
+        }
+    
+        behaviours.push({
+            key: "ABILITY",
+            value: value,
+        });
+    }
+
+    if (abilityInfo.AbilityUnitDamageType) {
+        let dmgTypeVal = "";
+        let splitDmgTypes = abilityInfo.AbilityUnitDamageType.split(" | ");
+        for(let type of splitDmgTypes) {
+            switch(type) {
+                case EDamageType.MAGICAL:
+                    dmgTypeVal = "Magical";
+                    break;
+                case EDamageType.PURE:
+                    dmgTypeVal = "Pure";
+                    break;
+                case EDamageType.PHYSICAL:
+                    dmgTypeVal = "Physical";
+                    break;
+                default:
+                    dmgTypeVal = "Not Implemented";
+                    break;
+            }
+        }
+
+        behaviours.push({
+            key: "DAMAGE TYPE",
+            value: dmgTypeVal,
+        });
+    }
+
+    if (abilityInfo.SpellImmunityType) {
+        let pierceValue = "";
+        switch(abilityInfo.SpellImmunityType) {
+            case ESpellImmunityType.YES:
+                pierceValue = "Yes";
+                break;
+            case ESpellImmunityType.NO:
+                pierceValue = "No";
+                break;
+            default:
+                pierceValue = "Unknown";
+                break;
+        }
+
+        behaviours.push({
+            key: "PIERCES SPELL IMMUNITY",
+            value: pierceValue,
+        });
+    }
+
+    return behaviours;
 }

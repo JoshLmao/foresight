@@ -3,6 +3,10 @@ import React, { Component } from 'react';
 import {
     calculateSpellDamage
 } from "../../utility/calculate";
+import { getAbilityBehaviours } from "../../utility/dataHelperAbilities";
+import {
+    getDamageTypeDisplayName
+} from "../../utils";
 
 /// Retrieves ability damage and returns display value
 function parseDamage(abilInfo, abilLvl, items, neutral, talents) {
@@ -14,23 +18,40 @@ function parseDamage(abilInfo, abilLvl, items, neutral, talents) {
     }
 }
 
+function TypeValueUI (props) {
+    return (
+        <div className="d-flex" style={{ fontSize: "0.85rem"}}>
+            <div className="mr-2">{props.type}:</div>
+            <div>{props.value}</div>
+        </div>
+    )
+}
+
 class DamageOutput extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
+            ability: props.ability,
             abilityInfo: props.abilityInfo,
             levelInfo: props.levelInfo,
 
             items: props.items,
             neutral: props.neutral,
             selectedTalents: props.selectedTalents,
+
+            abilityBehaviours: getAbilityBehaviours(props.abilityInfo),
         };
+
+        this.updateAbilityBehaviours = this.updateAbilityBehaviours.bind(this);
     }
 
     componentDidUpdate(prevProps) {
         if(prevProps.abilityInfo !== this.props.abilityInfo) {
-            this.setState({ abilityInfo: this.props.abilityInfo });
+            this.setState({ 
+                abilityInfo: this.props.abilityInfo,
+                abilityBehaviours: getAbilityBehaviours(this.props.abilityInfo),
+            });
         }
 
         if (prevProps.levelInfo !== this.props.levelInfo) {
@@ -50,11 +71,29 @@ class DamageOutput extends Component {
         }
     }
 
+    updateAbilityBehaviours() {
+        let allBehaviours = getAbilityBehaviours(this.state.abilityInfo);
+        this.setState({ abilityBehaviours: allBehaviours });
+    }
+
     render() {
         return (
-            <h6>
-                { parseDamage(this.state.abilityInfo, this.state.levelInfo?.level, this.state.items, this.state.neutral, this.state.selectedTalents) }
-            </h6>
+            <div>
+                <h5>NAME</h5>
+                <div className="mb-2">
+                    {
+                        this.state.abilityBehaviours && this.state.abilityBehaviours.map((value) => {
+                            return (
+                                <TypeValueUI type={value.key} value={value.value}/>
+                            );
+                        })
+                    }
+                </div>
+                <h6>
+                    Damage: {' '}
+                    { parseDamage(this.state.abilityInfo, this.state.levelInfo?.level, this.state.items, this.state.neutral, this.state.selectedTalents) }
+                </h6>
+            </div>
         );
     }
 }
