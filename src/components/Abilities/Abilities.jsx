@@ -96,9 +96,13 @@ class Abilities extends Component {
     
     // Remove any undefined, hidden abilities
     filterAbilities(abils) {
-        return abils.filter(function (val) {
-            return val && val !== "generic_hidden";
-        });
+        if (abils) {
+            return abils.filter(function (val) {
+                return val && val !== "generic_hidden";
+            });
+        } else {
+            return null;
+        }
     }
 
     onLevelChanged(e) {

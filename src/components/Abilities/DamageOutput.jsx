@@ -4,9 +4,6 @@ import {
     calculateSpellDamage
 } from "../../utility/calculate";
 import { getAbilityBehaviours } from "../../utility/dataHelperAbilities";
-import {
-    getDamageTypeDisplayName
-} from "../../utils";
 
 /// Retrieves ability damage and returns display value
 function parseDamage(abilInfo, abilLvl, items, neutral, talents) {

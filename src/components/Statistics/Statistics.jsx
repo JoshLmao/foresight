@@ -64,12 +64,14 @@ function formatAttackTime(heroInfo, lvl) {
         if (heroInfo.AttackSpeed) {
             attackRate = heroInfo.AttackSpeed;
         }
-    }
-    
-    var agilityAttribute = getSpecificAttributeStats(EAttributes.ATTR_AGILITY, heroInfo);
 
-    var attackInfo = calculateAttackTime(attackSpeed, attackRate, agilityAttribute?.base, agilityAttribute?.perLevel, lvl);
-    return `${attackInfo.attackSpeed} (${attackInfo.attackTime} s)`;
+        var agilityAttribute = getSpecificAttributeStats(EAttributes.ATTR_AGILITY, heroInfo);
+
+        var attackInfo = calculateAttackTime(attackSpeed, attackRate, agilityAttribute?.base, agilityAttribute?.perLevel, lvl);
+        return `${attackInfo.attackSpeed} (${attackInfo.attackTime} s)`;
+    } else {
+        return "?";
+    }
 }
 
 class Statistics extends Component {
@@ -93,7 +95,9 @@ class Statistics extends Component {
     }
 
     updateArmor(lvl = undefined) {
-        this.setState({ armor: calculateMainArmor(this.state.hero.ArmorPhysical, this.state.hero.AttributeBaseAgility, this.state.hero.AttributeAgilityGain, lvl ? lvl : this.state.level) })
+        this.setState({ 
+            armor: calculateMainArmor(this.state.hero?.ArmorPhysical, this.state.hero?.AttributeBaseAgility, this.state.hero?.AttributeAgilityGain, lvl ? lvl : this.state.level) 
+        });
     }
 
     componentDidUpdate(prevProps) {
@@ -123,26 +127,32 @@ class Statistics extends Component {
     render() {
         return (
             <Row>
-                <Col md={6}>
-                    <StatArray title="ATTACK" stats={[
-                        { name: "attack speed", value: formatAttackTime(this.state.hero, this.state.level) },
-                        { name: "damage", value: formatAttackMinMax(this.state.hero, this.state.level) },
-                        { name: "attack range", value: parse(this.state.hero.AttackRange) },
-                        { name: "move speed", value: parse(this.state.hero.MovementSpeed) },
-                        { name: "spell amp", value: calculateTotalSpellAmp(this.state.talents, this.state.items, this.state.neutral) + "%" },
-                        { name: "mana regen", value: calculateManaRegen(this.state.hero.AttributeBaseIntelligence, this.state.hero.AttributeIntelligenceGain, this.state.hero.StatusManaRegen, this.state.level) },
-                    ]} />
-                </Col>
-                <Col md={6}>
-                    <StatArray title="DEFENCE" stats={[
-                        { name: "armor", value:  this.state.armor },
-                        { name: "physical resist", value: calculatePhysicalResist(this.state.armor) + "%" },
-                        { name: "magic resist", value: calculateMagicResist(this.state.items, this.state.neutral, this.state.abilities) + "%" },
-                        { name: "status resist", value: calculateStatusResist(this.state.items, this.state.neutral) + "%" },
-                        { name: "evasion", value: calculateEvasion(this.state.talents, this.state.items, this.state.abilities) + "%" },
-                        { name: "health regen", value: calculateHealthRegen(this.state.hero.AttributeBaseStrength, this.state.hero.AttributeStrengthGain, this.state.hero.StatusHealthRegen, this.state.level) },
-                    ]}/>
-                </Col>
+                {
+                    this.state.hero &&
+                    <Col md={6}>
+                        <StatArray title="ATTACK" stats={[
+                            { name: "attack speed", value: formatAttackTime(this.state.hero, this.state.level) },
+                            { name: "damage", value: formatAttackMinMax(this.state.hero, this.state.level) },
+                            { name: "attack range", value: parse(this.state.hero.AttackRange) },
+                            { name: "move speed", value: parse(this.state.hero.MovementSpeed) },
+                            { name: "spell amp", value: calculateTotalSpellAmp(this.state.talents, this.state.items, this.state.neutral) + "%" },
+                            { name: "mana regen", value: calculateManaRegen(this.state.hero.AttributeBaseIntelligence, this.state.hero.AttributeIntelligenceGain, this.state.hero.StatusManaRegen, this.state.level) },
+                        ]} />
+                    </Col>
+                }   
+                {
+                    this.state.hero &&
+                    <Col md={6}>
+                        <StatArray title="DEFENCE" stats={[
+                            { name: "armor", value:  this.state.armor },
+                            { name: "physical resist", value: calculatePhysicalResist(this.state.armor) + "%" },
+                            { name: "magic resist", value: calculateMagicResist(this.state.items, this.state.neutral, this.state.abilities) + "%" },
+                            { name: "status resist", value: calculateStatusResist(this.state.items, this.state.neutral) + "%" },
+                            { name: "evasion", value: calculateEvasion(this.state.talents, this.state.items, this.state.abilities) + "%" },
+                            { name: "health regen", value: calculateHealthRegen(this.state.hero.AttributeBaseStrength, this.state.hero.AttributeStrengthGain, this.state.hero.StatusHealthRegen, this.state.level) },
+                        ]}/>
+                    </Col>
+                }
             </Row>
         );
     }

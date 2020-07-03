@@ -108,13 +108,13 @@ class Calculator extends Component {
                         {/* Small Stats */}
                         <Col md={3}>
                             <Attributes 
-                                baseStrength={this.props.selectedHero.AttributeBaseStrength}
-                                strengthGain={this.props.selectedHero.AttributeStrengthGain}
-                                baseAgility={this.props.selectedHero.AttributeBaseAgility}
-                                agilityGain={this.props.selectedHero.AttributeAgilityGain}
-                                baseIntelligence={this.props.selectedHero.AttributeBaseIntelligence}
-                                intelligenceGain={this.props.selectedHero.AttributeIntelligenceGain}
-                                primaryAttribute={this.props.selectedHero.AttributePrimary} />
+                                baseStrength={this.props.selectedHero?.AttributeBaseStrength}
+                                strengthGain={this.props.selectedHero?.AttributeStrengthGain}
+                                baseAgility={this.props.selectedHero?.AttributeBaseAgility}
+                                agilityGain={this.props.selectedHero?.AttributeAgilityGain}
+                                baseIntelligence={this.props.selectedHero?.AttributeBaseIntelligence}
+                                intelligenceGain={this.props.selectedHero?.AttributeIntelligenceGain}
+                                primaryAttribute={this.props.selectedHero?.AttributePrimary} />
                         </Col>
                         {/* Final Attack/Defence Stats */}
                         <Col md={5}>
@@ -132,14 +132,14 @@ class Calculator extends Component {
                     <Row className="my-2 py-2">
                         <Col md={8}>
                             <HealthManaBar 
-                                baseStrength ={ this.props.selectedHero.AttributeBaseStrength }
-                                strengthGain={ this.props.selectedHero.AttributeStrengthGain } 
-                                baseIntelligence={this.props.selectedHero.AttributeBaseIntelligence }
-                                intelligenceGain={ this.props.selectedHero.AttributeIntelligenceGain }
+                                baseStrength ={ this.props.selectedHero?.AttributeBaseStrength }
+                                strengthGain={ this.props.selectedHero?.AttributeStrengthGain } 
+                                baseIntelligence={this.props.selectedHero?.AttributeBaseIntelligence }
+                                intelligenceGain={ this.props.selectedHero?.AttributeIntelligenceGain }
                                 heroLevel={ this.props.heroLevel } 
-                                primaryAttribute={ this.props.selectedHero.AttributePrimary }
-                                bonusHealthRegen={ this.props.selectedHero.StatusHealthRegen }
-                                bonusManaRegen={ this.props.selectedHero.StatusManaRegen } />
+                                primaryAttribute={ this.props.selectedHero?.AttributePrimary }
+                                bonusHealthRegen={ this.props.selectedHero?.StatusHealthRegen }
+                                bonusManaRegen={ this.props.selectedHero?.StatusManaRegen } />
                         </Col>
                         <Col md={4}>
                             <LevelSelector 
@@ -163,7 +163,8 @@ class Calculator extends Component {
                                 talents={this.props.heroTalents} 
                                 selectedTalents={this.props.selectedTalents}
                                 onTalentSelected={this.onTalentSelected} 
-                                onTalentUnselected={this.onTalentUnselected} />
+                                onTalentUnselected={this.onTalentUnselected} 
+                                abilityStrings={this.props.abilityStrings} />
                         </Col>
                     </Row>
 
@@ -172,7 +173,7 @@ class Calculator extends Component {
                         abilities={this.props.heroAbilities}
                         items={this.props.items}
                         neutral={this.props.neutralItem} 
-                        selectedTalents={this.props.selectedTalents} />
+                        selectedTalents={this.props.selectedTalents}  />
                 </Container>
             </div>
         );
@@ -180,17 +181,19 @@ class Calculator extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    selectedHero: state.selectedHero,
-    selectedHeroName: state.selectedHeroName,
+    selectedHero: state.hero.selectedHero,
+    selectedHeroName: state.hero.selectedHeroName,
     
-    heroAbilities: state.heroAbilities,
-    heroTalents: state.heroTalents,
-    heroLevel: state.heroLevel,
+    heroAbilities: state.hero.heroAbilities,
+    heroTalents: state.hero.heroTalents,
+    heroLevel: state.hero.heroLevel,
 
-    items: state.items,
-    backpack: state.backpack,
-    neutralItem: state.neutralItem,
-    selectedTalents: state.selectedTalents,
+    items: state.hero.items,
+    backpack: state.hero.backpack,
+    neutralItem: state.hero.neutralItem,
+    selectedTalents: state.hero.selectedTalents,
+
+    abilityStrings: state.language.stringsAbilities,
 });
 
 export default connect(mapStateToProps)(Calculator);

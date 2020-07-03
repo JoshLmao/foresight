@@ -9,6 +9,8 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 
+import LanguageSelect from '../LanguageSelect';
+
 class Navigation extends Component {
     render() {
         return (
@@ -21,6 +23,9 @@ class Navigation extends Component {
                             <Nav.Link to="/" as={Link}>home</Nav.Link>
                             <Nav.Link to="/app" as={Link}>calculator</Nav.Link>
                         </Nav>
+                        <div className="mr-2">
+                            <LanguageSelect/>
+                        </div>
                         <a href="https://github.com/JoshLmao/foresight">
                             <Button variant="outline-secondary">
                                 <FontAwesomeIcon icon={faGithub} />

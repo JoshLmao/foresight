@@ -1,6 +1,12 @@
-import { createStore } from "redux";
-import reducer from "../reducers/reducer";
+import { createStore, combineReducers } from "redux";
+import hero from "../reducers/hero";
+import language from "../reducers/language";
 
-const store = createStore(reducer);
+const allReducers = combineReducers({
+    language,
+    hero,
+});
+
+const store = createStore(allReducers);
 
 export default store;

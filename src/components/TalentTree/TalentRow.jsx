@@ -5,7 +5,8 @@ import {
 } from "react-bootstrap";
 
 import {
-    getTalentInfoFromName
+    getTalentInfoFromName,
+    getTalentDisplayNameFromStrings
 } from "../../utility/dataHelperTalents";
 
 function isTalentSelected (selectedTalents, talent) {
@@ -24,6 +25,8 @@ class TalentRow extends Component {
             selectedTalents: this.props.selectedTalents,
             onTalentSelected: this.props.onTalentSelected,
             onTalentUnselected: this.props.onTalentUnselected,
+
+            abilityStrings: this.props.abilityStrings,
         };
 
         this.onSelectTalent = this.onSelectTalent.bind(this);
@@ -46,6 +49,10 @@ class TalentRow extends Component {
         if (prevProps.selectedTalents !== this.props.selectedTalents) {
             this.setState({ selectedTalents: this.props.selectedTalents });
         }
+
+        if (prevProps.abilityStrings !== this.props.abilityStrings) {
+            this.setState({ abilityStrings: this.props.abilityStrings });
+        }
     }
 
     onSelectTalent(e) {
@@ -59,14 +66,14 @@ class TalentRow extends Component {
     }
 
     getTalentDisplayName (talent) {
-        var talent = getTalentInfoFromName(talent);
-        if (!talent || !talent?.displayName || !talent?.info) {
+        let talentInfo = getTalentInfoFromName(talent);
+        if (!talentInfo) {
             return "Unknown Talent";
         }
 
-        var displayName = talent?.displayName;
-        if (displayName && talent.info && talent.info.AbilitySpecial) {
-            displayName = displayName.replace('{s:value}', talent.info.AbilitySpecial[0].value);
+        let displayName = getTalentDisplayNameFromStrings(this.state.abilityStrings, talent);
+        if (displayName && talentInfo && talentInfo.AbilitySpecial) {
+            displayName = displayName.replace('{s:value}', talentInfo.AbilitySpecial[0].value);
         }
 
         return displayName;
