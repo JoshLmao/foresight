@@ -4,6 +4,11 @@ import {
     calculateSpellDamage
 } from "../../utility/calculate";
 import { getAbilityBehaviours } from "../../utility/dataHelperAbilities";
+import { 
+    tryGetAbilityLocalizedString, 
+    getTooltipString,
+    getTooltipAbilityString
+} from "../../utility/data-helpers/language";
 
 /// Retrieves ability damage and returns display value
 function parseDamage(abilInfo, abilLvl, items, neutral, talents) {
@@ -15,10 +20,18 @@ function parseDamage(abilInfo, abilLvl, items, neutral, talents) {
     }
 }
 
+function getAbilityNameFromStrings(abilityStrings, abilityName) {
+    if (abilityStrings && abilityName) {
+        return tryGetAbilityLocalizedString(abilityStrings, abilityName);
+    } else {
+        return "?";
+    }
+}
+
 function TypeValueUI (props) {
     return (
         <div className="d-flex" style={{ fontSize: "0.85rem"}}>
-            <div className="mr-2">{props.type}:</div>
+            <div className="mr-2">{props.type}</div>
             <div>{props.value}</div>
         </div>
     )
@@ -38,6 +51,9 @@ class DamageOutput extends Component {
             selectedTalents: props.selectedTalents,
 
             abilityBehaviours: getAbilityBehaviours(props.abilityInfo),
+
+            abilityStrings: props.abilityStrings,
+            dotaStrings: props.dotaStrings,
         };
 
         this.updateAbilityBehaviours = this.updateAbilityBehaviours.bind(this);
@@ -66,6 +82,13 @@ class DamageOutput extends Component {
         if (prevProps.selectedTalents !== this.props.selectedTalents) {
             this.setState({ selectedTalents: this.props.selectedTalents });
         }
+
+        if (prevProps.abilityStrings !== this.props.abilityStrings) {
+            this.setState({ abilityStrings: this.props.abilityStrings });
+        }
+        if (prevProps.dotaStrings !== this.props.dotaStrings) {
+            this.setState({ dotaStrings: this.props.dotaStrings });
+        }
     }
 
     updateAbilityBehaviours() {
@@ -76,12 +99,14 @@ class DamageOutput extends Component {
     render() {
         return (
             <div>
-                <h5>NAME</h5>
+                <h5>{getTooltipAbilityString(this.state.abilityStrings, this.state.ability)}</h5>
                 <div className="mb-2">
                     {
                         this.state.abilityBehaviours && this.state.abilityBehaviours.map((value) => {
                             return (
-                                <TypeValueUI type={value.key} value={value.value}/>
+                                <TypeValueUI 
+                                    type={getTooltipString(this.state.dotaStrings, value.key)} 
+                                    value={value.value} />
                             );
                         })
                     }

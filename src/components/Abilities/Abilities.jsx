@@ -63,6 +63,9 @@ class Abilities extends Component {
             items: props.items,
             neutral: props.neutral,
             selectedTalents: props.selectedTalents,
+
+            abilityStrings: props.abilityStrings,
+            dotaStrings: props.dotaStrings,
         };
         
         this.onLevelChanged = this.onLevelChanged.bind(this);
@@ -80,17 +83,20 @@ class Abilities extends Component {
         }
 
         if (prevProps.items !== this.props.items) {
-            this.setState({
-                items: this.props.items,
-            });
+            this.setState({ items: this.props.items });
         }
         if (prevProps.neutral !== this.props.neutral) {
-            this.setState({
-                neutral: this.props.neutral,
-            });
+            this.setState({ neutral: this.props.neutral });
         }
         if (prevProps.selectedTalents !== this.props.selectedTalents) {
             this.setState({ selectedTalents: this.props.selectedTalents });
+        }
+
+        if (prevProps.abilityStrings !== this.props.abilityStrings) {
+            this.setState({ abilityStrings: this.props.abilityStrings });
+        }
+        if (prevProps.dotaStrings !== this.props.dotaStrings) {
+            this.setState({ dotaStrings: this.props.dotaStrings });
         }
     }
     
@@ -113,8 +119,14 @@ class Abilities extends Component {
 
         var levelIndex = parseInt(e.target.dataset.lvlindex);
         var abilities = this.state.abilityLevels;
-        // Set Level's new value to which btn was pressed
-        abilities[levelIndex].level = parseInt(e.target.dataset.btnindex) + 1;
+        var targetLevel = parseInt(e.target.dataset.btnindex) + 1;
+        // Clicked same level, set to 0
+        if (abilities[levelIndex].level === targetLevel) {
+            abilities[levelIndex].level = 0;
+        } else {
+            // Set Level's new value to which btn was pressed
+            abilities[levelIndex].level = targetLevel;
+        }
 
         this.setState({
             abilityLevels: abilities,
@@ -140,6 +152,11 @@ class Abilities extends Component {
                         //console.log(levelInfo);
                         if (!ability && value) {
                             return <div key={value}>?</div>
+                        }
+
+                        // Dont add any scepter abilities unless hero has scepter
+                        if (ability && ability.IsGrantedByScepter && this.state.items.filter(item => item.item === "ultimate_scepter").length <= 0) {
+                            return;
                         }
                         return (
                             <Col key={ability.ID} className="d-flex flex-column justify-content-top">
@@ -169,13 +186,9 @@ class Abilities extends Component {
                                             selectedTalents={this.state.selectedTalents} />
                                     </Col>
                                 </Row>
-                                {
-                                    ability.IsGrantedByScepter && 
-                                        <div className="align-self-center">aghs</div>
-                                }
                                 <div className="align-self-center pt-2 d-flex">
                                     {
-                                        this.state.abilityLevels ? getAbilityLevel(levelInfo, index, ability, this.onLevelChanged) : <div>!</div>    
+                                        this.state.abilityLevels && !ability.IsGrantedByScepter && getAbilityLevel(levelInfo, index, ability, this.onLevelChanged)
                                     }
                                 </div>
                                 <div className="mx-auto mt-2">
@@ -186,7 +199,9 @@ class Abilities extends Component {
                                                 levelInfo={levelInfo}
                                                 items={this.state.items}
                                                 neutral={this.state.neutral} 
-                                                selectedTalents={this.state.selectedTalents} />
+                                                selectedTalents={this.state.selectedTalents} 
+                                                abilityStrings={this.state.abilityStrings} 
+                                                dotaStrings={this.state.dotaStrings} />
                                         }
                                 </div>
                             </Col>

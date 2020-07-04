@@ -173,7 +173,9 @@ class Calculator extends Component {
                         abilities={this.props.heroAbilities}
                         items={this.props.items}
                         neutral={this.props.neutralItem} 
-                        selectedTalents={this.props.selectedTalents}  />
+                        selectedTalents={this.props.selectedTalents} 
+                        abilityStrings={this.props.abilityStrings}
+                        dotaStrings={this.props.dotaStrings} />
                 </Container>
             </div>
         );
@@ -194,6 +196,7 @@ const mapStateToProps = (state) => ({
     selectedTalents: state.hero.selectedTalents,
 
     abilityStrings: state.language.stringsAbilities,
+    dotaStrings: state.language.stringsDota,
 });
 
 export default connect(mapStateToProps)(Calculator);

@@ -90,28 +90,28 @@ export function getAbilityBehaviours(abilityInfo) {
     let behaviours = [];
 
     if (abilityInfo.AbilityBehavior) {
-        let value = "";
+        let targeting = [];
         let splitBehaviours = abilityInfo.AbilityBehavior.split(' | ');
         for(let b of splitBehaviours) {
             switch(b) {
                 case EAbilityBehaviour.UNIT_TARGET:
-                    value += "Unit";
+                    targeting.push("Unit");
                     break;
                 case EAbilityBehaviour.POINT:
-                    value += "Point";
+                    targeting.push("Point");
                     break;
                 case EAbilityBehaviour.PASSIVE:
-                    value += "Passive";
+                    targeting.push("Passive");
                     break;
                 case EAbilityBehaviour.NO_TARGET:
-                    value += "No Target";
+                    targeting.push("No Target");
                     break;
             }
         }
     
         behaviours.push({
-            key: "ABILITY",
-            value: value,
+            key: "DOTA_ToolTip_Ability",
+            value: targeting.join(", "),
         });
     }
 
@@ -136,7 +136,7 @@ export function getAbilityBehaviours(abilityInfo) {
         }
 
         behaviours.push({
-            key: "DAMAGE TYPE",
+            key: "DOTA_ToolTip_Damage",
             value: dmgTypeVal,
         });
     }
@@ -156,7 +156,7 @@ export function getAbilityBehaviours(abilityInfo) {
         }
 
         behaviours.push({
-            key: "PIERCES SPELL IMMUNITY",
+            key: "DOTA_ToolTip_PiercesSpellImmunity",
             value: pierceValue,
         });
     }

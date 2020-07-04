@@ -1,6 +1,6 @@
 import { DOTAHeroes } from "../data/dota2/json/npc_heroes.json";
 import { lang as EngAbilStrings } from "../data/dota2/languages/abilities_english.json";
-import { lang as EngGenStrings } from "../data/dota2/languages/dota_english.json";
+import { lang as EngDotaStrings } from "../data/dota2/languages/dota_english.json";
 
 import {
     parseNameFromModel,
@@ -45,7 +45,7 @@ const initialState = {
     // Current code of the selected UI language
     lang: "en",
     stringsAbilities: EngAbilStrings,
-    stringsGeneral: EngGenStrings,
+    stringsDota: EngDotaStrings,
 };
 
 export default initialState;

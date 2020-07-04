@@ -5,10 +5,10 @@ import { ELanguages } from "../enums/languages";
 import initialState from "./initialState";
 
 import { lang as EngAbilStrings } from "../data/dota2/languages/abilities_english.json";
-import { lang as EngGenStrings } from "../data/dota2/languages/dota_english.json";
+import { lang as EngDotaStrings } from "../data/dota2/languages/dota_english.json";
 
 import { lang as SChineseAbilStrings } from "../data/dota2/languages/abilities_schinese.json";
-import { lang as SChineseGenStrings } from "../data/dota2/languages/dota_schinese.json";
+import { lang as SChineseDotaStrings } from "../data/dota2/languages/dota_schinese.json";
 
 function getAbilityStrings(langCode) {
     switch(langCode) {
@@ -24,9 +24,9 @@ function getAbilityStrings(langCode) {
 function getGeneralStrings(langCode) {
     switch(langCode) {
         case ELanguages.ENGLISH:
-            return EngGenStrings;
+            return EngDotaStrings;
         case ELanguages.SCHINESE:
-            return SChineseGenStrings;
+            return SChineseDotaStrings;
         default:
             return null;
     }
@@ -41,7 +41,7 @@ export default (state = initialState, action) => {
                 lang: action.value,
 
                 stringsAbilities: getAbilityStrings(action.value),
-                stringsGeneral: getGeneralStrings(action.value),
+                stringsDota: getGeneralStrings(action.value),
             };
         default:
             return state;

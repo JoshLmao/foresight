@@ -9,7 +9,7 @@ function getSupportedLanguages() {
     var langs = Object.values(ELanguages);
     return langs.map((value) => {
         return (
-            <option value={value}>{value}</option>
+            <option value={value} key={value}>{value}</option>
         )
     });
 }
