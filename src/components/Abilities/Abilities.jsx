@@ -66,6 +66,8 @@ class Abilities extends Component {
 
             abilityStrings: props.abilityStrings,
             dotaStrings: props.dotaStrings,
+
+            displayDamage: props.displayDamage,
         };
         
         this.onLevelChanged = this.onLevelChanged.bind(this);
@@ -193,15 +195,16 @@ class Abilities extends Component {
                                 </div>
                                 <div className="mx-auto mt-2">
                                         {
-                                            <DamageOutput 
-                                                ability={value}
-                                                abilityInfo={ability} 
-                                                levelInfo={levelInfo}
-                                                items={this.state.items}
-                                                neutral={this.state.neutral} 
-                                                selectedTalents={this.state.selectedTalents} 
-                                                abilityStrings={this.state.abilityStrings} 
-                                                dotaStrings={this.state.dotaStrings} />
+                                            this.state.displayDamage && 
+                                                <DamageOutput 
+                                                    ability={value}
+                                                    abilityInfo={ability} 
+                                                    levelInfo={levelInfo}
+                                                    items={this.state.items}
+                                                    neutral={this.state.neutral} 
+                                                    selectedTalents={this.state.selectedTalents} 
+                                                    abilityStrings={this.state.abilityStrings} 
+                                                    dotaStrings={this.state.dotaStrings} />
                                         }
                                 </div>
                             </Col>

@@ -14,6 +14,7 @@ import {
     SELECTED_TALENT,
     UNSELECTED_TALENT,
     NEW_HERO_LEVEL,
+    ENEMY_SELECTED_TALENT
 } from "../../constants/actionTypes";
 
 import Abilities from "../Abilities";
@@ -24,6 +25,7 @@ import ChangeHeroBtn from "../ChangeHeroBtn";
 import TalentTree from "../TalentTree";
 import HealthManaBar from "../HealthManaBar";
 import LevelSelector from "../LevelSelector";
+import EnemyHero from '../EnemyHero';
 
 /* DotA 2 Import Data */
 import { DOTAHeroes } from "../../data/dota2/json/npc_heroes.json";
@@ -79,6 +81,11 @@ class Calculator extends Component {
     onTalentUnselected (talent) {
         console.log(`${UNSELECTED_TALENT}: ${talent}`);
         this.props.dispatch({ type: UNSELECTED_TALENT, value: talent });
+    }
+
+    onEnemyTalentSelected (enemy, talent) {
+        console.log(`${ENEMY_SELECTED_TALENT}: ${enemy}, ${talent}`);
+        this.props.dispatch({ type: ENEMY_SELECTED_TALENT, value: talent });
     }
 
     onHeroLevelChanged(newLevel) {
@@ -175,6 +182,22 @@ class Calculator extends Component {
                         neutral={this.props.neutralItem} 
                         selectedTalents={this.props.selectedTalents} 
                         abilityStrings={this.props.abilityStrings}
+                        dotaStrings={this.props.dotaStrings} 
+                        displayDamage={true} />
+
+                    {/* Padding Separator */}
+                    <div className="py-5" />
+                    
+                    {/* Enemy Hero */}
+                    <EnemyHero 
+                        hero={this.props.selectedEnemyHero}
+                        heroName={this.props.selectedEnemyHeroName} 
+                        heroAbilities={this.props.enemyHeroAbilities} 
+                        heroItems={this.props.enemyHeroItems}
+                        heroTalents={this.props.enemyHeroTalents} 
+                        selectedTalents={this.props.selectedEnemyTalents}
+                        neutral={this.props.enemyNeutralItem}
+                        abilityStrings={this.props.abilityStrings} 
                         dotaStrings={this.props.dotaStrings} />
                 </Container>
             </div>
@@ -197,6 +220,13 @@ const mapStateToProps = (state) => ({
 
     abilityStrings: state.language.stringsAbilities,
     dotaStrings: state.language.stringsDota,
+
+    selectedEnemyHero: state.enemy.selectedEnemyHero,
+    selectedEnemyHeroName: state.enemy.selectedEnemyHeroName,
+    enemyHeroTalents: state.enemy.enemyHeroTalents,
+    enemyHeroAbilities: state.enemy.enemyHeroAbilities,
+    selectedEnemyTalents: state.enemy.selectedEnemyTalents,
+    enemyHeroItems: state.enemy.enemyHeroItems,
 });
 
 export default connect(mapStateToProps)(Calculator);

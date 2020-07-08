@@ -46,6 +46,21 @@ const initialState = {
     lang: "en",
     stringsAbilities: EngAbilStrings,
     stringsDota: EngDotaStrings,
+
+    /// Selected enemy hero 
+    selectedEnemyHero: DOTAHeroes.npc_dota_hero_winter_wyvern,
+    selectedEnemyHeroName: parseNameFromModel(DOTAHeroes.npc_dota_hero_winter_wyvern.Model),
+    enemyHeroTalents: getHeroTalents(DOTAHeroes.npc_dota_hero_winter_wyvern),
+    enemyHeroAbilities: getAllHeroAbilities(DOTAHeroes.npc_dota_hero_winter_wyvern),
+    selectedEnemyTalents: [ ],
+    enemyHeroItems: [
+        { slot: 0, item: "ultimate_scepter" },
+        { slot: 1, item: "" },
+        { slot: 2, item: "" },
+        { slot: 3, item: "" },
+        { slot: 4, item: "" },
+        { slot: 5, item: "" },
+    ],
 };
 
 export default initialState;
