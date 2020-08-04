@@ -27,28 +27,24 @@ class Attributes extends Component {
         super(props);
 
         this.state = {
-            primaryAttribute: props.primaryAttribute,
-
-            baseStrength: props.baseStrength,
-            strengthGain: props.strengthGain,
-            baseAgility: props.baseAgility,
-            agilityGain: props.agilityGain,
-            baseIntelligence: props.baseIntelligence,
-            intelligenceGain: props.intelligenceGain,
+            hero: props.hero,
+            level: props.heroLevel,
+            items: props.items,
+            talents: props.talents,
+            neutral: props.neutral,
+            abilities: props.abilities,
         };
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.baseStrength !== this.props.baseStrength || prevProps.baseAgility !== this.props.baseAgility || prevProps.baseIntelligence !== this.props.baseIntelligence) {
+        if (prevProps !== this.props) {
             this.setState({
-                primaryAttribute: this.props.primaryAttribute,
-
-                baseStrength: this.props.baseStrength,
-                strengthGain: this.props.strengthGain,
-                baseAgility: this.props.baseAgility,
-                agilityGain: this.props.agilityGain,
-                baseIntelligence: this.props.baseIntelligence,
-                intelligenceGain: this.props.intelligenceGain,
+                hero: this.props.hero,
+                level: this.props.heroLevel,
+                items: this.props.items,
+                talents: this.props.talents,
+                neutral: this.props.neutral,
+                abilities: this.props.abilities,
             });
         }
     }
@@ -60,21 +56,21 @@ class Attributes extends Component {
                 <h6>ATTRIBUTES</h6>
                 <Attribute 
                     type={"strength"} 
-                    value={parse(this.state.baseStrength)} 
-                    per={parse(this.state.strengthGain)} 
-                    isPrimaryAttribute={this.state.primaryAttribute === EAttributes.ATTR_STRENGTH}/>
+                    value={parse(this.state.hero?.AttributeBaseStrength)} 
+                    per={parse(this.state.hero?.AttributeStrengthGain)} 
+                    isPrimaryAttribute={this.state.hero?.AttributePrimary === EAttributes.ATTR_STRENGTH}/>
 
                 <Attribute 
                     type="agility"
-                    value={parse(this.state.baseAgility)}
-                    per={parse(this.state.agilityGain)} 
-                    isPrimaryAttribute={this.state.primaryAttribute === EAttributes.ATTR_AGILITY} />
+                    value={parse(this.state.hero?.AttributeBaseAgility)}
+                    per={parse(this.state.hero?.AttributeAgilityGain)} 
+                    isPrimaryAttribute={this.state.hero?.AttributePrimary === EAttributes.ATTR_AGILITY} />
 
                 <Attribute 
                     type="intelligence" 
-                    value={parse(this.state.baseIntelligence)}
-                    per={parse(this.state.intelligenceGain)} 
-                    isPrimaryAttribute={this.state.primaryAttribute === EAttributes.ATTR_INTELLIGENCE} />
+                    value={parse(this.state.hero?.AttributeBaseIntelligence)}
+                    per={parse(this.state.hero?.AttributeIntelligenceGain)} 
+                    isPrimaryAttribute={this.state.hero?.AttributePrimary === EAttributes.ATTR_INTELLIGENCE} />
             </div>
         );
     }

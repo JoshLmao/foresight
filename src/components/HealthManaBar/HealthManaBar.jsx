@@ -15,19 +15,16 @@ class HealthManaBar extends Component {
         super(props);
 
         this.state = {
-            baseStrength: props.baseStrength,
-            strengthGain: props.strengthGain,
-            baseIntelligence: props.baseIntelligence,
-            intelligenceGain: props.intelligenceGain,
-            primaryAttribute: props.primaryAttribute,
-            
-            bonusHealthRegen: props.bonusHealthRegen,
-            bonusManaRegen: props.bonusManaRegen,
+            hero: props.hero,
+            level: props.heroLevel,
+            items: props.items,
+            talents: props.talents,
+            neutral: props.neutral,
+            abilities: props.abilities,
 
-            heroLevel: props.heroLevel,
             maxHealth: 0,
             maxMana: 0,
-        };
+        }
 
         this.updateBar = this.updateBar.bind(this);
     }
@@ -39,35 +36,24 @@ class HealthManaBar extends Component {
     componentDidUpdate(prevProps) {
         if (prevProps !== this.props) {
             this.setState({
-                baseStrength: this.props.baseStrength,
-                strengthGain: this.props.strengthGain,
-                baseIntelligence: this.props.baseIntelligence,
-                intelligenceGain: this.props.intelligenceGain,
-                primaryAttribute: this.props.primaryAttribute,
-                
-                bonusHealthRegen: this.props.bonusHealthRegen,
-                bonusManaRegen: this.props.bonusManaRegen,
+                hero: this.props.hero,
+                level: this.props.heroLevel,
+                items: this.props.items,
+                talents: this.props.talents,
+                neutral: this.props.neutral,
+                abilities: this.props.abilities,
 
-                heroLevel: this.props.heroLevel,
                 maxHealth: 0,
                 maxMana: 0,
-            });
-            this.updateBar(this.props);
+            }, () => this.updateBar());
         }
     }
 
-    updateBar(newProps = undefined) {
-        if (newProps) {
-            this.setState({
-                maxHealth: calculateHealth(newProps.baseStrength, newProps.strengthGain, newProps.heroLevel, newProps.primaryAttribute === EAttributes.ATTR_STRENGTH).toFixed(0),
-                maxMana: calculateMana(newProps.baseIntelligence, newProps.intelligenceGain, newProps.heroLevel, newProps.primaryAttribute === EAttributes.ATTR_INTELLIGENCE).toFixed(0),
-            });
-        } else {
-            this.setState({
-                maxHealth: calculateHealth(this.state.baseStrength, this.state.strengthGain, this.state.heroLevel, this.state.primaryAttribute === EAttributes.ATTR_STRENGTH).toFixed(0),
-                maxMana: calculateMana(this.state.baseIntelligence, this.state.intelligenceGain, this.state.heroLevel, this.state.primaryAttribute === EAttributes.ATTR_INTELLIGENCE).toFixed(0),
-            });
-        }
+    updateBar() {
+        this.setState({
+            maxHealth: calculateHealth(this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents),
+            maxMana: calculateMana(this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents),
+        });
     }
 
     render() {
@@ -76,13 +62,13 @@ class HealthManaBar extends Component {
                 <div className="bar health d-flex">
                     <h6 className="my-auto mx-auto">{this.state.maxHealth} / {this.state.maxHealth}</h6>
                     <div className="my-auto mr-1">
-                        { "+" + calculateHealthRegen(this.state.baseStrength, this.state.strengthGain, this.state.bonusHealthRegen, this.state.heroLevel,) }
+                        { "+" + calculateHealthRegen(this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents) }
                     </div>
                 </div>
                 <div className="bar mana d-flex">
                     <h6 className="my-auto mx-auto">{this.state.maxMana} / {this.state.maxMana}</h6>
                     <div className="my-auto mr-1">
-                        { "+" + calculateManaRegen(this.state.baseIntelligence, this.state.intelligenceGain, this.state.bonusManaRegen, this.state.heroLevel) }
+                        { "+" + calculateManaRegen(this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents) }
                     </div>
                 </div>
             </div>

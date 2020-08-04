@@ -136,7 +136,7 @@ class Statistics extends Component {
                             { name: "attack range", value: parse(this.state.hero.AttackRange) },
                             { name: "move speed", value: parse(this.state.hero.MovementSpeed) },
                             { name: "spell amp", value: calculateTotalSpellAmp(this.state.talents, this.state.items, this.state.neutral) + "%" },
-                            { name: "mana regen", value: calculateManaRegen(this.state.hero.AttributeBaseIntelligence, this.state.hero.AttributeIntelligenceGain, this.state.hero.StatusManaRegen, this.state.level) },
+                            { name: "mana regen", value: calculateManaRegen(this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents) },
                         ]} />
                     </Col>
                 }   
@@ -149,7 +149,7 @@ class Statistics extends Component {
                             { name: "magic resist", value: calculateMagicResist(this.state.items, this.state.neutral, this.state.abilities) + "%" },
                             { name: "status resist", value: calculateStatusResist(this.state.items, this.state.neutral) + "%" },
                             { name: "evasion", value: calculateEvasion(this.state.talents, this.state.items, this.state.abilities) + "%" },
-                            { name: "health regen", value: calculateHealthRegen(this.state.hero.AttributeBaseStrength, this.state.hero.AttributeStrengthGain, this.state.hero.StatusHealthRegen, this.state.level) },
+                            { name: "health regen", value: calculateHealthRegen(this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents) },
                         ]}/>
                     </Col>
                 }

@@ -12,6 +12,17 @@ export function getAbilityInfoFromName(abilityName) {
     }
 }
 
+export function tryGetAbilitySpecialAbilityValue (ability, specialValueKey, abilityLevel = 1) {
+    let abilityInfo = getAbilityInfoFromName(ability);
+    if (abilityInfo) {
+        let specialValue = getAbilitySpecialAbilityValue(abilityInfo, specialValueKey, abilityLevel);
+        if (specialValue) {
+            return specialValue;
+        }
+    }
+    return null;
+}
+
 export function getAbilitySpecialAbilityValue(abilityInfo, specialAbilityKey, abilityLevel = 1) {
     if (abilityInfo && abilityInfo.AbilitySpecial) {
         for(var i = 0; i < abilityInfo.AbilitySpecial.length; i++) {

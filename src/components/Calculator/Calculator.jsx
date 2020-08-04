@@ -115,13 +115,12 @@ class Calculator extends Component {
                         {/* Small Stats */}
                         <Col md={3}>
                             <Attributes 
-                                baseStrength={this.props.selectedHero?.AttributeBaseStrength}
-                                strengthGain={this.props.selectedHero?.AttributeStrengthGain}
-                                baseAgility={this.props.selectedHero?.AttributeBaseAgility}
-                                agilityGain={this.props.selectedHero?.AttributeAgilityGain}
-                                baseIntelligence={this.props.selectedHero?.AttributeBaseIntelligence}
-                                intelligenceGain={this.props.selectedHero?.AttributeIntelligenceGain}
-                                primaryAttribute={this.props.selectedHero?.AttributePrimary} />
+                                hero={this.props.selectedHero} 
+                                heroLevel={this.props.heroLevel}
+                                talents={this.props.selectedTalents}
+                                items={this.props.items}
+                                neutral={this.props.neutralItem} 
+                                abilities={this.props.heroAbilities} />
                         </Col>
                         {/* Final Attack/Defence Stats */}
                         <Col md={5}>
@@ -139,14 +138,12 @@ class Calculator extends Component {
                     <Row className="my-2 py-2">
                         <Col md={8}>
                             <HealthManaBar 
-                                baseStrength ={ this.props.selectedHero?.AttributeBaseStrength }
-                                strengthGain={ this.props.selectedHero?.AttributeStrengthGain } 
-                                baseIntelligence={this.props.selectedHero?.AttributeBaseIntelligence }
-                                intelligenceGain={ this.props.selectedHero?.AttributeIntelligenceGain }
-                                heroLevel={ this.props.heroLevel } 
-                                primaryAttribute={ this.props.selectedHero?.AttributePrimary }
-                                bonusHealthRegen={ this.props.selectedHero?.StatusHealthRegen }
-                                bonusManaRegen={ this.props.selectedHero?.StatusManaRegen } />
+                                hero={this.props.selectedHero} 
+                                heroLevel={this.props.heroLevel}
+                                talents={this.props.selectedTalents}
+                                items={this.props.items}
+                                neutral={this.props.neutralItem} 
+                                abilities={this.props.heroAbilities} />
                         </Col>
                         <Col md={4}>
                             <LevelSelector 

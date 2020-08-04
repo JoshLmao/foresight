@@ -33,6 +33,30 @@ export function getItemSpecialAbilityValue (itemInfo, specialAbilityValueKey) {
     return undefined;
 }
 
+/// Try Gets a item info and sepcial value from it's item's Ability Special array
+export function tryGetItemSpecialValue (item, specialAbilityValueKey) {
+    var itemInfo = getItemInfoFromName(item.item);
+    if (itemInfo) {
+        var specialValue = getItemSpecialAbilityValue(itemInfo, specialAbilityValueKey);
+        if (specialValue) {
+            return specialValue;
+        }
+    }
+    return null;
+}
+
+/// Try Gets a neutral item info and special value from it's items' AbilitySpecial array
+export function tryGetNeutralSpecialValue (neutral, specialValueKey) {
+    var foundNeutralInfo = getItemInfoFromName(neutral.item);
+    if (foundNeutralInfo) {
+        var specialValue = getItemSpecialAbilityValue(foundNeutralInfo, specialValueKey);
+        if (specialValue) {
+            return specialValue;
+        }
+    }
+    return null;
+}
+
 /// Returns all neutral items
 export function getAllNeutrals() {
      /// Filter out unused or unnecessary keys in items.json

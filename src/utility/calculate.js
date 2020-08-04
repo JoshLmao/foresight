@@ -1,16 +1,20 @@
 import { 
     getItemInfoFromName,
     getItemSpecialAbilityValue,
+    tryGetItemSpecialValue,
+    tryGetNeutralSpecialValue
 } from "./dataHelperItems";
 
 import {
     getAbilityInfoFromName,
     getAbilitySpecialAbilityValue,
-    getAbilityOutputDamage
+    getAbilityOutputDamage,
+    tryGetAbilitySpecialAbilityValue,
 } from "./dataHelperAbilities";
 
 import {
-    getTalentInfoFromName
+    getTalentInfoFromName,
+    tryGetTalentSpecialAbilityValue,
 } from "./dataHelperTalents";
 
 import { DOTAHeroes } from "../data/dota2/json/npc_heroes.json";
@@ -18,11 +22,14 @@ import { DOTAAbilities } from "../data/dota2/json/npc_abilities.json";
 
 /// Calculates the health of a hero
 /// https://dota2.gamepedia.com/Health
-export function calculateHealth(baseStrength, strengthGain, heroLevel, isStrength) {
-    var healthPerStrPoint = 20;
-
-    baseStrength = parseInt(baseStrength);
-    strengthGain = parseFloat(strengthGain);
+export function calculateHealth(hero, heroLevel, items, neutral, abilities, talents) {
+    if (!hero) {
+        return "?";
+    }
+    
+    var HEALTH_PER_STRENGTH_POINT = 20;
+    let baseStrength = parseInt(hero.AttributeBaseStrength)
+    let strengthGain = parseFloat(hero.AttributeStrengthGain);
 
     var baseHealth = 0;
     if (DOTAHeroes && DOTAHeroes.npc_dota_hero_base && DOTAHeroes.npc_dota_hero_base.StatusHealth) {
@@ -32,16 +39,67 @@ export function calculateHealth(baseStrength, strengthGain, heroLevel, isStrengt
     }
 
     var totalStr = baseStrength + (strengthGain * (heroLevel - 1));
-    return baseHealth + (totalStr * healthPerStrPoint);
+    let totalHealth = baseHealth + (totalStr * HEALTH_PER_STRENGTH_POINT);
+
+    if (items && items.length > 0) {
+        for(let item of items) {
+            let bonusHealth = tryGetItemSpecialValue(item, "bonus_health");
+            if (bonusHealth) {
+                totalHealth += bonusHealth;
+            }
+
+            let bonusStr = tryGetItemSpecialValue(item, "bonus_strength");
+            if (bonusStr) {
+                totalHealth += bonusStr * HEALTH_PER_STRENGTH_POINT;
+            }
+        }
+    }
+
+    if (neutral) {
+        let bonusHealth = tryGetNeutralSpecialValue(neutral, "bonus_health");
+        if (bonusHealth) {
+            totalHealth += bonusHealth;
+        }
+
+        let bonusStr = tryGetNeutralSpecialValue(neutral, "bonus_strength");
+        if (bonusStr) {
+            totalHealth += bonusStr * HEALTH_PER_STRENGTH_POINT;
+        }
+    }
+
+    if (abilities && abilities.length > 0) {
+        
+    }
+
+    if (talents && talents.length > 0) {
+        for(let talent of talents) {
+            if (talent.includes("bonus_hp")) {
+                let bonusHealth = tryGetTalentSpecialAbilityValue(talent, "value");
+                if (bonusHealth) {
+                    totalHealth += bonusHealth;
+                }
+            } else if (talent.includes("bonus_strength")) {
+                let bonusStr = tryGetTalentSpecialAbilityValue(talent, "value");
+                if (bonusStr) {
+                    totalHealth += bonusStr * HEALTH_PER_STRENGTH_POINT;
+                }
+            }
+        }
+    }
+
+    return totalHealth.toFixed(0);
 }
 
 /// Calculates the mana pool of a hero
 /// https://dota2.gamepedia.com/Mana
-export function calculateMana(baseInt, intGain, heroLevel, isIntelligence) {
-    var manaPerIntPoint = 12;
-    
-    baseInt = parseInt(baseInt);
-    intGain = parseFloat(intGain);
+export function calculateMana(hero, heroLevel, items, neutral, abilities, talents) {
+    if (!hero) {
+        return "?";
+    }    
+
+    let MANA_PER_INT_POINT = 12;
+    let baseInt = parseInt(hero.AttributeBaseIntelligence);
+    let intGain = parseFloat(hero.AttributeIntelligenceGain);
 
     var baseMana = 0;
     if (DOTAHeroes && DOTAHeroes.npc_dota_hero_base && DOTAHeroes.npc_dota_hero_base.StatusMana) {
@@ -51,36 +109,195 @@ export function calculateMana(baseInt, intGain, heroLevel, isIntelligence) {
     }
 
     var totalInt = baseInt + (intGain * (heroLevel - 1));
-    return baseMana + (totalInt * manaPerIntPoint);
+    let totalMana = baseMana + (totalInt * MANA_PER_INT_POINT);
+
+    if (items && items.length > 0) {
+        for(let item of items) {
+            let bonusMana = tryGetItemSpecialValue(item, "bonus_mana");
+            if (bonusMana) {
+                totalMana += bonusMana;
+            }
+
+            let bonusInt = tryGetItemSpecialValue(item, "bonus_intellect");
+            if (bonusInt) {
+                totalMana += bonusInt * MANA_PER_INT_POINT;
+            }
+        }
+    }
+    
+    if (neutral) {
+        let bonusMana = tryGetNeutralSpecialValue(neutral, "bonus_mana");
+        if (bonusMana) {
+            totalMana += bonusMana;
+        }
+
+        let bonusInt = tryGetNeutralSpecialValue(neutral, "bonus_intellect");
+        if (bonusInt) {
+            totalMana += bonusInt * MANA_PER_INT_POINT;
+        }
+    }
+
+    if (abilities && abilities.length > 0) {
+        for(let ability of abilities) {
+            let bonusMana = tryGetAbilitySpecialAbilityValue(ability, "bonus_mana");
+            if (bonusMana) {
+                totalMana += bonusMana;
+            }
+
+            let bonusInt = tryGetAbilitySpecialAbilityValue(ability, "bonus_intellect");
+            if (bonusInt) {
+                totalMana += bonusInt * MANA_PER_INT_POINT;
+            }
+        }
+    }
+
+    if (talents && talents.length > 0) {
+        for(let talent of talents) {
+            if (talent.includes("bonus_mp")) {
+                let bonusMana = tryGetTalentSpecialAbilityValue(talent, "value");
+                if (bonusMana) {
+                    totalMana += bonusMana;
+                }
+            } else if (talent.includes("bonus_intelligence")) {
+                let bonusInt = tryGetTalentSpecialAbilityValue(talent, "value");
+                if (bonusInt) {
+                    totalMana += bonusInt * MANA_PER_INT_POINT;
+                }
+            }
+        }
+    }
+
+    return totalMana.toFixed(0);
 }
 
 /* Hero gains +0.1 regen per each point of strength
 * https://dota2.gamepedia.com/Health_regeneration */
-export function calculateHealthRegen(baseStrength, strengthPerLvl, additionalHealthRegen,  heroLvl = 1) {
-    var hpRegenPerStrength = 0.1;
-    var baseStr = parseInt(baseStrength);
-    var strGain = parseFloat(strengthPerLvl);
-
-    var hpRegen = (baseStr + (strGain * (heroLvl - 1))) * hpRegenPerStrength;
-    if (additionalHealthRegen) {
-        hpRegen += parseFloat(additionalHealthRegen);
+export function calculateHealthRegen(hero, heroLevel, items, neutral, abilities, talents) {
+    if(!hero) {
+        return "?";
     }
-    return hpRegen.toFixed(1);
+
+    let HP_REGEN_PER_STRENGTH = 0.1;
+    let baseStr = parseInt(hero.AttributeBaseStrength);
+    let strPerLvl = parseFloat(hero.AttributeStrengthGain);
+
+    let totalHpRegen = (baseStr + (strPerLvl * (heroLevel - 1))) * HP_REGEN_PER_STRENGTH;
+    if (hero.StatusHealthRegen) {
+        totalHpRegen += parseFloat(hero.StatusHealthRegen);
+    }
+
+    if (items && items.length > 0) {
+        for(let item of items) {
+            let regenAmt = tryGetItemSpecialValue(item, "bonus_health_regen");
+            if (regenAmt) {
+                totalHpRegen += regenAmt;
+            }
+
+            let bonusStr = tryGetItemSpecialValue(item, "bonus_strength");
+            if(bonusStr) {
+                let regen = bonusStr * HP_REGEN_PER_STRENGTH;
+                totalHpRegen += regen;
+            }
+        }
+    }
+
+    if (neutral) {
+        let bonusHealthRegen = tryGetNeutralSpecialValue(neutral, "bonus_health_regen");
+        if (bonusHealthRegen) {
+            totalHpRegen += bonusHealthRegen;
+        }
+
+        let bonusStr = tryGetNeutralSpecialValue(neutral, "bonus_strength");
+        if (bonusStr) {
+            let regen = bonusStr * HP_REGEN_PER_STRENGTH;
+            totalHpRegen += regen;
+        }
+    } 
+
+    if (abilities && abilities.length > 0) {
+        for (let ability of abilities) {
+            let bonusRegen = tryGetAbilitySpecialAbilityValue(ability, "bonus_health_regen", 1);
+            if (bonusRegen) {
+                totalHpRegen += bonusRegen;
+            }
+        }
+    }
+
+    if (talents && talents.length > 0) {
+        for (let talent of talents) {
+            // Only get bonus_hp_regen talents
+            if (talent.includes("bonus_hp_regen")) {
+                let bonusRegen = tryGetTalentSpecialAbilityValue(talent, "value");
+                if (bonusRegen) {
+                    totalHpRegen += bonusRegen;
+                }
+            }
+        }
+    }
+
+    return totalHpRegen.toFixed(1);
 }
 
 /* Each point of intelligence increases the hero's mana regeneration by 0.05.
  * https://dota2.gamepedia.com/Mana_regeneration */
-export function calculateManaRegen(baseIntelligence, intelligencePerLvl, additionalManaRegen, heroLvl = 1) {
-    var manaRegenPerInt = 0.05;
-    var baseInt = parseInt(baseIntelligence);
-    var intGain = parseFloat(intelligencePerLvl);
+export function calculateManaRegen(hero, heroLevel, items, neutral, abilities, talents) {
+    if(!hero) {
+        return "?";
+    }
+    let MANA_REGEN_PER_INT = 0.05;
+    let baseInt = parseInt(hero.AttributeBaseIntelligence);
+    let intGain = parseFloat(hero.AttributeIntelligenceGain);
 
-    var manaRegen = (baseInt + (intGain * (heroLvl - 1))) * manaRegenPerInt;
-    if (additionalManaRegen) {
-        manaRegen += parseFloat(additionalManaRegen);
+    let totalManaRegen = (baseInt + (intGain * (heroLevel - 1))) * MANA_REGEN_PER_INT;
+    if (hero.StatusManaRegen) {
+        totalManaRegen += parseFloat(hero.StatusManaRegen);
     }
 
-    return manaRegen.toFixed(1);
+    if(items && items.length > 0) {
+        for(let item of items) {
+            let bonusManaRegen = tryGetItemSpecialValue(item, "bonus_mana_regen");
+            if (bonusManaRegen) {
+                totalManaRegen += bonusManaRegen;
+            }
+
+            var bonusInt = tryGetItemSpecialValue(item, "bonus_intelligence");
+            if(bonusInt) {
+                let regen = bonusInt * MANA_REGEN_PER_INT; 
+                totalManaRegen += regen;
+            }
+        }
+    }
+
+    if (neutral) {
+        let intAmt = tryGetNeutralSpecialValue(neutral, "bonus_intelligence");
+        if (intAmt) {
+            let manaRegen = intAmt * MANA_REGEN_PER_INT;
+            totalManaRegen += manaRegen;
+        }
+    }
+
+    if(abilities && abilities.length > 0) {
+        for (let ability of abilities) {
+            let manaRegen = tryGetAbilitySpecialAbilityValue(ability, "mana_regen", 1);
+            if (manaRegen) {
+                totalManaRegen += manaRegen;
+            }
+        }
+    }
+
+    if (talents && talents.length > 0) {
+        for(let talent of talents) {
+            // Only includes bonus mana point regen talents
+            if(talent.includes("bonus_mp_regen")) {
+                let value = tryGetTalentSpecialAbilityValue(talent, "value");
+                if (value) {
+                    totalManaRegen += parseFloat(value);
+                }
+            }
+        }
+    }
+
+    return totalManaRegen.toFixed(1);
 }
 
 // Calculates the main armor of the hero
@@ -384,22 +601,14 @@ export function calculateSpellDamage(abilityInfo, abilityLevel, items, neutral, 
         }
     }
 
-    if (talents) {
+    if (talents && talents.length > 0) {
         // Add spell amplify from any selected talents
-        for(let i = 0; i < talents.length; i++) {
-            // Only use talents that are spell amp's
-            if (!talents[i].includes("spell_amplify")) {
-                continue;
-            }
+        for(let talent of talents) {
+            if (talent.includes("spell_amplify")) {
+                let ampTalentValue = tryGetTalentSpecialAbilityValue(talent, "value");
+                if (ampTalentValue) {
+                    totalSpellAmpPercent += ampTalentValue;
 
-            var talentInfo = getTalentInfoFromName(talents[i]);
-            if (talentInfo) {
-                var info = talentInfo.info;
-                if (info && info.AbilitySpecial) {
-                    let ampTalentValue = getAbilitySpecialAbilityValue(info, "value");
-                    if (ampTalentValue) {
-                        totalSpellAmpPercent += ampTalentValue;
-                    }
                 }
             }
         }
@@ -460,15 +669,10 @@ export function calculateManaCost(abilityInfo, abilityLevel, items, neutral, tal
     if (talents) {
         for(let talent of talents) {
             // Only apply mana reducing talents
-            if (!talent.includes("mana_reduction")) {
-                continue;
-            }
-
-            let talentInfo = getAbilityInfoFromName(talent);
-            if(talentInfo) {
-                let talentReduceAmount = getAbilitySpecialAbilityValue(talentInfo, "value");
-                if(talentReduceAmount) {
-                    totalManaCostReducePercent += talentReduceAmount;
+            if (talent.includes("mana_reduction")) {
+                let reduceAmount = tryGetTalentSpecialAbilityValue(talent, "value");
+                if (reduceAmount) {
+                    totalManaCostReducePercent += reduceAmount;
                 }
             }
         }
@@ -526,15 +730,10 @@ export function calculateAbilityCooldown(abilityInfo, abilityLevel, items, neutr
     if (talents) {
         for(let talent of talents) {
             // Ignore talent if it isn't a cd reduction one
-            if (!talent.includes("cooldown_reduction")) {
-                continue;
-            }
-
-            var talentInfo = getTalentInfoFromName(talent)?.info;
-            if (talentInfo) {
-                var talentReduction = getAbilitySpecialAbilityValue(talentInfo, "value");
-                if (talentReduction) {
-                    allReductions.push({ amount: talentReduction, source: talent });
+            if (talent.includes("cooldown_reduction")) {
+                let reduction = tryGetTalentSpecialAbilityValue(talent, "value");
+                if (reduction) {
+                    allReductions.push({ amount: reduction, source: talent });
                 }
             }
         }

@@ -48,10 +48,10 @@ const initialState = {
     stringsDota: EngDotaStrings,
 
     /// Selected enemy hero 
-    selectedEnemyHero: DOTAHeroes.npc_dota_hero_winter_wyvern,
-    selectedEnemyHeroName: parseNameFromModel(DOTAHeroes.npc_dota_hero_winter_wyvern.Model),
-    enemyHeroTalents: getHeroTalents(DOTAHeroes.npc_dota_hero_winter_wyvern),
-    enemyHeroAbilities: getAllHeroAbilities(DOTAHeroes.npc_dota_hero_winter_wyvern),
+    selectedEnemyHero: DOTAHeroes.npc_dota_hero_target_dummy,
+    selectedEnemyHeroName: parseNameFromModel(DOTAHeroes.npc_dota_hero_target_dummy.Model[1]),
+    enemyHeroTalents: getHeroTalents(DOTAHeroes.npc_dota_hero_target_dummy),
+    enemyHeroAbilities: getAllHeroAbilities(DOTAHeroes.npc_dota_hero_target_dummy),
     selectedEnemyTalents: [ ],
     enemyHeroItems: [
         { slot: 0, item: "ultimate_scepter" },
