@@ -52,6 +52,11 @@ export function calculateHealth(hero, heroLevel, items, neutral, abilities, tale
             if (bonusStr) {
                 totalHealth += bonusStr * HEALTH_PER_STRENGTH_POINT;
             }
+
+            let bonusAllStats = tryGetItemSpecialValue(item, "bonus_all_stats");
+            if (bonusAllStats) {
+                totalHealth += bonusAllStats * HEALTH_PER_STRENGTH_POINT;
+            }
         }
     }
 
@@ -64,6 +69,11 @@ export function calculateHealth(hero, heroLevel, items, neutral, abilities, tale
         let bonusStr = tryGetNeutralSpecialValue(neutral, "bonus_strength");
         if (bonusStr) {
             totalHealth += bonusStr * HEALTH_PER_STRENGTH_POINT;
+        }
+
+        let bonusAllStats = tryGetNeutralSpecialValue(neutral, "bonus_all_stats");
+        if (bonusAllStats) {
+            totalHealth += bonusAllStats * HEALTH_PER_STRENGTH_POINT;
         }
     }
 
@@ -82,6 +92,11 @@ export function calculateHealth(hero, heroLevel, items, neutral, abilities, tale
                 let bonusStr = tryGetTalentSpecialAbilityValue(talent, "value");
                 if (bonusStr) {
                     totalHealth += bonusStr * HEALTH_PER_STRENGTH_POINT;
+                }
+            } else if (talent.includes("bonus_all_stats")) {
+                let bonusAllStats = tryGetTalentSpecialAbilityValue(talent, "value");
+                if (bonusAllStats) {
+                    totalHealth += bonusAllStats * HEALTH_PER_STRENGTH_POINT;
                 }
             }
         }
@@ -122,6 +137,11 @@ export function calculateMana(hero, heroLevel, items, neutral, abilities, talent
             if (bonusInt) {
                 totalMana += bonusInt * MANA_PER_INT_POINT;
             }
+
+            let bonusAllStats = tryGetItemSpecialValue(item, "bonus_all_stats");
+            if (bonusAllStats) {
+                totalMana += bonusAllStats * MANA_PER_INT_POINT;
+            }
         }
     }
     
@@ -135,6 +155,11 @@ export function calculateMana(hero, heroLevel, items, neutral, abilities, talent
         if (bonusInt) {
             totalMana += bonusInt * MANA_PER_INT_POINT;
         }
+
+        let bonusAllStats = tryGetNeutralSpecialValue(neutral, "bonus_all_stats");
+        if (bonusAllStats) {
+            totalMana += bonusAllStats * MANA_PER_INT_POINT;
+        }
     }
 
     if (abilities && abilities.length > 0) {
@@ -147,6 +172,11 @@ export function calculateMana(hero, heroLevel, items, neutral, abilities, talent
             let bonusInt = tryGetAbilitySpecialAbilityValue(ability, "bonus_intellect");
             if (bonusInt) {
                 totalMana += bonusInt * MANA_PER_INT_POINT;
+            }
+
+            let bonusAllStats = tryGetAbilitySpecialAbilityValue(ability, "bonus_all_stats");
+            if (bonusAllStats) {
+                totalMana += bonusAllStats * MANA_PER_INT_POINT;
             }
         }
     }
@@ -162,6 +192,11 @@ export function calculateMana(hero, heroLevel, items, neutral, abilities, talent
                 let bonusInt = tryGetTalentSpecialAbilityValue(talent, "value");
                 if (bonusInt) {
                     totalMana += bonusInt * MANA_PER_INT_POINT;
+                }
+            } else if (talent.includes("bonus_all_stats")) {
+                let bonusAllStats = tryGetTalentSpecialAbilityValue(talent, "value");
+                if (bonusAllStats) {
+                    totalMana += bonusAllStats * MANA_PER_INT_POINT;
                 }
             }
         }
@@ -195,8 +230,12 @@ export function calculateHealthRegen(hero, heroLevel, items, neutral, abilities,
 
             let bonusStr = tryGetItemSpecialValue(item, "bonus_strength");
             if(bonusStr) {
-                let regen = bonusStr * HP_REGEN_PER_STRENGTH;
-                totalHpRegen += regen;
+                totalHpRegen += bonusStr * HP_REGEN_PER_STRENGTH;
+            }
+
+            let bonusAllStats = tryGetItemSpecialValue(item, "bonus_all_stats");
+            if (bonusAllStats) {
+                totalHpRegen += bonusAllStats * HP_REGEN_PER_STRENGTH;
             }
         }
     }
@@ -209,8 +248,12 @@ export function calculateHealthRegen(hero, heroLevel, items, neutral, abilities,
 
         let bonusStr = tryGetNeutralSpecialValue(neutral, "bonus_strength");
         if (bonusStr) {
-            let regen = bonusStr * HP_REGEN_PER_STRENGTH;
-            totalHpRegen += regen;
+            totalHpRegen += bonusStr * HP_REGEN_PER_STRENGTH;
+        }
+        
+        let bonusAllStats = tryGetNeutralSpecialValue(neutral, "bonus_all_stats");
+        if (bonusAllStats) {
+            totalHpRegen += bonusAllStats * HP_REGEN_PER_STRENGTH;
         }
     } 
 
@@ -230,6 +273,16 @@ export function calculateHealthRegen(hero, heroLevel, items, neutral, abilities,
                 let bonusRegen = tryGetTalentSpecialAbilityValue(talent, "value");
                 if (bonusRegen) {
                     totalHpRegen += bonusRegen;
+                }
+            } else if(talent.includes("bonus_strength")) {
+                let bonusStr = tryGetTalentSpecialAbilityValue(talent, "value");
+                if (bonusStr) {
+                    totalHpRegen += bonusStr * HP_REGEN_PER_STRENGTH;
+                }
+            } else if (talent.includes("bonus_all_stats")) {
+                let bonusAllStats = tryGetTalentSpecialAbilityValue(talent, "value");
+                if (bonusAllStats) {
+                    totalHpRegen += bonusAllStats * HP_REGEN_PER_STRENGTH;
                 }
             }
         }
@@ -260,10 +313,15 @@ export function calculateManaRegen(hero, heroLevel, items, neutral, abilities, t
                 totalManaRegen += bonusManaRegen;
             }
 
-            var bonusInt = tryGetItemSpecialValue(item, "bonus_intelligence");
+            let bonusInt = tryGetItemSpecialValue(item, "bonus_intelligence");
             if(bonusInt) {
                 let regen = bonusInt * MANA_REGEN_PER_INT; 
                 totalManaRegen += regen;
+            }
+
+            let bonusAllStats = tryGetItemSpecialValue(item, "bonus_all_stats");
+            if (bonusAllStats) {
+                totalManaRegen += bonusAllStats * MANA_REGEN_PER_INT;
             }
         }
     }
@@ -273,6 +331,11 @@ export function calculateManaRegen(hero, heroLevel, items, neutral, abilities, t
         if (intAmt) {
             let manaRegen = intAmt * MANA_REGEN_PER_INT;
             totalManaRegen += manaRegen;
+        }
+
+        let bonusAllStats = tryGetNeutralSpecialValue(neutral, "bonus_all_stats");
+        if (bonusAllStats) {
+            totalManaRegen += bonusAllStats * MANA_REGEN_PER_INT;
         }
     }
 
@@ -293,6 +356,16 @@ export function calculateManaRegen(hero, heroLevel, items, neutral, abilities, t
                 if (value) {
                     totalManaRegen += parseFloat(value);
                 }
+            } else if (talent.includes("bonus_intelligence")) {
+                let bonusAllStats = tryGetTalentSpecialAbilityValue(talent, "value");
+                if (bonusAllStats) {
+                    totalManaRegen += bonusAllStats * MANA_REGEN_PER_INT;
+                }
+            } else if (talent.includes("bonus_all_stats")) {
+                let bonusAllStats = tryGetTalentSpecialAbilityValue(talent, "value");
+                if (bonusAllStats) {
+                    totalManaRegen += bonusAllStats * MANA_REGEN_PER_INT;
+                }
             }
         }
     }
@@ -301,27 +374,107 @@ export function calculateManaRegen(hero, heroLevel, items, neutral, abilities, t
 }
 
 // Calculates the main armor of the hero
-export function calculateMainArmor(baseArmor, baseAgility, agiPerLevel, level) {
+// Each point of agility increases a hero's armor by 0.167 (1/6) https://dota2.gamepedia.com/Armor
+export function calculateMainArmor(hero, level, items, neutral, abilities, talents) {
+    if (!hero) {
+        return "?";
+    }
+
+    let ARMOR_PER_AGI = 0.167;
+    let baseArmor = hero.ArmorPhysical;
+    let baseAgility = hero.AttributeBaseAgility;
+    let agiPerLevel = hero.AttributeAgilityGain;
+
     // Determine bonus agility from perLevel. Then work out main armor
     var agiPer = (parseFloat(agiPerLevel) * (level - 1));
-    var mainArmor = parseInt(baseArmor) + ((parseInt(baseAgility) + agiPer) * 0.16);
+    var totalArmor = parseInt(baseArmor) + ((parseInt(baseAgility) + agiPer) * ARMOR_PER_AGI);
+    
+    if (items && items.length > 0) {
+        for(let item of items) {
+            let bonusArmor = tryGetItemSpecialValue(item, "bonus_armor");
+            if (bonusArmor) {
+                totalArmor += bonusArmor;
+            }
+
+            let bonusAgility = tryGetItemSpecialValue(item, "bonus_agility");
+            if (bonusAgility) {
+                let armor = bonusAgility * ARMOR_PER_AGI;
+                totalArmor += armor;
+            }
+
+            let bonusAllStats = tryGetItemSpecialValue(item, "bonus_all_stats");
+            if (bonusAllStats) {
+                let armor = bonusAllStats * ARMOR_PER_AGI;
+                totalArmor += armor;
+            }
+        }
+    }
+    
+    if(neutral) {
+        let bonusArmor = tryGetNeutralSpecialValue(neutral, "bonus_armor");
+        if (bonusArmor) {
+            totalArmor += bonusArmor;
+        }
+
+        let bonusAgi = tryGetNeutralSpecialValue(neutral, "bonus_agility");
+        if (bonusAgi) {
+            totalArmor += bonusAgi * ARMOR_PER_AGI;
+        }
+
+        let bonusAllStats = tryGetNeutralSpecialValue(neutral, "bonus_all_stats");
+        if (bonusAllStats) {
+            let armor = bonusAllStats * ARMOR_PER_AGI;
+            totalArmor += armor;
+        }
+    }
+
+    if (abilities && abilities.length > 0) {
+        for(let ability of abilities) {
+            let bonusArmor = tryGetAbilitySpecialAbilityValue(ability, "bonus_armor");
+            if (bonusArmor) {
+                totalArmor += bonusArmor;
+            }
+        }
+    }
+
+    if(talents && talents.length > 0) {
+        for(let talent of talents) {
+            if (talent.includes("bonus_armor")) {
+                let bonusArmor = tryGetTalentSpecialAbilityValue(talent, "value");
+                if (bonusArmor) {
+                    totalArmor += bonusArmor;
+                }
+            } else if (talent.includes("bonus_agility")) {
+                let bonusAgility = tryGetTalentSpecialAbilityValue(talent, "value");
+                if (bonusAgility) {
+                    totalArmor += bonusAgility * ARMOR_PER_AGI;
+                }
+            } else if (talent.includes("bonus_all_stats")) {
+                let bonusAllStats = tryGetTalentSpecialAbilityValue(talent, "value");
+                if (bonusAllStats) {
+                    totalArmor += bonusAllStats * ARMOR_PER_AGI;
+                }
+            }
+        }
+    }
+
     // Round to one decimal place
-    return mainArmor.toFixed(1);
+    return totalArmor.toFixed(1);
 }
 
 /// Returns the total amount of spell amplification as a percentage applied to the hero
 export function calculateTotalSpellAmp (talents, items, neutral) {
-    var totalSpellAmp = 0;
+    let totalSpellAmp = 0;
     
     // Determine if any talents provide spell amp
     if (talents && talents.length > 0) {
-        var ampTalent = talents.find(element => element.includes("spell_amplify"));
+        let ampTalent = talents.find(element => element.includes("spell_amplify"));
         if (ampTalent) {
-            var talentInfo = DOTAAbilities[ampTalent.name];
+            let talentInfo = DOTAAbilities[ampTalent.name];
             if (talentInfo) {
-                var spellAmpInfo = talentInfo.AbilitySpecial.find(element => element.value);
+                let spellAmpInfo = talentInfo.AbilitySpecial.find(element => element.value);
                 if (spellAmpInfo) {
-                    var spellAmpAmt = parseInt(spellAmpInfo.value);
+                    let spellAmpAmt = parseInt(spellAmpInfo.value);
                     totalSpellAmp += spellAmpAmt;
 
                     //console.log(`Talent ${ampTalent.name} provides ${spellAmpAmt}% spell amp`);
@@ -332,9 +485,9 @@ export function calculateTotalSpellAmp (talents, items, neutral) {
 
     // Determine if current neutral item provides any spell amplification
     if (neutral) {
-        var foundNeutral = getItemInfoFromName(neutral.item);
+        let foundNeutral = getItemInfoFromName(neutral.item);
         if (foundNeutral) {
-            var spellAmpAmount = getItemSpecialAbilityValue(foundNeutral, "spell_amp");
+            let spellAmpAmount = getItemSpecialAbilityValue(foundNeutral, "spell_amp");
             if (spellAmpAmount) {
                 totalSpellAmp += spellAmpAmount;
                 //console.log(`Neutral ${neutral.item} provides ${spellAmpAmount}% spell amp`);
@@ -344,11 +497,11 @@ export function calculateTotalSpellAmp (talents, items, neutral) {
 
     /// Determine if any items provide spell amp
     if (items && items.length > 0) {
-        for(var i = 0; i < items.length; i++) {
+        for(let i = 0; i < items.length; i++) {
             if (items[i].item) {
-                var itemInfo = getItemInfoFromName(items[i].item);
+                let itemInfo = getItemInfoFromName(items[i].item);
                 if (itemInfo) {
-                    var spellAmpAmount = getItemSpecialAbilityValue(itemInfo, "spell_amp");
+                    let spellAmpAmount = getItemSpecialAbilityValue(itemInfo, "spell_amp");
                     if (spellAmpAmount) {
                         totalSpellAmp += spellAmpAmount;
                         //console.log(`Item ${items[i].item} provides ${spellAmpAmt}% spell amp`);
@@ -363,14 +516,14 @@ export function calculateTotalSpellAmp (talents, items, neutral) {
 }
 
 export function calculateStatusResist(items, neutral) {
-    var totalStatusResist = 0.0;
+    let totalStatusResist = 0.0;
 
     if (items && items.length > 0) {
-        for(var i = 0; i < items.length; i++) {
+        for(let i = 0; i < items.length; i++) {
             if (items[i].item) {
-                var itemInfo = getItemInfoFromName(items[i].item);
+                let itemInfo = getItemInfoFromName(items[i].item);
                 if (itemInfo) {
-                    var statusResistAmount = getItemSpecialAbilityValue(itemInfo, "status_resistance");
+                    let statusResistAmount = getItemSpecialAbilityValue(itemInfo, "status_resistance");
                     if (statusResistAmount) {
                         totalStatusResist += statusResistAmount;
                     }
@@ -380,12 +533,9 @@ export function calculateStatusResist(items, neutral) {
     }
 
     if (neutral) {
-        var neutralInfo = getItemInfoFromName(neutral);
-        if (neutralInfo) {
-            var statusResistAmount = getItemSpecialAbilityValue(neutralInfo, "status_resistance");
-            if (statusResistAmount) {
-                totalStatusResist += statusResistAmount;
-            }
+        let statusResistAmount = tryGetNeutralSpecialValue(neutral, "status_resistance");
+        if (statusResistAmount) {
+            totalStatusResist += statusResistAmount;
         }
     }
 
@@ -397,18 +547,18 @@ export function calculateMagicResist (items, neutral, abilities) {
     // Total magic resistance = 1 − ((1 − natural resistance) × (1 − first resistance bonus) × (1 − second resistance bonus) × (1 + first resistance reduction) × (1 + second resistance reduction))
     
     // Array of magic resistance values
-    var resistanceBonuses = [ ];
+    let resistanceBonuses = [ ];
     
     if (DOTAHeroes && DOTAHeroes?.npc_dota_hero_base?.MagicalResistance) {
-        var baseResist = parseInt(DOTAHeroes.npc_dota_hero_base.MagicalResistance);
+        let baseResist = parseInt(DOTAHeroes.npc_dota_hero_base.MagicalResistance);
         resistanceBonuses.push(baseResist);
     }
 
     if (items && items.length > 0) {
-        for(var i = 0; i < items.length; i++) {
-            var itemInfo = getItemInfoFromName(items[i].item);
+        for(let i = 0; i < items.length; i++) {
+            let itemInfo = getItemInfoFromName(items[i].item);
             if (itemInfo) {
-                var magicResistAmount = getItemSpecialAbilityValue(itemInfo, "bonus_magic_resistance");
+                let magicResistAmount = getItemSpecialAbilityValue(itemInfo, "bonus_magic_resistance");
                 if (magicResistAmount) {
                     resistanceBonuses.push(magicResistAmount);
                 }
@@ -427,46 +577,40 @@ export function calculateMagicResist (items, neutral, abilities) {
     }
 
     if (neutral) {
-        var neutralInfo = getItemInfoFromName(neutral);
-        if (neutralInfo) {
-            var magicResistAmount = getItemSpecialAbilityValue(itemInfo, "magic_resistance");
+        let magicResistAmount = tryGetNeutralSpecialValue(neutral, "magic_resistance");
+        if (magicResistAmount) {
+            resistanceBonuses.push(magicResistAmount);
+        }
+    }
+
+    if (abilities && abilities.length > 0) { 
+        for(let ability of abilities) {
+            // let magicResistAmount = tryGetAbilitySpecialAbilityValue(ability, "magic_resistance");
+            // if (magicResistAmount) {
+            //     resistanceBonuses.push(magicResistAmount);
+            // }
+            
+            let magicResistAmount = tryGetAbilitySpecialAbilityValue(ability, "bonus_magic_resistance");
             if (magicResistAmount) {
                 resistanceBonuses.push(magicResistAmount);
             }
         }
     }
 
-    if (abilities && abilities.length > 0) { 
-        for(var i = 0; i < abilities.length; i++) {
-            var abilityInfo = getAbilityInfoFromName(abilities[i]);
-            if (abilityInfo) {
-                // var magicResistAmount = getAbilitySpecialAbilityValue(abilityInfo, "magic_resistance");
-                // if (magicResistAmount) {
-                //     resistanceBonuses.push(magicResistAmount);
-                // }
-
-                magicResistAmount = getAbilitySpecialAbilityValue(abilityInfo, "bonus_magic_resistance");
-                if (magicResistAmount) {
-                    resistanceBonuses.push(magicResistAmount);
-                }
-            }
-        }
-    }
-
     // Divide original value into 0.x and minus from 1 to get the reverse
-    var edited = []
-    for(var i = 0; i < resistanceBonuses.length; i++) {
+    let edited = []
+    for(let i = 0; i < resistanceBonuses.length; i++) {
         edited.push(1 - (resistanceBonuses[i] / 100));
     }
 
     // multiply them all together 
-    var total = edited[0];
-    for(var i = 1; i < edited.length; i++) {
+    let total = edited[0];
+    for(let i = 1; i < edited.length; i++) {
         total *= edited[i];
     }
 
     // then minus from 1, and multiply by 100 to get value as a percentage
-    var percent = (1 - total) * 100;
+    let percent = (1 - total) * 100;
     return percent.toFixed(2);
 }
 
@@ -481,11 +625,27 @@ export function calculatePhysicalResist (totalArmor) {
 }
 
 /// Calculates evasion
-export function calculateEvasion(talents, items) {
+export function calculateEvasion(items, neutral, abilities, talents) {
     var totalEvasion = 0.0;
 
+    if (abilities && abilities.length > 0) {
+        for(let ability of abilities) {
+            let bonusEvasion = tryGetAbilitySpecialAbilityValue(ability, "bonus_evasion");
+            if (bonusEvasion) {
+                totalEvasion += bonusEvasion;
+            }
+        }
+    }
+
     if (talents && talents.length > 0) {
-        // todo, any talents providing evasion
+        for(let talent of talents) {
+            if (talent.includes("bonus_evasion")) {
+                let bonusEvasion = tryGetTalentSpecialAbilityValue(talent, "value");
+                if (bonusEvasion) {
+                    totalEvasion += bonusEvasion;
+                }
+            }
+        }
     }
 
     if (items && items.length > 0) {
@@ -752,4 +912,65 @@ export function calculateAbilityCooldown(abilityInfo, abilityLevel, items, neutr
     }
 
     return reductionTotal.toFixed(2);
+}
+
+/// Calculates the movement speed of the hero, factoring in their items, neutral, abilities and talents
+export function calculateMoveSpeed (hero, items, neutral, abilities, talents) {
+    if (!hero) {
+        return "?";
+    }
+
+    let baseSpeed = hero.MovementSpeed;
+    let flatBonus = 0;
+    let percentageBasedBonuses = 0;
+
+    if (items && items.length > 0) {
+        for (let item of items) {
+            let moveSpeed = tryGetItemSpecialValue(item, "bonus_movement_speed");
+            if (moveSpeed) {
+                flatBonus += moveSpeed;
+            }
+
+            let moveSpeedPercentBonus = tryGetItemSpecialValue(item, "movement_speed_percent_bonus");
+            if (moveSpeedPercentBonus) {
+                percentageBasedBonuses += moveSpeedPercentBonus;
+            }
+        }
+    }
+
+    if (neutral) {
+        let bonusMoveSpeed = tryGetNeutralSpecialValue(neutral, "bonus_movement_speed");
+        if (bonusMoveSpeed) {
+            flatBonus += bonusMoveSpeed;
+        }
+
+        let moveSpeedPercentBonus = tryGetNeutralSpecialValue(neutral, "movement_speed_percent_bonus");
+        if (moveSpeedPercentBonus) {
+            percentageBasedBonuses += moveSpeedPercentBonus;
+        }
+    }
+
+    /// Abilities are actives so dont include since no way in UI to activate an ability yet
+    // if (abilities && abilities.length > 0) {
+    //     for(let ability of abilities) {
+    //         let bonusMoveSpeed = tryGetAbilitySpecialAbilityValue(ability, "bonus_movespeed");
+    //         if (bonusMoveSpeed) {
+    //             flatBonus += bonusMoveSpeed;
+    //         }
+    //     }
+    // }
+
+    if (talents && talents.length > 0) {
+        for(let talent of talents) {
+            if (talent.includes("bonus_movement_speed")) {
+                let bonusSpeed = tryGetTalentSpecialAbilityValue(talent, "value");
+                if (bonusSpeed) {
+                    flatBonus += bonusSpeed;
+                }
+            }
+        }
+    }
+
+    let total = baseSpeed + flatBonus;
+    return total;
 }

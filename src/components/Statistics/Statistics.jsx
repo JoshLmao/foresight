@@ -13,7 +13,8 @@ import {
     calculatePhysicalResist,
     calculateEvasion,
     calculateRightClickDamage,
-    calculateAttackTime
+    calculateAttackTime,
+    calculateMoveSpeed
 } from "../../utility/calculate";
 import { 
     getPrimaryAttributeStats,
@@ -87,41 +88,78 @@ class Statistics extends Component {
             abilities: props.abilities,
         };
 
-        this.updateArmor = this.updateArmor.bind(this);
+        this.updateStatistics = this.updateStatistics.bind(this);
     }
 
     componentDidMount() {
-        this.updateArmor();
-    }
-
-    updateArmor(lvl = undefined) {
-        this.setState({ 
-            armor: calculateMainArmor(this.state.hero?.ArmorPhysical, this.state.hero?.AttributeBaseAgility, this.state.hero?.AttributeAgilityGain, lvl ? lvl : this.state.level) 
-        });
+        this.updateStatistics()
     }
 
     componentDidUpdate(prevProps) {
+        
         if (prevProps.hero !== this.props.hero) {
-            this.setState({ hero: this.props.hero });
-            this.updateArmor();
+            this.setState({ 
+                hero: this.props.hero 
+            }, () => {
+                this.updateStatistics();
+            });
         }
         if (prevProps.items !== this.props.items) {
-            this.setState({ items: this.props.items });
+            this.setState({ 
+                items: this.props.items 
+            }, () => {
+                this.updateStatistics();
+            });
         }
         if (prevProps.neutral !== this.props.neutral) {
-            this.setState({ neutral: this.props.neutral, });
+            this.setState({ 
+                neutral: this.props.neutral, 
+            }, () => {
+                this.updateStatistics();
+            });
         }
         if (prevProps.talents !== this.props.talents) {
-            this.setState({ talents: this.props.talents });
+            this.setState({ 
+                talents: this.props.talents 
+            }, () => {
+                this.updateStatistics();
+            });
         }
         if (prevProps.abilities !== this.props.abilities) {
-            this.setState({ abilities: this.props.abilities });
+            this.setState({ 
+                abilities: this.props.abilities 
+            }, () => {
+                this.updateStatistics();
+            });
         }
         if (prevProps.heroLevel !== this.props.heroLevel) {
-            this.setState({ level: this.props.heroLevel });
-            // Pass value since setState isn't executed yet
-            this.updateArmor(this.props.heroLevel);
+            this.setState({ 
+                level: this.props.heroLevel 
+            }, () => {
+                this.updateStatistics();
+            });
         }
+    }
+
+    updateStatistics() {
+        let armor =  calculateMainArmor(this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents);
+        let physResist = calculatePhysicalResist(armor);
+        this.setState({
+            // Attack
+            attackSpeed: formatAttackTime(this.state.hero, this.state.level),
+            attackRange: parse(this.state.hero.AttackRange),
+            moveSpeed: calculateMoveSpeed(this.state.hero, this.state.items, this.state.neutral, this.state.abilities, this.state.talents),
+            spellAmp: calculateTotalSpellAmp(this.state.talents, this.state.items, this.state.neutral),
+            manaRegen: calculateManaRegen(this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents),
+
+            // Defence
+            armor: armor,
+            physicalResist: physResist,
+            magicResist: calculateMagicResist(this.state.items, this.state.neutral, this.state.abilities),
+            statusResist: calculateStatusResist(this.state.items, this.state.neutral),
+            evasion: calculateEvasion(this.state.items, this.state.neutrak, this.state.abilities , this.state.talents),
+            healthRegen: calculateHealthRegen(this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents),
+        });
     }
 
     render() {
@@ -131,12 +169,12 @@ class Statistics extends Component {
                     this.state.hero &&
                     <Col md={6}>
                         <StatArray title="ATTACK" stats={[
-                            { name: "attack speed", value: formatAttackTime(this.state.hero, this.state.level) },
+                            { name: "attack speed", value: this.state.attackSpeed },
                             { name: "damage", value: formatAttackMinMax(this.state.hero, this.state.level) },
-                            { name: "attack range", value: parse(this.state.hero.AttackRange) },
-                            { name: "move speed", value: parse(this.state.hero.MovementSpeed) },
-                            { name: "spell amp", value: calculateTotalSpellAmp(this.state.talents, this.state.items, this.state.neutral) + "%" },
-                            { name: "mana regen", value: calculateManaRegen(this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents) },
+                            { name: "attack range", value: this.state.attackRange },
+                            { name: "move speed", value: this.state.moveSpeed },
+                            { name: "spell amp", value: this.state.spellAmp + "%" },
+                            { name: "mana regen", value: this.state.manaRegen },
                         ]} />
                     </Col>
                 }   
@@ -145,11 +183,11 @@ class Statistics extends Component {
                     <Col md={6}>
                         <StatArray title="DEFENCE" stats={[
                             { name: "armor", value:  this.state.armor },
-                            { name: "physical resist", value: calculatePhysicalResist(this.state.armor) + "%" },
-                            { name: "magic resist", value: calculateMagicResist(this.state.items, this.state.neutral, this.state.abilities) + "%" },
-                            { name: "status resist", value: calculateStatusResist(this.state.items, this.state.neutral) + "%" },
-                            { name: "evasion", value: calculateEvasion(this.state.talents, this.state.items, this.state.abilities) + "%" },
-                            { name: "health regen", value: calculateHealthRegen(this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents) },
+                            { name: "physical resist", value: this.state.physicalResist + "%" },
+                            { name: "magic resist", value: this.state.magicResist + "%" },
+                            { name: "status resist", value: this.state.statusResist + "%" },
+                            { name: "evasion", value: this.state.evasion + "%" },
+                            { name: "health regen", value: this.state.healthRegen },
                         ]}/>
                     </Col>
                 }
