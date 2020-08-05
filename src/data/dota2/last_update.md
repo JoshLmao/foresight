@@ -1,3 +1,3 @@
 # Vdf/JSON Files
 
-Last times files were converted: 23/05/2020
+Last times files were converted: 05/08/20

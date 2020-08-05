@@ -102,9 +102,10 @@ class DamageOutput extends Component {
                 <h5>{getTooltipAbilityString(this.state.abilityStrings, this.state.ability)}</h5>
                 <div className="mb-2">
                     {
-                        this.state.abilityBehaviours && this.state.abilityBehaviours.map((value) => {
+                        this.state.abilityBehaviours && this.state.abilityBehaviours.map((value, index) => {
                             return (
                                 <TypeValueUI 
+                                    key={index}
                                     type={getTooltipString(this.state.dotaStrings, value.key)} 
                                     value={value.value} />
                             );

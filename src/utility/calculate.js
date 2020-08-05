@@ -329,6 +329,12 @@ export function calculateManaRegen(hero, heroLevel, items, neutral, abilities, t
                 totalManaRegen += regen;
             }
 
+            let bonusIntellect = tryGetItemSpecialValue(item, "bonus_intellect");
+            if (bonusIntellect) {
+                let regen = bonusIntellect * MANA_REGEN_PER_INT; 
+                totalManaRegen += regen;
+            }
+
             let bonusAllStats = tryGetItemSpecialValue(item, "bonus_all_stats");
             if (bonusAllStats) {
                 totalManaRegen += bonusAllStats * MANA_REGEN_PER_INT;
@@ -337,10 +343,16 @@ export function calculateManaRegen(hero, heroLevel, items, neutral, abilities, t
     }
 
     if (neutral) {
-        let intAmt = tryGetNeutralSpecialValue(neutral, "bonus_intelligence");
-        if (intAmt) {
-            let manaRegen = intAmt * MANA_REGEN_PER_INT;
+        let bonusInt = tryGetNeutralSpecialValue(neutral, "bonus_intelligence");
+        if (bonusInt) {
+            let manaRegen = bonusInt * MANA_REGEN_PER_INT;
             totalManaRegen += manaRegen;
+        }
+
+        let bonusIntellect = tryGetNeutralSpecialValue(neutral, "bonus_intellect");
+        if (bonusIntellect) {
+            let regen = bonusIntellect * MANA_REGEN_PER_INT; 
+            totalManaRegen += regen;
         }
 
         let bonusAllStats = tryGetNeutralSpecialValue(neutral, "bonus_all_stats");

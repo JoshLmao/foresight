@@ -183,10 +183,10 @@ class Calculator extends Component {
                         displayDamage={true} />
 
                     {/* Padding Separator */}
-                    <div className="py-5" />
+                    {/* <div className="py-5" /> */}
                     
                     {/* Enemy Hero */}
-                    <EnemyHero 
+                    {/* <EnemyHero 
                         hero={this.props.selectedEnemyHero}
                         heroName={this.props.selectedEnemyHeroName} 
                         heroAbilities={this.props.enemyHeroAbilities} 
@@ -195,7 +195,7 @@ class Calculator extends Component {
                         selectedTalents={this.props.selectedEnemyTalents}
                         neutral={this.props.enemyNeutralItem}
                         abilityStrings={this.props.abilityStrings} 
-                        dotaStrings={this.props.dotaStrings} />
+                        dotaStrings={this.props.dotaStrings} /> */}
                 </Container>
             </div>
         );
