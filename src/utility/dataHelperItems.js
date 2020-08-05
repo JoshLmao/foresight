@@ -2,6 +2,7 @@
 // * Helper and utility functions to provide for retrieving data from "npc_items.json"
 // * 
 import { DOTAAbilities as DOTAItems } from "../data/dota2/json/items.json";
+import { EAttributes } from "../enums/attributes";
 
 export function getItemInfoFromName (itemName) {
     if (itemName)
@@ -95,4 +96,18 @@ export function getAllNeutrals() {
     });
 
     return selectableNeutrals;
+}
+
+/// Gets the correct key inside items.json for the hero's primary attribute
+export function primaryAttributeToItemBonusKey(primaryAttr) {
+    switch(primaryAttr) {
+        case EAttributes.ATTR_STRENGTH:
+            return [ "bonus_strength" ];
+        case EAttributes.ATTR_AGILITY:
+            return [ "bonus_agility" ];
+        case EAttributes.ATTR_INTELLIGENCE:
+            return [ "bonus_intellect", "bonus_intelligence" ];
+        default:
+            return null;
+    }
 }

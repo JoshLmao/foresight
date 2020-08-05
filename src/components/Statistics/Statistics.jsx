@@ -14,18 +14,12 @@ import {
     calculateEvasion,
     calculateRightClickDamage,
     calculateAttackTime,
-    calculateMoveSpeed
+    calculateMoveSpeed,
+    calculateAttackRange
 } from "../../utility/calculate";
 import { 
-    getPrimaryAttributeStats,
-    getSpecificAttributeStats,
-    getDotaBaseHero
+    getPrimaryAttributeStats
 } from '../../utility/dataHelperHero';
-import { EAttributes } from '../../enums/attributes';
-
-function parse(value) {
-    return parseInt(value);
-}
 
 function StatArray(props) {
     return (
@@ -49,30 +43,16 @@ function StatArray(props) {
     );
 }
 
-function formatAttackMinMax(heroInfo, lvl) {
-    var minMax = calculateRightClickDamage(heroInfo.AttackDamageMin, heroInfo.AttackDamageMax, getPrimaryAttributeStats(heroInfo), lvl );
-    return `${minMax.min} - ${minMax.max}`;
+/// Gets the attack min/max and formats it for display in UI
+function formatAttackMinMax(hero, lvl, items, neutral, abilities, talents) {
+    let standardAtkDmg = calculateRightClickDamage(hero, lvl, items, neutral, abilities, talents);
+    return `${standardAtkDmg.min} - ${standardAtkDmg.max}`;
 }
 
-function formatAttackTime(heroInfo, lvl) {
-    var attackSpeed = getDotaBaseHero()?.BaseAttackSpeed;
-    var attackRate = getDotaBaseHero()?.AttackRate;
-    if (heroInfo) {
-        // Check if hero has different attack rate or attack speed
-        if (heroInfo.BaseAttackSpeed) {
-            attackSpeed = heroInfo.BaseAttackSpeed;
-        } 
-        if (heroInfo.AttackSpeed) {
-            attackRate = heroInfo.AttackSpeed;
-        }
-
-        var agilityAttribute = getSpecificAttributeStats(EAttributes.ATTR_AGILITY, heroInfo);
-
-        var attackInfo = calculateAttackTime(attackSpeed, attackRate, agilityAttribute?.base, agilityAttribute?.perLevel, lvl);
-        return `${attackInfo.attackSpeed} (${attackInfo.attackTime} s)`;
-    } else {
-        return "?";
-    }
+/// Gets the atk time and formats it to display in UI
+function formatAttackTime(hero, lvl, items, neutral, abilities, talents) {
+    let attackInfo = calculateAttackTime(hero, lvl, items, neutral, abilities, talents);
+    return `${attackInfo.attackSpeed} (${attackInfo.attackTime} s)`;
 }
 
 class Statistics extends Component {
@@ -146,8 +126,9 @@ class Statistics extends Component {
         let physResist = calculatePhysicalResist(armor);
         this.setState({
             // Attack
-            attackSpeed: formatAttackTime(this.state.hero, this.state.level),
-            attackRange: parse(this.state.hero.AttackRange),
+            attackSpeed: formatAttackTime(this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents),
+            damage: formatAttackMinMax(this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents),
+            attackRange: calculateAttackRange(this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents),
             moveSpeed: calculateMoveSpeed(this.state.hero, this.state.items, this.state.neutral, this.state.abilities, this.state.talents),
             spellAmp: calculateTotalSpellAmp(this.state.talents, this.state.items, this.state.neutral),
             manaRegen: calculateManaRegen(this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents),
@@ -170,7 +151,7 @@ class Statistics extends Component {
                     <Col md={6}>
                         <StatArray title="ATTACK" stats={[
                             { name: "attack speed", value: this.state.attackSpeed },
-                            { name: "damage", value: formatAttackMinMax(this.state.hero, this.state.level) },
+                            { name: "damage", value: this.state.damage },
                             { name: "attack range", value: this.state.attackRange },
                             { name: "move speed", value: this.state.moveSpeed },
                             { name: "spell amp", value: this.state.spellAmp + "%" },

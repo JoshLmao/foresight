@@ -107,3 +107,17 @@ export function getAllHeroAbilities (heroInfo) {
 export function getDotaBaseHero () {
     return DOTAHeroes?.npc_dota_hero_base;
 }
+
+/// Gets the hero's primary attribute as the EAttribute enum
+export function getPrimaryAttribute (hero) {
+    switch(hero.AttributePrimary) {
+        case EAttributes.ATTR_STRENGTH:
+            return EAttributes.ATTR_STRENGTH;
+        case EAttributes.ATTR_AGILITY:
+            return EAttributes.ATTR_AGILITY;
+        case EAttributes.ATTR_INTELLIGENCE:
+            return EAttributes.ATTR_INTELLIGENCE;
+        default:
+            return null;
+    }
+}

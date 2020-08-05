@@ -2,7 +2,8 @@ import {
     getItemInfoFromName,
     getItemSpecialAbilityValue,
     tryGetItemSpecialValue,
-    tryGetNeutralSpecialValue
+    tryGetNeutralSpecialValue,
+    primaryAttributeToItemBonusKey
 } from "./dataHelperItems";
 
 import {
@@ -16,6 +17,15 @@ import {
     getTalentInfoFromName,
     tryGetTalentSpecialAbilityValue,
 } from "./dataHelperTalents";
+
+import {
+    getDotaBaseHero,
+    getSpecificAttributeStats,
+    getPrimaryAttributeStats,
+    getPrimaryAttribute
+} from "./dataHelperHero";
+
+import { EAttributes } from "../enums/attributes";
 
 import { DOTAHeroes } from "../data/dota2/json/npc_heroes.json";
 import { DOTAAbilities } from "../data/dota2/json/npc_abilities.json";
@@ -666,13 +676,84 @@ export function calculateEvasion(items, neutral, abilities, talents) {
 }
 
 /// Returns the minimum and maximum right click damage of a hero
-export function calculateRightClickDamage(atkMin, atkMax, primaryAttributeStats, heroLevel = 1) {
-    // Work out how much bonus attack hero recieves from their primary attribute
-    var bonusAtk = primaryAttributeStats.base + (primaryAttributeStats.perLevel * (heroLevel - 1));
+// atkMin, atkMax, primaryAttributeStats, heroLevel = 1
+export function calculateRightClickDamage(hero, level, items, neutral, abilities, talents) {
+    if (!hero) {
+        return "?";
+    }
     
+    let heroMainAttribute = getPrimaryAttribute(hero);
+    let atkMin = parseInt(hero.AttackDamageMin);
+    let atkMax = parseInt(hero.AttackDamageMax);
+    let primaryAttributeStats = getPrimaryAttributeStats(hero);
+
+    // Work out how much bonus attack hero recieves from their primary attribute
+    let totalPrimaryAttribute = primaryAttributeStats.base + (primaryAttributeStats.perLevel * (level - 1));
+    
+    /* Iterate over all items, neutral, abilities and talents to
+        get all primary attribute and all stat bonuses
+        */
+    if (items && items.length > 0) {
+        for(let item of items) {
+            let allAttrKeys = primaryAttributeToItemBonusKey(heroMainAttribute);
+            for(let key of allAttrKeys) {
+                let bonusPrimaryAttr = tryGetItemSpecialValue(item, key);
+                if (bonusPrimaryAttr) {
+                    totalPrimaryAttribute += bonusPrimaryAttr;
+                }
+            }
+
+            let bonusPrimaryStat = tryGetItemSpecialValue(item, "bonus_primary_stat");
+            if (bonusPrimaryStat) {
+                totalPrimaryAttribute += bonusPrimaryStat;
+            }
+
+            let bonusAllStats = tryGetItemSpecialValue(item, "bonus_all_stats");
+            if (bonusAllStats) {
+                totalPrimaryAttribute += bonusAllStats;
+            }
+        }
+    }
+
+    if (neutral) {
+        let allAttrKeys = primaryAttributeToItemBonusKey(heroMainAttribute);
+        for(let key of allAttrKeys) {
+            let bonusPrimaryAttr = tryGetNeutralSpecialValue(neutral, key);
+            if (bonusPrimaryAttr) {
+                totalPrimaryAttribute += bonusPrimaryAttr;
+            }
+        }
+
+        let bonusPrimaryStat = tryGetNeutralSpecialValue(neutral, "primary_stat");
+        if (bonusPrimaryStat) {
+            totalPrimaryAttribute += bonusPrimaryStat;
+        }
+    }
+
+    if (talents && talents.length > 0) {
+        for(let talent of talents) {
+            let allAttrKeys = primaryAttributeToItemBonusKey(heroMainAttribute);
+            for(let key of allAttrKeys) {
+                if (talent.includes(key)) {
+                    let bonusPrimaryAttr = tryGetNeutralSpecialValue(talent, "value");
+                    if (bonusPrimaryAttr) {
+                        totalPrimaryAttribute += bonusPrimaryAttr;
+                    }
+                }
+            }
+            
+            if (talent.includes("bonus_all_stats")) {
+                let allStats = tryGetNeutralSpecialValue(talent, "value");
+                if (allStats) {
+                    totalPrimaryAttribute += allStats;
+                }
+            }
+        }
+    }
+
     // Add and return
-    var min = parseInt(atkMin) + bonusAtk;
-    var max = parseInt(atkMax) + bonusAtk;
+    let min = atkMin + totalPrimaryAttribute;
+    let max = atkMax + totalPrimaryAttribute;
     return {
         /// minimum attack damage of the hero
         min: Math.floor(min).toFixed(0),
@@ -682,17 +763,95 @@ export function calculateRightClickDamage(atkMin, atkMax, primaryAttributeStats,
 }
 
 /// Returns info on the attack time of the hero
-export function calculateAttackTime(attackSpeed, attackRate, baseAgi, agiPerLevel, heroLevel) {
-    attackSpeed = parseInt(attackSpeed);
-    attackRate = parseFloat(attackRate);
+export function calculateAttackTime(hero, level, items, neutral, abilities, talents) {
+    if (!hero) {
+        return "?";
+    }
     
-    var agi = baseAgi + (agiPerLevel * (heroLevel - 1));
+    let MAX_ATTACK_SPEED = 700;
 
-    var attacksPerSec = ((attackSpeed + agi) * 0.01) / 1.7;
-    var attackTime = 1.7 / ((attackSpeed + agi) * 0.01);
+    // Check if hero has different attack rate or attack speed than base hero
+    let totalAttackSpeed = getDotaBaseHero()?.BaseAttackSpeed;
+    let attackRate = getDotaBaseHero()?.AttackRate;
+    if (hero) {
+        
+        if (hero.BaseAttackSpeed) {
+            totalAttackSpeed = parseInt(hero.BaseAttackSpeed);
+        } 
+        if (hero.AttackSpeed) {
+            attackRate = parseFloat(hero.AttackSpeed);
+        }
+    }
+
+    /// Get base agi stats
+    let agiStats = getSpecificAttributeStats(EAttributes.ATTR_AGILITY, hero);
+    let baseAgi = agiStats.base;
+    let agiPerLevel = agiStats.perLevel;
+
+    let totalAgi = baseAgi + (agiPerLevel * (level - 1));
+
+
+    if (items && items.length > 0) {
+        for(let item of items) {
+            let bonusAttackSpeed = tryGetItemSpecialValue(item, "bonus_attack_speed");
+            if (bonusAttackSpeed) {
+                totalAttackSpeed += bonusAttackSpeed;
+            }
+
+            let bonusAgility = tryGetItemSpecialValue(item, "bonus_agility");
+            if (bonusAgility) {
+                totalAgi += bonusAgility;
+            }
+
+            let bonusAllStats = tryGetItemSpecialValue(item, "bonus_all_stats");
+            if (bonusAllStats) {
+                totalAgi += bonusAllStats;
+            }
+        }
+    }
+
+    if (neutral) {
+        let bonusAttackSpeed = tryGetNeutralSpecialValue(neutral, "bonus_attack_speed");
+        if (bonusAttackSpeed) {
+            totalAttackSpeed += bonusAttackSpeed;
+        }
+    }
+
+    // Only actives that gives attack speed bonuses
+    // if (abilities && abilities.length > 0) {
+    // }
+
+    if (talents && talents.length > 0) {
+        for(let talent of talents) {
+            let bonusAttackSpeed = tryGetTalentSpecialAbilityValue(talent, "bonus_attack_speed");
+            if (bonusAttackSpeed) {
+                totalAttackSpeed += bonusAttackSpeed;
+            }
+
+            let bonusAgility = tryGetTalentSpecialAbilityValue(talent, "bonus_agility");
+            if (bonusAgility) {
+                totalAgi += bonusAgility;
+            }
+
+            let bonusAllStats = tryGetTalentSpecialAbilityValue(talent, "bonus_all_stats");
+            if (bonusAllStats) {
+                totalAgi += bonusAllStats;
+            }
+        }
+    }
+
+    /// Check that max atk speed hasn't been reached
+    if ((totalAttackSpeed + totalAgi) > MAX_ATTACK_SPEED) {
+        // Use totalAttackSpeed at max if so, reset agi since 1 agi = 1 atk speed
+        totalAttackSpeed = MAX_ATTACK_SPEED;
+        totalAgi = 0;
+    }
+
+    let attacksPerSec = ((totalAttackSpeed + totalAgi) * 0.01) / 1.7;
+    let attackTime = 1.7 / ((totalAttackSpeed + totalAgi) * 0.01);
     attackTime = 1 / attacksPerSec;
 
-    var speed = attackSpeed + agi;
+    let atkSpeed = totalAttackSpeed + totalAgi;
 
     return {
         /// Amount of seconds inbetween attacks
@@ -700,7 +859,7 @@ export function calculateAttackTime(attackSpeed, attackRate, baseAgi, agiPerLeve
         /// Amount of attacks per second
         attacksPerSecond: attacksPerSec.toFixed(2),
         /// Attack speed value shown in UI of dota
-        attackSpeed: speed.toFixed(0),
+        attackSpeed: atkSpeed.toFixed(0),
     };
 }
 
@@ -973,4 +1132,69 @@ export function calculateMoveSpeed (hero, items, neutral, abilities, talents) {
 
     let total = baseSpeed + flatBonus;
     return total;
+}
+
+export function calculateAttackRange (hero, level, items, neutral, abilities, talents) {
+    if (!hero) {
+        return "?";
+    }
+
+    let isHeroRanged = hero.AttackCapabilities === "DOTA_UNIT_CAP_RANGED_ATTACK";
+
+    let baseRange = parseInt(hero.AttackRange);
+    let totalAttackRange = baseRange;
+
+    // Dont add bonuses if hero isn't ranged
+    if (isHeroRanged) {
+        if (items && items.length > 0) {
+            for(let item of items) {
+                let baseRange = tryGetItemSpecialValue(item, "base_attack_range");
+                if (baseRange) {
+                    totalAttackRange += baseRange;
+                }
+            }
+        }
+    
+        if (neutral) {
+            let rangeBonus = tryGetNeutralSpecialValue(neutral, "attack_range_bonus");
+            if (rangeBonus) {
+                totalAttackRange += rangeBonus;
+            }
+    
+            let bonusAttackRange = tryGetNeutralSpecialValue(neutral, "bonus_attack_range");
+            if (bonusAttackRange) {
+                totalAttackRange += bonusAttackRange;
+            }
+        }
+
+        if (abilities && abilities.length > 0) {
+            for(let ability of abilities) {
+                let bonusAttackRange = tryGetAbilitySpecialAbilityValue(ability, "bonus_attack_range", 1);
+                if (bonusAttackRange) {
+                    totalAttackRange += bonusAttackRange;
+                }
+            }
+        }
+
+        if (talents && talents.length > 0) {
+            for(let talent of talents) {
+                if (talent.includes("bonus_attack_range")) {
+                    let bonusAttackRange = tryGetTalentSpecialAbilityValue(talent, "value");
+                    if (bonusAttackRange) {
+                        totalAttackRange += bonusAttackRange;
+                    }
+                }
+            }
+        }
+    } else {
+        // Melee units, apply any melee attack range bonuses
+        if (neutral) {
+            let bonusAttackRange = tryGetNeutralSpecialValue(neutral, "melee_attack_range");
+            if (bonusAttackRange) {
+                totalAttackRange += bonusAttackRange;
+            }
+        }
+    }
+
+    return totalAttackRange;
 }
