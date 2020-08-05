@@ -7,7 +7,9 @@ import {
 import {
     getTalentInfoFromName,
 } from "../../utility/dataHelperTalents";
-import { tryGetAbilityLocalizedString } from "../../utility/data-helpers/language";
+import { 
+    tryGetTalentLocalizedString
+} from "../../utility/data-helpers/language";
 
 function isTalentSelected (selectedTalents, talent) {
     return selectedTalents?.includes(talent);
@@ -71,7 +73,7 @@ class TalentRow extends Component {
             return "Unknown Talent";
         }
 
-        let displayName = tryGetAbilityLocalizedString(this.state.abilityStrings, talent);
+        let displayName = tryGetTalentLocalizedString(this.state.abilityStrings, talent);
         if (displayName && talentInfo && talentInfo.AbilitySpecial) {
             displayName = displayName.replace('{s:value}', talentInfo.AbilitySpecial[0].value);
         }

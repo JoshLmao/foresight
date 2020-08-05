@@ -5,9 +5,9 @@ import {
 } from "../../utility/calculate";
 import { getAbilityBehaviours } from "../../utility/dataHelperAbilities";
 import { 
-    tryGetAbilityLocalizedString, 
+    tryGetLocalizedString, 
     getTooltipString,
-    getTooltipAbilityString
+    getTooltipAbilityString,
 } from "../../utility/data-helpers/language";
 
 /// Retrieves ability damage and returns display value
@@ -20,9 +20,9 @@ function parseDamage(abilInfo, abilLvl, items, neutral, talents) {
     }
 }
 
-function getAbilityNameFromStrings(abilityStrings, abilityName) {
-    if (abilityStrings && abilityName) {
-        return tryGetAbilityLocalizedString(abilityStrings, abilityName);
+function getAbilityNameFromStrings(strings, key) {
+    if (strings && key) {
+        return tryGetLocalizedString(strings, key);
     } else {
         return "?";
     }
@@ -113,7 +113,7 @@ class DamageOutput extends Component {
                     }
                 </div>
                 <h6>
-                    Damage: {' '}
+                    {(getAbilityNameFromStrings(this.state.abilityStrings, "dota_ability_variable_damage") + ":")}{' '}
                     { parseDamage(this.state.abilityInfo, this.state.levelInfo?.level, this.state.items, this.state.neutral, this.state.selectedTalents) }
                 </h6>
             </div>

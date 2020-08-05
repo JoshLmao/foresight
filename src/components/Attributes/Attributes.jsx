@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { EAttributes } from "../../enums/attributes.js";
 
 import "./Attributes.css";
+import { tryGetLocalizedString } from '../../utility/data-helpers/language.js';
 
 function parse(value) {
     return parseFloat(value).toFixed(2);
@@ -33,6 +34,9 @@ class Attributes extends Component {
             talents: props.talents,
             neutral: props.neutral,
             abilities: props.abilities,
+
+            dotaStrings: props.dotaStrings,
+            abilityStrings: props.abilityStrings,
         };
     }
 
@@ -45,6 +49,9 @@ class Attributes extends Component {
                 talents: this.props.talents,
                 neutral: this.props.neutral,
                 abilities: this.props.abilities,
+
+                dotaStrings: this.props.dotaStrings,
+                abilityStrings: this.props.abilityStrings,
             });
         }
     }
@@ -52,8 +59,8 @@ class Attributes extends Component {
     render() {
         return (
             <div>
-                <h5>STATS</h5>
-                <h6>ATTRIBUTES</h6>
+                <h5>{tryGetLocalizedString(this.state.dotaStrings, "DOTA_Tooltip_topbar_stats")}</h5>
+                <h6>{tryGetLocalizedString(this.state.dotaStrings, "DOTA_Attributes")}</h6>
                 <Attribute 
                     type={"strength"} 
                     value={parse(this.state.hero?.AttributeBaseStrength)} 

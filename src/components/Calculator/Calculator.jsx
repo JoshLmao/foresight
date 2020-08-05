@@ -120,7 +120,9 @@ class Calculator extends Component {
                                 talents={this.props.selectedTalents}
                                 items={this.props.items}
                                 neutral={this.props.neutralItem} 
-                                abilities={this.props.heroAbilities} />
+                                abilities={this.props.heroAbilities} 
+                                abilityStrings={this.props.abilityStrings}
+                                dotaStrings={this.props.dotaStrings}/>
                         </Col>
                         {/* Final Attack/Defence Stats */}
                         <Col md={5}>
@@ -130,7 +132,9 @@ class Calculator extends Component {
                                 talents={this.props.selectedTalents}
                                 items={this.props.items}
                                 neutral={this.props.neutralItem} 
-                                abilities={this.props.heroAbilities} />
+                                abilities={this.props.heroAbilities} 
+                                abilityStrings={this.props.abilityStrings}
+                                dotaStrings={this.props.dotaStrings}  />
                         </Col>
                     </Row>
 

@@ -1,12 +1,12 @@
-/// Searches the ability_lang.json file for the related string
-export function tryGetAbilityLocalizedString(abilityStrings, stringKey) {
-    if (!abilityStrings || !stringKey) {
+/// Searches the passed strings file for the related string
+export function tryGetLocalizedString(languageStrings, stringKey) {
+    if (!languageStrings || !stringKey) {
         return null;
     }
 
-    var languageKeys = Object.keys(abilityStrings.Tokens);
+    var languageKeys = Object.keys(languageStrings.Tokens);
     var matchingKeys = languageKeys.filter((key) => {
-        if (key.includes(stringKey)) {
+        if (key.toLowerCase() === stringKey.toLowerCase()) {
             return key;
         } else {
             return null;
@@ -14,19 +14,19 @@ export function tryGetAbilityLocalizedString(abilityStrings, stringKey) {
     });
 
     if (matchingKeys && matchingKeys.length > 0) {
-        var displayName = abilityStrings.Tokens[matchingKeys[0]];
+        var displayName = languageStrings.Tokens[matchingKeys[0]];
         return displayName;
     } else {
-        return null;
+        return "?";
     }
 }
 
-export function tryGetDotaLocalizedString(dotaStrings, stringKey) {
-    if (!dotaStrings || !stringKey) {
+export function tryGetTalentLocalizedString(languageStrings, stringKey) {
+    if (!languageStrings || !stringKey) {
         return null;
     }
 
-    var languageKeys = Object.keys(dotaStrings.Tokens);
+    var languageKeys = Object.keys(languageStrings.Tokens);
     var matchingKeys = languageKeys.filter((key) => {
         if (key.includes(stringKey)) {
             return key;
@@ -36,10 +36,10 @@ export function tryGetDotaLocalizedString(dotaStrings, stringKey) {
     });
 
     if (matchingKeys && matchingKeys.length > 0) {
-        var displayName = dotaStrings.Tokens[matchingKeys[0]];
+        var displayName = languageStrings.Tokens[matchingKeys[0]];
         return displayName;
     } else {
-        return null;
+        return "?";
     }
 }
 
