@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import {
     calculateSpellDamage
 } from "../../utility/calculate";
-import { getAbilityBehaviours } from "../../utility/dataHelperAbilities";
 import { 
     tryGetLocalizedString, 
     getTooltipString,
@@ -12,11 +11,15 @@ import {
 
 /// Retrieves ability damage and returns display value
 function parseDamage(abilInfo, abilLvl, items, neutral, talents) {
-    let abilDmg = calculateSpellDamage(abilInfo, abilLvl, items, neutral, talents);
-    if (abilDmg) {
-        return abilDmg.damage;
+    let abilityDamage = calculateSpellDamage(abilInfo, abilLvl, items, neutral, talents);
+    if (abilityDamage && abilityDamage.damage) {
+        let damage = abilityDamage.damage;
+        if (abilityDamage.isPercent) {
+            damage += "%";
+        }
+        return damage;
     } else {
-        return "Unable to find dmg";
+        return null;
     }
 }
 
@@ -26,15 +29,6 @@ function getAbilityNameFromStrings(strings, key) {
     } else {
         return "?";
     }
-}
-
-function TypeValueUI (props) {
-    return (
-        <div className="d-flex" style={{ fontSize: "0.85rem"}}>
-            <div className="mr-2">{props.type}</div>
-            <div>{props.value}</div>
-        </div>
-    )
 }
 
 class DamageOutput extends Component {
@@ -50,21 +44,14 @@ class DamageOutput extends Component {
             neutral: props.neutral,
             selectedTalents: props.selectedTalents,
 
-            abilityBehaviours: getAbilityBehaviours(props.abilityInfo),
-
             abilityStrings: props.abilityStrings,
             dotaStrings: props.dotaStrings,
         };
-
-        this.updateAbilityBehaviours = this.updateAbilityBehaviours.bind(this);
     }
 
     componentDidUpdate(prevProps) {
         if(prevProps.abilityInfo !== this.props.abilityInfo) {
-            this.setState({ 
-                abilityInfo: this.props.abilityInfo,
-                abilityBehaviours: getAbilityBehaviours(this.props.abilityInfo),
-            });
+            this.setState({ abilityInfo: this.props.abilityInfo });
         }
 
         if (prevProps.levelInfo !== this.props.levelInfo) {
@@ -91,31 +78,19 @@ class DamageOutput extends Component {
         }
     }
 
-    updateAbilityBehaviours() {
-        let allBehaviours = getAbilityBehaviours(this.state.abilityInfo);
-        this.setState({ abilityBehaviours: allBehaviours });
-    }
-
     render() {
+        let abilityDamage = parseDamage(this.state.abilityInfo, this.state.levelInfo?.level, this.state.items, this.state.neutral, this.state.selectedTalents);
         return (
-            <div>
+            <div className="w-100 h-100">
                 <h5>{getTooltipAbilityString(this.state.abilityStrings, this.state.ability)}</h5>
-                <div className="mb-2">
-                    {
-                        this.state.abilityBehaviours && this.state.abilityBehaviours.map((value, index) => {
-                            return (
-                                <TypeValueUI 
-                                    key={index}
-                                    type={getTooltipString(this.state.dotaStrings, value.key)} 
-                                    value={value.value} />
-                            );
-                        })
-                    }
-                </div>
-                <h6>
-                    {(getAbilityNameFromStrings(this.state.abilityStrings, "dota_ability_variable_damage") + ":")}{' '}
-                    { parseDamage(this.state.abilityInfo, this.state.levelInfo?.level, this.state.items, this.state.neutral, this.state.selectedTalents) }
-                </h6>
+                {
+                    abilityDamage && 
+                    <h6>
+                        { (getAbilityNameFromStrings(this.state.abilityStrings, "dota_ability_variable_damage") + ":")}
+                        {' '}
+                        { abilityDamage }
+                    </h6>
+                }
             </div>
         );
     }

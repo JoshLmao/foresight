@@ -10,6 +10,7 @@ import { DOTAAbilities } from "../../data/dota2/json/npc_abilities.json";
 import DamageOutput from "./DamageOutput";
 import Cooldown from "./Cooldown";
 import ManaCost from "./ManaCost";
+import AbilityDetails from "./AbilityDetails";
 import "./Abilities.css";
 
 function getAbilityLevel (levelInfo, abilityIndex, abilityInfo, onLevelChanged) {
@@ -193,19 +194,30 @@ class Abilities extends Component {
                                         this.state.abilityLevels && !ability.IsGrantedByScepter && getAbilityLevel(levelInfo, index, ability, this.onLevelChanged)
                                     }
                                 </div>
-                                <div className="mx-auto mt-2">
-                                        {
-                                            this.state.displayDamage && 
-                                                <DamageOutput 
-                                                    ability={value}
-                                                    abilityInfo={ability} 
-                                                    levelInfo={levelInfo}
-                                                    items={this.state.items}
-                                                    neutral={this.state.neutral} 
-                                                    selectedTalents={this.state.selectedTalents} 
-                                                    abilityStrings={this.state.abilityStrings} 
-                                                    dotaStrings={this.state.dotaStrings} />
-                                        }
+                                <div className="py-1">
+                                    {
+                                        this.state.displayDamage && 
+                                            <DamageOutput 
+                                                ability={value}
+                                                abilityInfo={ability} 
+                                                levelInfo={levelInfo}
+                                                items={this.state.items}
+                                                neutral={this.state.neutral} 
+                                                selectedTalents={this.state.selectedTalents} 
+                                                abilityStrings={this.state.abilityStrings} 
+                                                dotaStrings={this.state.dotaStrings} />
+                                    }
+                                </div>
+                                <div className="py-1">
+                                    <AbilityDetails 
+                                        ability={value}
+                                        abilityInfo={ability} 
+                                        levelInfo={levelInfo}
+                                        items={this.state.items}
+                                        neutral={this.state.neutral} 
+                                        selectedTalents={this.state.selectedTalents}
+                                        abilityStrings={this.state.abilityStrings} 
+                                        dotaStrings={this.state.dotaStrings} />
                                 </div>
                             </Col>
                         );

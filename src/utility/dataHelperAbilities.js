@@ -2,7 +2,11 @@
 // * 
 
 import { DOTAAbilities } from "../data/dota2/json/npc_abilities.json";
-import { EAbilityBehaviour, EDamageType, ESpellImmunityType } from "../enums/attributes";
+import { 
+    EAbilityBehaviour, 
+    EDamageType, 
+    ESpellImmunityType 
+} from "../enums/attributes";
 
 export function getAbilityInfoFromName(abilityName) {
     if (abilityName) {
@@ -25,19 +29,19 @@ export function tryGetAbilitySpecialAbilityValue (ability, specialValueKey, abil
 
 export function getAbilitySpecialAbilityValue(abilityInfo, specialAbilityKey, abilityLevel = 1) {
     if (abilityInfo && abilityInfo.AbilitySpecial) {
-        for(var i = 0; i < abilityInfo.AbilitySpecial.length; i++) {
-            var keys = Object.keys(abilityInfo.AbilitySpecial[i]);
-            var matchingKey = keys.find(element => {
+        for(let i = 0; i < abilityInfo.AbilitySpecial.length; i++) {
+            let keys = Object.keys(abilityInfo.AbilitySpecial[i]);
+            let matchingKey = keys.find(element => {
                 return element === specialAbilityKey;
             });
 
             if (matchingKey) {
-                var specialAbilityInfo = abilityInfo.AbilitySpecial[i];
+                let specialAbilityInfo = abilityInfo.AbilitySpecial[i];
 
                 // If value contains a space, it can be levelled up needs to be split up
-                var dataValue = specialAbilityInfo[matchingKey];
+                let dataValue = specialAbilityInfo[matchingKey];
                 if (typeof dataValue === "string" && dataValue.includes(' ')) {
-                    var split = specialAbilityInfo[matchingKey].split(' ');
+                    let split = specialAbilityInfo[matchingKey].split(' ');
                     dataValue = split[abilityLevel - 1];
                 }
 
@@ -54,42 +58,63 @@ export function getAbilitySpecialAbilityValue(abilityInfo, specialAbilityKey, ab
 
 /// Gets the standard output damage of an ability from its level
 export function getAbilityOutputDamage(abilityInfo, abilityLevel) {
+    let abilityDmg = {
+        min: null,
+        max: null,
+        damage: null,
+        isPercent: null,
+    };
+
     if (abilityInfo && abilityLevel) {
-        var dmgVals = abilityInfo.AbilityDamage;
-        if(dmgVals) {
-            let value = dmgVals.split(' ')[abilityLevel - 1];
-            return parseInt(value);
+        if (abilityInfo.AbilityDamage) {
+            let dmgValue = abilityInfo.AbilityDamage.split(' ')[abilityLevel - 1];
+            abilityDmg = {
+                ...abilityDmg,
+                damage: parseFloat(dmgValue),
+            };
         }
         else if (abilityInfo.AbilitySpecial) 
         {
-            //console.log(abilityInfo.AbilitySpecial);
-            for (var i = 0; i < abilityInfo.AbilitySpecial.length; i++) {
-                var specAbil = abilityInfo.AbilitySpecial[i];
-    
-                /// Array of AbilitySpecial keys that deal damage
-                var specialAbilityDamageKeys = [
-                    //Generic
-                    "damage",
-                    // Abaddon
-                    "target_damage", "damage_absorb", 
-                    //Alchemist
-                    "max_damage",
+            for (let i = 0; i < abilityInfo.AbilitySpecial.length; i++) {
+                let specialAbilityElement = abilityInfo.AbilitySpecial[i];
+                
+                let abilSpecKeys = Object.keys(specialAbilityElement);
+                for(let key of abilSpecKeys) {
+                    // AbilitySpecial contains damage under a property
+                    let lowerKey = key.toLowerCase();
                     
-                    //zeus
-                    "arc_damage",
-                ];
-    
-                // Find matching key in AbilitySpecial
-                for(var j = 0; j < specialAbilityDamageKeys.length; j++) {
-                    if (specAbil[specialAbilityDamageKeys[j]]) {
-                        let value = specAbil[specialAbilityDamageKeys[j]].split(' ')[abilityLevel - 1];
-                        return parseInt(value);
+                    // Includes dmg & not scepter
+                    if (lowerKey.includes("damage") && !lowerKey.includes("scepter")) 
+                    {
+                        let value = parseAbilityValueByLevel(specialAbilityElement[key], abilityLevel);
+                        let dmgValue = parseFloat(value);
+
+                        if (lowerKey.includes("min")) {
+                            //min_damage
+                            abilityDmg.min =  dmgValue;
+                        }
+                        if (lowerKey.includes("max")) {
+                            abilityDmg.max = dmgValue;
+                        } 
+                        if (lowerKey.includes("pct")) {
+                            abilityDmg.isPercent = true;
+                        }
+
+                        if (!abilityDmg.min && !abilityDmg.max) {
+                            abilityDmg.damage = dmgValue;
+                        }
+                    }
+
+                    // Stop iterate if have min&max or dmg
+                    if (abilityDmg.min && abilityDmg.max || abilityDmg.damage) {
+                        break;
                     }
                 }
             }
         }
     }
-    return 0;
+
+    return abilityDmg;
 }
 
 /// Gets all behaviour options of an ability such as if it goes through BKB, damage type, etc
@@ -106,23 +131,23 @@ export function getAbilityBehaviours(abilityInfo) {
         for(let b of splitBehaviours) {
             switch(b) {
                 case EAbilityBehaviour.UNIT_TARGET:
-                    targeting.push("Unit");
+                    targeting.push("DOTA_ToolTip_Ability_Target");
                     break;
                 case EAbilityBehaviour.POINT:
-                    targeting.push("Point");
+                    targeting.push("DOTA_ToolTip_Ability_Point");
                     break;
                 case EAbilityBehaviour.PASSIVE:
-                    targeting.push("Passive");
+                    targeting.push("DOTA_ToolTip_Ability_Passive");
                     break;
                 case EAbilityBehaviour.NO_TARGET:
-                    targeting.push("No Target");
+                    targeting.push("DOTA_ToolTip_Ability_NoTarget");
                     break;
             }
         }
     
         behaviours.push({
             key: "DOTA_ToolTip_Ability",
-            value: targeting.join(", "),
+            value: targeting,
         });
     }
 
@@ -132,13 +157,13 @@ export function getAbilityBehaviours(abilityInfo) {
         for(let type of splitDmgTypes) {
             switch(type) {
                 case EDamageType.MAGICAL:
-                    dmgTypeVal = "Magical";
+                    dmgTypeVal = "DOTA_Plus_Death_Screen_MagicalDamage";
                     break;
                 case EDamageType.PURE:
-                    dmgTypeVal = "Pure";
+                    dmgTypeVal = "DOTA_Plus_Death_Screen_PureDamage";
                     break;
                 case EDamageType.PHYSICAL:
-                    dmgTypeVal = "Physical";
+                    dmgTypeVal = "DOTA_Plus_Death_Screen_PhysicalDamage";
                     break;
                 default:
                     dmgTypeVal = "Not Implemented";
@@ -156,10 +181,10 @@ export function getAbilityBehaviours(abilityInfo) {
         let pierceValue = "";
         switch(abilityInfo.SpellImmunityType) {
             case ESpellImmunityType.YES:
-                pierceValue = "Yes";
+                pierceValue = "DOTA_ToolTip_PiercesSpellImmunity_Yes";
                 break;
             case ESpellImmunityType.NO:
-                pierceValue = "No";
+                pierceValue = "DOTA_ToolTip_PiercesSpellImmunity_No";
                 break;
             default:
                 pierceValue = "Unknown";
@@ -173,4 +198,71 @@ export function getAbilityBehaviours(abilityInfo) {
     }
 
     return behaviours;
+}
+
+export function getAbilityCastRequirements (abilityInfo, levelInfo) {
+    if (!abilityInfo) {
+        return null;
+    }
+
+    let allRequirements = [];
+    // Cast Range
+    if (abilityInfo.AbilityCastRange) {
+        let range = parseAbilityValueByLevel(abilityInfo.AbilityCastRange, levelInfo.level);
+        allRequirements.push({
+            key: "dota_ability_variable_cast_range",
+            value: range,
+        })
+    }
+    // Damage
+    // if (abilityInfo.AbilityDamage) {
+    //     let dmg = parseAbilityValueByLevel(abilityInfo.AbilityDamage, levelInfo.level);
+    //     allRequirements.push({
+    //         key: "dota_ability_variable_damage",
+    //         value: dmg,
+    //     });
+    // }
+
+    // if (abilityInfo.AbilityCastPoint) {
+    //     let castPoint = parseAbilityValueByLevel(abilityInfo.AbilityCastPoint);
+    //     allRequirements.push({
+    //         key: "Cast Point",
+    //         value: castPoint,
+    //     });
+    // }
+
+    return allRequirements;
+}
+
+/// Parses an AbilitySpecial
+export function parseAbilitySpecialValueByLevel (abilitySpecials, key, level = 1) {
+    let valuesSplit = abilitySpecials[key].split(' ');
+    if (valuesSplit.length > 1) {
+        return valuesSplit[level - 1];
+    } else {
+        return abilitySpecials[key];
+    }
+}
+
+/// Parses a value in an abilityInfo that could be alone or have multiple values per level
+export function parseAbilityValueByLevel (value, level = 1) {
+    if (level < 1) {
+        return null;
+    }
+    
+    let abilValue = 0;
+    if (typeof value === "string") {
+        let splitValues = value.split(" ");
+        if (splitValues.length > 1) {
+            abilValue = splitValues[level - 1];
+        } else {
+            abilValue = value;
+        }
+
+        abilValue = parseFloat(abilValue);
+    } else {
+        abilValue = value;
+    }
+
+    return abilValue;
 }

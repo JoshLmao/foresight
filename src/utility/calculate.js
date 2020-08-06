@@ -11,6 +11,8 @@ import {
     getAbilitySpecialAbilityValue,
     getAbilityOutputDamage,
     tryGetAbilitySpecialAbilityValue,
+    parseAbilityValueByLevel
+
 } from "./dataHelperAbilities";
 
 import {
@@ -882,7 +884,7 @@ export function calculateSpellDamage(abilityInfo, abilityLevel, items, neutral, 
     }
 
     // Get normal dmg output of ability
-    let abilityDamage = getAbilityOutputDamage(abilityInfo, abilityLevel);
+    let abilityDamageInfo = getAbilityOutputDamage(abilityInfo, abilityLevel);
     
     // Add up spellAmp from all bonuses to calculate at end
     let totalSpellAmpPercent = 0;
@@ -944,10 +946,11 @@ export function calculateSpellDamage(abilityInfo, abilityLevel, items, neutral, 
             }
         }
     }
-
-    abilityDamage = calculateSpellAmp(abilityDamage, totalSpellAmpPercent);
+    
+    let abilityDamage = calculateSpellAmp(abilityDamageInfo.damage, totalSpellAmpPercent);
     return {
-        damage: abilityDamage,
+        damage: abilityDamage === 0 ? null : abilityDamage,
+        isPercent: abilityDamageInfo.isPercent,
     };
 }
 
@@ -958,17 +961,15 @@ export function calculateSpellAmp (spellDamage, spellAmpPercent) {
 
 /// Calculates ability mana cost with items, neutrals and talents that contain reductions
 export function calculateManaCost(abilityInfo, abilityLevel, items, neutral, talents) {
+    if (abilityLevel <= 0) {
+        return null;
+    }
+    
     let manaCost = null;
 
     // Get inital mana cost amount
     if (abilityInfo && abilityInfo.AbilityManaCost) {
-        let infoManaCost = abilityInfo.AbilityManaCost;
-        if (typeof infoManaCost === "string") {
-            let val = infoManaCost.split(" ")[abilityLevel - 1];
-            manaCost = val;
-        } else {
-            manaCost = infoManaCost;
-        }
+        manaCost = parseAbilityValueByLevel(abilityInfo.AbilityManaCost, abilityLevel);
     }
 
     // Determine mana reductions from items, neutral, talents
@@ -1021,16 +1022,14 @@ export function calculateManaCost(abilityInfo, abilityLevel, items, neutral, tal
 /// Calculates ability cooldown with items, neutrals, talents and abilities
 /// https://liquipedia.net/dota2/Cooldown_Reduction
 export function calculateAbilityCooldown(abilityInfo, abilityLevel, items, neutral, talents) {
+    if (abilityLevel <= 0) {
+        return null;
+    }
+    
     let cooldown = null;
     
     if (abilityInfo && abilityInfo.AbilityCooldown) {
-        let infoCooldown = abilityInfo.AbilityCooldown;
-        if (typeof infoCooldown === "string") {
-            let val = infoCooldown.split(" ")[abilityLevel - 1];
-            cooldown = parseFloat(val);
-        } else {
-            cooldown = infoCooldown;
-        }
+        cooldown = parseAbilityValueByLevel(abilityInfo.AbilityCooldown, abilityLevel);
     }
 
     let allReductions = [];
@@ -1091,7 +1090,7 @@ export function calculateMoveSpeed (hero, items, neutral, abilities, talents) {
         return "?";
     }
 
-    let baseSpeed = hero.MovementSpeed;
+    let baseSpeed = parseInt(hero.MovementSpeed);
     let flatBonus = 0;
     let percentageBasedBonuses = 0;
 

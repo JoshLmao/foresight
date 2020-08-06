@@ -21,7 +21,7 @@ import {
     getPrimaryAttributeStats
 } from '../../utility/dataHelperHero';
 import {
-    tryGetLocalizedString
+    getLocalizedString
 } from "../../utility/data-helpers/language";
 
 function StatArray(props) {
@@ -161,29 +161,29 @@ class Statistics extends Component {
                 {
                     this.state.hero &&
                     <Col md={6}>
-                        <StatArray title={tryGetLocalizedString(this.state.dotaStrings, "DOTA_HUD_Attack")} stats={[
+                        <StatArray title={getLocalizedString(this.state.dotaStrings, "DOTA_HUD_Attack")} stats={[
                             { 
-                                name: tryGetLocalizedString(this.state.dotaStrings, "DOTA_HUD_AttackSpeed"),
+                                name: getLocalizedString(this.state.dotaStrings, "DOTA_HUD_AttackSpeed"),
                                 value: this.state.attackSpeed
                             },
                             { 
-                                name: tryGetLocalizedString(this.state.dotaStrings, "DOTA_HUD_Damage"), 
+                                name: getLocalizedString(this.state.dotaStrings, "DOTA_HUD_Damage"), 
                                 value: this.state.damage 
                             },
                             { 
-                                name: tryGetLocalizedString(this.state.dotaStrings, "DOTA_HUD_AttackRange"), 
+                                name: getLocalizedString(this.state.dotaStrings, "DOTA_HUD_AttackRange"), 
                                 value: this.state.attackRange 
                             },
                             { 
-                                name: tryGetLocalizedString(this.state.dotaStrings, "DOTA_HUD_MoveSpeed"), 
+                                name: getLocalizedString(this.state.dotaStrings, "DOTA_HUD_MoveSpeed"), 
                                 value: this.state.moveSpeed 
                             },
                             { 
-                                name: tryGetLocalizedString(this.state.dotaStrings, "DOTA_HUD_SpellAmp"), 
+                                name: getLocalizedString(this.state.dotaStrings, "DOTA_HUD_SpellAmp"), 
                                 value: this.state.spellAmp + "%" 
                             },
                             { 
-                                name: tryGetLocalizedString(this.state.dotaStrings, "DOTA_HUD_ManaRegenDetail"), 
+                                name: getLocalizedString(this.state.dotaStrings, "DOTA_HUD_ManaRegenDetail"), 
                                 value: this.state.manaRegen 
                             },
                         ]} />
@@ -192,29 +192,29 @@ class Statistics extends Component {
                 {
                     this.state.hero &&
                     <Col md={6}>
-                        <StatArray title={tryGetLocalizedString(this.state.dotaStrings, "DOTA_HUD_Defense")} stats={[
+                        <StatArray title={getLocalizedString(this.state.dotaStrings, "DOTA_HUD_Defense")} stats={[
                             { 
-                                name: tryGetLocalizedString(this.state.dotaStrings, "DOTA_HUD_Armor"), 
+                                name: getLocalizedString(this.state.dotaStrings, "DOTA_HUD_Armor"), 
                                 value:  this.state.armor 
                             },
                             { 
-                                name: tryGetLocalizedString(this.state.dotaStrings, "DOTA_HUD_PhysicalResist"), 
+                                name: getLocalizedString(this.state.dotaStrings, "DOTA_HUD_PhysicalResist"), 
                                 value: this.state.physicalResist + "%" 
                             },
                             { 
-                                name: tryGetLocalizedString(this.state.dotaStrings, "DOTA_HUD_MagicResist"), 
+                                name: getLocalizedString(this.state.dotaStrings, "DOTA_HUD_MagicResist"), 
                                 value: this.state.magicResist + "%" 
                             },
                             { 
-                                name: tryGetLocalizedString(this.state.dotaStrings, "DOTA_HUD_StatusResist"), 
+                                name: getLocalizedString(this.state.dotaStrings, "DOTA_HUD_StatusResist"), 
                                 value: this.state.statusResist + "%" 
                             },
                             { 
-                                name: tryGetLocalizedString(this.state.dotaStrings, "DOTA_HUD_Evasion"), 
+                                name: getLocalizedString(this.state.dotaStrings, "DOTA_HUD_Evasion"), 
                                 value: this.state.evasion + "%" 
                             },
                             { 
-                                name: tryGetLocalizedString(this.state.dotaStrings, "DOTA_HUD_HealthRegenDetail"), 
+                                name: getLocalizedString(this.state.dotaStrings, "DOTA_HUD_HealthRegenDetail"), 
                                 value: this.state.healthRegen 
                             },
                         ]}/>

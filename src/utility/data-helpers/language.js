@@ -1,4 +1,5 @@
 /// Searches the passed strings file for the related string
+/// Very resource intensive
 export function tryGetLocalizedString(languageStrings, stringKey) {
     if (!languageStrings || !stringKey) {
         return null;
@@ -41,6 +42,13 @@ export function tryGetTalentLocalizedString(languageStrings, stringKey) {
     } else {
         return "?";
     }
+}
+
+/// Quick method for retrieving localized string
+/// Main fast method to retrieve an exact key from strings
+export function getLocalizedString(localeStrings, key) {
+    let string = localeStrings.Tokens[key];
+    return string ?? "?";
 }
 
 /// Gets a string from the dota strings that contain the prefix "DOTA_Toolip_"
