@@ -703,7 +703,9 @@ export function calculateRightClickDamage(hero, level, items, neutral, abilities
 
     // Work out how much bonus attack hero recieves from their primary attribute
     let totalPrimaryAttribute = primaryAttributeStats.base + (primaryAttributeStats.perLevel * (level - 1));
-    
+    // Calc additional damage from sources
+    let totalAdditional = 0;
+
     /* Iterate over all items, neutral, abilities and talents to
         get all primary attribute and all stat bonuses
         */
@@ -726,6 +728,11 @@ export function calculateRightClickDamage(hero, level, items, neutral, abilities
             if (bonusAllStats) {
                 totalPrimaryAttribute += bonusAllStats;
             }
+
+            let bonusDmg = tryGetItemSpecialValue(item, "bonus_damage");
+            if (bonusDmg) {
+                totalAdditional += bonusDmg;
+            }
         }
     }
 
@@ -742,6 +749,11 @@ export function calculateRightClickDamage(hero, level, items, neutral, abilities
         if (bonusPrimaryStat) {
             totalPrimaryAttribute += bonusPrimaryStat;
         }
+
+        let bonusDmg = tryGetNeutralSpecialValue(neutral, "bonus_damage");
+        if (bonusDmg) {
+            totalAdditional += bonusDmg;
+        }
     }
 
     if (talents && talents.length > 0) {
@@ -757,22 +769,31 @@ export function calculateRightClickDamage(hero, level, items, neutral, abilities
             }
             
             if (talent.includes("bonus_all_stats")) {
-                let allStats = tryGetNeutralSpecialValue(talent, "value");
+                let allStats = tryGetTalentSpecialAbilityValue(talent, "value");
                 if (allStats) {
                     totalPrimaryAttribute += allStats;
+                }
+            } else if (talent.includes("bonus_attack_damage")) {
+                let bonusDmg = tryGetTalentSpecialAbilityValue(talent, "value");
+                if (bonusDmg) {
+                    totalAdditional += bonusDmg;
                 }
             }
         }
     }
 
-    // Add and return
+    /// Damage from primary attribute counts as part of the Min-Max
+    /// whereas bonus damage (+5 damage) from sources count as additional
+
     let min = atkMin + totalPrimaryAttribute;
     let max = atkMax + totalPrimaryAttribute;
+
     return {
         /// minimum attack damage of the hero
         min: Math.floor(min).toFixed(0),
         /// maximum attack damage of the hero
         max: Math.floor(max).toFixed(0),
+        additional: totalAdditional,
     };
 }
 
@@ -1199,6 +1220,7 @@ export function calculateAttackRange (hero, level, items, neutral, abilities, ta
     return totalAttackRange;
 }
 
+/// Calculates the correct attribute stats for a given hero
 export function calculateAttribute(attribute, hero, level, items, neutral, abilities, talents) {
     if (!hero) {
         return "?";

@@ -9,7 +9,8 @@ import {
 } from "../../utility/dataHelperTalents";
 import { 
     tryGetTalentLocalizedString,
-    replaceStringValue
+    replaceStringValue,
+    getLocalizedString
 } from "../../utility/data-helpers/language";
 
 function isTalentSelected (selectedTalents, talent) {
@@ -74,7 +75,7 @@ class TalentRow extends Component {
             return "Unknown Talent";
         }
 
-        let displayName = tryGetTalentLocalizedString(this.state.abilityStrings, talent);
+        let displayName = getLocalizedString(this.state.abilityStrings, "DOTA_Tooltip_ability_" + talent); 
         if (displayName && talentInfo && talentInfo.AbilitySpecial) {
             displayName = replaceStringValue(displayName, talentInfo.AbilitySpecial[0].value)
         }

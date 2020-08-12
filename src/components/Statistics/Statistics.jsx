@@ -49,7 +49,12 @@ function StatArray(props) {
 /// Gets the attack min/max and formats it for display in UI
 function formatAttackMinMax(hero, lvl, items, neutral, abilities, talents) {
     let standardAtkDmg = calculateRightClickDamage(hero, lvl, items, neutral, abilities, talents);
-    return `${standardAtkDmg.min} - ${standardAtkDmg.max}`;
+    
+    let dmgString = `${standardAtkDmg.min} - ${standardAtkDmg.max}`;
+    if (standardAtkDmg.additional) {
+        dmgString += ` +${standardAtkDmg.additional}`;
+    }
+    return dmgString;
 }
 
 /// Gets the atk time and formats it to display in UI
