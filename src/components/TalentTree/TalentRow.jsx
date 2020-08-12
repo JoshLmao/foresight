@@ -8,7 +8,8 @@ import {
     getTalentInfoFromName,
 } from "../../utility/dataHelperTalents";
 import { 
-    tryGetTalentLocalizedString
+    tryGetTalentLocalizedString,
+    replaceStringValue
 } from "../../utility/data-helpers/language";
 
 function isTalentSelected (selectedTalents, talent) {
@@ -75,7 +76,7 @@ class TalentRow extends Component {
 
         let displayName = tryGetTalentLocalizedString(this.state.abilityStrings, talent);
         if (displayName && talentInfo && talentInfo.AbilitySpecial) {
-            displayName = displayName.replace('{s:value}', talentInfo.AbilitySpecial[0].value);
+            displayName = replaceStringValue(displayName, talentInfo.AbilitySpecial[0].value)
         }
 
         return displayName;

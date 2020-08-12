@@ -77,3 +77,13 @@ export function getTooltipAbilityString(abilityStrings, abilityKey) {
     var match = abilityStrings.Tokens[abilityKey];
     return match;
 }
+
+/// Places a value in a translation string that contains a "{s:value}" inside
+export function replaceStringValue(string, value) {
+    if (!string || !value) {
+        return "?";
+    }
+
+    string = string.replace(/{.*}/, value);
+    return string;
+}

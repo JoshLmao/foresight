@@ -785,17 +785,7 @@ export function calculateAttackTime(hero, level, items, neutral, abilities, tale
     let MAX_ATTACK_SPEED = 700;
 
     // Check if hero has different attack rate or attack speed than base hero
-    let totalAttackSpeed = getDotaBaseHero()?.BaseAttackSpeed;
-    let attackRate = getDotaBaseHero()?.AttackRate;
-    if (hero) {
-        
-        if (hero.BaseAttackSpeed) {
-            totalAttackSpeed = parseInt(hero.BaseAttackSpeed);
-        } 
-        if (hero.AttackSpeed) {
-            attackRate = parseFloat(hero.AttackSpeed);
-        }
-    }
+    let totalAttackSpeed = parseInt(getDotaBaseHero()?.BaseAttackSpeed);
 
     /// Get base agi stats
     let agiStats = getSpecificAttributeStats(EAttributes.ATTR_AGILITY, hero);
@@ -803,7 +793,6 @@ export function calculateAttackTime(hero, level, items, neutral, abilities, tale
     let agiPerLevel = agiStats.perLevel;
 
     let totalAgi = baseAgi + (agiPerLevel * (level - 1));
-
 
     if (items && items.length > 0) {
         for(let item of items) {
@@ -1208,4 +1197,129 @@ export function calculateAttackRange (hero, level, items, neutral, abilities, ta
     }
 
     return totalAttackRange;
+}
+
+export function calculateAttribute(attribute, hero, level, items, neutral, abilities, talents) {
+    if (!hero) {
+        return "?";
+    }
+
+    let attributeStats = getSpecificAttributeStats(attribute, hero);
+    let baseStrength = attributeStats.base;
+    let strengthPerLevel = attributeStats.perLevel;
+
+    let totalAttribute = baseStrength + (strengthPerLevel * (level - 1));
+    let additionalAttribute = 0;
+
+    if (items && items.length > 0) {
+        for(let item of items) {
+            switch(attribute) {
+                case EAttributes.ATTR_STRENGTH:
+                    {
+                        let bonusStr = tryGetItemSpecialValue(item, "bonus_strength");
+                        if (bonusStr) {
+                            additionalAttribute += bonusStr;
+                        }
+                        break;
+                    }
+                case EAttributes.ATTR_AGILITY:
+                    {
+                        let bonusAgi = tryGetItemSpecialValue(item, "bonus_agility");
+                        if (bonusAgi) {
+                            additionalAttribute += bonusAgi;
+                        }
+                        break;
+                    }
+                case EAttributes.ATTR_INTELLIGENCE:
+                    {
+                        let bonusInt = tryGetItemSpecialValue(item, "bonus_intellect");
+                        if (bonusInt) {
+                            additionalAttribute += bonusInt;
+                        }
+                        break;    
+                    }
+                default:
+                    break;
+            }
+        }
+    }
+
+    if (neutral) {
+        switch(attribute) {
+            case EAttributes.ATTR_STRENGTH:
+                    {
+                        let bonusStr = tryGetNeutralSpecialValue(neutral, "bonus_strength");
+                        if (bonusStr) {
+                            additionalAttribute += bonusStr;
+                        }
+                        break;
+                    }
+            case EAttributes.ATTR_AGILITY:
+                {
+                    let bonusAgi = tryGetNeutralSpecialValue(neutral, "bonus_agility");
+                    if (bonusAgi) {
+                        additionalAttribute += bonusAgi;
+                    }
+                    break;
+                }
+            case EAttributes.ATTR_INTELLIGENCE:
+                {
+                    let bonusInt = tryGetNeutralSpecialValue(neutral, "bonus_intelligence");
+                    if (bonusInt) {
+                        additionalAttribute += bonusInt;
+                    }
+                    break;    
+                }
+            default:
+                break;
+        }
+    }
+
+    if (talents && talents.length > 0) {
+        for(let talent of talents) {
+            switch(attribute) {
+                case EAttributes.ATTR_STRENGTH:
+                        {
+                            if (talent.includes("bonus_strength")) {
+                                let bonusStr = tryGetTalentSpecialAbilityValue(talent, "value");
+                                if (bonusStr) {
+                                    additionalAttribute += bonusStr;
+                                }
+                            }
+                            break;
+                        }
+                case EAttributes.ATTR_AGILITY:
+                    {
+                        if (talent.includes("bonus_agility")) {
+                            let bonusAgi = tryGetTalentSpecialAbilityValue(talent, "value");
+                            if (bonusAgi) {
+                                additionalAttribute += bonusAgi;
+                            }
+                        }
+                        break;
+                    }
+                case EAttributes.ATTR_INTELLIGENCE:
+                    {
+                        if (talent.includes("bonus_intelligence")) {
+                            let bonusInt = tryGetTalentSpecialAbilityValue(talent, "value");
+                            if (bonusInt) {
+                                additionalAttribute += bonusInt;
+                            }
+                        }
+                        break;    
+                    }
+                default:
+                    break;
+            }
+        }
+    }
+
+    return {
+        /// Base attribute amount, includes per level
+        attribute: totalAttribute,
+        /// Additional attribute amount, from items/neutral/abils/talents
+        additionalAttribute: additionalAttribute,
+        /// Amount of strength per level
+        perLevel: strengthPerLevel,
+    };
 }

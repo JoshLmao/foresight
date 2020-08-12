@@ -3,7 +3,8 @@ import React, { Component } from 'react';
 import { EAttributes } from "../../enums/attributes.js";
 
 import "./Attributes.css";
-import { getLocalizedString } from '../../utility/data-helpers/language.js';
+import { getLocalizedString, replaceStringValue } from '../../utility/data-helpers/language.js';
+import { calculateAttribute } from '../../utility/calculate.js';
 
 function parse(value) {
     return parseFloat(value).toFixed(2);
@@ -11,14 +12,20 @@ function parse(value) {
 
 function Attribute(props) {
     return (
-        <div className="d-flex my-2">
+        <div className="d-flex my-2 align-items-center">
             <div className={props.isPrimaryAttribute ? " primary-attribute" : ""}>
                 <span className={'attribute ' + props.type} alt="attribute" />
             </div>
-            <div className="ml-2">{props.value}</div>
-            <div className="px-1">+</div>
-            <div>{props.per}</div>
-            <div className="px-1">per level</div>
+            <div className="mx-1">{props.value}</div>
+            <div   
+                className="mx-1" 
+                style={{ color: "green" }}>{"+" + props.additional}</div>
+            <div
+                style={{ fontSize: "0.75rem" }}>
+                {
+                    replaceStringValue(props.perLevelString, props.per)
+                }
+            </div>
         </div>
     );
 }
@@ -57,27 +64,36 @@ class Attributes extends Component {
     }
 
     render() {
+        let strengthStats = calculateAttribute(EAttributes.ATTR_STRENGTH, this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents);
+        let agilityStats = calculateAttribute(EAttributes.ATTR_AGILITY, this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents);
+        let intStats = calculateAttribute(EAttributes.ATTR_INTELLIGENCE, this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents);
         return (
             <div>
                 <h5>{getLocalizedString(this.state.dotaStrings, "DOTA_Tooltip_topbar_stats")}</h5>
                 <h6>{getLocalizedString(this.state.dotaStrings, "DOTA_Attributes")}</h6>
                 <Attribute 
-                    type={"strength"} 
-                    value={parse(this.state.hero?.AttributeBaseStrength)} 
-                    per={parse(this.state.hero?.AttributeStrengthGain)} 
-                    isPrimaryAttribute={this.state.hero?.AttributePrimary === EAttributes.ATTR_STRENGTH}/>
+                    type="strength" 
+                    value={ strengthStats.attribute }
+                    additional= { strengthStats.additionalAttribute }
+                    per={ strengthStats.perLevel } 
+                    isPrimaryAttribute={this.state.hero?.AttributePrimary === EAttributes.ATTR_STRENGTH}
+                    perLevelString={ getLocalizedString(this.state.dotaStrings, "DOTA_HUD_StrengthGain") } />
 
                 <Attribute 
                     type="agility"
-                    value={parse(this.state.hero?.AttributeBaseAgility)}
-                    per={parse(this.state.hero?.AttributeAgilityGain)} 
-                    isPrimaryAttribute={this.state.hero?.AttributePrimary === EAttributes.ATTR_AGILITY} />
+                    value={ agilityStats.attribute }
+                    additional= { agilityStats.additionalAttribute }
+                    per={ agilityStats.perLevel } 
+                    isPrimaryAttribute={this.state.hero?.AttributePrimary === EAttributes.ATTR_AGILITY} 
+                    perLevelString={ getLocalizedString(this.state.dotaStrings, "DOTA_HUD_AgilityGain") } />
 
                 <Attribute 
                     type="intelligence" 
-                    value={parse(this.state.hero?.AttributeBaseIntelligence)}
-                    per={parse(this.state.hero?.AttributeIntelligenceGain)} 
-                    isPrimaryAttribute={this.state.hero?.AttributePrimary === EAttributes.ATTR_INTELLIGENCE} />
+                    value={ intStats.attribute }
+                    additional= { intStats.additionalAttribute }
+                    per={ intStats.perLevel } 
+                    isPrimaryAttribute={this.state.hero?.AttributePrimary === EAttributes.ATTR_INTELLIGENCE} 
+                    perLevelString={ getLocalizedString(this.state.dotaStrings, "DOTA_HUD_IntelligenceGain") } />
             </div>
         );
     }
