@@ -1314,11 +1314,19 @@ export function calculateAttribute(attribute, hero, level, items, neutral, abili
         }
     }
 
+    // If primary attribute, round down else us normal rounding
+    let isPrimaryAttr = getPrimaryAttribute(hero) === attribute;
+    if (isPrimaryAttr) {
+        totalAttribute = Math.floor(totalAttribute)
+    } else {
+        totalAttribute = totalAttribute.toFixed(0);
+    }
+
     return {
         /// Base attribute amount, includes per level
         attribute: totalAttribute,
         /// Additional attribute amount, from items/neutral/abils/talents
-        additionalAttribute: additionalAttribute,
+        additionalAttribute: additionalAttribute.toFixed(0),
         /// Amount of strength per level
         perLevel: strengthPerLevel,
     };
