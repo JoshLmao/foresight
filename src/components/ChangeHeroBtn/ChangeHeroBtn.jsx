@@ -74,7 +74,10 @@ class ChangeHeroBtn extends Component {
                     )} 
                     position="right top"
                     contentStyle={{ width: "750px" }}>
-                     <HeroSelector heroes={this.state.heroes} onSelectedHero={this.onSelectHero} />
+                     <HeroSelector 
+                        heroes={this.state.heroes} 
+                        onSelectedHero={this.onSelectHero} 
+                         />
                 </Popup>
             </div>
         );

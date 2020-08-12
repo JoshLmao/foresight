@@ -11,10 +11,10 @@ import {
 } from "../utility/dataHelperHero";
 
 const initialState = {
-    /// Current selected hero by the user
+    /// Current selected hero info by the user
     selectedHero: DOTAHeroes.npc_dota_hero_zuus,
-    /// display name of the selectedHero
-    selectedHeroName: parseNameFromModel(DOTAHeroes.npc_dota_hero_zuus.Model),
+    /// Internal string name of the hero
+    selectedHeroName: "npc_dota_hero_zuus",
     /// Array of abilities of the selectedHero
     heroAbilities: getAllHeroAbilities(DOTAHeroes.npc_dota_hero_zuus),
     /// Array of talents of the selectedHero

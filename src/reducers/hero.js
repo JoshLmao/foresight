@@ -19,6 +19,9 @@ import {
     getHeroTalents,
 } from "../utility/dataHelperHero";
 
+/* DotA 2 Import Data */
+import { DOTAHeroes } from "../data/dota2/json/npc_heroes.json";
+
 function getNewItemArray(itemArray, newItem) {
     /// Remove old slot insert new and sort by Slot
     var newArray = itemArray.filter((val) => {
@@ -51,12 +54,14 @@ function reducer(state = initialState, action) {
     switch(action.type)
     {
         case SELECTED_HERO:
+            console.log(action);
+            let heroInfo = DOTAHeroes[action.value];
             return {
                 ...state,
-                selectedHero: action.value,
-                selectedHeroName: parseNameFromModel(action.value.Model),
-                heroAbilities: getAllHeroAbilities(action.value),
-                heroTalents: getHeroTalents(action.value),
+                selectedHero: heroInfo,
+                selectedHeroName: action.value,
+                heroAbilities: getAllHeroAbilities(heroInfo),
+                heroTalents: getHeroTalents(heroInfo),
                 
                 // reset selected talents when new hero selected
                 selectedTalents: [ ],

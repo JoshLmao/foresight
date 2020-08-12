@@ -17,6 +17,10 @@ import {
     ENEMY_SELECTED_TALENT
 } from "../../constants/actionTypes";
 
+import { 
+    getLocalizedString
+} from '../../utility/data-helpers/language';
+
 import Abilities from "../Abilities";
 import ItemsBar from "../ItemsBar";
 import Attributes from "../Attributes";
@@ -26,9 +30,6 @@ import TalentTree from "../TalentTree";
 import HealthManaBar from "../HealthManaBar";
 import LevelSelector from "../LevelSelector";
 import EnemyHero from '../EnemyHero';
-
-/* DotA 2 Import Data */
-import { DOTAHeroes } from "../../data/dota2/json/npc_heroes.json";
 
 import "../../css/dota_hero_icons.css";
 import "../../css/dota_attributes.css";
@@ -49,10 +50,10 @@ class Calculator extends Component {
     }
 
     onHeroSelected(heroName) {
-        var targetHero = DOTAHeroes[heroName];
+        //var targetHero = DOTAHeroes[heroName];
         console.log(`${SELECTED_HERO}: ${heroName}`);
 
-        this.props.dispatch({ type: SELECTED_HERO, value: targetHero });
+        this.props.dispatch({ type: SELECTED_HERO, value: heroName });
     }
 
     onItemSelected (item) {
@@ -102,12 +103,12 @@ class Calculator extends Component {
                         {/* Main Hero Info */}
                         <Col className="my-auto" md={3}>
                             <span 
-                                className={`hero-icon-big hero-icon-big-npc_dota_hero_${this.props.selectedHeroName}_png mx-3`}
+                                className={`hero-icon-big hero-icon-big-${this.props.selectedHeroName}_png mx-3`}
                                 height={50}
                                 alt="hero banner" />
                             <div className="d-flex mt-3">
                                 <h5 className="my-auto px-3">
-                                    {this.props.selectedHeroName}
+                                    { getLocalizedString(this.props.dotaStrings, this.props.selectedHeroName) }
                                 </h5>
                                 <ChangeHeroBtn onSelectHero={this.onHeroSelected}/>
                             </div>
