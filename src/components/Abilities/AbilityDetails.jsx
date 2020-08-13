@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import { 
     getAbilityBehaviours,
-    getAbilityCastRequirements
 } from "../../utility/dataHelperAbilities";
 import { 
     getTooltipString,
     getLocalizedString,
 } from "../../utility/data-helpers/language";
+import {
+    calculateAbilityCastRange
+} from "../../utility/calculate";
 
 function TypeValueUI (props) {
     return (
@@ -31,7 +33,7 @@ class AbilityDetails extends Component {
             selectedTalents: props.selectedTalents,
 
             abilityBehaviours: null,
-            castRequirements: null,
+            castRange: 0,
 
             abilityStrings: props.abilityStrings,
             dotaStrings: props.dotaStrings,
@@ -48,43 +50,53 @@ class AbilityDetails extends Component {
         if(prevProps.abilityInfo !== this.props.abilityInfo) {
             this.setState({ 
                 abilityInfo: this.props.abilityInfo,
-            }, () => {
-                this.updateAbilityInfo();
-            });
+            }, () => this.updateAbilityInfo() );
         }
 
         if (prevProps.levelInfo !== this.props.levelInfo) {
-            this.setState({ levelInfo: this.props.levelInfo });
+            this.setState({ 
+                levelInfo: this.props.levelInfo 
+            }, () => this.updateAbilityInfo() );
         }
 
         if (prevProps.items !== this.props.items) {
-            this.setState({ items: this.props.items });
+            this.setState({ 
+                items: this.props.items 
+            }, () => this.updateAbilityInfo() );
         }
 
         if (prevProps.neutral !== this.props.neutral) {
-            this.setState({ neutral: this.props.neutral });
+            this.setState({ 
+                neutral: this.props.neutral 
+            }, () => this.updateAbilityInfo() );
         }
 
         if (prevProps.selectedTalents !== this.props.selectedTalents) {
-            this.setState({ selectedTalents: this.props.selectedTalents });
+            this.setState({ 
+                selectedTalents: this.props.selectedTalents 
+            }, () => this.updateAbilityInfo() );
         }
 
         if (prevProps.abilityStrings !== this.props.abilityStrings) {
-            this.setState({ abilityStrings: this.props.abilityStrings });
+            this.setState({ 
+                abilityStrings: this.props.abilityStrings 
+            });
         }
         if (prevProps.dotaStrings !== this.props.dotaStrings) {
-            this.setState({ dotaStrings: this.props.dotaStrings });
+            this.setState({ 
+                dotaStrings: this.props.dotaStrings 
+            });
         }
     }
 
     updateAbilityInfo() {
         this.setState({ 
             abilityBehaviours: getAbilityBehaviours(this.state.abilityInfo) ,
-            castRequirements: getAbilityCastRequirements(this.state.abilityInfo, this.state.levelInfo),
         });
     }
 
     render() {
+        let castRangeAmt = calculateAbilityCastRange(this.state.ability, this.state.abilityInfo, this.state.levelInfo, this.state.items, this.state.neutral, this.state.selectedTalents);
         return (
             <div className="mb-2">
                 {
@@ -102,14 +114,10 @@ class AbilityDetails extends Component {
                 }
                 <div className="py-1" />
                 {
-                    this.state.castRequirements && this.state.castRequirements.map((value, index) => {
-                        return (
-                            <TypeValueUI 
-                                key={index}
-                                type={getLocalizedString(this.state.abilityStrings, value.key)}
-                                value={value.value} />
-                        )
-                    })
+                    castRangeAmt &&
+                        <TypeValueUI 
+                            type={getLocalizedString(this.state.abilityStrings, "dota_ability_variable_cast_range") + ":"}
+                            value={castRangeAmt} />
                 }
             </div>
         );

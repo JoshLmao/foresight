@@ -8,6 +8,10 @@ import {
     ESpellImmunityType 
 } from "../enums/attributes";
 
+import {
+    lang as DOTAEngAbilityStrings
+} from "../data/dota2/languages/abilities_english.json";
+
 export function getAbilityInfoFromName(abilityName) {
     if (abilityName) {
         return DOTAAbilities[abilityName];
@@ -45,11 +49,61 @@ export function getAbilitySpecialAbilityValue(abilityInfo, specialAbilityKey, ab
                     dataValue = split[abilityLevel - 1];
                 }
 
-                if (specialAbilityInfo.var_type === "FIELD_INTEGER") {
-                    return parseInt(dataValue);
+                /// If wanting it for it's value, correctly convert and return
+                if (specialAbilityKey.includes("value")) {
+                    if (specialAbilityInfo.var_type === "FIELD_INTEGER") {
+                        return parseInt(dataValue);
+                    } 
+                    else if(specialAbilityInfo.var_type === "FIELD_FLOAT") {
+                        return parseFloat(dataValue);
+                    }
                 } 
-                else if(specialAbilityInfo.var_type === "FIELD_FLOAT") {
-                    return parseFloat(dataValue);
+                /// else return whatever the value is
+                else {
+                    return dataValue;
+                }
+                
+            }
+        }
+    }
+}
+
+/// Gets 
+export function getAbilitySpecialCastRangeValue (abilityInfo, includePhrase, abilityLevel = 1) {
+    if (abilityInfo && abilityInfo.AbilitySpecial) {
+        for(let i = 0; i < abilityInfo.AbilitySpecial.length; i++) {
+            let keys = Object.keys(abilityInfo.AbilitySpecial[i]);
+            let matchingKey = keys.find(element => {
+                return element.includes(includePhrase) && !element.includes("scepter");
+            });
+
+            if (matchingKey) {
+                let specialAbilityInfo = abilityInfo.AbilitySpecial[i];
+
+                /// ignore if scepter 
+                if (specialAbilityInfo.RequiresScepter) {
+                    return null;
+                }
+
+                // If value contains a space, it can be levelled up needs to be split up
+                let dataValue = specialAbilityInfo[matchingKey];
+                if (typeof dataValue === "string" && dataValue.includes(' ')) {
+                    let split = specialAbilityInfo[matchingKey].split(' ');
+                    dataValue = split[abilityLevel - 1];
+                }
+
+                /// If wanting it for it's value, correctly convert and return
+                if (matchingKey.includes("value") || specialAbilityInfo.var_type) {
+                    if (specialAbilityInfo.var_type === "FIELD_INTEGER") {
+                        return parseInt(dataValue);
+                    } 
+                    else if(specialAbilityInfo.var_type === "FIELD_FLOAT") {
+                        return parseFloat(dataValue);
+                    }
+                } 
+                /// else return whatever the value is
+                else {
+                    return dataValue;
                 }
             }
         }
@@ -200,40 +254,6 @@ export function getAbilityBehaviours(abilityInfo) {
     return behaviours;
 }
 
-export function getAbilityCastRequirements (abilityInfo, levelInfo) {
-    if (!abilityInfo) {
-        return null;
-    }
-
-    let allRequirements = [];
-    // Cast Range
-    if (abilityInfo.AbilityCastRange) {
-        let range = parseAbilityValueByLevel(abilityInfo.AbilityCastRange, levelInfo.level);
-        allRequirements.push({
-            key: "dota_ability_variable_cast_range",
-            value: range,
-        })
-    }
-    // Damage
-    // if (abilityInfo.AbilityDamage) {
-    //     let dmg = parseAbilityValueByLevel(abilityInfo.AbilityDamage, levelInfo.level);
-    //     allRequirements.push({
-    //         key: "dota_ability_variable_damage",
-    //         value: dmg,
-    //     });
-    // }
-
-    // if (abilityInfo.AbilityCastPoint) {
-    //     let castPoint = parseAbilityValueByLevel(abilityInfo.AbilityCastPoint);
-    //     allRequirements.push({
-    //         key: "Cast Point",
-    //         value: castPoint,
-    //     });
-    // }
-
-    return allRequirements;
-}
-
 /// Parses an AbilitySpecial
 export function parseAbilitySpecialValueByLevel (abilitySpecials, key, level = 1) {
     let valuesSplit = abilitySpecials[key].split(' ');
@@ -265,4 +285,21 @@ export function parseAbilityValueByLevel (value, level = 1) {
     }
 
     return abilValue;
+}
+
+export function isCooldownTalent (talent) {
+    return isTalent(talent, "cooldown");
+}
+
+export function isDamageTalent (talent) {
+    return isTalent(talent, "damage");
+}
+
+export function isCastRangeTalent (talent) {
+    return isTalent(talent, "cast range");
+}
+
+export function isTalent (talent, lowerCasePhrase) {
+    let abilityString = DOTAEngAbilityStrings.Tokens["DOTA_Tooltip_ability_" + talent];
+    return abilityString && abilityString.toLowerCase().includes(lowerCasePhrase);
 }

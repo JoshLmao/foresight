@@ -15,6 +15,7 @@ class Cooldown extends Component {
             abilityCooldown: props.cooldown,
 
             ability: props.ability,
+            abilityInfo: props.abilityInfo,
             items: props.items,
             neutral: props.neutral,
             selectedTalents: props.selectedTalents,
@@ -40,7 +41,7 @@ class Cooldown extends Component {
     updateCooldown() {
         let currentCooldown = null;
         if (this.state.abilityCooldown) {
-            currentCooldown = calculateAbilityCooldown(this.state.ability, this.state.abilityLevel, this.state.items, this.state.neutral, this.state.selectedTalents);
+            currentCooldown = calculateAbilityCooldown(this.state.ability, this.state.abilityInfo, this.state.abilityLevel, this.state.items, this.state.neutral, this.state.selectedTalents);
         }
 
         return currentCooldown;

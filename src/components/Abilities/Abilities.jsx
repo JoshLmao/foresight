@@ -70,7 +70,7 @@ class Abilities extends Component {
 
             displayDamage: props.displayDamage,
         };
-        
+
         this.onLevelChanged = this.onLevelChanged.bind(this);
         this.filterAbilities = this.filterAbilities.bind(this);
     }
@@ -140,7 +140,7 @@ class Abilities extends Component {
         return (
             <Row>
                 {
-                    this.state.abilities && this.state.abilities.map((value, index) => {
+                    this.state.abilities && this.state.abilityLevels && this.state.abilities.map((value, index) => {
                         // Info about the ability
                         var ability = DOTAAbilities[value];
                         if (!ability) {
@@ -148,11 +148,6 @@ class Abilities extends Component {
                         }
                         // Current level of the ability
                         var levelInfo = this.state.abilityLevels.find(abilVal => abilVal.ability === index);
-                        if (!levelInfo) {
-                            debugger;
-                        }
-
-                        //console.log(levelInfo);
                         if (!ability && value) {
                             return <div key={value}>?</div>
                         }
@@ -172,7 +167,8 @@ class Abilities extends Component {
                                     <Col md={6}>
                                         {/* Cooldown */}
                                         <Cooldown 
-                                            ability={ability} 
+                                            ability={value} 
+                                            abilityInfo={ability}
                                             abilityLevel={levelInfo.level} 
                                             cooldown={ability.AbilityCooldown}
                                             items={this.state.items}

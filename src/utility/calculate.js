@@ -11,8 +11,11 @@ import {
     getAbilitySpecialAbilityValue,
     getAbilityOutputDamage,
     tryGetAbilitySpecialAbilityValue,
-    parseAbilityValueByLevel
-
+    parseAbilityValueByLevel,
+    isCooldownTalent,
+    isDamageTalent,
+    isCastRangeTalent,
+    getAbilitySpecialCastRangeValue
 } from "./dataHelperAbilities";
 
 import {
@@ -888,7 +891,7 @@ export function calculateAttackTime(hero, level, items, neutral, abilities, tale
 }
 
 /// Calculates how much output damage an ability will do to an enemy, factoring in any items
-export function calculateSpellDamage(abilityInfo, abilityLevel, items, neutral, talents) {
+export function calculateSpellDamage(abilityName, abilityInfo, abilityLevel, items, neutral, talents) {
     if (!abilityLevel || !abilityInfo) {
         return -1;
     }
@@ -898,6 +901,9 @@ export function calculateSpellDamage(abilityInfo, abilityLevel, items, neutral, 
     
     // Add up spellAmp from all bonuses to calculate at end
     let totalSpellAmpPercent = 0;
+
+    /// Value bonus from talent
+    let talentBonus = 0;
 
     if (items) {
         // Add item spell damage increase
@@ -951,13 +957,30 @@ export function calculateSpellDamage(abilityInfo, abilityLevel, items, neutral, 
                 let ampTalentValue = tryGetTalentSpecialAbilityValue(talent, "value");
                 if (ampTalentValue) {
                     totalSpellAmpPercent += ampTalentValue;
+                }
+            } 
+            /// if a unique talent specific to a hero ability
+            else if (talent.includes("special_bonus_unique")) {
+                /// Search Abilities_English.json for string of talent to 
+                /// check if it is a damage talent modifier and apply
+                if (isDamageTalent(talent)) {
+                    let linkedAbility = tryGetTalentSpecialAbilityValue(talent, "ad_linked_ability");
 
+                    // if linked ability is equal to current one
+                    if (linkedAbility && linkedAbility === abilityName) {
+                        let value = tryGetTalentSpecialAbilityValue(talent, "value");
+                        if (value) {
+                            talentBonus = value;
+                        }
+                    }
                 }
             }
         }
     }
     
-    let abilityDamage = calculateSpellAmp(abilityDamageInfo.damage, totalSpellAmpPercent);
+    let totalAbilDmg = abilityDamageInfo.damage + talentBonus;
+    let abilityDamage = calculateSpellAmp(totalAbilDmg, totalSpellAmpPercent);
+
     return {
         damage: abilityDamage === 0 ? null : abilityDamage,
         isPercent: abilityDamageInfo.isPercent,
@@ -1031,13 +1054,14 @@ export function calculateManaCost(abilityInfo, abilityLevel, items, neutral, tal
 
 /// Calculates ability cooldown with items, neutrals, talents and abilities
 /// https://liquipedia.net/dota2/Cooldown_Reduction
-export function calculateAbilityCooldown(abilityInfo, abilityLevel, items, neutral, talents) {
+export function calculateAbilityCooldown(abilityName, abilityInfo, abilityLevel, items, neutral, talents) {
     if (abilityLevel <= 0) {
         return null;
     }
     
     let cooldown = null;
-    
+    let fixedAmtReductionSeconds = 0;
+
     if (abilityInfo && abilityInfo.AbilityCooldown) {
         cooldown = parseAbilityValueByLevel(abilityInfo.AbilityCooldown, abilityLevel);
     }
@@ -1076,9 +1100,23 @@ export function calculateAbilityCooldown(abilityInfo, abilityLevel, items, neutr
                     allReductions.push({ amount: reduction, source: talent });
                 }
             }
+            else if (talent.includes("special_bonus_unique")) {
+                if (isCooldownTalent(talent)) {
+                    let linkedAbility = tryGetTalentSpecialAbilityValue(talent, "ad_linked_ability");
+                    if (linkedAbility === abilityName) {
+                        let value = tryGetTalentSpecialAbilityValue(talent, "value");
+                        if (value) {
+                            fixedAmtReductionSeconds += value;
+                        }
+                    }
+                }
+            }
         }
     }
 
+    /// Remove any fixed amount cooldown reductions first before
+    /// applying any other reductions
+    let totalCooldown = cooldown - fixedAmtReductionSeconds;
 
     let sourceOfReductions = [];
     for(let reduction of allReductions) {
@@ -1086,12 +1124,11 @@ export function calculateAbilityCooldown(abilityInfo, abilityLevel, items, neutr
         sourceOfReductions.push((1 - decimal));
     }
 
-    let reductionTotal = cooldown;
     for(let reduce of sourceOfReductions) {
-        reductionTotal *= reduce;
+        totalCooldown *= reduce;
     }
 
-    return reductionTotal.toFixed(2);
+    return totalCooldown.toFixed(2);
 }
 
 /// Calculates the movement speed of the hero, factoring in their items, neutral, abilities and talents
@@ -1352,4 +1389,64 @@ export function calculateAttribute(attribute, hero, level, items, neutral, abili
         /// Amount of strength per level
         perLevel: strengthPerLevel,
     };
+}
+
+export function calculateAbilityCastRange (abilityName, abilityInfo, abilityLevel, items, neutral, talents) {
+    if (!abilityInfo) {
+        return "?";
+    }
+
+    /// Use CastRange or find range inside AbilitySpecial
+    let baseCastRange = parseInt(abilityInfo.AbilityCastRange);
+    if (!baseCastRange) {
+        let foundRange = getAbilitySpecialCastRangeValue(abilityInfo, "_range", abilityLevel.level);
+        if (foundRange) {
+            baseCastRange = foundRange;
+        } else {
+            // Cant determine a cast range, none
+            return null;
+        }
+    }
+
+    let totalBonusRange = 0;
+
+    if (items && items.length > 0) {
+        for (let item of items) {
+            let rangeBonus = tryGetItemSpecialValue(item, "cast_range_bonus");
+            if (rangeBonus) {
+                totalBonusRange += rangeBonus;
+            }
+        }
+    }
+
+    if (neutral) {
+        let rangeBonus = tryGetNeutralSpecialValue(neutral, "cast_range_bonus");
+        if (rangeBonus) {
+            totalBonusRange += rangeBonus;
+        }
+    }
+
+    if (talents && talents.length > 0) {
+        for (let talent of talents) {
+            if (talent.includes("bonus_cast_range")) {
+                let rangeBonus = tryGetTalentSpecialAbilityValue(talent, "value");
+                if (rangeBonus) {
+                    totalBonusRange += rangeBonus;
+                }
+            }
+            else if (talent.includes("special_bonus_unique")) {
+                if (isCastRangeTalent(talent)) {
+                    let linkedAbility = tryGetTalentSpecialAbilityValue(talent, "ad_linked_ability");
+                    if (linkedAbility === abilityName) {
+                        let value = tryGetTalentSpecialAbilityValue(talent, "value");
+                        if (value) {
+                            totalBonusRange += value;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return baseCastRange + totalBonusRange;
 }

@@ -8,10 +8,13 @@ import {
     getTooltipString,
     getTooltipAbilityString,
 } from "../../utility/data-helpers/language";
+import { 
+    tryGetTalentSpecialAbilityValue
+} from '../../utility/dataHelperTalents';
 
 /// Retrieves ability damage and returns display value
-function parseDamage(abilInfo, abilLvl, items, neutral, talents) {
-    let abilityDamage = calculateSpellDamage(abilInfo, abilLvl, items, neutral, talents);
+function parseDamage(abilityName, abilInfo, abilLvl, items, neutral, talents) {
+    let abilityDamage = calculateSpellDamage(abilityName, abilInfo, abilLvl, items, neutral, talents);
     if (abilityDamage && abilityDamage.damage) {
         let damage = abilityDamage.damage;
         if (abilityDamage.isPercent) {
@@ -79,7 +82,7 @@ class DamageOutput extends Component {
     }
 
     render() {
-        let abilityDamage = parseDamage(this.state.abilityInfo, this.state.levelInfo?.level, this.state.items, this.state.neutral, this.state.selectedTalents);
+        let abilityDamage = parseDamage(this.state.ability, this.state.abilityInfo, this.state.levelInfo?.level, this.state.items, this.state.neutral, this.state.selectedTalents);
         return (
             <div className="w-100 h-100">
                 <h5>{getTooltipAbilityString(this.state.abilityStrings, this.state.ability)}</h5>
