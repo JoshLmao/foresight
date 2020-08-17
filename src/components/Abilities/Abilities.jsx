@@ -7,6 +7,10 @@ import {
 
 import { DOTAAbilities } from "../../data/dota2/json/npc_abilities.json";
 
+import {
+    itemsContainsScepter
+} from "../../utility/dataHelperItems";
+
 import DamageOutput from "./DamageOutput";
 import Cooldown from "./Cooldown";
 import ManaCost from "./ManaCost";
@@ -59,6 +63,7 @@ class Abilities extends Component {
         var abilLevels = getLevelInfo(abils);
 
         this.state = {
+            heroName: props.heroName,
             abilities: abils,
             abilityLevels: abilLevels,
             items: props.items,
@@ -76,7 +81,12 @@ class Abilities extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        //Update if previous props have changed
+        if (prevProps.heroName !== this.props.heroName) {
+            this.setState({
+                heroName: this.props.heroName,
+            });
+        }
+
         if (prevProps.abilities !== this.props.abilities) {
             var abils = this.filterAbilities(this.props.abilities);
             this.setState({
@@ -142,18 +152,18 @@ class Abilities extends Component {
                 {
                     this.state.abilities && this.state.abilityLevels && this.state.abilities.map((value, index) => {
                         // Info about the ability
-                        var ability = DOTAAbilities[value];
+                        let ability = DOTAAbilities[value];
                         if (!ability) {
                             console.log(`Unable to find info on ability '${value}'`);
                         }
                         // Current level of the ability
-                        var levelInfo = this.state.abilityLevels.find(abilVal => abilVal.ability === index);
+                        let levelInfo = this.state.abilityLevels.find(abilVal => abilVal.ability === index);
                         if (!ability && value) {
                             return <div key={value}>?</div>
                         }
 
                         // Dont add any scepter abilities unless hero has scepter
-                        if (ability && ability.IsGrantedByScepter && this.state.items.filter(item => item.item === "ultimate_scepter").length <= 0) {
+                        if (ability && ability.IsGrantedByScepter && !itemsContainsScepter(this.state.items)) {
                             return;
                         }
                         return (

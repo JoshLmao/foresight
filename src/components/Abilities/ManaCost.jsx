@@ -50,7 +50,7 @@ class ManaCost extends Component {
             <div>
                 { 
                     manaCost &&
-                        <div className="mana-cost d-flex">
+                        <div className="mana-cost d-flex" title="mana cost">
                             <div className="my-auto mr-1" style={{ 
                                 height: "10px",
                                 width: "10px",

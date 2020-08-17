@@ -3,7 +3,8 @@ import {
     getItemSpecialAbilityValue,
     tryGetItemSpecialValue,
     tryGetNeutralSpecialValue,
-    primaryAttributeToItemBonusKey
+    primaryAttributeToItemBonusKey,
+    itemsContainsScepter
 } from "./dataHelperItems";
 
 import {
@@ -15,7 +16,9 @@ import {
     isCooldownTalent,
     isDamageTalent,
     isCastRangeTalent,
-    getAbilitySpecialCastRangeValue
+    getAbilitySpecialCastRangeValue,
+    getIncludesAbilitySpecialAbilityValue,
+    isAbilityBehaviour
 } from "./dataHelperAbilities";
 
 import {
@@ -34,6 +37,7 @@ import { EAttributes } from "../enums/attributes";
 
 import { DOTAHeroes } from "../data/dota2/json/npc_heroes.json";
 import { DOTAAbilities } from "../data/dota2/json/npc_abilities.json";
+import { EAbilityBehaviour } from "../enums/abilities";
 
 /// Calculates the health of a hero
 /// https://dota2.gamepedia.com/Health
@@ -42,18 +46,18 @@ export function calculateHealth(hero, heroLevel, items, neutral, abilities, tale
         return "?";
     }
     
-    var HEALTH_PER_STRENGTH_POINT = 20;
+    let HEALTH_PER_STRENGTH_POINT = 20;
     let baseStrength = parseInt(hero.AttributeBaseStrength)
     let strengthGain = parseFloat(hero.AttributeStrengthGain);
 
-    var baseHealth = 0;
+    let baseHealth = 0;
     if (DOTAHeroes && DOTAHeroes.npc_dota_hero_base && DOTAHeroes.npc_dota_hero_base.StatusHealth) {
         baseHealth = parseInt(DOTAHeroes.npc_dota_hero_base.StatusHealth);
     } else {
         console.error("Can't add baseHealth to heroes health pool");
     }
 
-    var totalStr = baseStrength + (strengthGain * (heroLevel - 1));
+    let totalStr = baseStrength + (strengthGain * (heroLevel - 1));
     let totalHealth = baseHealth + (totalStr * HEALTH_PER_STRENGTH_POINT);
 
     if (items && items.length > 0) {
@@ -131,14 +135,14 @@ export function calculateMana(hero, heroLevel, items, neutral, abilities, talent
     let baseInt = parseInt(hero.AttributeBaseIntelligence);
     let intGain = parseFloat(hero.AttributeIntelligenceGain);
 
-    var baseMana = 0;
+    let baseMana = 0;
     if (DOTAHeroes && DOTAHeroes.npc_dota_hero_base && DOTAHeroes.npc_dota_hero_base.StatusMana) {
         baseMana = parseInt(DOTAHeroes.npc_dota_hero_base.StatusMana);
     } else {
         console.error("Can't add baseMana to heroes mana pool");
     }
 
-    var totalInt = baseInt + (intGain * (heroLevel - 1));
+    let totalInt = baseInt + (intGain * (heroLevel - 1));
     let totalMana = baseMana + (totalInt * MANA_PER_INT_POINT);
 
     if (items && items.length > 0) {
@@ -272,14 +276,14 @@ export function calculateHealthRegen(hero, heroLevel, items, neutral, abilities,
         }
     } 
 
-    if (abilities && abilities.length > 0) {
-        for (let ability of abilities) {
-            let bonusRegen = tryGetAbilitySpecialAbilityValue(ability, "bonus_health_regen", 1);
-            if (bonusRegen) {
-                totalHpRegen += bonusRegen;
-            }
-        }
-    }
+    // if (abilities && abilities.length > 0) {
+    //     for (let ability of abilities) {
+    //         let bonusRegen = tryGetAbilitySpecialAbilityValue(ability, "bonus_health_regen", 1);
+    //         if (bonusRegen) {
+    //             totalHpRegen += bonusRegen;
+    //         }
+    //     }
+    // }
 
     if (talents && talents.length > 0) {
         for (let talent of talents) {
@@ -408,13 +412,13 @@ export function calculateMainArmor(hero, level, items, neutral, abilities, talen
     }
 
     let ARMOR_PER_AGI = 0.167;
-    let baseArmor = hero.ArmorPhysical;
-    let baseAgility = hero.AttributeBaseAgility;
-    let agiPerLevel = hero.AttributeAgilityGain;
+    let baseArmor = parseInt(hero.ArmorPhysical);
+    let baseAgility = parseInt(hero.AttributeBaseAgility);
+    let agiPerLevel = parseFloat(hero.AttributeAgilityGain);
 
     // Determine bonus agility from perLevel. Then work out main armor
-    var agiPer = (parseFloat(agiPerLevel) * (level - 1));
-    var totalArmor = parseInt(baseArmor) + ((parseInt(baseAgility) + agiPer) * ARMOR_PER_AGI);
+    let agiPer = (agiPerLevel * (level - 1));
+    let totalArmor = baseArmor + ((baseAgility + agiPer) * ARMOR_PER_AGI);
     
     if (items && items.length > 0) {
         for(let item of items) {
@@ -455,14 +459,20 @@ export function calculateMainArmor(hero, level, items, neutral, abilities, talen
         }
     }
 
-    if (abilities && abilities.length > 0) {
-        for(let ability of abilities) {
-            let bonusArmor = tryGetAbilitySpecialAbilityValue(ability, "bonus_armor");
-            if (bonusArmor) {
-                totalArmor += bonusArmor;
-            }
-        }
-    }
+    /// ToDo: If abilities active, add active ability armor
+    /// or if ability is passive, apply bonus
+    // if (abilities && abilities.length > 0) {
+    //     for(let ability of abilities) {
+    //         /// if a passive, add armor depending on ability level
+    //         let abilInfo = getAbilityInfoFromName(ability);
+    //         if (isAbilityBehaviour(abilInfo.AbilityBehavior, [ EAbilityBehaviour.PASSIVE ])) {
+    //             let bonusArmor = tryGetAbilitySpecialAbilityValue(ability, "bonus_armor");
+    //             if (bonusArmor) {
+    //                 totalArmor += bonusArmor;
+    //             }
+    //         }
+    //     }
+    // }
 
     if(talents && talents.length > 0) {
         for(let talent of talents) {
@@ -646,14 +656,14 @@ export function calculateMagicResist (items, neutral, abilities) {
 export function calculatePhysicalResist (totalArmor) {
     // Formula from https://www.dotabuff.com/blog/2018-11-30-understanding-720-armor-changes
     //( 0.052 * armor ) ÷ ( 0.9 + 0.048 * |armor|)
-    var physResist = (0.052 * totalArmor) / (0.9 + 0.048 * Math.abs(totalArmor));
-    var percent = physResist * 100;
+    let physResist = (0.052 * totalArmor) / (0.9 + 0.048 * Math.abs(totalArmor));
+    let percent = physResist * 100;
     return percent.toFixed(0);
 }
 
 /// Calculates evasion
 export function calculateEvasion(items, neutral, abilities, talents) {
-    var totalEvasion = 0.0;
+    let totalEvasion = 0.0;
 
     if (abilities && abilities.length > 0) {
         for(let ability of abilities) {
@@ -676,11 +686,11 @@ export function calculateEvasion(items, neutral, abilities, talents) {
     }
 
     if (items && items.length > 0) {
-        for(var i = 0; i < items.length; i++) {
+        for(let i = 0; i < items.length; i++) {
             if (items[i].item) {
-                var itemInfo = getItemInfoFromName(items[i].item);
+                let itemInfo = getItemInfoFromName(items[i].item);
                 if (itemInfo) {
-                    var evasionAmount = getItemSpecialAbilityValue(itemInfo, "bonus_evasion");
+                    let evasionAmount = getItemSpecialAbilityValue(itemInfo, "bonus_evasion");
                     if (evasionAmount) {
                         totalEvasion += evasionAmount;
                     }
@@ -908,7 +918,7 @@ export function calculateSpellDamage(abilityName, abilityInfo, abilityLevel, ite
     if (items) {
         // Add item spell damage increase
         for(let i = 0; i < items.length; i++) {
-            var itemInfo = getItemInfoFromName(items[i].item);
+            let itemInfo = getItemInfoFromName(items[i].item);
             if (itemInfo) {
                 let spellAmp = getItemSpecialAbilityValue(itemInfo, "spell_amp");
                 if (spellAmp) {
@@ -932,7 +942,7 @@ export function calculateSpellDamage(abilityName, abilityInfo, abilityLevel, ite
 
     if (neutral) {
         //Add neutral item spell dmg
-        var neutralInfo = getItemInfoFromName(neutral.item);
+        let neutralInfo = getItemInfoFromName(neutral.item);
         if (neutralInfo && neutralInfo.AbilitySpecial) {
             for (let i = 0; i < neutralInfo.AbilitySpecial.length; i++) {
                 let special = neutralInfo.AbilitySpecial[i];
@@ -1011,9 +1021,9 @@ export function calculateManaCost(abilityInfo, abilityLevel, items, neutral, tal
 
     if (items) {
         for(let item of items) {
-            var itemInfo = getItemInfoFromName(item.item);
+            let itemInfo = getItemInfoFromName(item.item);
             if(itemInfo) {
-                var manaCostReduceAmount = getItemSpecialAbilityValue(itemInfo, "manacost_reduction");
+                let manaCostReduceAmount = getItemSpecialAbilityValue(itemInfo, "manacost_reduction");
                 if(manaCostReduceAmount) {
                     totalManaCostReducePercent += manaCostReduceAmount;
                 }
@@ -1060,19 +1070,33 @@ export function calculateAbilityCooldown(abilityName, abilityInfo, abilityLevel,
     }
     
     let cooldown = null;
+    let charges = null;
     let fixedAmtReductionSeconds = 0;
 
     if (abilityInfo && abilityInfo.AbilityCooldown) {
         cooldown = parseAbilityValueByLevel(abilityInfo.AbilityCooldown, abilityLevel);
+
+        /// if ability uses charges, use charge cooldown
+        if (cooldown === 0 && abilityInfo.AbilityCharges && abilityInfo.AbilityChargeRestoreTime) {
+            cooldown = parseInt(abilityInfo.AbilityChargeRestoreTime);
+            charges = parseInt(abilityInfo.AbilityCharges);
+        }
+
+        // if AbilityInfo has a Scepter upgrade and items contains scepter
+        let requiresScepter = getAbilitySpecialAbilityValue(abilityInfo, "RequiresScepter") === "1";
+        if (requiresScepter && itemsContainsScepter(items)) {
+            let scepterCharges = getIncludesAbilitySpecialAbilityValue(abilityInfo, "charges", abilityLevel);
+            charges = scepterCharges;
+        }
     }
 
     let allReductions = [];
     if (items) {
         for (let item of items) {
             if (item && item.item) {
-                var itemInfo = getItemInfoFromName(item.item);
+                let itemInfo = getItemInfoFromName(item.item);
                 if (itemInfo) {
-                    var bonusCooldown = getItemSpecialAbilityValue(itemInfo, "bonus_cooldown");
+                    let bonusCooldown = getItemSpecialAbilityValue(itemInfo, "bonus_cooldown");
                     if (bonusCooldown) {
                         allReductions.push({ amount: bonusCooldown, source: item.item });
                     }
@@ -1128,7 +1152,10 @@ export function calculateAbilityCooldown(abilityName, abilityInfo, abilityLevel,
         totalCooldown *= reduce;
     }
 
-    return totalCooldown.toFixed(2);
+    return {
+        charges: charges,
+        cooldown: totalCooldown > 0 ? totalCooldown.toFixed(2) : null,
+    };
 }
 
 /// Calculates the movement speed of the hero, factoring in their items, neutral, abilities and talents

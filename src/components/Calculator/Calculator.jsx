@@ -179,6 +179,7 @@ class Calculator extends Component {
 
                     {/* Abilities */}
                     <Abilities 
+                        heroName={this.props.selectedHeroName}
                         abilities={this.props.heroAbilities}
                         items={this.props.items}
                         neutral={this.props.neutralItem} 

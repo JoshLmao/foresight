@@ -6,11 +6,12 @@ import {
     EAbilityBehaviour, 
     EDamageType, 
     ESpellImmunityType 
-} from "../enums/attributes";
+} from "../enums/abilities";
 
 import {
     lang as DOTAEngAbilityStrings
 } from "../data/dota2/languages/abilities_english.json";
+import { containsLocalizedString } from "./data-helpers/language";
 
 export function getAbilityInfoFromName(abilityName) {
     if (abilityName) {
@@ -50,7 +51,7 @@ export function getAbilitySpecialAbilityValue(abilityInfo, specialAbilityKey, ab
                 }
 
                 /// If wanting it for it's value, correctly convert and return
-                if (specialAbilityKey.includes("value")) {
+                if (matchingKey.includes("value") && specialAbilityInfo.var_type) {
                     if (specialAbilityInfo.var_type === "FIELD_INTEGER") {
                         return parseInt(dataValue);
                     } 
@@ -87,27 +88,34 @@ export function getAbilitySpecialCastRangeValue (abilityInfo, includePhrase, abi
 
                 // If value contains a space, it can be levelled up needs to be split up
                 let dataValue = specialAbilityInfo[matchingKey];
-                if (typeof dataValue === "string" && dataValue.includes(' ')) {
-                    let split = specialAbilityInfo[matchingKey].split(' ');
-                    dataValue = split[abilityLevel - 1];
-                }
-
-                /// If wanting it for it's value, correctly convert and return
-                if (matchingKey.includes("value") || specialAbilityInfo.var_type) {
-                    if (specialAbilityInfo.var_type === "FIELD_INTEGER") {
-                        return parseInt(dataValue);
-                    } 
-                    else if(specialAbilityInfo.var_type === "FIELD_FLOAT") {
-                        return parseFloat(dataValue);
-                    }
-                } 
-                /// else return whatever the value is
-                else {
-                    return dataValue;
-                }
+                
+                /// Return dataValue in format
+                return tryParseAbilitySpecialValue(specialAbilityInfo, dataValue, abilityLevel)
             }
         }
     }
+}
+
+/// Searches an AbilityInfo's AbilitySpecial array for a property that includes the the "includePhrase"
+/// in it's key. For example includePhrase = "charges" would return value of voice spirit's "max_charges"
+export function getIncludesAbilitySpecialAbilityValue(abilityInfo, includePhrase, abilityLevel) {
+    if (abilityInfo && abilityInfo.AbilitySpecial) {
+        for(let i = 0; i < abilityInfo.AbilitySpecial.length; i++) {
+            let keys = Object.keys(abilityInfo.AbilitySpecial[i]);
+            let matchingKey = keys.find(element => {
+                return element.includes(includePhrase);
+            });
+
+            if (matchingKey) {
+                let specialAbilityInfo = abilityInfo.AbilitySpecial[i];
+                let dataValue = specialAbilityInfo[matchingKey];
+
+                /// Return dataValue in format
+                return tryParseAbilitySpecialValue(specialAbilityInfo, dataValue, abilityLevel);
+            }
+        }
+    }
+    return null;
 }
 
 /// Gets the standard output damage of an ability from its level
@@ -302,4 +310,56 @@ export function isCastRangeTalent (talent) {
 export function isTalent (talent, lowerCasePhrase) {
     let abilityString = DOTAEngAbilityStrings.Tokens["DOTA_Tooltip_ability_" + talent];
     return abilityString && abilityString.toLowerCase().includes(lowerCasePhrase);
+}
+
+/// Checks the AbilityBehavior string on an AbilityInfo to
+/// see if it contains all EBehaviours in array
+export function isAbilityBehaviour (abilityBehaviour, ebehaviours) {
+    if (abilityBehaviour) {
+        let splitBehaviours = abilityBehaviour.split(' | ');
+        
+        let contains = splitBehaviours.some((b) => ebehaviours.includes(b));
+        return contains;
+    }
+    return false;
+}
+
+/// Gets all AbilitySpecial extra information values with it's translation key 
+export function getAbilitySpecialExtraValues (abilityName, abilityInfo, abilityLevel, selectedTalents) {
+    let abilitySpecials = [];
+
+    for (let specialInfo of abilityInfo.AbilitySpecial) {
+        let abilitySpecialKeys = Object.keys(specialInfo);
+        for (let key of abilitySpecialKeys) {
+
+            if (key.includes("LinkedSpecialBonus") || key.includes("var_type") || key.includes("damage")) {
+                continue;
+            }
+
+            let translationKey = `DOTA_Tooltip_ability_${abilityName}_${key}`;
+            abilitySpecials.push({
+                key: translationKey,
+                value: tryParseAbilitySpecialValue(specialInfo, specialInfo[key], abilityLevel),
+            });
+        }
+    }
+
+    return abilitySpecials;
+}
+
+export function tryParseAbilitySpecialValue (abilSpecialinfo, value, abilityLevel = 1) {
+    if (typeof value === "string" && value.includes(' ')) {
+        let split = value.split(' ');
+        value = split[abilityLevel - 1];
+    }
+
+    if (abilSpecialinfo) {
+        if (abilSpecialinfo.var_type === "FIELD_INTEGER") {
+            return parseInt(value);
+        } 
+        else if(abilSpecialinfo.var_type === "FIELD_FLOAT") {
+            return parseFloat(value);
+        }
+    }
+    return value;
 }

@@ -5,8 +5,8 @@ export function tryGetLocalizedString(languageStrings, stringKey) {
         return null;
     }
 
-    var languageKeys = Object.keys(languageStrings.Tokens);
-    var matchingKeys = languageKeys.filter((key) => {
+    let languageKeys = Object.keys(languageStrings.Tokens);
+    let matchingKeys = languageKeys.filter((key) => {
         if (key.toLowerCase() === stringKey.toLowerCase()) {
             return key;
         } else {
@@ -15,7 +15,7 @@ export function tryGetLocalizedString(languageStrings, stringKey) {
     });
 
     if (matchingKeys && matchingKeys.length > 0) {
-        var displayName = languageStrings.Tokens[matchingKeys[0]];
+        let displayName = languageStrings.Tokens[matchingKeys[0]];
         return displayName;
     } else {
         return "?";
@@ -27,8 +27,8 @@ export function tryGetTalentLocalizedString(languageStrings, stringKey) {
         return null;
     }
 
-    var languageKeys = Object.keys(languageStrings.Tokens);
-    var matchingKeys = languageKeys.filter((key) => {
+    let languageKeys = Object.keys(languageStrings.Tokens);
+    let matchingKeys = languageKeys.filter((key) => {
         if (key.includes(stringKey)) {
             return key;
         } else {
@@ -37,7 +37,7 @@ export function tryGetTalentLocalizedString(languageStrings, stringKey) {
     });
 
     if (matchingKeys && matchingKeys.length > 0) {
-        var displayName = languageStrings.Tokens[matchingKeys[0]];
+        let displayName = languageStrings.Tokens[matchingKeys[0]];
         return displayName;
     } else {
         return "?";
@@ -49,6 +49,12 @@ export function tryGetTalentLocalizedString(languageStrings, stringKey) {
 export function getLocalizedString(localeStrings, key) {
     let string = localeStrings.Tokens[key];
     return string ?? "?";
+}
+
+/// Check if the localeStrings contains the key
+export function containsLocalizedString (localeStrings, key) {
+    let containsVal = localeStrings.Tokens[key];
+    return containsVal != null;
 }
 
 /// Gets a string from the dota strings that contain the prefix "DOTA_Toolip_"

@@ -111,3 +111,12 @@ export function primaryAttributeToItemBonusKey(primaryAttr) {
             return null;
     }
 }
+
+export function itemsContainsScepter (allItems) {
+    for (let item of allItems) {
+        if (item.item && item.item.includes("ultimate_scepter")) {
+            return true;
+        }
+    }
+    return false;
+}

@@ -4,7 +4,7 @@ import {
 } from "../../utility/calculate";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faClock }from "@fortawesome/free-solid-svg-icons";
+import { faClock, faCircle }from "@fortawesome/free-solid-svg-icons";
 
 class Cooldown extends Component {
     constructor(props) {
@@ -19,9 +19,16 @@ class Cooldown extends Component {
             items: props.items,
             neutral: props.neutral,
             selectedTalents: props.selectedTalents,
+
+            cooldown: null,
+            charges: null,
         };
 
         this.updateCooldown = this.updateCooldown.bind(this);
+    }
+
+    componentDidMount() {
+        this.updateCooldown();
     }
 
     componentDidUpdate(prevProps) {
@@ -34,28 +41,38 @@ class Cooldown extends Component {
                 items: this.props.items,
                 neutral: this.props.neutral,
                 selectedTalents: this.props.selectedTalents,
-            });
+            }, () => this.updateCooldown() );
         }
     }
 
     updateCooldown() {
-        let currentCooldown = null;
-        if (this.state.abilityCooldown) {
-            currentCooldown = calculateAbilityCooldown(this.state.ability, this.state.abilityInfo, this.state.abilityLevel, this.state.items, this.state.neutral, this.state.selectedTalents);
-        }
-
-        return currentCooldown;
+        let currentCooldownInfo = calculateAbilityCooldown(this.state.ability, this.state.abilityInfo, this.state.abilityLevel, this.state.items, this.state.neutral, this.state.selectedTalents);
+        
+        this.setState({
+            cooldown: currentCooldownInfo.cooldown,
+            charges: currentCooldownInfo.charges,
+        });
     }
     
     render() {
-        let cooldown = this.updateCooldown();
         return (
             <div>
                 {
-                    cooldown &&
-                        <div className="d-flex">
+                    this.state.cooldown &&
+                        <div className="d-flex" title="cooldown">
                             <FontAwesomeIcon className="my-auto mr-1" icon={faClock} />
-                            <div>{cooldown}</div>
+                            <div>
+                                { this.state.cooldown }
+                            </div>
+                        </div>
+                }
+                {
+                    this.state.charges &&
+                        <div className="d-flex" title="charges">
+                            <FontAwesomeIcon className="my-auto mr-1" icon={faCircle} />
+                            <div>
+                                { this.state.charges }
+                            </div>
                         </div>
                 }
             </div>
