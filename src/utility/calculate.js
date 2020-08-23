@@ -1174,6 +1174,11 @@ export function calculateMoveSpeed (hero, items, neutral, abilities, talents) {
             if (moveSpeed) {
                 flatBonus += moveSpeed;
             }
+            
+            let bonusMovement = tryGetItemSpecialValue(item, "bonus_movement");
+            if (bonusMovement) {
+                flatBonus += bonusMovement;
+            }
 
             let moveSpeedPercentBonus = tryGetItemSpecialValue(item, "movement_speed_percent_bonus");
             if (moveSpeedPercentBonus) {
