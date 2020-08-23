@@ -19,6 +19,8 @@ class ItemsBar extends Component {
 
             onNeutralChanged: props.onNeutralChanged,
             onItemChanged: props.onItemChanged,
+
+            abilityStrings: props.abilityStrings,
         };
     }
 
@@ -41,6 +43,10 @@ class ItemsBar extends Component {
                 neutral: this.props.neutral,
             });
         }
+
+        if (prevProps.abilityStrings !== this.props.abilityStrings) {
+            this.setState({ abilityStrings: this.props.abilityStrings });
+        }
     }
 
     render() {
@@ -60,7 +66,8 @@ class ItemsBar extends Component {
                                             key={value.slot}
                                             slot={value.slot}
                                             item={value.item} 
-                                            onItemChanged={this.state.onItemChanged} />
+                                            onItemChanged={this.state.onItemChanged} 
+                                            abilityStrings={this.state.abilityStrings} />
                                     )
                                 })
                             }
@@ -78,7 +85,8 @@ class ItemsBar extends Component {
                                             item={value.item}
 
                                             isBackpack={true}
-                                            onItemChanged={this.state.onItemChanged} />
+                                            onItemChanged={this.state.onItemChanged}
+                                            abilityStrings={this.state.abilityStrings} />
                                     )
                                 })
                             }
@@ -88,7 +96,10 @@ class ItemsBar extends Component {
                         <h6>NEUTRAL</h6>
                         {/* Neutral Item */}
                         <div>
-                            <Neutral neutralItem={this.state.neutral} onNewNeutralSelected={this.state.onNeutralChanged} />
+                            <Neutral 
+                                neutralItem={this.state.neutral} 
+                                onNewNeutralSelected={this.state.onNeutralChanged}
+                                abilityStrings={this.state.abilityStrings} />
                         </div>
                     </Col>
                 </Row>

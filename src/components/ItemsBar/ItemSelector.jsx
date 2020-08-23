@@ -75,9 +75,9 @@ class ItemSelector extends Component {
     constructor(props) {
         super(props);
 
-        var selectableItems = Object.keys(DOTAAbilities).filter((value) => {
-            var key = value.toLowerCase();
-            var ability = DOTAAbilities[value];
+        let selectableItems = Object.keys(DOTAAbilities).filter((value) => {
+            let key = value.toLowerCase();
+            let ability = DOTAAbilities[value];
             if (key !== "version" && !key.includes("recipe") && !ability.ItemIsNeutralDrop && !ability.IsObsolete) {
                 return true;
             }
@@ -92,8 +92,8 @@ class ItemSelector extends Component {
         })
         selectableItems.sort();
 
-        var basicItems = getItemsByQuality(selectableItems, ["consumable", "component", "secret_shop"]);
-        var upgradesItems = getItemsByQuality(selectableItems, ["common", "rare", "epic", "artifact"]);
+        let basicItems = getItemsByQuality(selectableItems, ["consumable", "component", "secret_shop"]);
+        let upgradesItems = getItemsByQuality(selectableItems, ["common", "rare", "epic", "artifact"]);
 
         this.state = {
             allItems: selectableItems,
@@ -112,8 +112,8 @@ class ItemSelector extends Component {
     }
 
     onSearchChanged(e) {
-        var query = e.target.value;
-        var filteredItems = null;
+        let query = e.target.value;
+        let filteredItems = null;
         if (query) {
             filteredItems = this.state.allItems.filter((item) => {
                 return item.name.indexOf(query.toLowerCase()) !== -1; 

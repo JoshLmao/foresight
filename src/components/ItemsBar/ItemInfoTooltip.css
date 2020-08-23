@@ -1,0 +1,50 @@
+.item-tooltip {
+    background-color: #213038;
+}
+
+.item-tooltip h1 {
+    font-size: 1.3rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+.item-tooltip div {
+    font-size: 0.85rem;
+}
+
+.item-tooltip .lore {
+    font-size: 0.75rem;
+    background: #0B1218;
+}
+
+.item-tooltip .item-active {
+    background: #1B2336;
+}
+
+.item-tooltip .item-active h1 {
+    background: #36397E;
+}
+
+.item-tooltip .item-passive {
+    background: #1D2730;
+}
+
+.item-tooltip .item-passive h1 {
+    background: #202D36;
+}
+
+.item-tooltip .item-content {
+    background-color: #182229;
+}
+
+.item-tooltip .gold-amount {
+    color: gold!important;
+}
+
+.mana-cost-box-icon {
+    background: #007FAC;
+    width: 15px;
+    height: 15px;
+    border-radius: 3px;
+    border: 1px solid black;
+}

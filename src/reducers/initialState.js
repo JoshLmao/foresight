@@ -26,7 +26,7 @@ const initialState = {
 
     /// Current items that have been selected
     items: [
-        { slot: 0, item: "abyssal_blade" },
+        { slot: 0, item: "mjollnir" },
         { slot: 1, item: "" },
         { slot: 2, item: "" },
         { slot: 3, item: "" },

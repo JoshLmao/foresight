@@ -1,3 +1,5 @@
+import { lang as DOTAEngAbilityStrings } from "../../data/dota2/languages/abilities_english.json";
+
 /// Searches the passed strings file for the related string
 /// Very resource intensive
 export function tryGetLocalizedString(languageStrings, stringKey) {
@@ -48,7 +50,7 @@ export function tryGetTalentLocalizedString(languageStrings, stringKey) {
 /// Main fast method to retrieve an exact key from strings
 export function getLocalizedString(localeStrings, key) {
     let string = localeStrings.Tokens[key];
-    return string ?? "?";
+    return string ?? null;
 }
 
 /// Check if the localeStrings contains the key
@@ -92,4 +94,9 @@ export function replaceStringValue(string, value) {
 
     string = string.replace(/{.*}/, value);
     return string;
+}
+
+/// Gets the english localized ability string
+export function getEngAnilityLocalizedString (key) {
+    return getLocalizedString(DOTAEngAbilityStrings, key);
 }

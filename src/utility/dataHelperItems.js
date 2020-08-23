@@ -3,6 +3,14 @@
 // * 
 import { DOTAAbilities as DOTAItems } from "../data/dota2/json/items.json";
 import { EAttributes } from "../enums/attributes";
+import React from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faClock } from '@fortawesome/free-solid-svg-icons';
+import { tryParseAbilitySpecialValue } from "./dataHelperAbilities";
+import { 
+    getLocalizedString, 
+    getEngAnilityLocalizedString 
+} from "./data-helpers/language";
 
 export function getItemInfoFromName (itemName) {
     if (itemName)
@@ -14,24 +22,19 @@ export function getItemInfoFromName (itemName) {
 /// Gets the value of an item's AbilitySpecial array
 export function getItemSpecialAbilityValue (itemInfo, specialAbilityValueKey) {
     if (itemInfo && itemInfo.AbilitySpecial) {
-        for(var i = 0; i < itemInfo.AbilitySpecial.length; i++) {
-            var keys = Object.keys(itemInfo.AbilitySpecial[i]);
-            var matchingKey = keys.find(element => {
+        for(let i = 0; i < itemInfo.AbilitySpecial.length; i++) {
+            let keys = Object.keys(itemInfo.AbilitySpecial[i]);
+            let matchingKey = keys.find(element => {
                 return element === specialAbilityValueKey;
             });
 
             if (matchingKey) {
-                var specialAbilityInfo = itemInfo.AbilitySpecial[i];
-                if (specialAbilityInfo.var_type === "FIELD_INTEGER") {
-                    return parseInt(specialAbilityInfo[matchingKey]);
-                } 
-                else if(specialAbilityInfo.var_type === "FIELD_FLOAT") {
-                    return parseFloat(specialAbilityInfo[matchingKey]);
-                }
+                let specialAbilityInfo = itemInfo.AbilitySpecial[i];
+                return tryParseAbilitySpecialValue(specialAbilityInfo, specialAbilityInfo[matchingKey], 1);
             }
         }
     }
-    return undefined;
+    return null;
 }
 
 /// Try Gets a item info and sepcial value from it's item's Ability Special array
@@ -112,6 +115,7 @@ export function primaryAttributeToItemBonusKey(primaryAttr) {
     }
 }
 
+/// Checks if the items array contains an aghanims scepter
 export function itemsContainsScepter (allItems) {
     for (let item of allItems) {
         if (item.item && item.item.includes("ultimate_scepter")) {
@@ -119,4 +123,144 @@ export function itemsContainsScepter (allItems) {
         }
     }
     return false;
+}
+
+/// Replaces a localized string with it's data values found inside AbilitySpecial 
+/// or on ItemInfo object
+export function replaceStringWithDataValues (string, itemInfo) {
+    if (!string) {
+        return null;
+    }
+
+    let replaceRegex = /(%.*?%)/;
+    
+    while (string.match(replaceRegex)?.length > 0) {
+        let phrase = string.match(replaceRegex)[0];
+        if (phrase) {
+            let infoKey = phrase.split("%").join("");
+            let specialAbilityValue = "?";
+            // no characters inbetween, needs to be a normal percentage sign
+            if (infoKey === "") {
+                /// use ~ for now, replace later
+                specialAbilityValue = "~";
+            }
+            // if is an AbilitySpecial key as all contain a '_' 
+            else if (infoKey.includes("_")) {
+                specialAbilityValue = getItemSpecialAbilityValue(itemInfo, infoKey);
+            }
+            // is a key on the main ItemInfo object 
+            else {
+                specialAbilityValue = tryGetItemInfoValue(itemInfo, infoKey);
+            }
+            
+            string = string.replace(phrase, specialAbilityValue);
+        }
+    }
+
+    /// replace ! with actual percentage sign
+    string = string.replace(/[~]/g, "%");
+    
+    return string;
+}
+
+/// Try Get's a ItemInfo value on the original object from a key
+export function tryGetItemInfoValue (itemInfo, itemInfoKey) {
+    if (itemInfo) {
+        let keys = Object.keys(itemInfo);
+        let matchingKey = keys.find(element => {
+            return element.toLowerCase() === itemInfoKey.toLowerCase();
+        });
+
+        if (matchingKey) {
+            let infoValue = itemInfo[matchingKey];
+            if (infoValue.includes(".")) {
+                return parseFloat(infoValue);
+            } else {
+                return parseInt(infoValue);
+            }
+        }
+    }
+    return null;
+}
+
+/// Converts a item description localized string into the correct displayable HTML
+export function convertItemDescToHtml(itemDescString, itemName, itemInfo) {
+    let dataString = replaceStringWithDataValues(itemDescString, itemInfo);
+    if (!dataString) {
+        return null;
+    }
+
+    /// Get english string to be able to check for "Active:" phrase
+    let engDataString = getEngAnilityLocalizedString(`DOTA_Tooltip_ability_item_${itemName}_Description`);
+    let engSplitString = engDataString.split("\\n");
+
+    /// Also split localized string to iterate over
+    let localizedSplit = dataString.split("\\n");
+
+    let totalHtmlSections = [];
+    for(let i = 0; i < localizedSplit.length; i++) {
+        let section = localizedSplit[i];
+        let isActive = engSplitString[i].includes("Active:");
+        if (isActive) {
+            totalHtmlSections.push(
+                <div className="item-active my-3">
+                    <div
+                        className="d-flex justify-content-between align-items-center" 
+                        style={{ position: "absolute", right: "1rem" }}>
+                        {
+                            itemInfo && itemInfo.AbilityManaCost &&
+                            <div className="d-flex">
+                                <div className="mx-1 my-1 mana-cost-box-icon" />
+                                <div>
+                                    { parseInt(itemInfo.AbilityManaCost) }
+                                </div>
+                            </div>
+                        }
+                        <div className="px-1" />
+                        {
+                            itemInfo && itemInfo.AbilityCooldown &&
+                            <div className="d-flex">
+                                <FontAwesomeIcon 
+                                    className="mx-1 my-1" 
+                                    icon={faClock} />
+                                <div>
+                                    { parseFloat(itemInfo.AbilityCooldown) }
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <div dangerouslySetInnerHTML={{ __html: section }}>
+                    </div>
+                </div>
+            )
+        } else {
+            totalHtmlSections.push(<div className="item-passive my-3" dangerouslySetInnerHTML={{ __html: section }}></div>);
+        }
+    }
+
+    return totalHtmlSections;
+}
+
+/// Gets all bonuses the item provides, returning a key value list
+export function getItemStatistics (itemInfo) {
+    if (!itemInfo) {
+        return null;
+    }
+
+    let statistics = [];
+
+    for (let i = 0; i < itemInfo.AbilitySpecial.length; i++) {
+        let keys = Object.keys(itemInfo.AbilitySpecial[i]);
+        for(let key of keys) {
+            if (key.includes("bonus") || key.includes("spell") || key.includes("multiplier") ) {
+                let val = tryParseAbilitySpecialValue(itemInfo.AbilitySpecial[i], itemInfo.AbilitySpecial[i][key]);
+                statistics.push({
+                    key: key,
+                    value: val,
+                });
+            }
+        }
+    }
+
+    return statistics;
 }

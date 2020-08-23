@@ -165,7 +165,8 @@ class Calculator extends Component {
                                 backpack={this.props.backpack} 
                                 neutral={this.props.neutralItem} 
                                 onItemChanged={this.onItemSelected}
-                                onNeutralChanged={this.onNeutralSelected} />
+                                onNeutralChanged={this.onNeutralSelected} 
+                                abilityStrings={this.props.abilityStrings} />
                         </Col>
                         <Col md={5}>
                             <TalentTree
