@@ -17,6 +17,7 @@ import {
 
 import "./ItemSelector.css";
 import "../../css/dota_items.css";
+import { getLocalizedString } from '../../utility/data-helpers/language';
 
 function getItemsByQuality(itemsArray, matchArray) {
     return itemsArray.filter((itemInfo) => {
@@ -100,6 +101,8 @@ class ItemSelector extends Component {
             queryItems: null,
 
             onSelectedItem: props.onSelectedItem,
+            dotaStrings: props.dotaStrings,
+            abilityStrings: props.abilityStrings,
 
             basicItems: basicItems,
             upgradesItems: upgradesItems,
@@ -111,12 +114,23 @@ class ItemSelector extends Component {
         this.onRemoveItemSelected = this.onRemoveItemSelected.bind(this);
     }
 
+    componentDidUpdate(prevProps) {
+        if(prevProps !== this.props) {
+            this.setState({
+                dotaStrings: this.props.dotaStrings,
+                abilityStrings: this.props.abilityStrings,
+                onSelectedItem: this.props.onSelectedItem,
+            });
+        }
+    }
+
     onSearchChanged(e) {
         let query = e.target.value;
         let filteredItems = null;
         if (query) {
             filteredItems = this.state.allItems.filter((item) => {
-                return item.name.indexOf(query.toLowerCase()) !== -1; 
+                let localizedName = getLocalizedString(this.state.abilityStrings, `DOTA_Tooltip_Ability_${item.name}`)?.toLowerCase();
+                return localizedName && localizedName.indexOf(query.toLowerCase()) !== -1; 
             });
         }
 
@@ -126,23 +140,23 @@ class ItemSelector extends Component {
     }
 
     onSearchItemSelected(e) {
-        var val = e.target.dataset?.item;
+        let val = e.target.dataset?.item;
         this.state.onSelectedItem(val);
     }
 
     onShopItemSelected (e) {
-        var item = e.target.dataset?.item;
+        let item = e.target.dataset?.item;
         this.state.onSelectedItem(item);
     }
 
     onRemoveItemSelected(e) {
-        var item = null;
+        let item = null;
         this.state.onSelectedItem(item);
     }
 
     render() {
-        var scale = 0.5;
-        var searchIconScale = 0.45;
+        let scale = 0.5;
+        let searchIconScale = 0.45;
         return (
             <div className="item-card">
                 <div className="item-card header d-flex">
@@ -160,27 +174,29 @@ class ItemSelector extends Component {
                         {
                             this.state.queryItems && 
                             <div>
-                                <h6>SEARCH RESULTS</h6>
+                                <h5>
+                                    { getLocalizedString(this.state.dotaStrings, "DOTA_Shop_Search_Results_Title") }
+                                </h5>
                                 <ListGroup>
                                     {
                                         // Query search term
                                         this.state.queryItems.map((item) => {
-                                            var itemNameDisplay = filterItemName(item.name);
+                                            let localizedName = getLocalizedString(this.state.abilityStrings, `DOTA_Tooltip_Ability_${item.name}`);
                                             return (
                                                 <ListGroup.Item 
                                                     key={item.name} 
-                                                    data-item={itemNameDisplay} 
+                                                    data-item={localizedName} 
                                                     className="py-1 px-3"
                                                     onClick={this.onSearchItemSelected} 
                                                     action>
-                                                    <div className="d-flex" data-item={itemNameDisplay}>
+                                                    <div className="d-flex" data-item={localizedName}>
                                                         <ItemFromInfo 
                                                             item={item}
                                                             onClick={this.onSearchItemSelected} 
                                                             scale={searchIconScale}/>
 
-                                                        <h6 className="mx-1 my-auto" data-item={itemNameDisplay}>
-                                                            { itemNameDisplay }
+                                                        <h6 className="mx-1 my-auto" data-item={localizedName}>
+                                                            { localizedName }
                                                         </h6>
                                                     </div>
                                                 </ListGroup.Item>
@@ -188,6 +204,12 @@ class ItemSelector extends Component {
                                         })
                                     }   
                                 </ListGroup>
+                                {
+                                    this.state.queryItems && this.state.queryItems.length <= 0 &&
+                                        <h6>
+                                            { getLocalizedString(this.state.dotaStrings, "DOTA_Shop_Search_No_Results") }
+                                        </h6>
+                                }
                             </div>
                         }
                     </div>
@@ -196,7 +218,7 @@ class ItemSelector extends Component {
                         !this.state.queryItems && 
                             <div>
                                 <Tabs defaultActiveKey="basic" transition={false} id="shop-tabs">
-                                    <Tab eventKey="basic" title={<TabHeading text="BASIC" />}>
+                                    <Tab eventKey="basic" title={<TabHeading text={getLocalizedString(this.state.dotaStrings, "DOTA_Shop_Category_Basics")} />}>
                                         <div className="d-flex flex-wrap">
                                             {
                                                 this.state.basicItems && this.state.basicItems.map((item) => {
@@ -211,7 +233,7 @@ class ItemSelector extends Component {
                                             }
                                         </div>
                                     </Tab>
-                                    <Tab eventKey="upgrades" title={<TabHeading text="UPGRADES" />}>
+                                    <Tab eventKey="upgrades" title={<TabHeading text={getLocalizedString(this.state.dotaStrings, "DOTA_Shop_Category_Upgrades")} />}>
                                         <div className="d-flex flex-wrap">
                                             {
                                                 this.state.upgradesItems && this.state.upgradesItems.map((item) => {

@@ -6,6 +6,7 @@ import {
 
 import Item from "./Item";
 import Neutral from "../Neutral";
+import { getLocalizedString } from '../../utility/data-helpers/language';
 
 class ItemsBar extends Component {
     constructor(props) {
@@ -61,7 +62,7 @@ class ItemsBar extends Component {
             <div>
                 <Row>
                     <Col md={itemsColWidth}>
-                        <h6>ITEMS</h6>
+                        <h6>{ getLocalizedString(this.state.dotaStrings, "DOTA_SHOP_ITEMS") }</h6>
                         <div className="d-flex flex-wrap">
                             {
                                 this.state.items && this.state.items.map((value) => {
@@ -79,7 +80,7 @@ class ItemsBar extends Component {
                         </div>
                     </Col>
                     <Col md={backpackColWidth}>
-                        <h6>BACKPACK</h6>
+                        <h6>{ getLocalizedString(this.state.dotaStrings, "DOTA_HUD_BackpackHintTitle").toUpperCase() }</h6>
                         <div className="d-flex flex-wrap">
                             {
                                 this.state.backpack && this.state.backpack.map((value) => {
@@ -99,12 +100,13 @@ class ItemsBar extends Component {
                         </div>
                     </Col>
                     <Col md={neutralColWidth}>
-                        <h6>NEUTRAL</h6>
+                        <h6>{ getLocalizedString(this.state.dotaStrings, "UI_NEUTRALS") }</h6>
                         {/* Neutral Item */}
                         <div>
                             <Neutral 
                                 neutralItem={this.state.neutral} 
                                 onNewNeutralSelected={this.state.onNeutralChanged}
+                                dotaStrings={this.state.dotaStrings}
                                 abilityStrings={this.state.abilityStrings} />
                         </div>
                     </Col>

@@ -121,3 +121,27 @@ export function getPrimaryAttribute (hero) {
             return null;
     }
 }
+
+export function getAllPlayableHeroes() {
+    // Filter and remove any unwanted heroes
+    let selectableHeroes = Object.keys(DOTAHeroes).filter((value) => {
+        var key = value.toLowerCase();
+        if (key !== "version" && key !== "npc_dota_hero_base" && key !== "npc_dota_hero_target_dummy") {
+            return true;
+        }
+        return false;
+    })
+    // Map only necessary data
+    selectableHeroes = selectableHeroes.map((key) => {
+        if (DOTAHeroes[key].workshop_guide_name) {
+            return {
+                displayName: DOTAHeroes[key].workshop_guide_name,
+                name: key,
+                alias: DOTAHeroes[key].NameAliases ? DOTAHeroes[key].NameAliases.split(',') : null,
+            };
+        }
+    });
+    // sort by name property
+    selectableHeroes.sort((a, b) => (a.name > b.name) ? 1 : -1);
+    return selectableHeroes;
+}

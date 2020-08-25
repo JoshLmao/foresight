@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import TalentRow from "./TalentRow";
+import { getLocalizedString } from '../../utility/data-helpers/language';
 
 class TalentTree extends Component {
     constructor(props) {
@@ -13,6 +14,7 @@ class TalentTree extends Component {
             onTalentSelected: this.props.onTalentSelected,
             onTalentUnselected: this.props.onTalentUnselected,
 
+            dotaStrings: this.props.dotaStrings,
             abilityStrings: this.props.abilityStrings,
         };
         this.findSelectedTalent = this.findSelectedTalent.bind(this);
@@ -20,16 +22,16 @@ class TalentTree extends Component {
 
     componentDidUpdate(prevProps) {
         if(prevProps.talents !== this.props.talents) {
-            this.setState({
-                talents: this.props.talents,
-            });
+            this.setState({ talents: this.props.talents });
         }
-
         if (prevProps.selectedTalents !== this.props.selectedTalents) {
             this.setState({ selectedTalents: this.props.selectedTalents });
         }
         if (prevProps.abilityStrings !== this.props.abilityStrings) {
             this.setState({ abilityStrings: this.props.abilityStrings });
+        }
+        if (prevProps.dotaStrings !== this.props.dotaStrings) {
+            this.setState({ dotaStrings: this.props.dotaStrings });
         }
     }
 
@@ -52,7 +54,7 @@ class TalentTree extends Component {
     render() {
         return (
             <div>
-                <h6 className="text-center">TALENT TREE</h6>
+                <h6 className="text-center">{ getLocalizedString(this.state.dotaStrings, "DOTA_StatBranch_TooltipTitle") }</h6>
                 {/* <img src="/images/dota2/talent.jpg" alt="talent tree" /> */}
                 <div 
                     className="mr-2"

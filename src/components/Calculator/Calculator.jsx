@@ -110,7 +110,9 @@ class Calculator extends Component {
                                 <h5 className="my-auto px-3">
                                     { getLocalizedString(this.props.dotaStrings, this.props.selectedHeroName) }
                                 </h5>
-                                <ChangeHeroBtn onSelectHero={this.onHeroSelected}/>
+                                <ChangeHeroBtn 
+                                    onSelectHero={this.onHeroSelected}
+                                    dotaStrings={this.props.dotaStrings} />
                             </div>
                         </Col>
                         {/* Small Stats */}
@@ -153,7 +155,8 @@ class Calculator extends Component {
                         <Col md={4}>
                             <LevelSelector 
                                 heroLevel={ this.props.heroLevel } 
-                                onHeroLevelChanged={ this.onHeroLevelChanged }/>
+                                onHeroLevelChanged={ this.onHeroLevelChanged }
+                                dotaStrings={this.props.dotaStrings} />
                         </Col>
                     </Row>
 
@@ -175,6 +178,7 @@ class Calculator extends Component {
                                 selectedTalents={this.props.selectedTalents}
                                 onTalentSelected={this.onTalentSelected} 
                                 onTalentUnselected={this.onTalentUnselected} 
+                                dotaStrings={this.props.dotaStrings}
                                 abilityStrings={this.props.abilityStrings} />
                         </Col>
                     </Row>

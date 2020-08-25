@@ -40,7 +40,7 @@ const initialState = {
         { slot: 2, item: "" },
     ],
     /// Current neutral item selected by user
-    neutralItem: { item: "orb_of_destruction" },
+    neutralItem: { item: "spell_prism" },
 
     // Current code of the selected UI language
     lang: "en",

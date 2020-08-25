@@ -108,7 +108,10 @@ class Item extends Component {
                     open={this.state.open}
                     position="right center"
                     contentStyle={{ width: "350px", height: "400px", overflowY: "auto" }}>
-                        <ItemSelector onSelectedItem={this.onSelectedItem} />
+                        <ItemSelector 
+                            onSelectedItem={this.onSelectedItem}
+                            dotaStrings={this.state.dotaStrings}
+                            abilityStrings={this.state.abilityStrings} />
                 </Popup>
             </div>
             

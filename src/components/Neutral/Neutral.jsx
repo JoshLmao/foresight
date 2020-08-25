@@ -15,7 +15,9 @@ class Neutral extends Component {
         this.state = {
             neutralItem: props.neutralItem,
             onNewNeutralSelected: props.onNewNeutralSelected,
+            dotaStrings: props.dotaStrings,
             abilityStrings: props.abilityStrings,
+
             iconScale: 0.7,
         };
     }
@@ -24,6 +26,7 @@ class Neutral extends Component {
         if (prevProps !== this.props) {
             this.setState({
                 neutralItem: this.props.neutralItem,
+                dotaStrings: this.props.dotaStrings,
                 abilityStrings: this.props.abilityStrings,
                 onNewNeutralSelected: this.props.onNewNeutralSelected,
             });
@@ -49,6 +52,7 @@ class Neutral extends Component {
                             contentStyle={{ width: "350px", overflowY: "auto", padding: 0, border: 0 }}>
                                 <ItemInfoTooltip
                                     itemName={this.state.neutralItem.item}
+                                    dotaStrings={this.state.dotaStrings}
                                     abilityStrings={this.state.abilityStrings}
                                     />
                         </Popup>

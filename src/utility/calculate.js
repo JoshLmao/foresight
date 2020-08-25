@@ -1487,7 +1487,8 @@ export function calculateAbilityCastRange (abilityName, abilityInfo, abilityLeve
 export function calculateItemSellCost (itemInfo) {
     if (itemInfo && itemInfo.ItemCost) {
         let cost = parseInt(itemInfo.ItemCost);
-        return cost / 2;
+        // value rounded down
+        return Math.floor(cost / 2);
     }
     return 0;
 }

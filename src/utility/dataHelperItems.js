@@ -224,7 +224,7 @@ export function convertItemDescToHtml(itemDescString, itemName, itemInfo) {
                                     className="mx-1 my-1" 
                                     icon={faClock} />
                                 <div>
-                                    { parseFloat(itemInfo.AbilityCooldown) }
+                                    { parseFloat(itemInfo.AbilityCooldown)  }
                                 </div>
                             </div>
                         }
@@ -256,7 +256,11 @@ export function getItemStatistics (itemInfo) {
     for (let i = 0; i < itemInfo.AbilitySpecial.length; i++) {
         let keys = Object.keys(itemInfo.AbilitySpecial[i]);
         for(let key of keys) {
-            if (key.includes("bonus") || key.includes("spell") || key.includes("multiplier") ) {
+            if (key.includes("bonus") || 
+                key.includes("spell") || 
+                key.includes("multiplier") || 
+                key.includes("regen") || 
+                key.includes("resistance") ) {
                 let val = tryParseAbilitySpecialValue(itemInfo.AbilitySpecial[i], itemInfo.AbilitySpecial[i][key]);
                 statistics.push({
                     key: key,

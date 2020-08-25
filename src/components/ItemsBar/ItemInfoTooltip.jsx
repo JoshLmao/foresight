@@ -112,8 +112,10 @@ class ItemInfoTooltip extends Component {
                                                 "mana_regen", "spell_amp", "move_speed", "evasion", "spell_resist", "selected_attrib",
                                                 "attack_range", "attack_range_melee", "cast_range", "status_resist"
                                             ];
+                                            // split and use variable to compare
+                                            let splitCompare = string.split("$")[1];
                                             for (let key of genericKeys) {
-                                                if (string.includes(key)) {
+                                                if (splitCompare === key) {
                                                     /// get localized generic and replace variable in existing string
                                                     let localized = getLocalizedString(this.state.abilityStrings, `dota_ability_variable_${key}`);
                                                     string = string.replace(key.toString(), localized);
@@ -126,9 +128,6 @@ class ItemInfoTooltip extends Component {
                                                 </div>
                                             );
                                         }
-                                        
-
-                                       
                                     })
                                 }
                             </div>
@@ -152,7 +151,7 @@ class ItemInfoTooltip extends Component {
 
                     {/* sell price */}
                     {
-                        this.state.itemInfo?.ItemCost &&
+                        this.state.itemInfo?.ItemCost && !this.state.itemInfo?.ItemIsNeutralDrop &&
                             <div className="px-1"> 
                                 {
                                     getLocalizedString(this.state.dotaStrings, "DOTA_Item_Tooltip_Sell_Price")

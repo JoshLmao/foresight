@@ -3,6 +3,7 @@ import {
     Button, 
     Form
 } from 'react-bootstrap';
+import { getLocalizedString } from '../../utility/data-helpers/language';
 
 const MAX_LEVEL = 30;
 const MIN_LEVEL = 1;
@@ -25,6 +26,7 @@ class LevelSelector extends Component {
         this.state = {
             level: props.heroLevel,
             onHeroLevelChanged: props.onHeroLevelChanged,
+            dotaStrings: props.dotaStrings,
         };
 
         this.onIncrementHeroLevel = this.onIncrementHeroLevel.bind(this);
@@ -38,10 +40,13 @@ class LevelSelector extends Component {
                 level: this.props.heroLevel,
             });
         }
+        if (prevProps.dotaStrings !== this.props.dotaStrings) {
+            this.setState({ dotaStrings: this.props.dotaStrings });
+        }
     }
 
     onIncrementHeroLevel() {
-        var newLevel = this.state.level;
+        let newLevel = this.state.level;
         newLevel += 1;
 
         if (newLevel >= MAX_LEVEL) {
@@ -52,7 +57,7 @@ class LevelSelector extends Component {
     }
 
     onDecrementHeroLevel() {
-        var newLevel = this.state.level;
+        let newLevel = this.state.level;
         newLevel -= 1;
 
         if (newLevel < MIN_LEVEL) {
@@ -63,7 +68,7 @@ class LevelSelector extends Component {
     }
 
     onLvlInputChanged(e) {
-        var lvl = parseInt(e.target.value);
+        let lvl = parseInt(e.target.value);
         if (lvl) {
             if (lvl > MAX_LEVEL) {
                 lvl = MAX_LEVEL;
@@ -81,7 +86,7 @@ class LevelSelector extends Component {
     render() {
         return (
             <div className="mx-5">
-                <h6>HERO LEVEL</h6>
+                <h6>{ getLocalizedString(this.state.dotaStrings, "dota_stat_dropdown_level") }</h6>
                 <div className="d-flex">
                     <ModifyBtn 
                         onClick={this.onDecrementHeroLevel} 
