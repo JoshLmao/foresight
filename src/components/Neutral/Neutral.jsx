@@ -34,7 +34,7 @@ class Neutral extends Component {
         return (
             <div>
                 {
-                    this.state.neutralItem &&
+                    this.state.neutralItem && this.state.neutralItem.item &&
                         <Popup
                             trigger={isOpen => (
                                 <div

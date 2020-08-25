@@ -17,7 +17,12 @@ function TypeValueUI (props) {
     return (
         <div className="d-flex" style={{ fontSize: "0.85rem"}}>
             <div className="mr-2">{props.type}</div>
-            <div>{props.value}</div>
+            {
+                typeof(props.value) === "string" && props.value.includes("<") ?    
+                <div dangerouslySetInnerHTML={{ __html: props.value.replace("\\", "") }}></div>
+                :
+                <div>{props.value}</div>
+            }
         </div>
     )
 }

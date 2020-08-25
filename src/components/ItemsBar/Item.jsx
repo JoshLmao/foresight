@@ -20,6 +20,7 @@ class Item extends Component {
 
             onItemChanged: props.onItemChanged,
 
+            dotaStrings: props.dotaStrings,
             abilityStrings: props.abilityStrings,
         };
 
@@ -65,6 +66,10 @@ class Item extends Component {
         if (prevProps.abilityStrings !== this.props.abilityStrings) {
             this.setState({ abilityStrings: this.props.abilityStrings });
         }
+
+        if (prevProps.dotaStrings !== this.props.dotaStrings) {
+            this.setState({ dotaStrings: this.props.dotaStrings });
+        }
     }   
 
     render() {
@@ -89,6 +94,7 @@ class Item extends Component {
                             contentStyle={{ width: "350px", overflowY: "auto", padding: 0, border: 0 }}>
                                 <ItemInfoTooltip
                                     itemName={this.state.item}
+                                    dotaStrings={this.state.dotaStrings}
                                     abilityStrings={this.state.abilityStrings}
                                     />
                         </Popup>

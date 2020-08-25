@@ -166,6 +166,7 @@ class Calculator extends Component {
                                 neutral={this.props.neutralItem} 
                                 onItemChanged={this.onItemSelected}
                                 onNeutralChanged={this.onNeutralSelected} 
+                                dotaStrings={this.props.dotaStrings}
                                 abilityStrings={this.props.abilityStrings} />
                         </Col>
                         <Col md={5}>

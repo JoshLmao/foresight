@@ -20,6 +20,7 @@ class ItemsBar extends Component {
             onNeutralChanged: props.onNeutralChanged,
             onItemChanged: props.onItemChanged,
 
+            dotaStrings: props.dotaStrings,
             abilityStrings: props.abilityStrings,
         };
     }
@@ -47,6 +48,9 @@ class ItemsBar extends Component {
         if (prevProps.abilityStrings !== this.props.abilityStrings) {
             this.setState({ abilityStrings: this.props.abilityStrings });
         }
+        if (prevProps.dotaStrings !== this.props.dotaStrings) {
+            this.setState({ dotaStrings: this.props.dotaStrings });
+        }
     }
 
     render() {
@@ -66,7 +70,8 @@ class ItemsBar extends Component {
                                             key={value.slot}
                                             slot={value.slot}
                                             item={value.item} 
-                                            onItemChanged={this.state.onItemChanged} 
+                                            onItemChanged={this.state.onItemChanged}
+                                            dotaStrings={this.state.dotaStrings} 
                                             abilityStrings={this.state.abilityStrings} />
                                     )
                                 })
@@ -86,6 +91,7 @@ class ItemsBar extends Component {
 
                                             isBackpack={true}
                                             onItemChanged={this.state.onItemChanged}
+                                            dotaStrings={this.state.dotaStrings}
                                             abilityStrings={this.state.abilityStrings} />
                                     )
                                 })

@@ -33,6 +33,14 @@
     background: #202D36;
 }
 
+.item-tooltip .item-consumable {
+    background-color: #182623;
+}
+
+.item-tooltip .item-consumable h1 {
+    background-color: #273F27;
+}
+
 .item-tooltip .item-content {
     background-color: #182229;
 }

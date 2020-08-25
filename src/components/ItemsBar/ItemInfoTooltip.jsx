@@ -3,11 +3,16 @@ import React, { Component } from 'react';
 import {
     getItemInfoFromName, 
     convertItemDescToHtml,
-    getItemStatistics
+    getItemStatistics,
+    isDissassembleRule
 } from "../../utility/dataHelperItems";
 import { 
     getLocalizedString
 } from '../../utility/data-helpers/language';
+import { calculateItemSellCost } from "../../utility/calculate";
+import {
+    EDisassembleRule
+} from "../../enums/items";
 
 import "./ItemInfoTooltip.css";
 
@@ -23,6 +28,7 @@ class ItemInfoTooltip extends Component {
 
         this.state = {
             itemName: props.itemName,
+            dotaStrings: props.dotaStrings,
             abilityStrings: props.abilityStrings,
 
             itemInfo: getItemInfoFromName(props.itemName),  
@@ -35,6 +41,7 @@ class ItemInfoTooltip extends Component {
         if (prevProps !== this.props) {
             this.setState({
                 itemName: this.props.itemName,
+                dotaStrings: this.props.dotaStrings,
                 abilityStrings: this.props.abilityStrings,
                 itemInfo: getItemInfoFromName(this.props.itemName),  
             });
@@ -99,12 +106,29 @@ class ItemInfoTooltip extends Component {
                                         /// attempt to get localized string and display
                                         let string = getLocalizedString(this.state.abilityStrings, `DOTA_Tooltip_ability_item_${this.state.itemName}_${value.key}`);
                                         if (string) {
+                                            /// Check if item stat is a generic one that can be applied to most items and replace variable with localized string
+                                            let genericKeys = [
+                                                "health", "mana", "armor", "damage", "str", "int", "agi", "all", "attack", "hp_regen",
+                                                "mana_regen", "spell_amp", "move_speed", "evasion", "spell_resist", "selected_attrib",
+                                                "attack_range", "attack_range_melee", "cast_range", "status_resist"
+                                            ];
+                                            for (let key of genericKeys) {
+                                                if (string.includes(key)) {
+                                                    /// get localized generic and replace variable in existing string
+                                                    let localized = getLocalizedString(this.state.abilityStrings, `dota_ability_variable_${key}`);
+                                                    string = string.replace(key.toString(), localized);
+                                                    break;
+                                                }
+                                            }
                                             return (
                                                 <div>
                                                     { replaceItemStatLocalizeString(string, value.value) }
                                                 </div>
                                             );
                                         }
+                                        
+
+                                       
                                     })
                                 }
                             </div>
@@ -123,6 +147,25 @@ class ItemInfoTooltip extends Component {
                         loreString && loreString != "?" &&   
                             <div className="p-1 m-1 lore">
                                 { loreString }
+                            </div>
+                    }
+
+                    {/* sell price */}
+                    {
+                        this.state.itemInfo?.ItemCost &&
+                            <div className="px-1"> 
+                                {
+                                    getLocalizedString(this.state.dotaStrings, "DOTA_Item_Tooltip_Sell_Price")
+                                    .replace("%s1", calculateItemSellCost(this.state.itemInfo))
+                                }
+                            </div>
+                    }
+
+                    {/* dissassemble */}
+                    {
+                        isDissassembleRule(this.state.itemInfo, EDisassembleRule.ALWAYS) && 
+                            <div className="px-1">
+                                { getLocalizedString(this.state.dotaStrings, "DOTA_Item_Tooltip_Disassemble") }
                             </div>
                     }
                 </div>

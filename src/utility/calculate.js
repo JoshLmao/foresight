@@ -1482,3 +1482,12 @@ export function calculateAbilityCastRange (abilityName, abilityInfo, abilityLeve
 
     return baseCastRange + totalBonusRange;
 }
+
+/// Calculates the normal sell price of an item from it's ItemInfo
+export function calculateItemSellCost (itemInfo) {
+    if (itemInfo && itemInfo.ItemCost) {
+        let cost = parseInt(itemInfo.ItemCost);
+        return cost / 2;
+    }
+    return 0;
+}

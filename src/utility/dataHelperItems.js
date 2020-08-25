@@ -203,7 +203,7 @@ export function convertItemDescToHtml(itemDescString, itemName, itemInfo) {
         let isActive = engSplitString[i].includes("Active:");
         if (isActive) {
             totalHtmlSections.push(
-                <div className="item-active my-3">
+                <div className="my-3 item-active">
                     <div
                         className="d-flex justify-content-between align-items-center" 
                         style={{ position: "absolute", right: "1rem" }}>
@@ -234,7 +234,11 @@ export function convertItemDescToHtml(itemDescString, itemName, itemInfo) {
                 </div>
             )
         } else {
-            totalHtmlSections.push(<div className="item-passive my-3" dangerouslySetInnerHTML={{ __html: section }}></div>);
+            totalHtmlSections.push(
+                <div className={`my-3 ${itemInfo.ItemQuality === "consumable" ? "item-consumable" : "item-passive"}`} dangerouslySetInnerHTML={{ __html: section }}>
+
+                </div>
+            );
         }
     }
 
@@ -263,4 +267,17 @@ export function getItemStatistics (itemInfo) {
     }
 
     return statistics;
+}
+
+/// Checks an ItemInfo Disassemble rule if it matches the given rule
+export function isDissassembleRule(itemInfo, eDisassembleRule) {
+    if (itemInfo && itemInfo.ItemDisassembleRule) {
+        let split = itemInfo.ItemDisassembleRule.split(" | ");
+        for(let rule of split) {
+            if (rule === eDisassembleRule) {
+                return true;
+            }
+        }
+    }
+    return false;
 }
