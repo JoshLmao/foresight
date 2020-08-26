@@ -15,6 +15,7 @@ import {
 } from "../../enums/items";
 
 import "./ItemInfoTooltip.css";
+import { getItemIcon } from '../../utility/spriteHelper';
 
 function replaceItemStatLocalizeString (localizeString, value) {
     let split = localizeString.split('$');
@@ -33,8 +34,6 @@ class ItemInfoTooltip extends Component {
 
             itemInfo: getItemInfoFromName(props.itemName),  
         };
-
-        this.getItemIcon = this.getItemIcon.bind(this);
     }
 
     componentDidUpdate(prevProps) {
@@ -48,15 +47,6 @@ class ItemInfoTooltip extends Component {
         }
     }
 
-    getItemIcon(item, width, height, scale) {
-        // Width and height of each item in item_stylesheet
-        if (item) {
-            return <span className={ 'sprite sprite-' + item + '_png '} alt={item} style={{ transform: `scale(${scale}, ${scale})`, transformOrigin: "top left" }} />
-        } else {
-            return <span style={{ backgroundColor: "#212121", width: width, height: height, transform: `scale(${scale}, ${scale})`, display: "block", transformOrigin: "top left" }} />
-        }
-    }
-
     render() {
         let scale = 0.7;
         let width = "88px";
@@ -64,21 +54,21 @@ class ItemInfoTooltip extends Component {
         let goldIconSize = 20;
 
         let itemStats = getItemStatistics(this.state.itemInfo);
-        let loreString = getLocalizedString(this.state.abilityStrings, `DOTA_Tooltip_ability_item_${this.state.itemName}_Lore`);
+        let loreString = getLocalizedString(this.state.abilityStrings, `DOTA_Tooltip_ability_${this.state.itemName}_Lore`);
         /// Get localized string and filter it to correct html
-        let descString = getLocalizedString(this.state.abilityStrings, `DOTA_Tooltip_ability_item_${this.state.itemName}_Description`);
+        let descString = getLocalizedString(this.state.abilityStrings, `DOTA_Tooltip_ability_${this.state.itemName}_Description`);
         let descFiltered = convertItemDescToHtml(descString, this.state.itemName, this.state.itemInfo);
         return (
             <div className="item-tooltip">
                 <div className="d-flex p-1">
                     <div className="m-2" style={{ width: `calc(${width} * ${scale})`, height: `calc(${height} * ${scale})` }}>
                         {  
-                            this.getItemIcon(this.state.itemName, width, height, 0.7) 
+                            getItemIcon(this.state.itemName, width, height, 0.7) 
                         }
                     </div>
                     <div>
                         <h4>
-                            { getLocalizedString(this.state.abilityStrings, `DOTA_Tooltip_Ability_item_${this.state.itemName}`) }
+                            { getLocalizedString(this.state.abilityStrings, `DOTA_Tooltip_Ability_${this.state.itemName}`) }
                         </h4>
                         {
                             //If has an item cost and is more than 0
@@ -104,7 +94,7 @@ class ItemInfoTooltip extends Component {
                                 { 
                                     itemStats.map((value) => {
                                         /// attempt to get localized string and display
-                                        let string = getLocalizedString(this.state.abilityStrings, `DOTA_Tooltip_ability_item_${this.state.itemName}_${value.key}`);
+                                        let string = getLocalizedString(this.state.abilityStrings, `DOTA_Tooltip_ability_${this.state.itemName}_${value.key}`);
                                         if (string) {
                                             /// Check if item stat is a generic one that can be applied to most items and replace variable with localized string
                                             let genericKeys = [

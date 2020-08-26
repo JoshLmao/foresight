@@ -26,7 +26,7 @@ const initialState = {
 
     /// Current items that have been selected
     items: [
-        { slot: 0, item: "mjollnir" },
+        { slot: 0, item: "item_mjollnir" },
         { slot: 1, item: "" },
         { slot: 2, item: "" },
         { slot: 3, item: "" },
@@ -40,7 +40,7 @@ const initialState = {
         { slot: 2, item: "" },
     ],
     /// Current neutral item selected by user
-    neutralItem: { item: "spell_prism" },
+    neutralItem: { item: "item_spell_prism" },
 
     // Current code of the selected UI language
     lang: "en",

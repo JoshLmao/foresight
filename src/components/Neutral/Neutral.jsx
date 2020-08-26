@@ -7,6 +7,7 @@ import NeutralItemSelector from "./NeutralItemSelector";
 import ItemInfoTooltip from '../ItemsBar/ItemInfoTooltip';
 
 import { itemNameToElement } from "../../utils";
+import { getItemIcon } from '../../utility/spriteHelper';
 
 class Neutral extends Component {
     constructor(props) {
@@ -59,7 +60,7 @@ class Neutral extends Component {
                 }
                 <Popup
                     trigger={isOpen => {
-                        return itemNameToElement(this.state.neutralItem, this.state.iconScale)
+                        return getItemIcon(this.state.neutralItem.item, "88px", "64px", this.state.iconScale);
                     }}
                     position="right center"
                     contentStyle={{ width: "325px", overflowY: "auto" }}>

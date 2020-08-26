@@ -14,7 +14,7 @@ import {
 
 export function getItemInfoFromName (itemName) {
     if (itemName)
-        return DOTAItems["item_" + itemName];
+        return DOTAItems[itemName];
     else
         return null;
 }
@@ -64,9 +64,9 @@ export function tryGetNeutralSpecialValue (neutral, specialValueKey) {
 /// Returns all neutral items
 export function getAllNeutrals() {
      /// Filter out unused or unnecessary keys in items.json
-     var selectableNeutrals = Object.keys(DOTAItems).filter((value) => {
-        var key = value.toLowerCase();
-        var ability = DOTAItems[value];
+     let selectableNeutrals = Object.keys(DOTAItems).filter((value) => {
+        let key = value.toLowerCase();
+        let ability = DOTAItems[value];
         if (key !== "version" && !ability.IsObsolete) {
             if (ability.ItemIsNeutralDrop === "1") {
                 return true;
@@ -84,15 +84,10 @@ export function getAllNeutrals() {
             itemKey = itemKey.replace("_recipe", "");
         }
 
-        var itemInfo = DOTAItems[itemKey];
+        let itemInfo = DOTAItems[itemKey];
         if (itemInfo.ItemIsNeutralDrop === "1") {
-            // Remove 'item_' prefix, split by _, remove "item" and join again
-            var name = itemKey.split('_');
-            name.shift();
-            name = name.join('_');
-
             return {
-                item: name,
+                item: itemKey,
                 itemInfo: itemInfo,
             };
         }
@@ -191,7 +186,7 @@ export function convertItemDescToHtml(itemDescString, itemName, itemInfo) {
     }
 
     /// Get english string to be able to check for "Active:" phrase
-    let engDataString = getEngAnilityLocalizedString(`DOTA_Tooltip_ability_item_${itemName}_Description`);
+    let engDataString = getEngAnilityLocalizedString(`DOTA_Tooltip_ability_${itemName}_Description`);
     let engSplitString = engDataString.split("\\n");
 
     /// Also split localized string to iterate over

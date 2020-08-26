@@ -12,6 +12,7 @@ import {
 } from "../../utility/dataHelperItems";
 
 import "./NeutralItemSelector.css";
+import { getItemIcon } from '../../utility/spriteHelper';
 
 class NeutralItemSelector extends Component {
     constructor(props) {
@@ -31,7 +32,7 @@ class NeutralItemSelector extends Component {
     }
 
     onNeutralSelected(e) {
-        var neutral = e.target.parentElement.parentElement.dataset.neutral;
+        let neutral = e.target.parentElement.dataset.neutral;
         this.state.onNewNeutralSelected({ item: neutral });
     }
 
@@ -67,12 +68,15 @@ class NeutralItemSelector extends Component {
                             this.state.queryNeutrals && this.state.queryNeutrals.map((itemInfo) => {
                                 return ( 
                                     <div 
-                                        className="m-1" 
+                                        className="m-2" 
                                         key={itemInfo.item} 
                                         onClick={this.onNeutralSelected} 
                                         title={itemInfo.item}
-                                        data-neutral={itemInfo.item}>
-                                        { itemNameToElement(itemInfo, this.state.iconScale) }
+                                        data-neutral={itemInfo.item}
+                                        style={{ width: `calc(88px * ${this.state.iconScale})`, height: `calc(64px * ${this.state.iconScale})` }}>
+                                        { 
+                                            getItemIcon(itemInfo.item, "88px", "64px", this.state.iconScale) 
+                                        }
                                     </div>
                                 )
                             })
@@ -81,12 +85,15 @@ class NeutralItemSelector extends Component {
                             !this.state.queryNeutrals && this.state.allNeutrals.map((itemInfo) => {
                                 return ( 
                                     <div 
-                                        className="m-1" 
+                                        className="m-2" 
                                         key={itemInfo.item} 
                                         onClick={this.onNeutralSelected} 
                                         title={itemInfo.item}
-                                        data-neutral={itemInfo.item}>
-                                        { itemNameToElement(itemInfo, this.state.iconScale) }
+                                        data-neutral={itemInfo.item}
+                                        style={{ width: `calc(88px * ${this.state.iconScale})`, height: `calc(64px * ${this.state.iconScale})` }}>
+                                        { 
+                                            getItemIcon(itemInfo.item, "88px", "64px", this.state.iconScale)
+                                        }
                                     </div>
                                 )
                             })

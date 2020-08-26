@@ -6,18 +6,19 @@ import {
     Form,
     ListGroup
 } from "react-bootstrap";
+import { getLocalizedString } from '../../utility/data-helpers/language';
 import { DOTAAbilities } from "../../data/dota2/json/items.json";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMinus } from '@fortawesome/free-solid-svg-icons';
 
 import {
-    itemNameToElement
-} from "../../utils";
+    getItemIcon
+} from "../../utility/spriteHelper";
 
 import "./ItemSelector.css";
 import "../../css/dota_items.css";
-import { getLocalizedString } from '../../utility/data-helpers/language';
+
 
 function getItemsByQuality(itemsArray, matchArray) {
     return itemsArray.filter((itemInfo) => {
@@ -32,35 +33,17 @@ function getItemsByQuality(itemsArray, matchArray) {
     });
 }
 
-function filterItemName (name) {
-    var item = name.split('_');
-    item.shift();
-    item = item.join('_');
-    return item;
-}
-
-function getItemIcon(item, width, height, scale) {
-    // Remove 'item_' prefix, split by _, remove "item" and join again
-    item = filterItemName(item);
-
-    // Width and height of each item in item_stylesheet
-    if (item) {
-        return <span className={ 'sprite sprite-' + item + '_png '} alt={item} data-item={item} style={{ transform: `scale(${scale}, ${scale})`, transformOrigin: "top left" }} />
-    } else {
-        return <span style={{ backgroundColor: "#212121", width: width, height: height, transform: `scale(${scale}, ${scale})`, display: "block", transformOrigin: "top left" }} />
-    }
-}
-
-function ItemFromInfo(props) {
+function ItemIcon(props) {
     return (
             <div 
                 key={props.keyName} 
-                title={props.item.name} 
+                title={props.itemName} 
                 onClick={props.onClick}
+                data-item={props.itemName}
                 className="m-1" 
                 style={{ width: `calc(88px * ${props.scale})`, height: `calc(64px * ${props.scale})` }}>
                 { 
-                    getItemIcon(props.item.name, "88px", "64px", props.scale) 
+                    getItemIcon(props.itemName, "88px", "64px", props.scale) 
                 }
             </div>
     );
@@ -185,17 +168,17 @@ class ItemSelector extends Component {
                                             return (
                                                 <ListGroup.Item 
                                                     key={item.name} 
-                                                    data-item={localizedName} 
+                                                    data-item={item.name} 
                                                     className="py-1 px-3"
                                                     onClick={this.onSearchItemSelected} 
                                                     action>
-                                                    <div className="d-flex" data-item={localizedName}>
-                                                        <ItemFromInfo 
-                                                            item={item}
+                                                    <div className="d-flex" data-item={item.name}>
+                                                        <ItemIcon 
+                                                            itemName={item.name}
                                                             onClick={this.onSearchItemSelected} 
                                                             scale={searchIconScale}/>
 
-                                                        <h6 className="mx-1 my-auto" data-item={localizedName}>
+                                                        <h6 className="mx-1 my-auto" data-item={item.name}>
                                                             { localizedName }
                                                         </h6>
                                                     </div>
@@ -223,9 +206,9 @@ class ItemSelector extends Component {
                                             {
                                                 this.state.basicItems && this.state.basicItems.map((item) => {
                                                     return (
-                                                        <ItemFromInfo 
+                                                        <ItemIcon 
                                                             key={item.item.ID}
-                                                            item={item}
+                                                            itemName={item.name}
                                                             onClick={this.onShopItemSelected} 
                                                             scale={scale} />
                                                     )
@@ -238,9 +221,9 @@ class ItemSelector extends Component {
                                             {
                                                 this.state.upgradesItems && this.state.upgradesItems.map((item) => {
                                                     return (
-                                                        <ItemFromInfo 
+                                                        <ItemIcon 
                                                             key={item.item.ID}
-                                                            item={item}
+                                                            itemName={item.name}
                                                             onClick={this.onShopItemSelected} 
                                                             scale={scale} />
                                                     );

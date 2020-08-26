@@ -3,8 +3,14 @@ import {
     Container,
     Row,
     Col,
+    Button,
+    Form,
 } from 'react-bootstrap';
 import { connect } from "react-redux";
+import copy from "copy-to-clipboard";
+import { Base64 } from "js-base64";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCopy, faFile, faChevronUp, faChevronDown, faShare } from '@fortawesome/free-solid-svg-icons';
 
 import {
     SELECTED_HERO,
@@ -36,10 +42,19 @@ import "../../css/dota_attributes.css";
 import "../../css/dota_items.css";
 import "../../css/dota_hero_icons_big.css";
 import "./Calculator.css";
+import { Redirect, Link } from 'react-router-dom';
+
 
 class Calculator extends Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            buildName: "",
+            buildCreator: "",
+            openBuildShare: false,
+            loadedFromParams: false,
+        };
 
         this.onHeroSelected = this.onHeroSelected.bind(this);
         this.onItemSelected = this.onItemSelected.bind(this);
@@ -47,12 +62,83 @@ class Calculator extends Component {
         this.onTalentSelected = this.onTalentSelected.bind(this);
         this.onTalentUnselected = this.onTalentUnselected.bind(this);
         this.onHeroLevelChanged = this.onHeroLevelChanged.bind(this);
+
+        this.onShareBuild = this.onShareBuild.bind(this);
+        this.onBuildNameChanged = this.onBuildNameChanged.bind(this);
+        this.onBuildCreatorChanged = this.onBuildCreatorChanged.bind(this);
+    }
+
+    componentDidMount() {
+        /// Parse build data from url on start and set app state
+        if (this.props.location.search) {
+            let params = new URLSearchParams(this.props.location.search);
+            let buildData = params.get("build");
+            if (buildData) {
+                let decoded = Base64.decode(buildData);
+                let buildObject = null;
+                try {
+                    buildObject = JSON.parse(decoded);
+                } catch(e) {
+                    console.error("Unable to parse build object");
+                }
+
+                if (buildObject) {
+                    this.setState({
+                        buildCreator: buildObject.creator,
+                        buildName: buildObject.name,
+                        openBuildShare: true,
+                        loadedFromParams: true,
+                    });
+                    
+                    let build = buildObject.build;
+                    if (build?.selectedHeroName)
+                        this.props.dispatch({ type: SELECTED_HERO, value: build.selectedHeroName });
+                    if (build?.heroLevel)
+                        this.props.dispatch({ type: NEW_HERO_LEVEL, value: build.heroLevel });
+                    if (build?.selectedTalents) {
+                        for(let talent of  build.selectedTalents) {
+                            this.props.dispatch({ type: SELECTED_TALENT, value: talent });
+                        }
+                    }
+                    if (build?.items) {
+                        for (let item of build.items) {
+                            if (item.item) {
+                                this.props.dispatch({ type: SELECTED_ITEM, value: item });
+                            }
+                        }
+                    }
+                    if (build?.neutralItem) {
+                        this.props.dispatch({ type: SELECTED_NEUTRAL, value: build.neutralItem });
+                    }
+                }
+            }
+        }
+    }
+
+    onShareBuild() {
+        let buildObject = {
+            name: this.state.buildName ?? "Unknown",
+            creator: this.state.buildCreator ?? "Unknown",
+            build: {
+                selectedHeroName: this.props.selectedHeroName,
+                heroAbilities: this.props.heroAbilities,
+                heroTalents: this.props.heroTalents,
+                heroLevel: this.props.heroLevel,
+
+                items: this.props.items,
+                backpack: this.props.backpack,
+                neutralItem: this.props.neutralItem,
+                selectedTalents: this.props.selectedTalents,
+            },
+        };
+        let str = JSON.stringify(buildObject);
+        let encoded = Base64.encode(str);
+        // set clipboard
+        copy(`localhost:3000/#/app?build=${encoded}`);
     }
 
     onHeroSelected(heroName) {
-        //var targetHero = DOTAHeroes[heroName];
         console.log(`${SELECTED_HERO}: ${heroName}`);
-
         this.props.dispatch({ type: SELECTED_HERO, value: heroName });
     }
 
@@ -92,6 +178,14 @@ class Calculator extends Component {
     onHeroLevelChanged(newLevel) {
         //console.log(`${NEW_HERO_LEVEL}: ${newLevel}`);
         this.props.dispatch({ type: NEW_HERO_LEVEL, value: newLevel });
+    }
+
+    onBuildNameChanged(e) {
+        this.setState({ buildName: e.target.value });
+    }
+
+    onBuildCreatorChanged(e) {
+        this.setState({ buildCreator: e.target.value });
     }
 
     render() {
@@ -193,6 +287,68 @@ class Calculator extends Component {
                         abilityStrings={this.props.abilityStrings}
                         dotaStrings={this.props.dotaStrings} 
                         displayDamage={true} />
+
+                    <div className="pb-4">
+                        <Button 
+                            className="d-flex py-2"
+                            onClick={() => this.setState({ openBuildShare: !this.state.openBuildShare })}>
+                            <h6 className="mx-1 mr-2 mb-0">Share</h6>
+                            <FontAwesomeIcon className="my-auto" icon={this.state.openBuildShare ? faChevronUp : faChevronDown} />
+                        </Button>
+                        {
+                            this.state.openBuildShare &&
+                                <Row>
+                                    <Col md={4}>
+                                        <h4>Build Name</h4>
+                                        {
+                                            this.state.buildName && this.state.loadedFromParams 
+                                            ?
+                                            <Form.Control 
+                                                className="m-2"
+                                                type="text" 
+                                                placeholder="Build Name" 
+                                                value={this.state.buildName} 
+                                                plaintext
+                                                readonly />
+                                            :
+                                            <Form.Control 
+                                                className="m-2"
+                                                type="text" 
+                                                placeholder="Build Name" 
+                                                onChange={this.onBuildNameChanged} />
+                                        }
+                                    </Col>
+                                    <Col md={4}>
+                                        <h4>Creator</h4>
+                                        {
+                                            this.state.buildCreator && this.state.loadedFromParams
+                                            ?
+                                            <Form.Control 
+                                                className="m-2"
+                                                type="text" 
+                                                placeholder="Creator" 
+                                                value={this.state.buildCreator} 
+                                                plaintext
+                                                readonly />
+                                            :
+                                            <Form.Control 
+                                                className="m-2"
+                                                type="text" 
+                                                placeholder="Creator" 
+                                                onChange={this.onBuildCreatorChanged} />
+                                        }
+                                    </Col>
+                                    <Col md={4}>
+                                        <div className="d-flex my-auto h-100">
+                                            <Button className="mr-1 my-auto" onClick={this.onShareBuild}>
+                                                <FontAwesomeIcon icon={faShare} />
+                                            </Button>
+                                            <div className="my-auto">Share this build!</div>
+                                        </div>
+                                    </Col>
+                                </Row>
+                        }
+                    </div>
 
                     {/* Padding Separator */}
                     {/* <div className="py-5" /> */}
