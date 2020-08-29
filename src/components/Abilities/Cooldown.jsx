@@ -49,8 +49,8 @@ class Cooldown extends Component {
         let currentCooldownInfo = calculateAbilityCooldown(this.state.ability, this.state.abilityInfo, this.state.abilityLevel, this.state.items, this.state.neutral, this.state.selectedTalents);
         
         this.setState({
-            cooldown: currentCooldownInfo.cooldown,
-            charges: currentCooldownInfo.charges,
+            cooldown: currentCooldownInfo?.cooldown,
+            charges: currentCooldownInfo?.charges,
         });
     }
     
