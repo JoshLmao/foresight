@@ -23,7 +23,7 @@ class Navigation extends Component {
                     <Navbar.Brand 
                         className="navbar-brand-name"
                         to="/" as={Link}>
-                        foresight
+                        { pkg ? pkg.name : "?" }
                     </Navbar.Brand>
                     <Nav.Link 
                         className="px-1 align-bottom mr-2"
