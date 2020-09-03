@@ -22,20 +22,27 @@ import {
 /* DotA 2 Import Data */
 import { DOTAHeroes } from "../data/dota2/json/npc_heroes.json";
 
-function getNewItemArray(itemArray, newItem) {
+/// Takes the existing itemArray and removes the current slot item and
+/// replaces with the newItem
+function replaceUpdatedItem(itemArray, newItem) {
     /// Remove old slot insert new and sort by Slot
-    var newArray = itemArray.filter((val) => {
+    let newArray = itemArray.filter((val) => {
         if (val.slot !== newItem.slot) {
             return val;
         }
     })
-    newArray.push({ slot: newItem.slot, item: newItem.item });
+    newArray.push({ 
+        slot: newItem.slot,
+        item: newItem.item,
+        extra: newItem.extra,
+    });
+    /// Sort by slot order 0 - 5
     newArray.sort((a, b) => (a.slot > b.slot) ? 1 : -1);
     return newArray;
 }
 
 function getNewTalentArray(talentArray, newTalent) {
-    var newArray = talentArray.map((value => { return value }));
+    let newArray = talentArray.map((value => { return value }));
     newArray.push(newTalent);
     return newArray;
 }
@@ -69,12 +76,12 @@ function reducer(state = initialState, action) {
         case SELECTED_ITEM:
             return {
                 ...state,
-                items: getNewItemArray(state.items, action.value),
+                items: replaceUpdatedItem(state.items, action.value),
             };
         case SELECTED_BACKPACK_ITEM:
             return {
                 ...state,
-                backpack: getNewItemArray(state.backpack, action.value),
+                backpack: replaceUpdatedItem(state.backpack, action.value),
             }
         case SELECTED_NEUTRAL:
             return {

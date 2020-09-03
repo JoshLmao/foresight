@@ -325,6 +325,8 @@ export function calculateManaRegen(hero, heroLevel, items, neutral, abilities, t
         totalManaRegen += parseFloat(hero.StatusManaRegen);
     }
 
+    let totalManaRegenPercentAmp = 100;
+
     if(items && items.length > 0) {
         for(let item of items) {
             let bonusManaRegen = tryGetItemSpecialValue(item, "bonus_mana_regen");
@@ -347,6 +349,19 @@ export function calculateManaRegen(hero, heroLevel, items, neutral, abilities, t
             let bonusAllStats = tryGetItemSpecialValue(item, "bonus_all_stats");
             if (bonusAllStats) {
                 totalManaRegen += bonusAllStats * MANA_REGEN_PER_INT;
+            }
+
+            // If bloodstone mp regen per charge
+            let regenPerCharge = tryGetItemSpecialValue(item, "regen_per_charge");
+            if (item.extra?.charges && regenPerCharge) {
+                let bloodstoneCharges = item.extra.charges;
+                totalManaRegen += regenPerCharge * bloodstoneCharges;
+            }
+
+            /// any mana regen percentage multiplier
+            let manaRegenAmp = tryGetItemSpecialValue(item, "mana_regen_multiplier");
+            if (manaRegenAmp) {
+                totalManaRegenPercentAmp += manaRegenAmp;
             }
         }
     }
@@ -401,7 +416,8 @@ export function calculateManaRegen(hero, heroLevel, items, neutral, abilities, t
         }
     }
 
-    return totalManaRegen.toFixed(1);
+    let totalMP = totalManaRegen * (totalManaRegenPercentAmp / 100);
+    return totalMP.toFixed(1);
 }
 
 // Calculates the main armor of the hero
@@ -534,22 +550,23 @@ export function calculateTotalSpellAmp (talents, items, neutral) {
 
     /// Determine if any items provide spell amp
     if (items && items.length > 0) {
-        for(let i = 0; i < items.length; i++) {
-            if (items[i].item) {
-                let itemInfo = getItemInfoFromName(items[i].item);
-                if (itemInfo) {
-                    let spellAmpAmount = getItemSpecialAbilityValue(itemInfo, "spell_amp");
-                    if (spellAmpAmount) {
-                        totalSpellAmp += spellAmpAmount;
-                        //console.log(`Item ${items[i].item} provides ${spellAmpAmt}% spell amp`);
-                    }
-                }
+        for(let item of items) {
+            let spellAmpAmount = tryGetItemSpecialValue(item, "spell_amp");
+            if (spellAmpAmount) {
+                totalSpellAmp += spellAmpAmount;
+                //console.log(`Item ${items[i].item} provides ${spellAmpAmt}% spell amp`);
+            }
+
+            let ampPerCharge = tryGetItemSpecialValue(item, "amp_per_charge");
+            if (item.extra?.charges && ampPerCharge) {
+                let bloodstoneCharges = item.extra.charges;
+                totalSpellAmp += ampPerCharge * bloodstoneCharges;
             }
         }
     }
 
 
-    return totalSpellAmp;
+    return totalSpellAmp.toFixed(1);
 }
 
 export function calculateStatusResist(items, neutral) {
@@ -917,25 +934,22 @@ export function calculateSpellDamage(abilityName, abilityInfo, abilityLevel, ite
 
     if (items) {
         // Add item spell damage increase
-        for(let i = 0; i < items.length; i++) {
-            let itemInfo = getItemInfoFromName(items[i].item);
-            if (itemInfo) {
-                let spellAmp = getItemSpecialAbilityValue(itemInfo, "spell_amp");
-                if (spellAmp) {
-                    totalSpellAmpPercent += spellAmp;
-                }
+        for(let item of items) {
+            let spellAmp = tryGetItemSpecialValue(item, "spell_amp");
+            if (spellAmp) {
+                totalSpellAmpPercent += spellAmp;
+            }
 
-                let bonusSpellAmp = getItemSpecialAbilityValue(itemInfo, "bonus_spell_amp");
-                if (bonusSpellAmp) {
-                    totalSpellAmpPercent += bonusSpellAmp;
-                }
+            let bonusSpellAmp = tryGetItemSpecialValue(item, "bonus_spell_amp");
+            if (bonusSpellAmp) {
+                totalSpellAmpPercent += bonusSpellAmp;
+            }
 
-                // Bloodstone, item specific
-                let chargeCount = getItemSpecialAbilityValue(itemInfo, "initial_charges_tooltip");
-                let ampPerCharge = getItemSpecialAbilityValue(itemInfo, "amp_per_charge");
-                if (ampPerCharge && chargeCount) {
-                    totalSpellAmpPercent += (ampPerCharge * chargeCount);
-                }
+            // get current bloodstone charges and amp correctly
+            let chargeCount = item.extra?.charges;
+            let ampPerCharge = tryGetItemSpecialValue(item, "amp_per_charge");
+            if (ampPerCharge && chargeCount) {
+                totalSpellAmpPercent += (ampPerCharge * chargeCount);
             }
         }
     }

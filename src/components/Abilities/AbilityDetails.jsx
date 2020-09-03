@@ -123,6 +123,7 @@ class AbilityDetails extends Component {
                         if (containsLocalizedString(this.state.abilityStrings, value.key)) {
                             return (
                                 <TypeValueUI 
+                                    key={ value.value }
                                     type={ getLocalizedString(this.state.abilityStrings, value.key) }
                                     value={ value.value } />
                             );   

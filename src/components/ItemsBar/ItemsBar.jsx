@@ -72,6 +72,7 @@ class ItemsBar extends Component {
                                             slot={value.slot}
                                             item={value.item} 
                                             onItemChanged={this.state.onItemChanged}
+                                            onItemExtraChnaged={this.state.onItem}
                                             dotaStrings={this.state.dotaStrings} 
                                             abilityStrings={this.state.abilityStrings} />
                                     )

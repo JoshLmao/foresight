@@ -39,7 +39,7 @@ export function getItemSpecialAbilityValue (itemInfo, specialAbilityValueKey) {
 
 /// Try Gets a item info and sepcial value from it's item's Ability Special array
 export function tryGetItemSpecialValue (item, specialAbilityValueKey) {
-    var itemInfo = getItemInfoFromName(item.item);
+    let itemInfo = getItemInfoFromName(item.item);
     if (itemInfo) {
         var specialValue = getItemSpecialAbilityValue(itemInfo, specialAbilityValueKey);
         if (specialValue) {
@@ -51,7 +51,7 @@ export function tryGetItemSpecialValue (item, specialAbilityValueKey) {
 
 /// Try Gets a neutral item info and special value from it's items' AbilitySpecial array
 export function tryGetNeutralSpecialValue (neutral, specialValueKey) {
-    var foundNeutralInfo = getItemInfoFromName(neutral.item);
+    let foundNeutralInfo = getItemInfoFromName(neutral.item);
     if (foundNeutralInfo) {
         var specialValue = getItemSpecialAbilityValue(foundNeutralInfo, specialValueKey);
         if (specialValue) {
@@ -277,6 +277,15 @@ export function isDissassembleRule(itemInfo, eDisassembleRule) {
                 return true;
             }
         }
+    }
+    return false;
+}
+
+/// Checks if an item requires charges to function
+export function itemRequiresCharges (itemName) {
+    let itemInfo = getItemInfoFromName(itemName);
+    if (itemInfo) {
+        return itemInfo.ItemRequiresCharges === "1";
     }
     return false;
 }

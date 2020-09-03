@@ -1,16 +1,30 @@
 import React, { Component } from 'react';
 import Popup from 'reactjs-popup';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { 
+    faInfo, 
+    faChevronUp,
+    faChevronDown
+} from '@fortawesome/free-solid-svg-icons';
+import {
+    Button,
+    Form
+} from "react-bootstrap";
 
 import ItemSelector from "./ItemSelector";
 
 import "../../css/dota_hero_icons_big.css";
 import ItemInfoTooltip from './ItemInfoTooltip';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faInfo } from '@fortawesome/free-solid-svg-icons';
 
 import {
     getItemIcon
 } from "../../utility/spriteHelper"
+import { 
+    tryGetItemInfoValue, 
+    getItemInfoFromName,
+    itemRequiresCharges
+} from '../../utility/dataHelperItems';
+
 
 /// Single item that contains a popup to change the item
 class Item extends Component {
@@ -19,17 +33,38 @@ class Item extends Component {
 
         this.state = {
             item: props.item,
-            slot: props.slot,
+            slot: props.slot, 
             isBackpack: props.isBackpack,
 
             onItemChanged: props.onItemChanged,
+            onItemExtraChanged: props.onItemExtraChanged,
 
             dotaStrings: props.dotaStrings,
             abilityStrings: props.abilityStrings,
+
+            itemExtra: { },
         };
 
         //console.log(`slot: ${this.state.slot} - item: ${this.state.item}`);
         this.onSelectedItem = this.onSelectedItem.bind(this);
+        this.onBloodstoneChargesChanged = this.onBloodstoneChargesChanged.bind(this);
+        this.setCharges = this.setCharges.bind(this);
+    }
+
+    componentDidMount() {
+        if (this.state.item === "item_bloodstone") {
+            /// Set inital charges of bloodstone
+            let itemInfo = getItemInfoFromName(this.state.item);
+            this.setState({
+                itemExtra: {
+                    ...this.state.itemExtra,
+                    charges: itemInfo?.ItemInitialCharges ?? 0,
+                },
+            }, () => {
+                /// Update state to new init value
+                this.setCharges(this.state.itemExtra.charges);
+            });
+        }
     }
 
     onSelectedItem (item) {
@@ -40,6 +75,7 @@ class Item extends Component {
         this.state.onItemChanged({ 
             slot: this.state.slot, 
             item: item,
+            extra: this.state.itemExtra,
             isBackpack: this.state.isBackpack ? true : false,
         });
     }
@@ -64,18 +100,53 @@ class Item extends Component {
         if (prevProps.dotaStrings !== this.props.dotaStrings) {
             this.setState({ dotaStrings: this.props.dotaStrings });
         }
-    }   
+    }
+
+    onBloodstoneChargesChanged (e) {
+        let newVal = parseInt(e.target.value);
+        this.setCharges(newVal);
+    }
+
+    setCharges(newChargeAmt) {
+        // If null or not exist, set to 0
+        if (!newChargeAmt) {
+            newChargeAmt = 0;
+        }
+
+        // Value must be more than 0 and less than 999
+        if (newChargeAmt < 0) {
+            newChargeAmt = 0;
+        } else if (newChargeAmt > 999) {
+            newChargeAmt = 999;
+        }
+        
+        this.setState({
+            itemExtra: {
+                ...this.state.itemExtra,
+                charges: newChargeAmt,
+            },
+        }, () => {
+            this.state.onItemChanged({
+                slot: this.state.slot, 
+                item: this.state.item,
+                extra: this.state.itemExtra,
+                isBackpack: this.state.isBackpack ? true : false,
+            });
+        });
+    }
 
     render() {
         let scale = 0.7;
         let width = "88px";
         let height = "64px";
         return (
-            <div>
+            // Relative to make positioning work on children
+            <div style={{ position:"relative" }}>
                 {
                     this.state.item &&
                         <Popup
                             trigger={isOpen => (
+                                // Info icon on item to display tooltip
                                 <div
                                     className="ml-2 mt-1" 
                                     style={{ position:"absolute", zIndex: 1 }}>
@@ -95,9 +166,13 @@ class Item extends Component {
                 }
                 <Popup
                     trigger={isOpen => (
-                        <div className="m-1" style={{ width: `calc(${width} * ${scale})`, height: `calc(${height} * ${scale})` }}  onClick={() => this.setState({ open: isOpen })}>
-                            {  getItemIcon(this.state.item, width, height, 0.7) }
+                        // Item icon
+                        <div className="m-1">
+                            <div style={{ width: `calc(${width} * ${scale})`, height: `calc(${height} * ${scale})` }}  onClick={() => this.setState({ open: isOpen })}>
+                                {  getItemIcon(this.state.item, width, height, 0.7) }
+                            </div>
                         </div>
+                        
                     )}
                     open={this.state.open}
                     position="right center"
@@ -107,6 +182,32 @@ class Item extends Component {
                             dotaStrings={this.state.dotaStrings}
                             abilityStrings={this.state.abilityStrings} />
                 </Popup>
+                {
+                    // Charge counter UI for bloodstone or charge based items
+                    (this.state.item === "item_bloodstone" || itemRequiresCharges(this.state.item)) &&
+                    <div style={{ 
+                        position: "absolute", 
+                        zIndex: 1, 
+                        width: `calc(${width} * ${scale})`, 
+                        height: `calc(${height} * ${scale})`,
+                        top: `calc(${height} * ${scale} - 17px)`,
+                        left: `calc(${width} * ${scale} - 27px)`, 
+                    }}>
+                        <Form.Control 
+                            size="sm" 
+                            value={ this.state.itemExtra?.charges ?? 0 } 
+                            onChange={this.onBloodstoneChargesChanged} 
+                            style={{ 
+                                width: "30px",
+                                height: "20px",
+                                padding: 0,
+                                textAlign: "center",
+                                background: "rgba(0, 0, 0, 0.5)",
+                                border: 0,
+                                color: "white"
+                            }} />
+                    </div>
+                }
             </div>
             
         );

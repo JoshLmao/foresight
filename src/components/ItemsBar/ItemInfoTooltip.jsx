@@ -11,11 +11,13 @@ import {
 } from '../../utility/data-helpers/language';
 import { calculateItemSellCost } from "../../utility/calculate";
 import {
-    EDisassembleRule
+    EDisassembleRule, EItemQuality
 } from "../../enums/items";
 
 import "./ItemInfoTooltip.css";
 import { getItemIcon } from '../../utility/spriteHelper';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHome, faCampground } from '@fortawesome/free-solid-svg-icons';
 
 function replaceItemStatLocalizeString (localizeString, value) {
     let split = localizeString.split('$');
@@ -74,6 +76,10 @@ class ItemInfoTooltip extends Component {
                             //If has an item cost and is more than 0
                             this.state.itemInfo?.ItemCost && this.state.itemInfo?.ItemCost > 0 &&
                             <div className="d-flex">
+                                {
+                                    this.state.itemInfo?.ItemQuality &&
+                                        <FontAwesomeIcon icon={this.state.itemInfo?.ItemQuality == EItemQuality.SECRET_SHOP ? faCampground : faHome } className="align-item-center" />
+                                }
                                 <img 
                                     className="mx-1"
                                     src={process.env.PUBLIC_URL + "/images/dota2/gold_icon_ui.png"} 
