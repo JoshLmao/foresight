@@ -8,8 +8,6 @@ import { faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 
 import HeroSelector from "./HeroSelector";
 
-import "./ChangeHeroBtn.css";
-
 class ChangeHeroBtn extends Component {
     constructor(props){
         super(props);
@@ -57,7 +55,7 @@ class ChangeHeroBtn extends Component {
                         <Button onClick={this.onToggleHeroSelect}><FontAwesomeIcon icon={faPencilAlt} /></Button>
                     )} 
                     position="right top"
-                    contentStyle={{ width: "750px" }}>
+                    contentStyle={{ width: "750px", padding: 0, border: 0 }}>
                      <HeroSelector 
                         onSelectedHero={this.onSelectHero} 
                         dotaStrings={this.state.dotaStrings}

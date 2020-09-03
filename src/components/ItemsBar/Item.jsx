@@ -176,7 +176,7 @@ class Item extends Component {
                     )}
                     open={this.state.open}
                     position="right center"
-                    contentStyle={{ width: "350px", height: "400px", overflowY: "auto" }}>
+                    contentStyle={{ width: "350px", height: "450px", overflowY: "auto", padding: 0, border: 0  }}>
                         <ItemSelector 
                             onSelectedItem={this.onSelectedItem}
                             dotaStrings={this.state.dotaStrings}

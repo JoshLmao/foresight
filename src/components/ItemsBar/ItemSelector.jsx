@@ -142,7 +142,7 @@ class ItemSelector extends Component {
         let searchIconScale = 0.45;
         return (
             <div className="item-card">
-                <div className="item-card header d-flex">
+                <div className="item-card header d-flex p-2">
                     <div>
                         <Form.Control type="text" placeholder="Search..." onChange={this.onSearchChanged}/>
                     </div>

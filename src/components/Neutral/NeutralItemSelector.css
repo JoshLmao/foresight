@@ -4,6 +4,9 @@
 }
 
 .neutral-item-card .header {
-    height: 50px;
-    border-bottom: 1px solid grey;
+    background-color: #213038;
+}
+
+.neutral-item-card .content {
+    background-color: #182229;
 }

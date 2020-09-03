@@ -5,6 +5,8 @@ import {  faSearch } from "@fortawesome/free-solid-svg-icons";
 import { getLocalizedString } from '../../utility/data-helpers/language';
 import { getAllPlayableHeroes } from '../../utility/dataHelperHero';
 
+import "./HeroSelector.css";
+
 class HeroSelector extends Component {
     constructor(props) {
         super(props);
@@ -51,7 +53,7 @@ class HeroSelector extends Component {
         let iconScale = 0.5;
         return (
             <div className="hero-card">
-                <div className="hero-card header d-flex">
+                <div className="hero-card header d-flex p-2">
                     <div className="d-flex">
                         <h5 className="my-auto ml-2">{ getLocalizedString(this.state.dotaStrings, "DOTA_Hero_Selection_Intro_Header") }</h5>
                         <div className="ml-auto p-1">
@@ -60,7 +62,7 @@ class HeroSelector extends Component {
                         <FontAwesomeIcon icon={faSearch} className="my-auto mr-2" />
                     </div>
                 </div>
-                <div className="content">
+                <div className="hero-card content p-2">
                     <div className="d-flex flex-wrap">
                         {
                             this.state.filteredHeroes && this.state.filteredHeroes.map((value) => {

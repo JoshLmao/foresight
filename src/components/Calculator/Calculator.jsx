@@ -190,8 +190,8 @@ class Calculator extends Component {
 
     render() {
         return (
-            <div className="mt-3">
-                <Container fluid="md">
+            <div className="foresite-app-container">
+                <Container className="app-main-content py-3" fluid="md">
                     {/* Top row, Inital Hero Information */}
                     <Row>
                         {/* Main Hero Info */}

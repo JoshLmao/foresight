@@ -1,0 +1,12 @@
+.foresite-navbar {
+    background: #0F4C75;
+    color: white!important;
+}
+
+/* Brand name in navbar */
+.navbar-brand-name {
+    color: white!important;
+}
+.navbar-brand-name:hover {
+    color: rgb(200, 200, 200)!important;
+}

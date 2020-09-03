@@ -1,4 +1,15 @@
 .items-row {
-    background-color: #505858;
+    background-color: #3282b8;
     color: white;
+}
+
+/* Master content container for app which stretches to height & width */
+.foresite-app-container {
+    background: #1B262C;
+}
+
+/* inner app container for main content */
+.app-main-content {
+    background: #1B262C;
+    color: white!important;
 }

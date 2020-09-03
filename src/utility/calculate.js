@@ -1337,7 +1337,12 @@ export function calculateAttribute(attribute, hero, level, items, neutral, abili
                     }
                 case EAttributes.ATTR_INTELLIGENCE:
                     {
-                        let bonusInt = tryGetItemSpecialValue(item, "bonus_intellect");
+                        let bonusIntellect = tryGetItemSpecialValue(item, "bonus_intellect");
+                        if (bonusIntellect) {
+                            additionalAttribute += bonusIntellect;
+                        }
+
+                        let bonusInt = tryGetItemSpecialValue(item, "bonus_intelligence");
                         if (bonusInt) {
                             additionalAttribute += bonusInt;
                         }
@@ -1345,6 +1350,11 @@ export function calculateAttribute(attribute, hero, level, items, neutral, abili
                     }
                 default:
                     break;
+            }
+
+            let bonusAllStats = tryGetItemSpecialValue(item, "bonus_all_stats");
+            if (bonusAllStats) {
+                additionalAttribute += bonusAllStats;
             }
         }
     }
@@ -1373,10 +1383,20 @@ export function calculateAttribute(attribute, hero, level, items, neutral, abili
                     if (bonusInt) {
                         additionalAttribute += bonusInt;
                     }
+
+                    let bonusIntellect = tryGetNeutralSpecialValue(neutral, "bonus_intellect");
+                    if (bonusIntellect) {
+                        additionalAttribute += bonusIntellect;
+                    }
                     break;    
                 }
             default:
                 break;
+        }
+
+        let bonusAllStats = tryGetNeutralSpecialValue(neutral, "bonus_all_stats");
+        if (bonusAllStats) {
+            additionalAttribute += bonusAllStats;
         }
     }
 
@@ -1415,6 +1435,13 @@ export function calculateAttribute(attribute, hero, level, items, neutral, abili
                     }
                 default:
                     break;
+            }
+
+            if (talent.includes("all_stats")) {
+                let bonusAllStats = tryGetTalentSpecialAbilityValue(talent, "value");
+                if (bonusAllStats) {
+                    additionalAttribute += bonusAllStats;
+                }
             }
         }
     }

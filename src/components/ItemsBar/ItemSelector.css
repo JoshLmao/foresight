@@ -4,10 +4,9 @@
 }
 
 .item-card .header {
-    height: 50px;
-    border-bottom: 1px solid grey;
+    background-color: #213038;
 }
 
-/* .item-card .content {
-    
-} */
+.item-card .content {
+    background-color: #182229;
+}

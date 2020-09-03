@@ -60,14 +60,14 @@ class HealthManaBar extends Component {
         return (
             <div>
                 <div className="bar health d-flex">
-                    <h6 className="my-auto mx-auto">{this.state.maxHealth} / {this.state.maxHealth}</h6>
-                    <div className="my-auto mr-1">
+                    <h6 className="max-health-text my-auto mx-auto">{this.state.maxHealth} / {this.state.maxHealth}</h6>
+                    <div className="health-bar-regen my-auto mr-1">
                         { "+" + calculateHealthRegen(this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents) }
                     </div>
                 </div>
                 <div className="bar mana d-flex">
-                    <h6 className="my-auto mx-auto">{this.state.maxMana} / {this.state.maxMana}</h6>
-                    <div className="my-auto mr-1">
+                    <h6 className="max-mana-text my-auto mx-auto">{this.state.maxMana} / {this.state.maxMana}</h6>
+                    <div className="mana-bar-regen my-auto mr-1">
                         { "+" + calculateManaRegen(this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents) }
                     </div>
                 </div>

@@ -2,10 +2,14 @@
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    background-color: transparent;
 }
 
 .hero-card .header {
-    height: 50px;
+    background-color: #213038;
     font-size: 14px;
-    border-bottom: 1px solid grey;
+}
+
+.hero-card .content {
+    background-color: #182229;
 }

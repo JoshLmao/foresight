@@ -63,7 +63,7 @@ class Neutral extends Component {
                         return getItemIcon(this.state.neutralItem.item, "88px", "64px", this.state.iconScale);
                     }}
                     position="right center"
-                    contentStyle={{ width: "325px", overflowY: "auto" }}>
+                    contentStyle={{ width: "325px", overflowY: "auto", padding: 0, border: 0, }}>
                     <NeutralItemSelector onNeutralSelected={this.state.onNewNeutralSelected} />
                 </Popup>
             </div>

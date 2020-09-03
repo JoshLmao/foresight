@@ -54,7 +54,7 @@ class NeutralItemSelector extends Component {
     render() {
         return (
             <div className="neutral-item-card" style={{ color: "black" }}>
-                <div className="neutral-item-card header d-flex">
+                <div className="neutral-item-card header d-flex p-2">
                     <div>
                         <Form.Control type="text" placeholder="Search..." onChange={this.onSearchChanged}/>
                     </div>
@@ -62,7 +62,7 @@ class NeutralItemSelector extends Component {
                         <FontAwesomeIcon icon={faMinus} data-neutral={null} />
                     </Button>
                 </div>
-                <div className="neutral-item-card content">
+                <div className="neutral-item-card content p-2">
                     <div className="d-flex flex-wrap">
                         {
                             this.state.queryNeutrals && this.state.queryNeutrals.map((itemInfo) => {

@@ -1,5 +1,6 @@
 :root {
     --bar-height: 100%;
+    --basic-drop-shadow: 1px 1px rgba(0, 0, 0, 1);
 }
 
 .bar {
@@ -8,10 +9,42 @@
     padding-bottom: 5px;
 }
 
+/* background element of health bar */
 .health {
-    background-color: lightgreen;
+    background-color: rgb(110, 199, 110);
 }
 
+/* background element of mana bar */
 .mana {
-    background-color: lightblue;
+    background-color: rgb(132, 178, 194);
+}
+
+/* +x.x mana regen element */
+.mana-bar-regen {
+    /*Actual in game color
+    color: #84c2fe; */
+    color: white;
+    font-weight: bolder;
+    text-shadow: var(--basic-drop-shadow);
+}
+
+/* +x.x health regen element */
+.health-bar-regen {
+    /*Actual in game color
+    color: #3fd039; */
+    color: white;
+    font-weight: bolder;
+    text-shadow: var(--basic-drop-shadow);
+}
+
+/* 999 / 999 current and max health element */
+.max-health-text {
+    text-shadow: var(--basic-drop-shadow);
+    font-weight: bolder;
+}
+
+/* 999 / 999 current and max mana element */
+.max-mana-text {
+    text-shadow: var(--basic-drop-shadow);
+    font-weight: bolder;
 }

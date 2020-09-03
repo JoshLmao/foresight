@@ -6,21 +6,23 @@ import "./Attributes.css";
 import { getLocalizedString, replaceStringValue } from '../../utility/data-helpers/language.js';
 import { calculateAttribute } from '../../utility/calculate.js';
 
-function parse(value) {
-    return parseFloat(value).toFixed(2);
-}
-
 function Attribute(props) {
     return (
         <div className="d-flex my-2 align-items-center">
             <div className={props.isPrimaryAttribute ? " primary-attribute" : ""}>
                 <span className={'attribute ' + props.type} alt="attribute" />
             </div>
-            <div className="mx-1">{props.value}</div>
-            <div   
-                className="mx-1" 
-                style={{ color: "green" }}>{"+" + props.additional}</div>
+            <div className="ml-2">{props.value}</div>
+            {
+                props.additional && props.additional > 0 &&
+                <div   
+                    className="mx-1" 
+                    style={{ color: "green" }}>
+                    {"+" + props.additional}
+                </div>
+            }
             <div
+                className="ml-3"
                 style={{ fontSize: "0.75rem" }}>
                 {
                     replaceStringValue(props.perLevelString, props.per)

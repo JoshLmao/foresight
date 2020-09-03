@@ -1,11 +1,11 @@
 :root {
-    --border-width: 3px;
+    --border-width: 2px;
 }
 
 .primary-attribute {
-    border: var(--border-width) solid red;
-    border-radius:50%;
-    -moz-border-radius:50%;
+    border: var(--border-width) solid gold;
+    border-radius: 50%;
+    -moz-border-radius: 50%;
     -webkit-border-radius:50%;
 
     /*Original atrribute size is 32px, add border width on both sides*/

@@ -11,14 +11,20 @@ import { faGithub } from '@fortawesome/free-brands-svg-icons';
 
 import LanguageSelect from '../LanguageSelect';
 
+import "./Navigation.css";
+
 let pkg = require('../../../package.json');
 
 class Navigation extends Component {
     render() {
         return (
-            <Navbar>
+            <Navbar className="foresite-navbar">
                 <Container>
-                    <Navbar.Brand to="/" as={Link}>foresight</Navbar.Brand>
+                    <Navbar.Brand 
+                        className="navbar-brand-name"
+                        to="/" as={Link}>
+                        foresight
+                    </Navbar.Brand>
                     <Nav.Link 
                         className="px-1 align-bottom mr-2"
                         style={{ fontSize: "0.85rem" }}
