@@ -5,18 +5,15 @@ import {
 } from "../../utility/calculate";
 import { 
     tryGetLocalizedString, 
-    getTooltipString,
     getTooltipAbilityString,
 } from "../../utility/data-helpers/language";
-import { 
-    tryGetTalentSpecialAbilityValue
-} from '../../utility/dataHelperTalents';
 
 /// Retrieves ability damage and returns display value
 function parseDamage(abilityName, abilInfo, abilLvl, items, neutral, talents) {
     let abilityDamage = calculateSpellDamage(abilityName, abilInfo, abilLvl, items, neutral, talents);
     if (abilityDamage && abilityDamage.damage) {
-        let damage = abilityDamage.damage;
+        // force to be to two decimal places
+        let damage = abilityDamage.damage.toFixed(2);
         if (abilityDamage.isPercent) {
             damage += "%";
         }

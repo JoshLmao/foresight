@@ -20,9 +20,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faCampground } from '@fortawesome/free-solid-svg-icons';
 
 function replaceItemStatLocalizeString (localizeString, value) {
-    let split = localizeString.split('$');
-    split.splice(1, 0, value);
-    return split.join(" ");
+    // If generic one tha contains $value, split and insert value
+    if(localizeString.includes("$")) {
+        let split = localizeString.split('$');
+        split.splice(1, 0, value);
+        return split.join(" ");
+    } 
+    // If contains %, arrange it correctly
+    else if (localizeString.includes("%")) {
+        return localizeString.replace("%+", `+ ${value}% `);
+    }
+    return localizeString;
 }
 
 class ItemInfoTooltip extends Component {
@@ -118,6 +126,7 @@ class ItemInfoTooltip extends Component {
                                                     break;
                                                 }
                                             }
+                                            
                                             return (
                                                 <div>
                                                     { replaceItemStatLocalizeString(string, value.value) }
