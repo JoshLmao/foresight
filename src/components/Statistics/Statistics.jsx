@@ -31,11 +31,18 @@ function StatArray(props) {
             {
                 props.stats &&
                     props.stats.map((value) => {
-                        return (<Row key={value.name}>
-                            <Col md={6}>
+                        return (
+                        <Row 
+                            key={value.name}
+                            className="mx-0">
+                            <Col 
+                                md={6}
+                                className="px-0">
                                 {value.name}
                             </Col>
-                            <Col md={6}>
+                            <Col 
+                                md={6}
+                                className="px-0">
                                 {value.value}
                             </Col>
                         </Row>
@@ -50,9 +57,13 @@ function StatArray(props) {
 function formatAttackMinMax(hero, lvl, items, neutral, abilities, talents) {
     let standardAtkDmg = calculateRightClickDamage(hero, lvl, items, neutral, abilities, talents);
     
-    let dmgString = `${standardAtkDmg.min} - ${standardAtkDmg.max}`;
+    // Range string
+    //let dmgString = `${standardAtkDmg.min} - ${standardAtkDmg.max}`;
+    // Average damage inbetween range value
+    let dmgString = standardAtkDmg.min + ((standardAtkDmg.max - standardAtkDmg.min) / 2);
     if (standardAtkDmg.additional) {
-        dmgString += ` +${standardAtkDmg.additional}`;
+        dmgString += " ";
+        dmgString += `${ standardAtkDmg.additional >= 0 ? "+" : "-" } ${Math.abs(standardAtkDmg.additional)}`;
     }
     return dmgString;
 }
@@ -61,6 +72,20 @@ function formatAttackMinMax(hero, lvl, items, neutral, abilities, talents) {
 function formatAttackTime(hero, lvl, items, neutral, abilities, talents) {
     let attackInfo = calculateAttackTime(hero, lvl, items, neutral, abilities, talents);
     return `${attackInfo.attackSpeed} (${attackInfo.attackTime} s)`;
+}
+
+function formatArmor (armorInfo) {
+    if (!armorInfo) {
+        return null;
+    }
+
+    let str = armorInfo.armor.toFixed(1);
+    if (armorInfo.additional) {
+        str += " ";
+        str += `${armorInfo.additional > 0 ? "+" : "-"} ${Math.abs(armorInfo.additional)}`;
+    }
+
+    return str;
 }
 
 class Statistics extends Component {
@@ -83,11 +108,10 @@ class Statistics extends Component {
     }
 
     componentDidMount() {
-        this.updateStatistics()
+        this.updateStatistics();
     }
 
     componentDidUpdate(prevProps) {
-        
         if (prevProps.hero !== this.props.hero) {
             this.setState({ 
                 hero: this.props.hero 
@@ -139,8 +163,8 @@ class Statistics extends Component {
     }
 
     updateStatistics() {
-        let armor =  calculateMainArmor(this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents);
-        let physResist = calculatePhysicalResist(armor);
+        let armorInfo =  calculateMainArmor(this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents);
+        let physResist = calculatePhysicalResist(armorInfo.armor + armorInfo.additional);
         this.setState({
             // Attack
             attackSpeed: formatAttackTime(this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents),
@@ -151,7 +175,7 @@ class Statistics extends Component {
             manaRegen: calculateManaRegen(this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents),
 
             // Defence
-            armor: armor,
+            armor: formatArmor(armorInfo),
             physicalResist: physResist,
             magicResist: calculateMagicResist(this.state.items, this.state.neutral, this.state.abilities),
             statusResist: calculateStatusResist(this.state.items, this.state.neutral),
@@ -200,7 +224,7 @@ class Statistics extends Component {
                         <StatArray title={getLocalizedString(this.state.dotaStrings, "DOTA_HUD_Defense")} stats={[
                             { 
                                 name: getLocalizedString(this.state.dotaStrings, "DOTA_HUD_Armor"), 
-                                value:  this.state.armor 
+                                value: this.state.armor,
                             },
                             { 
                                 name: getLocalizedString(this.state.dotaStrings, "DOTA_HUD_PhysicalResist"), 

@@ -94,6 +94,11 @@ export function calculateHealth(hero, heroLevel, items, neutral, abilities, tale
         if (bonusAllStats) {
             totalHealth += bonusAllStats * HEALTH_PER_STRENGTH_POINT;
         }
+
+        let maxHealth = tryGetNeutralSpecialValue(neutral, "max_health");
+        if (maxHealth) {
+            totalHealth += maxHealth;
+        }
     }
 
     if (abilities && abilities.length > 0) {
@@ -178,6 +183,14 @@ export function calculateMana(hero, heroLevel, items, neutral, abilities, talent
         let bonusAllStats = tryGetNeutralSpecialValue(neutral, "bonus_all_stats");
         if (bonusAllStats) {
             totalMana += bonusAllStats * MANA_PER_INT_POINT;
+        }
+
+        // If witless shako, remove from total mana pool
+        if (neutral.item === "item_witless_shako") {
+            let maxMana = tryGetNeutralSpecialValue(neutral, "max_mana");
+            if (maxMana) {
+                totalMana -= maxMana;
+            }
         }
     }
 
@@ -383,6 +396,11 @@ export function calculateManaRegen(hero, heroLevel, items, neutral, abilities, t
         if (bonusAllStats) {
             totalManaRegen += bonusAllStats * MANA_REGEN_PER_INT;
         }
+
+        let bonusRegen = tryGetNeutralSpecialValue(neutral, "mana_regen");
+        if (bonusRegen) {
+            totalManaRegen += bonusRegen;
+        }
     }
 
     if(abilities && abilities.length > 0) {
@@ -435,12 +453,13 @@ export function calculateMainArmor(hero, level, items, neutral, abilities, talen
     // Determine bonus agility from perLevel. Then work out main armor
     let agiPer = (agiPerLevel * (level - 1));
     let totalArmor = baseArmor + ((baseAgility + agiPer) * ARMOR_PER_AGI);
+    let totalBonusArmor = 0;
     
     if (items && items.length > 0) {
         for(let item of items) {
             let bonusArmor = tryGetItemSpecialValue(item, "bonus_armor");
             if (bonusArmor) {
-                totalArmor += bonusArmor;
+                totalBonusArmor += bonusArmor;
             }
 
             let bonusAgility = tryGetItemSpecialValue(item, "bonus_agility");
@@ -458,9 +477,23 @@ export function calculateMainArmor(hero, level, items, neutral, abilities, talen
     }
     
     if(neutral) {
-        let bonusArmor = tryGetNeutralSpecialValue(neutral, "bonus_armor");
-        if (bonusArmor) {
-            totalArmor += bonusArmor;
+        /// If item is nether_shawl, armor needs to be removed
+        if (neutral.item === "item_nether_shawl") {
+            let bonusArmor = tryGetNeutralSpecialValue(neutral, "bonus_armor");
+            if (bonusArmor) {
+                totalBonusArmor -= bonusArmor;
+            }
+        } else {
+            let bonusArmor = tryGetNeutralSpecialValue(neutral, "bonus_armor");
+            if (bonusArmor) {
+                totalBonusArmor += bonusArmor;
+            }
+        }
+        
+
+        let armorBonus = tryGetNeutralSpecialValue(neutral, "armor_bonus");
+        if (armorBonus) {
+            totalBonusArmor += armorBonus;
         }
 
         let bonusAgi = tryGetNeutralSpecialValue(neutral, "bonus_agility");
@@ -495,7 +528,7 @@ export function calculateMainArmor(hero, level, items, neutral, abilities, talen
             if (talent.includes("bonus_armor")) {
                 let bonusArmor = tryGetTalentSpecialAbilityValue(talent, "value");
                 if (bonusArmor) {
-                    totalArmor += bonusArmor;
+                    totalBonusArmor += bonusArmor;
                 }
             } else if (talent.includes("bonus_agility")) {
                 let bonusAgility = tryGetTalentSpecialAbilityValue(talent, "value");
@@ -512,7 +545,10 @@ export function calculateMainArmor(hero, level, items, neutral, abilities, talen
     }
 
     // Round to one decimal place
-    return totalArmor.toFixed(1);
+    return {
+        armor: totalArmor,
+        additional: totalBonusArmor,
+    };
 }
 
 /// Returns the total amount of spell amplification as a percentage applied to the hero
@@ -675,7 +711,7 @@ export function calculatePhysicalResist (totalArmor) {
     //( 0.052 * armor ) ÷ ( 0.9 + 0.048 * |armor|)
     let physResist = (0.052 * totalArmor) / (0.9 + 0.048 * Math.abs(totalArmor));
     let percent = physResist * 100;
-    return percent.toFixed(0);
+    return percent < 0 ? 0 : percent.toFixed(0);
 }
 
 /// Calculates evasion
@@ -780,6 +816,11 @@ export function calculateRightClickDamage(hero, level, items, neutral, abilities
             totalPrimaryAttribute += bonusPrimaryStat;
         }
 
+        let bonusAllStats = tryGetNeutralSpecialValue(neutral, "bonus_all_stats");
+        if (bonusAllStats) {
+            totalPrimaryAttribute += bonusAllStats;
+        }
+
         let bonusDmg = tryGetNeutralSpecialValue(neutral, "bonus_damage");
         if (bonusDmg) {
             totalAdditional += bonusDmg;
@@ -820,9 +861,9 @@ export function calculateRightClickDamage(hero, level, items, neutral, abilities
 
     return {
         /// minimum attack damage of the hero
-        min: Math.floor(min).toFixed(0),
+        min: Math.floor(min),
         /// maximum attack damage of the hero
-        max: Math.floor(max).toFixed(0),
+        max: Math.floor(max),
         additional: totalAdditional,
     };
 }
@@ -868,6 +909,11 @@ export function calculateAttackTime(hero, level, items, neutral, abilities, tale
         let bonusAttackSpeed = tryGetNeutralSpecialValue(neutral, "bonus_attack_speed");
         if (bonusAttackSpeed) {
             totalAttackSpeed += bonusAttackSpeed;
+        }
+
+        let attackSpeed = tryGetNeutralSpecialValue(neutral, "attack_speed");
+        if (attackSpeed) {
+            totalAttackSpeed += attackSpeed;
         }
     }
 
@@ -1310,10 +1356,10 @@ export function calculateAttribute(attribute, hero, level, items, neutral, abili
     }
 
     let attributeStats = getSpecificAttributeStats(attribute, hero);
-    let baseStrength = attributeStats.base;
-    let strengthPerLevel = attributeStats.perLevel;
+    let baseAttribute = attributeStats.base;
+    let attributePerLevel = attributeStats.perLevel;
 
-    let totalAttribute = baseStrength + (strengthPerLevel * (level - 1));
+    let totalAttribute = baseAttribute + (attributePerLevel * (level - 1));
     let additionalAttribute = 0;
 
     if (items && items.length > 0) {
@@ -1398,6 +1444,14 @@ export function calculateAttribute(attribute, hero, level, items, neutral, abili
         if (bonusAllStats) {
             additionalAttribute += bonusAllStats;
         }
+
+        /// Add primary stat bonus if current attribute matches hero's primary
+        if (attribute == hero.AttributePrimary) {
+            let primaryStat = tryGetNeutralSpecialValue(neutral, "primary_stat");
+            if (primaryStat) {
+                additionalAttribute += primaryStat;
+            }
+        }
     }
 
     if (talents && talents.length > 0) {
@@ -1459,8 +1513,8 @@ export function calculateAttribute(attribute, hero, level, items, neutral, abili
         attribute: totalAttribute,
         /// Additional attribute amount, from items/neutral/abils/talents
         additionalAttribute: additionalAttribute.toFixed(0),
-        /// Amount of strength per level
-        perLevel: strengthPerLevel,
+        /// Amount of attribute per level
+        perLevel: attributePerLevel,
     };
 }
 

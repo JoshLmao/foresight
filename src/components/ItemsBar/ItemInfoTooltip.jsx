@@ -30,6 +30,10 @@ function replaceItemStatLocalizeString (localizeString, value) {
     else if (localizeString.includes("%")) {
         return localizeString.replace("%+", `+ ${value}% `);
     }
+    /// If negative value
+    else if (localizeString.includes("-")) {
+        return localizeString.replace("-", `- ${Math.abs(value)} `);
+    }
     return localizeString;
 }
 
@@ -128,8 +132,7 @@ class ItemInfoTooltip extends Component {
                                             }
                                             
                                             return (
-                                                <div>
-                                                    { replaceItemStatLocalizeString(string, value.value) }
+                                                <div dangerouslySetInnerHTML={{ __html: replaceItemStatLocalizeString(string, value.value) }}>
                                                 </div>
                                             );
                                         }
