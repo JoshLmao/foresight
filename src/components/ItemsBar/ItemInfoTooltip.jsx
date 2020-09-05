@@ -132,7 +132,7 @@ class ItemInfoTooltip extends Component {
                                             }
                                             
                                             return (
-                                                <div dangerouslySetInnerHTML={{ __html: replaceItemStatLocalizeString(string, value.value) }}>
+                                                <div key={value.key} dangerouslySetInnerHTML={{ __html: replaceItemStatLocalizeString(string, value.value) }}>
                                                 </div>
                                             );
                                         }

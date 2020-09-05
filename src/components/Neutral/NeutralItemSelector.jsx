@@ -40,8 +40,12 @@ class NeutralItemSelector extends Component {
         let query = e.target.value;
         let filteredNeutrals = null;
         if (query) {
-            filteredNeutrals = this.state.allNeutrals.filter((neutral) => {
-                return neutral.item.indexOf(query.toLowerCase()) !== -1; 
+            filteredNeutrals = this.state.allNeutrals.filter((neutral, index) => {
+                let matchAmt = neutral.item.indexOf(query.toLowerCase());
+                if (matchAmt !== -1) {
+                    return true;
+                }
+                return false; 
             });
         }
 
@@ -65,11 +69,11 @@ class NeutralItemSelector extends Component {
                 <div className="neutral-item-card content p-2">
                     <div className="d-flex flex-wrap">
                         {
-                            this.state.queryNeutrals && this.state.queryNeutrals.map((itemInfo) => {
+                            this.state.queryNeutrals && this.state.queryNeutrals.map((itemInfo, index) => {
                                 return ( 
                                     <div 
                                         className="m-2" 
-                                        key={itemInfo.item} 
+                                        key={ `${itemInfo.item}-${index}` } 
                                         onClick={this.onNeutralSelected} 
                                         title={itemInfo.item}
                                         data-neutral={itemInfo.item}
@@ -82,11 +86,11 @@ class NeutralItemSelector extends Component {
                             })
                         }
                         {
-                            !this.state.queryNeutrals && this.state.allNeutrals.map((itemInfo) => {
+                            !this.state.queryNeutrals && this.state.allNeutrals.map((itemInfo, index) => {
                                 return ( 
                                     <div 
                                         className="m-2" 
-                                        key={itemInfo.item} 
+                                        key={ `${itemInfo.item}-${index}`} 
                                         onClick={this.onNeutralSelected} 
                                         title={itemInfo.item}
                                         data-neutral={itemInfo.item}

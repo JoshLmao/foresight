@@ -64,14 +64,18 @@ export function tryGetNeutralSpecialValue (neutral, specialValueKey) {
 /// Returns all neutral items
 export function getAllNeutrals() {
      /// Filter out unused or unnecessary keys in items.json
-     let selectableNeutrals = Object.keys(DOTAItems).filter((value) => {
+     let selectableNeutrals = Object.keys(DOTAItems).filter((value, index, array) => {
         let key = value.toLowerCase();
         let ability = DOTAItems[value];
-        if (key !== "version" && !ability.IsObsolete) {
-            if (ability.ItemIsNeutralDrop === "1") {
+        
+        // Make sure it's a neutral
+        if (ability.ItemIsNeutralDrop === "1") {
+            // Filter irrelevant results, ignore any neutral recipes and return full item
+            if (key !== "version" && !ability.IsObsolete && !key.includes("recipe")) {
                 return true;
-            }
+            }    
         }
+        
         return false;
     });
     selectableNeutrals.sort();
@@ -198,7 +202,7 @@ export function convertItemDescToHtml(itemDescString, itemName, itemInfo) {
         let isActive = engSplitString[i].includes("Active:");
         if (isActive) {
             totalHtmlSections.push(
-                <div className="my-3 item-active">
+                <div className="my-3 item-active" key={i}>
                     <div
                         className="d-flex justify-content-between align-items-center" 
                         style={{ position: "absolute", right: "1rem" }}>
@@ -230,8 +234,10 @@ export function convertItemDescToHtml(itemDescString, itemName, itemInfo) {
             )
         } else {
             totalHtmlSections.push(
-                <div className={`my-3 ${itemInfo.ItemQuality === "consumable" ? "item-consumable" : "item-passive"}`} dangerouslySetInnerHTML={{ __html: section }}>
-
+                <div
+                    key={i} 
+                    className={`my-3 ${itemInfo.ItemQuality === "consumable" ? "item-consumable" : "item-passive"}`} 
+                    dangerouslySetInnerHTML={{ __html: section }}>
                 </div>
             );
         }

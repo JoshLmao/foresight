@@ -332,7 +332,7 @@ export function getAbilitySpecialExtraValues (abilityName, abilityInfo, abilityL
         let abilitySpecialKeys = Object.keys(specialInfo);
         for (let key of abilitySpecialKeys) {
 
-            if (key.includes("LinkedSpecialBonus") || key.includes("var_type") || key.includes("damage")) {
+            if (key.includes("LinkedSpecialBonus") || key.includes("var_type") || key.includes("RequiresScepter") || key.includes("damage")) {
                 continue;
             }
 
