@@ -43,6 +43,9 @@ class Item extends Component {
             abilityStrings: props.abilityStrings,
 
             itemExtra: { },
+
+            itemSelectorOpen: false,
+            itemTooltipOpen: false,
         };
 
         //console.log(`slot: ${this.state.slot} - item: ${this.state.item}`);
@@ -69,7 +72,7 @@ class Item extends Component {
 
     onSelectedItem (item) {
         this.setState({
-            open: false,
+            itemSelectorOpen: false,
         });
         
         this.state.onItemChanged({ 
@@ -143,6 +146,7 @@ class Item extends Component {
             // Relative to make positioning work on children
             <div style={{ position:"relative" }}>
                 {
+                    // Hover popup for Item information tooltip
                     this.state.item &&
                         <Popup
                             trigger={isOpen => (
@@ -153,7 +157,7 @@ class Item extends Component {
                                     <FontAwesomeIcon icon={faInfo} />
                                 </div>
                             )}
-                            open={this.state.hoverOpen}
+                            open={this.state.itemTooltipOpen}
                             position="right center"
                             on="hover"
                             contentStyle={{ width: "350px", overflowY: "auto", padding: 0, border: 0 }}>
@@ -164,18 +168,20 @@ class Item extends Component {
                                     />
                         </Popup>
                 }
+                {/* Item selector popup to allow for changing to new item */}
                 <Popup
                     trigger={isOpen => (
                         // Item icon
                         <div className="m-1">
-                            <div style={{ width: `calc(${width} * ${scale})`, height: `calc(${height} * ${scale})` }}  onClick={() => this.setState({ open: isOpen })}>
+                            <div style={{ width: `calc(${width} * ${scale})`, height: `calc(${height} * ${scale})` }}>
                                 {  getItemIcon(this.state.item, width, height, 0.7) }
                             </div>
                         </div>
-                        
                     )}
-                    open={this.state.open}
+                    closeOnDocumentClick 
+                    open={this.state.itemSelectorOpen}
                     position="right center"
+                    on="click"
                     contentStyle={{ width: "350px", height: "450px", overflowY: "auto", padding: 0, border: 0  }}>
                         <ItemSelector 
                             onSelectedItem={this.onSelectedItem}

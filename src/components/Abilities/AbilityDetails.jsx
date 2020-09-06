@@ -13,15 +13,27 @@ import {
     calculateAbilityCastRange
 } from "../../utility/calculate";
 
+function stringContainsHtml (str) {
+    return typeof(str) === "string" && str.includes("</font>");
+}
+
 function TypeValueUI (props) {
     return (
         <div className="d-flex" style={{ fontSize: "0.85rem"}}>
-            <div className="mr-2">{props.type}</div>
+            {/* Type Key */}
             {
-                typeof(props.value) === "string" && props.value.includes("<") ?    
+                stringContainsHtml(props.type) ?
+                <div dangerouslySetInnerHTML={{ __html: props.type.replace("\\", "") }}></div>
+                :
+                <div>{ props.type }</div>
+            }
+            <div className="mx-1" />
+            {/* Value */}
+            {
+                stringContainsHtml(props.value) ?    
                 <div dangerouslySetInnerHTML={{ __html: props.value.replace("\\", "") }}></div>
                 :
-                <div>{props.value}</div>
+                <div>{ props.value }</div>
             }
         </div>
     )

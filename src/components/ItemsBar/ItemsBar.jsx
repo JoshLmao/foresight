@@ -4,9 +4,12 @@ import {
     Col
 } from "react-bootstrap";
 
+import { 
+    getLocalizedString
+} from '../../utility/data-helpers/language';
+
 import Item from "./Item";
 import Neutral from "../Neutral";
-import { getLocalizedString } from '../../utility/data-helpers/language';
 
 class ItemsBar extends Component {
     constructor(props) {
@@ -63,7 +66,7 @@ class ItemsBar extends Component {
                 <Row>
                     <Col md={itemsColWidth}>
                         <h6>{ getLocalizedString(this.state.dotaStrings, "DOTA_SHOP_ITEMS") }</h6>
-                        <div className="d-flex flex-wrap">
+                        <Row md={3} className="m-0 p-0">
                             {
                                 this.state.items && this.state.items.map((value) => {
                                     return (
@@ -78,7 +81,7 @@ class ItemsBar extends Component {
                                     )
                                 })
                             }
-                        </div>
+                        </Row>
                     </Col>
                     <Col md={backpackColWidth}>
                         <h6>{ getLocalizedString(this.state.dotaStrings, "DOTA_HUD_BackpackHintTitle").toUpperCase() }</h6>

@@ -17,20 +17,22 @@ import ManaCost from "./ManaCost";
 import AbilityDetails from "./AbilityDetails";
 import "./Abilities.css";
 
-function getAbilityLevel (levelInfo, abilityIndex, abilityInfo, onLevelChanged) {
+/// Returns array of html elements to represent the levels of the ability
+function getAbilityLevelHtml (levelInfo, abilityIndex, abilityInfo, onLevelChanged) {
     if (levelInfo && abilityInfo)
     {
         /// Determine max level of ability
-        var maxLvl = abilityInfo.AbilityType === "DOTA_ABILITY_TYPE_ULTIMATE" ? 3 : 4;
+        let maxLvl = abilityInfo.AbilityType === "DOTA_ABILITY_TYPE_ULTIMATE" ? 3 : 4;
         if (abilityInfo.MaxLevel)
             maxLvl = parseInt(abilityInfo.MaxLevel);
         
-        var html = [];
-        for(var i = 0; i < maxLvl; i++) {
+        let html = [];
+        for(let i = 0; i < maxLvl; i++) {
             html.push(
                 <Button 
                     key={i} 
                     variant="outline-secondary"
+                    className="p-1"
                     onClick={(e) => onLevelChanged(e)}
                     data-lvlindex={abilityIndex}
                     data-btnindex={i}>
@@ -54,6 +56,9 @@ function getLevelInfo (abilities) {
     }
     return [ ];
 }
+
+/// Max amount of abilities to show in one row
+const ABILITY_ROW_MAX = 6;
 
 class Abilities extends Component {
     constructor(props) {
@@ -148,7 +153,8 @@ class Abilities extends Component {
 
     render() {
         return (
-            <Row>
+            <Row 
+                md={this.state.abilities.length > ABILITY_ROW_MAX ? ABILITY_ROW_MAX : 0}>
                 {
                     this.state.abilities && this.state.abilityLevels && this.state.abilities.map((value, index) => {
                         // Info about the ability
@@ -172,7 +178,7 @@ class Abilities extends Component {
                                     className="h-100 align-self-center"
                                     style={{ maxWidth: "90px", maxHeight: "90px" }}
                                     src={`http://cdn.dota2.com/apps/dota2/images/abilities/${value}_hp1.png`} 
-                                    alt={ability.ID} />
+                                    alt={ `${ability.ID}-${value}` } />
                                 <Row className="px-4">
                                     <Col md={6}>
                                         {/* Cooldown */}
@@ -197,7 +203,8 @@ class Abilities extends Component {
                                 </Row>
                                 <div className="align-self-center pt-2 d-flex">
                                     {
-                                        this.state.abilityLevels && !ability.IsGrantedByScepter && getAbilityLevel(levelInfo, index, ability, this.onLevelChanged)
+                                        this.state.abilityLevels && !ability.IsGrantedByScepter && 
+                                            getAbilityLevelHtml(levelInfo, index, ability, this.onLevelChanged)
                                     }
                                 </div>
                                 <div className="py-1">

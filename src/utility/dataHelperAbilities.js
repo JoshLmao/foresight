@@ -326,6 +326,10 @@ export function isAbilityBehaviour (abilityBehaviour, ebehaviours) {
 
 /// Gets all AbilitySpecial extra information values with it's translation key 
 export function getAbilitySpecialExtraValues (abilityName, abilityInfo, abilityLevel, selectedTalents) {
+    if (!abilityInfo || (abilityInfo && !abilityInfo.AbilitySpecial)) {
+        return null;
+    }
+
     let abilitySpecials = [];
 
     for (let specialInfo of abilityInfo.AbilitySpecial) {
