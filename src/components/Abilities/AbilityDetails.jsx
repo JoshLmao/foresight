@@ -119,7 +119,7 @@ class AbilityDetails extends Component {
 
     render() {
         let castRangeAmt = calculateAbilityCastRange(this.state.ability, this.state.abilityInfo, this.state.levelInfo, this.state.items, this.state.neutral, this.state.selectedTalents);
-        let valuesInformation = getAbilitySpecialExtraValues(this.state.ability, this.state.abilityInfo, this.state.levelInfo.level, this.state.selectedTalents);
+        let valuesInformation = getAbilitySpecialExtraValues(this.state.ability, this.state.abilityInfo, this.state.levelInfo.level, this.state.items, this.state.selectedTalents);
         let abilityBehaviours = getAbilityBehaviours(this.state.abilityInfo);
         return (
             <div className="mb-2">

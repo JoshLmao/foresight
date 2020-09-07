@@ -23,3 +23,10 @@ export const ESpellImmunityType = {
     YES: "SPELL_IMMUNITY_ENEMIES_YES",
     NO: "SPELL_IMMUNITY_ENEMIES_NO",
 }
+
+// Enum of all special bonus operations inside AbilityInfo AbilitySpecials
+export const ESpecialBonusOperation = {
+    MULTIPLY: "SPECIAL_BONUS_MULTIPLY",
+    SUBTRACT: "SPECIAL_BONUS_SUBTRACT",
+    PERCENT_ADD: "SPECIAL_BONUS_PERCENTAGE_ADD",
+}

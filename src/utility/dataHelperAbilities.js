@@ -5,13 +5,19 @@ import { DOTAAbilities } from "../data/dota2/json/npc_abilities.json";
 import { 
     EAbilityBehaviour, 
     EDamageType, 
-    ESpellImmunityType 
+    ESpellImmunityType,
+    ESpecialBonusOperation
 } from "../enums/abilities";
 
 import {
     lang as DOTAEngAbilityStrings
 } from "../data/dota2/languages/abilities_english.json";
 import { containsLocalizedString } from "./data-helpers/language";
+import { itemsContainsScepter } from "./dataHelperItems";
+import { 
+    tryGetTalentSpecialAbilityValue,
+    talentsInclude
+} from "./dataHelperTalents";
 
 export function getAbilityInfoFromName(abilityName) {
     if (abilityName) {
@@ -325,25 +331,100 @@ export function isAbilityBehaviour (abilityBehaviour, ebehaviours) {
 }
 
 /// Gets all AbilitySpecial extra information values with it's translation key 
-export function getAbilitySpecialExtraValues (abilityName, abilityInfo, abilityLevel, selectedTalents) {
+export function getAbilitySpecialExtraValues (abilityName, abilityInfo, abilityLevel, items, selectedTalents) {
     if (!abilityInfo || (abilityInfo && !abilityInfo.AbilitySpecial)) {
         return null;
     }
 
     let abilitySpecials = [];
+    let containsScepter = itemsContainsScepter(items);
 
     for (let specialInfo of abilityInfo.AbilitySpecial) {
         let abilitySpecialKeys = Object.keys(specialInfo);
+        let currentAbilitySpecialObject = null;
         for (let key of abilitySpecialKeys) {
 
-            if (key.includes("LinkedSpecialBonus") || key.includes("var_type") || key.includes("RequiresScepter") || key.includes("damage")) {
+            // Store specific properties inside object for later
+            if (key === "LinkedSpecialBonus") {
+                currentAbilitySpecialObject = {
+                    ...currentAbilitySpecialObject,
+                    specialBonus: specialInfo[key],
+                };
+            } else if (key === "LinkedSpecialBonusOperation") {
+                currentAbilitySpecialObject = {
+                    ...currentAbilitySpecialObject,
+                    specialBonusOperation: specialInfo[key],
+                };
+            }
+
+            // Skip specific properties we don't need
+            if (key.includes("var_type") || key.includes("RequiresScepter") || key === "damage") {
+                continue;
+            }
+            
+            // Ignore scepter info if no aghs in inventory
+            if (key.includes("scepter") && !containsScepter) {
                 continue;
             }
 
+            // Create key for indexing inside locale files
             let translationKey = `DOTA_Tooltip_ability_${abilityName}_${key}`;
+
+            let abilityValue = null;
+            // if AbilitySpecial key doesn't contain an underscore, it references property on master AbilityInfo object
+            if (!key.includes("_") && !key.includes("Linked")) {
+                let containsKey = tryGetAbilityInfoValueFromKey(abilityInfo, key);
+                if (containsKey) {
+                    abilityValue = tryParseAbilitySpecialValue(abilityInfo, abilityInfo[containsKey], abilityLevel);
+                }
+            } else {
+                abilityValue = tryParseAbilitySpecialValue(specialInfo, specialInfo[key], abilityLevel);
+            }
+            
+            if (translationKey && abilityValue) {
+                currentAbilitySpecialObject = {
+                    ...currentAbilitySpecialObject,
+                    key: translationKey,
+                    value: abilityValue,
+                };
+            }
+        }
+
+        if (currentAbilitySpecialObject && currentAbilitySpecialObject.value) {
+            let value = currentAbilitySpecialObject.value;
+
+            // If AbilitySpecial has special bonus modifier and is selected
+            if ( talentsInclude(selectedTalents, currentAbilitySpecialObject.specialBonus) ) {
+                let specialBonusValue = tryGetTalentSpecialAbilityValue(currentAbilitySpecialObject.specialBonus, "value");
+               
+                /// Apply bonus operation to value
+                if (currentAbilitySpecialObject.specialBonusOperation) {
+                    switch (currentAbilitySpecialObject.specialBonusOperation) {
+                        case ESpecialBonusOperation.SUBTRACT:
+                            value -= specialBonusValue;
+                            break;
+                        case ESpecialBonusOperation.MULTIPLY:
+                            value *= specialBonusValue;
+                            break;
+                        case ESpecialBonusOperation.PERCENT_ADD:
+                            let percentBonus = (value / 100) * specialBonusValue;
+                            value += percentBonus;
+                            break;
+                        default:
+                            console.log(`Unknown SpecialBonusOperation: ${currentAbilitySpecialObject.specialBonusOperation}`);
+                            break;
+                    };
+                } else {
+                    /// If no special bonus operation, just replace new values on original
+                    if (specialBonusValue) {
+                        value = specialBonusValue;
+                    }
+                }
+            }
+
             abilitySpecials.push({
-                key: translationKey,
-                value: tryParseAbilitySpecialValue(specialInfo, specialInfo[key], abilityLevel),
+                key: currentAbilitySpecialObject.key,
+                value: value,
             });
         }
     }
@@ -366,4 +447,15 @@ export function tryParseAbilitySpecialValue (abilSpecialinfo, value, abilityLeve
         }
     }
     return value;
+}
+
+/// Try get's a value on an AbilityInfo object from it's key, which can be upper/lower/CamelCase
+export function tryGetAbilityInfoValueFromKey (abilityInfo, key) {
+    let abilInfoKeys = Object.keys(abilityInfo);
+    for(let abilInfoKey of abilInfoKeys) {
+        if (abilInfoKey.toLowerCase() === key.toLowerCase()) {
+            return  abilInfoKey;
+        }
+    }
+    return null;
 }

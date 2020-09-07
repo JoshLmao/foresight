@@ -25,3 +25,17 @@ export function tryGetTalentSpecialAbilityValue (talent, specialValueKey) {
     }
     return null;
 }
+
+/// Checks the selected talents array to see if the targetTalent has been selected
+export function talentsInclude(selectedTalents, targetTalent) {
+    if (!selectedTalents) {
+        return null;
+    }
+
+    for (let talent of selectedTalents) {
+        if (talent === targetTalent) {
+            return true;
+        }
+    }
+    return false;
+}
