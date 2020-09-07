@@ -1505,7 +1505,7 @@ export function calculateAttribute(attribute, hero, level, items, neutral, abili
     if (isPrimaryAttr) {
         totalAttribute = Math.floor(totalAttribute)
     } else {
-        totalAttribute = totalAttribute.toFixed(0);
+        totalAttribute = parseInt(totalAttribute.toFixed(0));
     }
 
     return {

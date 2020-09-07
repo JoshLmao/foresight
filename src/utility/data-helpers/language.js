@@ -88,7 +88,7 @@ export function getTooltipAbilityString(abilityStrings, abilityKey) {
 
 /// Places a value in a translation string that contains a "{s:value}" inside
 export function replaceStringValue(string, value) {
-    if (!string || !value) {
+    if (!string || value === undefined || value === null) {
         return "?";
     }
 

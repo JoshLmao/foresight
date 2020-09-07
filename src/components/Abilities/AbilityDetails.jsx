@@ -17,23 +17,37 @@ function stringContainsHtml (str) {
     return typeof(str) === "string" && str.includes("</font>");
 }
 
+/// Displays a Type/Value props used inside Ability descriptions
 function TypeValueUI (props) {
+    /// Check if localized type value contains percent and remove
+    let isPercentage = false;
+    let typeStr = props.type;
+    let valueStr = props.value;
+    if (props.type.includes("%")) {
+        typeStr = typeStr.replace("%", "");
+        isPercentage = true;
+    }
+
     return (
         <div className="d-flex" style={{ fontSize: "0.85rem"}}>
             {/* Type Key */}
             {
-                stringContainsHtml(props.type) ?
-                <div dangerouslySetInnerHTML={{ __html: props.type.replace("\\", "") }}></div>
+                stringContainsHtml(typeStr) ?
+                <div dangerouslySetInnerHTML={{ __html: typeStr.replace("\\", "") }}></div>
                 :
-                <div>{ props.type }</div>
+                <div>{ typeStr }</div>
             }
             <div className="mx-1" />
             {/* Value */}
             {
-                stringContainsHtml(props.value) ?    
-                <div dangerouslySetInnerHTML={{ __html: props.value.replace("\\", "") }}></div>
+                stringContainsHtml(valueStr) ?    
+                <div dangerouslySetInnerHTML={{ __html: valueStr.replace("\\", "") }}></div>
                 :
-                <div>{ props.value }</div>
+                <div>{ valueStr }</div>
+            }
+            {
+                // Give percent sign after value if isPercent
+                isPercentage && "%"
             }
         </div>
     )
