@@ -13,13 +13,10 @@ class ChangeHeroBtn extends Component {
         super(props);
 
         this.state = {
-            open: false,
-
             onSelectHero: props.onSelectHero,
             dotaStrings: props.dotaStrings,
         };
 
-        this.onToggleHeroSelect = this.onToggleHeroSelect.bind(this);
         this.onSelectHero = this.onSelectHero.bind(this);
     }
 
@@ -32,17 +29,7 @@ class ChangeHeroBtn extends Component {
         }
     }
 
-    onToggleHeroSelect(e) {
-        this.setState({
-            open: !this.state.open,
-        });
-    }
-
     onSelectHero (e) {
-        this.setState({
-            open: !this.state.open,
-        });
-        
         let hero = e.target.dataset.hero;
         this.state.onSelectHero(hero);
     }
@@ -55,7 +42,14 @@ class ChangeHeroBtn extends Component {
                         <Button onClick={this.onToggleHeroSelect}><FontAwesomeIcon icon={faPencilAlt} /></Button>
                     )} 
                     position="right top"
-                    contentStyle={{ width: "750px", padding: 0, border: 0 }}>
+                    closeOnDocumentClick
+                    closeOnEscape
+                    className="hero-selector"
+                    contentStyle={{ 
+                        width: "750px", 
+                        padding: 0, 
+                        border: 0
+                    }}>
                      <HeroSelector 
                         onSelectedHero={this.onSelectHero} 
                         dotaStrings={this.state.dotaStrings}

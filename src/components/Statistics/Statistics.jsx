@@ -17,9 +17,6 @@ import {
     calculateMoveSpeed,
     calculateAttackRange
 } from "../../utility/calculate";
-import { 
-    getPrimaryAttributeStats
-} from '../../utility/dataHelperHero';
 import {
     getLocalizedString
 } from "../../utility/data-helpers/language";

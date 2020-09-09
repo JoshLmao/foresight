@@ -26,8 +26,6 @@ class HeroSelector extends Component {
     componentDidUpdate(prevProps) {
         if (prevProps !== this.props) {
             this.setState({
-                heroes: this.props.heroes,
-                filteredHeroes: this.props.heroes,
                 onSelectedHero: this.props.onSelectedHero,
                 dotaStrings: this.props.dotaStrings,
             });
