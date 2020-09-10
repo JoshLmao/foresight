@@ -154,7 +154,7 @@ class Abilities extends Component {
     render() {
         return (
             <Row 
-                md={this.state.abilities.length > ABILITY_ROW_MAX ? ABILITY_ROW_MAX : 0}>
+                md={this.state.abilities?.length > ABILITY_ROW_MAX ? ABILITY_ROW_MAX : 0}>
                 {
                     this.state.abilities && this.state.abilityLevels && this.state.abilities.map((value, index) => {
                         // Info about the ability

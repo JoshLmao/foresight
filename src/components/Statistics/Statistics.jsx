@@ -72,7 +72,7 @@ function formatAttackTime(hero, lvl, items, neutral, abilities, talents) {
 }
 
 function formatArmor (armorInfo) {
-    if (!armorInfo) {
+    if (!armorInfo || !armorInfo?.armor) {
         return null;
     }
 

@@ -90,7 +90,10 @@ class TalentRow extends Component {
                 <Col 
                     md={5}
                     className="text-center"
-                    style={{ color: isTalentSelected(this.state.selectedTalents, this.state.leftTalent) ? "#c4a66f" : "white" }}>
+                    style={{ 
+                        color: isTalentSelected(this.state.selectedTalents, this.state.leftTalent) ? "#c4a66f" : "white",
+                        userSelect: "none",
+                    }}>
                     <div onClick={this.onSelectTalent} data-talent={this.state.leftTalent}>
                         {
                             this.getTalentDisplayName(this.state.leftTalent)
@@ -109,7 +112,10 @@ class TalentRow extends Component {
                 <Col 
                     md={5}
                     className="text-center"
-                    style={{ color: isTalentSelected(this.state.selectedTalents, this.state.rightTalent) ? "#c4a66f" : "white" }}>
+                    style={{ 
+                        color: isTalentSelected(this.state.selectedTalents, this.state.rightTalent) ? "#c4a66f" : "white",
+                        userSelect: "none",
+                    }}>
                     <div onClick={this.onSelectTalent} data-talent={this.state.rightTalent}>
                         {
                             this.getTalentDisplayName(this.state.rightTalent)

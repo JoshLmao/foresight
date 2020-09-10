@@ -47,7 +47,7 @@ class Navigation extends Component {
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="mr-auto">
                             <Nav.Link to="/" as={Link}>home</Nav.Link>
-                            <Nav.Link to="/app" as={Link}>calculator</Nav.Link>
+                            <Nav.Link to="/app" as={Link}>app</Nav.Link>
                         </Nav>
                         <div className="mr-2">
                             <LanguageSelect/>

@@ -12,13 +12,13 @@ import {
 
 const initialState = {
     /// Current selected hero info by the user
-    selectedHero: DOTAHeroes.npc_dota_hero_zuus,
+    selectedHero: DOTAHeroes.npc_dota_hero_abaddon,
     /// Internal string name of the hero
-    selectedHeroName: "npc_dota_hero_zuus",
+    selectedHeroName: "npc_dota_hero_abaddon",
     /// Array of abilities of the selectedHero
-    heroAbilities: getAllHeroAbilities(DOTAHeroes.npc_dota_hero_zuus),
+    heroAbilities: getAllHeroAbilities(DOTAHeroes.npc_dota_hero_abaddon),
     /// Array of talents of the selectedHero
-    heroTalents: getHeroTalents(DOTAHeroes.npc_dota_hero_zuus),
+    heroTalents: getHeroTalents(DOTAHeroes.npc_dota_hero_abaddon),
     /// Array of talents selected by the user
     selectedTalents: [ ],
     /// Current level of the hero set by the user
