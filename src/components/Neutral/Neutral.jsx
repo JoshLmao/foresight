@@ -20,7 +20,10 @@ class Neutral extends Component {
             abilityStrings: props.abilityStrings,
 
             iconScale: 0.7,
+            neutralSelectorDisabled: false,
         };
+
+        this.onNeutralSelected = this.onNeutralSelected.bind(this);
     }
 
     componentDidUpdate (prevProps) {
@@ -34,7 +37,21 @@ class Neutral extends Component {
         }
     }
 
+    onNeutralSelected (neutral) {
+        this.setState({
+            neutralSelectorDisabled: true,
+        });
+
+        if (this.state.onNewNeutralSelected) {
+            this.state.onNewNeutralSelected(neutral);
+        }
+    }
+
     render() {
+        if(this.state.neutralSelectorDisabled) {
+            this.setState({ neutralSelectorDisabled: false });
+        }
+
         return (
             <div>
                 {
@@ -47,7 +64,6 @@ class Neutral extends Component {
                                     <FontAwesomeIcon icon={faInfo} />
                                 </div>
                             )}
-                            open={this.state.hoverOpen}
                             position="right center"
                             on="hover"
                             contentStyle={{ width: "350px", overflowY: "auto", padding: 0, border: 0 }}>
@@ -63,8 +79,15 @@ class Neutral extends Component {
                         return getItemIcon(this.state.neutralItem.item, "88px", "64px", this.state.iconScale);
                     }}
                     position="right center"
-                    contentStyle={{ width: "325px", overflowY: "auto", padding: 0, border: 0, }}>
-                    <NeutralItemSelector onNeutralSelected={this.state.onNewNeutralSelected} />
+                    disabled={this.state.neutralSelectorDisabled}
+                    contentStyle={{ 
+                        width: "325px", 
+                        overflowY: "auto", 
+                        padding: 0, 
+                        border: 0,
+                    }}>
+                        <NeutralItemSelector 
+                            onNeutralSelected={this.onNeutralSelected} />
                 </Popup>
             </div>
         );

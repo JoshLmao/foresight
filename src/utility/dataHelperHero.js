@@ -145,3 +145,11 @@ export function getAllPlayableHeroes() {
     selectableHeroes.sort((a, b) => (a.name > b.name) ? 1 : -1);
     return selectableHeroes;
 }
+
+/// Checks a hero's attack capability for the specific capability
+export function isHeroAttackCapability (heroInfo, atkCapability) {
+    if ( heroInfo && atkCapability) {
+        return heroInfo.AttackCapabilities && heroInfo.AttackCapabilities.split(" | ").includes(atkCapability);
+    }
+    return false;
+}

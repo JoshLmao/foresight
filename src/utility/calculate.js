@@ -30,14 +30,15 @@ import {
     getDotaBaseHero,
     getSpecificAttributeStats,
     getPrimaryAttributeStats,
-    getPrimaryAttribute
+    getPrimaryAttribute,
+    isHeroAttackCapability
 } from "./dataHelperHero";
 
 import { EAttributes } from "../enums/attributes";
+import { EAttackCapabilities } from "../enums/hero";
 
 import { DOTAHeroes } from "../data/dota2/json/npc_heroes.json";
 import { DOTAAbilities } from "../data/dota2/json/npc_abilities.json";
-import { EAbilityBehaviour } from "../enums/abilities";
 
 /// Calculates the health of a hero
 /// https://dota2.gamepedia.com/Health
@@ -767,6 +768,9 @@ export function calculateRightClickDamage(hero, level, items, neutral, abilities
     let atkMax = parseInt(hero.AttackDamageMax);
     let primaryAttributeStats = getPrimaryAttributeStats(hero);
 
+    // Check if the hero attack is melee or ranged
+    let heroIsMelee = isHeroAttackCapability(hero, EAttackCapabilities.MELEE);
+
     // Work out how much bonus attack hero recieves from their primary attribute
     let totalPrimaryAttribute = primaryAttributeStats.base + (primaryAttributeStats.perLevel * (level - 1));
     // Calc additional damage from sources
@@ -798,6 +802,18 @@ export function calculateRightClickDamage(hero, level, items, neutral, abilities
             let bonusDmg = tryGetItemSpecialValue(item, "bonus_damage");
             if (bonusDmg) {
                 totalAdditional += bonusDmg;
+            }
+
+            if (heroIsMelee) {
+                let bonusMeleeDmg = tryGetItemSpecialValue(item, "bonus_damage_melee");
+                if (bonusMeleeDmg) {
+                    totalAdditional += bonusMeleeDmg;
+                }
+            } else {
+                let bonusRangedDmg = tryGetItemSpecialValue(item, "bonus_damage_ranged");
+                if (bonusRangedDmg) {
+                    totalAdditional += bonusRangedDmg;
+                }
             }
         }
     }
@@ -1289,7 +1305,7 @@ export function calculateAttackRange (hero, level, items, neutral, abilities, ta
         return "?";
     }
 
-    let isHeroRanged = hero.AttackCapabilities === "DOTA_UNIT_CAP_RANGED_ATTACK";
+    let isHeroRanged = isHeroAttackCapability(hero, EAttackCapabilities.RANGED);
 
     let baseRange = parseInt(hero.AttackRange);
     let totalAttackRange = baseRange;
@@ -1339,9 +1355,9 @@ export function calculateAttackRange (hero, level, items, neutral, abilities, ta
     } else {
         // Melee units, apply any melee attack range bonuses
         if (neutral) {
-            let bonusAttackRange = tryGetNeutralSpecialValue(neutral, "melee_attack_range");
-            if (bonusAttackRange) {
-                totalAttackRange += bonusAttackRange;
+            let bonusMeleeAttackRange = tryGetNeutralSpecialValue(neutral, "melee_attack_range");
+            if (bonusMeleeAttackRange) {
+                totalAttackRange += bonusMeleeAttackRange;
             }
         }
     }

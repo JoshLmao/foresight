@@ -44,8 +44,7 @@ class Item extends Component {
 
             itemExtra: { },
 
-            itemSelectorOpen: false,
-            itemTooltipOpen: false,
+            itemSelectorDisabled: false,
         };
 
         //console.log(`slot: ${this.state.slot} - item: ${this.state.item}`);
@@ -71,10 +70,12 @@ class Item extends Component {
     }
 
     onSelectedItem (item) {
+        // Close item selector popup by disabling
         this.setState({
-            itemSelectorOpen: false,
+            itemSelectorDisabled: true,
         });
         
+        // Trigger onItemChanged event
         this.state.onItemChanged({ 
             slot: this.state.slot, 
             item: item,
@@ -139,6 +140,11 @@ class Item extends Component {
     }
 
     render() {
+        // If last render was disabled, enable again
+        if (this.state.itemSelectorDisabled) {
+            this.setState({ itemSelectorDisabled: false });
+        }
+
         let scale = 0.7;
         let width = "88px";
         let height = "64px";
@@ -157,7 +163,6 @@ class Item extends Component {
                                     <FontAwesomeIcon icon={faInfo} />
                                 </div>
                             )}
-                            open={this.state.itemTooltipOpen}
                             position="right center"
                             on="hover"
                             contentStyle={{ width: "350px", overflowY: "auto", padding: 0, border: 0 }}>
@@ -179,7 +184,7 @@ class Item extends Component {
                         </div>
                     )}
                     closeOnDocumentClick 
-                    open={this.state.itemSelectorOpen}
+                    disabled={this.state.itemSelectorDisabled}
                     position="right center"
                     on="click"
                     contentStyle={{ width: "350px", height: "450px", overflowY: "auto", padding: 0, border: 0  }}>

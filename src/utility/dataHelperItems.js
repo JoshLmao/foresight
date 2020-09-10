@@ -248,7 +248,7 @@ export function convertItemDescToHtml(itemDescString, itemName, itemInfo) {
 
 /// Gets all bonuses the item provides, returning a key value list
 export function getItemStatistics (itemInfo) {
-    if (!itemInfo) {
+    if (!itemInfo || !itemInfo?.AbilitySpecial) {
         return null;
     }
 

@@ -15,6 +15,8 @@ class ChangeHeroBtn extends Component {
         this.state = {
             onSelectHero: props.onSelectHero,
             dotaStrings: props.dotaStrings,
+
+            heroSelectorDisabled: false,
         };
 
         this.onSelectHero = this.onSelectHero.bind(this);
@@ -30,11 +32,22 @@ class ChangeHeroBtn extends Component {
     }
 
     onSelectHero (e) {
+        // Disable popup to force close
+        this.setState({
+            heroSelectorDisabled: true,
+        });
+
         let hero = e.target.dataset.hero;
         this.state.onSelectHero(hero);
     }
 
     render() {
+        // If last render popup was force disabled to close, then flip to false
+        // to allow reopening 
+        if (this.state.heroSelectorDisabled) {
+            this.setState({ heroSelectorDisabled: false });
+        }
+
         return (
             <div>
                 <Popup 
@@ -44,6 +57,7 @@ class ChangeHeroBtn extends Component {
                     position="right top"
                     closeOnDocumentClick
                     closeOnEscape
+                    disabled={this.state.heroSelectorDisabled}
                     className="hero-selector"
                     contentStyle={{ 
                         width: "750px", 
