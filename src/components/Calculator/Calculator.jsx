@@ -304,7 +304,7 @@ class Calculator extends Component {
                                             this.state.buildName && this.state.loadedFromParams 
                                             ?
                                             <Form.Control 
-                                                className="m-2"
+                                                className="foresight-input-control mr-2 ml-0"
                                                 type="text" 
                                                 placeholder="Build Name" 
                                                 value={this.state.buildName} 
@@ -312,7 +312,7 @@ class Calculator extends Component {
                                                 readonly />
                                             :
                                             <Form.Control 
-                                                className="m-2"
+                                                className="foresight-input-control mr-2 ml-0"
                                                 type="text" 
                                                 placeholder="Build Name" 
                                                 onChange={this.onBuildNameChanged} />
@@ -324,7 +324,7 @@ class Calculator extends Component {
                                             this.state.buildCreator && this.state.loadedFromParams
                                             ?
                                             <Form.Control 
-                                                className="m-2"
+                                                className="foresight-input-control mr-2 ml-0"
                                                 type="text" 
                                                 placeholder="Creator" 
                                                 value={this.state.buildCreator} 
@@ -332,7 +332,7 @@ class Calculator extends Component {
                                                 readonly />
                                             :
                                             <Form.Control 
-                                                className="m-2"
+                                                className="foresight-input-control mr-2 ml-0"
                                                 type="text" 
                                                 placeholder="Creator" 
                                                 onChange={this.onBuildCreatorChanged} />

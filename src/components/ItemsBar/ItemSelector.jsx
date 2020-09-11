@@ -159,7 +159,13 @@ class ItemSelector extends Component {
                                     {
                                         // Query search term
                                         this.state.queryItems.map((item) => {
-                                            let localizedName = getLocalizedString(this.state.abilityStrings, `DOTA_Tooltip_Ability_${item.name}`);
+                                            // Add L char at end of dagons to show their level
+                                            let itmName = item.name;
+                                            if (item.name.includes("item_dagon_")) {
+                                                itmName += "L";
+                                            }
+                                            
+                                            let localizedName = getLocalizedString(this.state.abilityStrings, `DOTA_Tooltip_Ability_${itmName}`);
                                             return (
                                                 <ListGroup.Item 
                                                     key={item.name} 
