@@ -133,13 +133,10 @@ export function getAllPlayableHeroes() {
     })
     // Map only necessary data
     selectableHeroes = selectableHeroes.map((key) => {
-        if (DOTAHeroes[key].workshop_guide_name) {
-            return {
-                displayName: DOTAHeroes[key].workshop_guide_name,
-                name: key,
-                alias: DOTAHeroes[key].NameAliases ? DOTAHeroes[key].NameAliases.split(',') : null,
-            };
-        }
+        return {
+            name: key,
+            heroInfo: DOTAHeroes[key],
+        };
     });
     // sort by name property
     selectableHeroes.sort((a, b) => (a.name > b.name) ? 1 : -1);

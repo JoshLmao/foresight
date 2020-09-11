@@ -6,6 +6,7 @@ import { getLocalizedString } from '../../utility/data-helpers/language';
 import { getAllPlayableHeroes } from '../../utility/dataHelperHero';
 
 import "./HeroSelector.css";
+import { itemAliasIncludes } from '../../utility/dataHelperItems';
 
 class HeroSelector extends Component {
     constructor(props) {
@@ -37,8 +38,19 @@ class HeroSelector extends Component {
         let filteredHeroes = this.state.allHeroes;
         if (searchTerm) {
             filteredHeroes = this.state.allHeroes.filter((hero) => {
+                /// Match against localized string
                 let localizedHeroName = getLocalizedString(this.state.dotaStrings, hero.name)?.toLowerCase();
-                return localizedHeroName && localizedHeroName.indexOf(searchTerm.toLowerCase()) !== -1;
+                if (localizedHeroName && localizedHeroName.indexOf(searchTerm.toLowerCase()) !== -1) {
+                    return true;
+                }
+
+                // Alias if localized string hasnt got a match, only works in english
+                let aliasMatch = itemAliasIncludes(hero.heroInfo.NameAliases, searchTerm);
+                if (aliasMatch) {
+                    return true;
+                }
+
+                return false;
             });
         }
 

@@ -29,7 +29,11 @@ class LanguageSelect extends Component {
     render() {
         return (
             <div>
-                <Form.Control as="select" onChange={this.onLanguageChanged} defaultValue={this.props.lang}>
+                <Form.Control 
+                    className="foresight-dropdown"
+                    as="select" 
+                    onChange={this.onLanguageChanged} 
+                    defaultValue={this.props.lang}>
                     { getSupportedLanguages() }
                 </Form.Control>
             </div>

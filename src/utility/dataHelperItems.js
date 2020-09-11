@@ -61,6 +61,29 @@ export function tryGetNeutralSpecialValue (neutral, specialValueKey) {
     return null;
 }
 
+/// Gets all normal items in dota
+export function getAllItems () {
+    let selectableItems = Object.keys(DOTAItems).filter((value) => {
+        let key = value.toLowerCase();
+        let ability = DOTAItems[value];
+        if (key !== "version" && !key.includes("recipe") && !ability.ItemIsNeutralDrop && !ability.IsObsolete) {
+            return true;
+        }
+        return false;
+    });
+
+    // Convert keys to item data
+    selectableItems = selectableItems.map((key) => {
+        return {
+            item:  DOTAItems[key],
+            name: key,
+        };
+    })
+    selectableItems.sort();
+
+    return selectableItems;
+}
+
 /// Returns all neutral items
 export function getAllNeutrals() {
      /// Filter out unused or unnecessary keys in items.json
@@ -292,6 +315,19 @@ export function itemRequiresCharges (itemName) {
     let itemInfo = getItemInfoFromName(itemName);
     if (itemInfo) {
         return itemInfo.ItemRequiresCharges === "1";
+    }
+    return false;
+}
+
+/// Checks an item alias from an ItemInfo to see if the phrase is included
+export function itemAliasIncludes (itemAlias, includePhrase) {
+    if (itemAlias && includePhrase) {
+        let split = itemAlias.split(";");
+        for (let alias of split) {
+            if (alias.toLowerCase().indexOf(includePhrase.toLowerCase()) !== -1) {
+                return true;
+            }
+        }
     }
     return false;
 }

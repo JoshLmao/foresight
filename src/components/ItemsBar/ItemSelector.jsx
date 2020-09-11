@@ -7,7 +7,6 @@ import {
     ListGroup
 } from "react-bootstrap";
 import { getLocalizedString } from '../../utility/data-helpers/language';
-import { DOTAAbilities } from "../../data/dota2/json/items.json";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMinus } from '@fortawesome/free-solid-svg-icons';
@@ -18,6 +17,7 @@ import {
 
 import "./ItemSelector.css";
 import "../../css/dota_items.css";
+import { itemAliasIncludes, getAllItems } from '../../utility/dataHelperItems';
 
 
 function getItemsByQuality(itemsArray, matchArray) {
@@ -59,28 +59,14 @@ class ItemSelector extends Component {
     constructor(props) {
         super(props);
 
-        let selectableItems = Object.keys(DOTAAbilities).filter((value) => {
-            let key = value.toLowerCase();
-            let ability = DOTAAbilities[value];
-            if (key !== "version" && !key.includes("recipe") && !ability.ItemIsNeutralDrop && !ability.IsObsolete) {
-                return true;
-            }
-            return false;
-        });
-        // Convert keys to item data
-        selectableItems = selectableItems.map((key) => {
-            return {
-                item:  DOTAAbilities[key],
-                name: key,
-            };
-        })
-        selectableItems.sort();
-
-        let basicItems = getItemsByQuality(selectableItems, ["consumable", "component", "secret_shop"]);
-        let upgradesItems = getItemsByQuality(selectableItems, ["common", "rare", "epic", "artifact"]);
+        // Get all selectable items in dota
+        let allItems = getAllItems();
+        // Split into basic and upgrade items to sort into tabs
+        let basicItems = getItemsByQuality(allItems, ["consumable", "component", "secret_shop"]);
+        let upgradesItems = getItemsByQuality(allItems, ["common", "rare", "epic", "artifact"]);
 
         this.state = {
-            allItems: selectableItems,
+            allItems: allItems,
             queryItems: null,
 
             onSelectedItem: props.onSelectedItem,
@@ -112,8 +98,17 @@ class ItemSelector extends Component {
         let filteredItems = null;
         if (query) {
             filteredItems = this.state.allItems.filter((item) => {
+                // Check query for match in localized string, should work most of the time
                 let localizedName = getLocalizedString(this.state.abilityStrings, `DOTA_Tooltip_Ability_${item.name}`)?.toLowerCase();
-                return localizedName && localizedName.indexOf(query.toLowerCase()) !== -1; 
+                if (localizedName && localizedName.indexOf(query.toLowerCase()) !== -1) {
+                    return true;
+                }
+
+                // Match query with any item aliases (only works for english)
+                let aliasMatch = itemAliasIncludes(item.item.ItemAliases, query);
+                if (aliasMatch) {
+                    return true;
+                }
             });
         }
 
@@ -200,8 +195,14 @@ class ItemSelector extends Component {
                     {
                         !this.state.queryItems && 
                             <div>
-                                <Tabs defaultActiveKey="basic" transition={false} id="shop-tabs">
-                                    <Tab eventKey="basic" title={<TabHeading text={getLocalizedString(this.state.dotaStrings, "DOTA_Shop_Category_Basics")} />}>
+                                <Tabs
+                                    className="foresight-tabs"
+                                    defaultActiveKey="basic" 
+                                    transition={false} 
+                                    id="shop-tabs">
+                                    <Tab 
+                                        eventKey="basic" 
+                                        title={<TabHeading text={getLocalizedString(this.state.dotaStrings, "DOTA_Shop_Category_Basics")} />} >
                                         <div className="d-flex flex-wrap">
                                             {
                                                 this.state.basicItems && this.state.basicItems.map((item) => {
@@ -216,7 +217,9 @@ class ItemSelector extends Component {
                                             }
                                         </div>
                                     </Tab>
-                                    <Tab eventKey="upgrades" title={<TabHeading text={getLocalizedString(this.state.dotaStrings, "DOTA_Shop_Category_Upgrades")} />}>
+                                    <Tab 
+                                        eventKey="upgrades" 
+                                        title={<TabHeading text={getLocalizedString(this.state.dotaStrings, "DOTA_Shop_Category_Upgrades")} />} >
                                         <div className="d-flex flex-wrap">
                                             {
                                                 this.state.upgradesItems && this.state.upgradesItems.map((item) => {

@@ -14,7 +14,7 @@ import {
     EDisassembleRule, EItemQuality
 } from "../../enums/items";
 
-import "./ItemInfoTooltip.css";
+import "./ItemTooltip.css";
 import { getItemIcon } from '../../utility/spriteHelper';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faCampground } from '@fortawesome/free-solid-svg-icons';
@@ -37,7 +37,7 @@ function replaceItemStatLocalizeString (localizeString, value) {
     return localizeString;
 }
 
-class ItemInfoTooltip extends Component {
+class ItemTooltip extends Component {
     constructor(props) {
         super(props);
 
@@ -181,4 +181,4 @@ class ItemInfoTooltip extends Component {
     }
 }
 
-export default ItemInfoTooltip;
+export default ItemTooltip;

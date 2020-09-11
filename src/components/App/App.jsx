@@ -10,6 +10,8 @@ import FourOhFour from "../FourOhFour";
 import Calculator from "../Calculator";
 import Home from "../Home";
 
+import "../../css/foresight-bs-styling.css";
+
 class App extends Component {
     render() {
         return (

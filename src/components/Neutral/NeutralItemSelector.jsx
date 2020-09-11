@@ -8,7 +8,7 @@ import { faMinus } from "@fortawesome/free-solid-svg-icons";
 
 import { itemNameToElement } from "../../utils";
 import {
-    getAllNeutrals
+    getAllNeutrals,
 } from "../../utility/dataHelperItems";
 
 import "./NeutralItemSelector.css";

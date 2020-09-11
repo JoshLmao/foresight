@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfo } from '@fortawesome/free-solid-svg-icons';
 
 import NeutralItemSelector from "./NeutralItemSelector";
-import ItemInfoTooltip from '../ItemsBar/ItemInfoTooltip';
+import ItemTooltip from '../ItemTooltip';
 
 import { itemNameToElement } from "../../utils";
 import { getItemIcon } from '../../utility/spriteHelper';
@@ -67,7 +67,7 @@ class Neutral extends Component {
                             position="right center"
                             on="hover"
                             contentStyle={{ width: "350px", overflowY: "auto", padding: 0, border: 0 }}>
-                                <ItemInfoTooltip
+                                <ItemTooltip
                                     itemName={this.state.neutralItem.item}
                                     dotaStrings={this.state.dotaStrings}
                                     abilityStrings={this.state.abilityStrings}

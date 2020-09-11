@@ -92,7 +92,7 @@ class LevelSelector extends Component {
                         onClick={this.onDecrementHeroLevel} 
                         text="-" />
                     <Form.Control
-                        className="mx-3" 
+                        className="foresight-input-control mx-3" 
                         style={{ width: "75px" }}
                         placeholder="lvl" 
                         type="number" 

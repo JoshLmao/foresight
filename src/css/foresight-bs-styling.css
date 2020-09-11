@@ -1,0 +1,65 @@
+/*
+    Foresight specific Bootstrap stylings
+    *
+    All bootstrap specific controls styling. Use the provided className
+    on the specific bootstrap control
+*/
+
+:root {
+    /* Background/inactive color */
+    --primary-color: #182229;
+    /* Focus content/Active color */
+    --secondary-color: #213038;
+    /* Focus content/Active color */
+    --active-color: #354c58;
+    
+
+    --primary-txt-color: white;
+}
+
+/** 
+    Bootstrap Tabs styling
+    className: foresight-tabs
+**/
+.foresight-tabs.nav-tabs {
+    border-bottom: 1px solid #354c58;
+}
+/* inactive */
+.foresight-tabs .nav-item.nav-link {
+    color: grey;
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+/* Hover & Active */
+.foresight-tabs .nav-item.nav-link:hover {
+    border-color: var(--active-color);
+}
+.foresight-tabs .nav-item.nav-link:active {
+    border-color: green;
+}
+/* Tabs active */
+.foresight-tabs .nav-item.nav-link.active {
+    color: white;
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+
+/**
+    Bootstrap Select (Combo Box/Drop Down)
+    className: foresight-dropdown
+**/
+select.foresight-dropdown.form-control  {
+    background-color: var(--secondary-color);
+    border-color: var(--active-color);
+    color: var(--primary-txt-color);
+}
+
+/**
+    Bootstrap Input Form-Control
+    className: foresight-input-control
+**/
+input.foresight-input-control.form-control {
+    background: var(--primary-color);
+    border-color: var(--active-color);
+    color: var(--primary-txt-color);
+}

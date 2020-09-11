@@ -3,28 +3,20 @@ import Popup from 'reactjs-popup';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
     faInfo, 
-    faChevronUp,
-    faChevronDown
 } from '@fortawesome/free-solid-svg-icons';
 import {
-    Button,
     Form
 } from "react-bootstrap";
 
-import ItemSelector from "./ItemSelector";
-
-import "../../css/dota_hero_icons_big.css";
-import ItemInfoTooltip from './ItemInfoTooltip';
-
-import {
-    getItemIcon
-} from "../../utility/spriteHelper"
+import { getItemIcon } from "../../utility/spriteHelper"
 import { 
-    tryGetItemInfoValue, 
     getItemInfoFromName,
     itemRequiresCharges
 } from '../../utility/dataHelperItems';
 
+import ItemSelector from "./ItemSelector";
+import ItemTooltip from '../ItemTooltip';
+import "../../css/dota_hero_icons_big.css";
 
 /// Single item that contains a popup to change the item
 class Item extends Component {
@@ -166,7 +158,7 @@ class Item extends Component {
                             position="right center"
                             on="hover"
                             contentStyle={{ width: "350px", overflowY: "auto", padding: 0, border: 0 }}>
-                                <ItemInfoTooltip
+                                <ItemTooltip
                                     itemName={this.state.item}
                                     dotaStrings={this.state.dotaStrings}
                                     abilityStrings={this.state.abilityStrings}
