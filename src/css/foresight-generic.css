@@ -1,0 +1,22 @@
+/**
+    reactjs-tooltip Generic Styling
+    className: foresight-tooltip
+**/
+.foresight-tooltip-content {
+    overflow-y: auto;
+    padding: 0!important;
+    border: 0!important;
+}
+/* .foresight-tooltip-arrow {
+    color: rgb(255, 255, 255);
+}
+[role='tooltip'].foresight-tooltip-content {
+    width: 200px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 0px 3px;
+} */
+/* .foresight-tooltip-overlay {
+    background: rgba(0, 0, 0, 0.5);
+}
+[data-popup='tooltip'].foresight-tooltip-overlay {
+    background: transparent;
+} */

@@ -11,6 +11,7 @@ import Calculator from "../Calculator";
 import Home from "../Home";
 
 import "../../css/foresight-bs-styling.css";
+import "../../css/foresight-generic.css";
 
 class App extends Component {
     render() {

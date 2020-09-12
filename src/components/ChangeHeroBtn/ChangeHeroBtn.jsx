@@ -58,11 +58,9 @@ class ChangeHeroBtn extends Component {
                     closeOnDocumentClick
                     closeOnEscape
                     disabled={this.state.heroSelectorDisabled}
-                    className="hero-selector"
+                    className="foresight-tooltip"
                     contentStyle={{ 
-                        width: "750px", 
-                        padding: 0, 
-                        border: 0
+                        width: "750px"
                     }}>
                      <HeroSelector 
                         onSelectedHero={this.onSelectHero} 

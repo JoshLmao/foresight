@@ -157,7 +157,8 @@ class Item extends Component {
                             )}
                             position="right center"
                             on="hover"
-                            contentStyle={{ width: "350px", overflowY: "auto", padding: 0, border: 0 }}>
+                            className="foresight-tooltip"
+                            contentStyle={{ width: "350px" }}>
                                 <ItemTooltip
                                     itemName={this.state.item}
                                     dotaStrings={this.state.dotaStrings}
@@ -179,7 +180,11 @@ class Item extends Component {
                     disabled={this.state.itemSelectorDisabled}
                     position="right center"
                     on="click"
-                    contentStyle={{ width: "350px", height: "450px", overflowY: "auto", padding: 0, border: 0  }}>
+                    className="foresight-tooltip"
+                    contentStyle={{ 
+                        width: "350px", 
+                        height: "450px",
+                    }}>
                         <ItemSelector 
                             onSelectedItem={this.onSelectedItem}
                             dotaStrings={this.state.dotaStrings}

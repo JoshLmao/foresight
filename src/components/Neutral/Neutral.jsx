@@ -66,7 +66,10 @@ class Neutral extends Component {
                             )}
                             position="right center"
                             on="hover"
-                            contentStyle={{ width: "350px", overflowY: "auto", padding: 0, border: 0 }}>
+                            className="foresight-tooltip"
+                            contentStyle={{
+                                width: "350px",
+                            }}>
                                 <ItemTooltip
                                     itemName={this.state.neutralItem.item}
                                     dotaStrings={this.state.dotaStrings}
@@ -80,11 +83,9 @@ class Neutral extends Component {
                     }}
                     position="right center"
                     disabled={this.state.neutralSelectorDisabled}
-                    contentStyle={{ 
-                        width: "325px", 
-                        overflowY: "auto", 
-                        padding: 0, 
-                        border: 0,
+                    className="foresight-tooltip"
+                    contentStyle={{
+                        width: "350px",
                     }}>
                         <NeutralItemSelector 
                             onNeutralSelected={this.onNeutralSelected}
