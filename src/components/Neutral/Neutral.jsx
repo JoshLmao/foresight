@@ -87,7 +87,10 @@ class Neutral extends Component {
                         border: 0,
                     }}>
                         <NeutralItemSelector 
-                            onNeutralSelected={this.onNeutralSelected} />
+                            onNeutralSelected={this.onNeutralSelected}
+                            dotaStrings={this.state.dotaStrings} 
+                            abilityStrings={this.state.abilityStrings}
+                            />
                 </Popup>
             </div>
         );

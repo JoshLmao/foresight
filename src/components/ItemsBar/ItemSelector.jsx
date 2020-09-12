@@ -139,7 +139,11 @@ class ItemSelector extends Component {
             <div className="item-card">
                 <div className="item-card header d-flex p-2">
                     <div>
-                        <Form.Control type="text" placeholder="Search..." onChange={this.onSearchChanged}/>
+                        <Form.Control 
+                            className="foresight-input-control"
+                            type="text" 
+                            placeholder="Search..." 
+                            onChange={this.onSearchChanged}/>
                     </div>
                     <div className="ml-auto">
                         <Button variant="outline-danger" onClick={this.onRemoveItemSelected}>
@@ -151,11 +155,11 @@ class ItemSelector extends Component {
                     <div className="">
                         {
                             this.state.queryItems && 
-                            <div>
-                                <h5>
+                            <div style={{ color: "white" }}>
+                                <h5 >
                                     { getLocalizedString(this.state.dotaStrings, "DOTA_Shop_Search_Results_Title") }
                                 </h5>
-                                <ListGroup>
+                                <ListGroup className="foresight-list-group">
                                     {
                                         // Query search term
                                         this.state.queryItems.map((item) => {
@@ -170,7 +174,6 @@ class ItemSelector extends Component {
                                                 <ListGroup.Item 
                                                     key={item.name} 
                                                     data-item={item.name} 
-                                                    className="py-1 px-3"
                                                     onClick={this.onSearchItemSelected} 
                                                     action>
                                                     <div className="d-flex" data-item={item.name}>

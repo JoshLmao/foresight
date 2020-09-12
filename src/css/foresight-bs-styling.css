@@ -63,3 +63,28 @@ input.foresight-input-control.form-control {
     border-color: var(--active-color);
     color: var(--primary-txt-color);
 }
+
+/**
+    Bootstrap ListGroup
+    className: foresight-list-group
+**/
+.foresight-list-group {
+    color: var(--primary-txt-color);
+}
+
+.foresight-list-group button {
+    background: var(--primary-color);
+    border-color: var(--active-color);
+    color: var(--primary-txt-color);
+    padding: 0.5rem 1em!important;
+}
+.foresight-list-group button:hover {
+    color: var(--primary-txt-color);
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+.foresight-list-group button:active {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+    border-radius: 5px;
+}

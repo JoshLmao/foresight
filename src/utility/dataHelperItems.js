@@ -2,6 +2,7 @@
 // * Helper and utility functions to provide for retrieving data from "npc_items.json"
 // * 
 import { DOTAAbilities as DOTAItems } from "../data/dota2/json/items.json";
+import { neutral_items as DOTANeutralsTierList } from "../data/dota2/json/neutral_items.json";
 import { EAttributes } from "../enums/attributes";
 import React from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -330,4 +331,12 @@ export function itemAliasIncludes (itemAlias, includePhrase) {
         }
     }
     return false;
+}
+
+/// Gets the list of enabled/disabled Neutrals in their tiers
+export function getNeutralTierLayout () {
+    if (DOTANeutralsTierList) {
+        return DOTANeutralsTierList;
+    }
+    return null;
 }

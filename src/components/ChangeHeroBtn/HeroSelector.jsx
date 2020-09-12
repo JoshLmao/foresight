@@ -67,9 +67,15 @@ class HeroSelector extends Component {
                     <div className="d-flex">
                         <h5 className="my-auto ml-2">{ getLocalizedString(this.state.dotaStrings, "DOTA_Hero_Selection_Intro_Header") }</h5>
                         <div className="ml-auto p-1">
-                            <Form.Control type="text" placeholder="Search..." onChange={this.onSearchChanged} />
+                            <Form.Control 
+                                className="foresight-input-control"
+                                type="text"
+                                placeholder="Search..." 
+                                onChange={this.onSearchChanged} />
                         </div>
-                        <FontAwesomeIcon icon={faSearch} className="my-auto mr-2" />
+                        <FontAwesomeIcon 
+                            className="my-auto mx-2"
+                            icon={faSearch} />
                     </div>
                 </div>
                 <div className="hero-card content p-2">
