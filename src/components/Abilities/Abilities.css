@@ -1,15 +1,16 @@
 :root {
-    --level-size: 10px;
+    --level-size-height: 5px;
+    --level-size-width: 10px;
 }
 
 .levelled {
-    width: var(--level-size);
-    height: var(--level-size);
+    width: var(--level-size-width);
+    height: var(--level-size-height);
     background-color: yellow;
 }
 
 .unlevelled {
-    width: var(--level-size);
-    height: var(--level-size);
+    width: var(--level-size-width);
+    height: var(--level-size-height);
     background-color: grey;
 }

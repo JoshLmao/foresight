@@ -1,4 +1,5 @@
 import { lang as DOTAEngAbilityStrings } from "../../data/dota2/languages/abilities_english.json";
+import { getFuzzyTooltipAbilityString } from "../dataHelperItems";
 
 /// Searches the passed strings file for the related string
 /// Very resource intensive
@@ -97,6 +98,11 @@ export function replaceStringValue(string, value) {
 }
 
 /// Gets the english localized ability string
-export function getEngAnilityLocalizedString (key) {
+export function getEngAbilityLocalizedString (key) {
     return getLocalizedString(DOTAEngAbilityStrings, key);
+}
+
+/// Gets the english localized DOTA_Tooltip_[Aa]bility_{key} string
+export function getFuzzyEngAbilityLocalizedString (key) {
+    return getFuzzyTooltipAbilityString(DOTAEngAbilityStrings, key);
 }

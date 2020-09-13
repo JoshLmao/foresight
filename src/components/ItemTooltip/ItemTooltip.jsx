@@ -4,7 +4,8 @@ import {
     getItemInfoFromName, 
     convertItemDescToHtml,
     getItemStatistics,
-    isDissassembleRule
+    isDissassembleRule,
+    getFuzzyTooltipAbilityString
 } from "../../utility/dataHelperItems";
 import { 
     getLocalizedString
@@ -33,6 +34,10 @@ function replaceItemStatLocalizeString (localizeString, value) {
     /// If negative value
     else if (localizeString.includes("-")) {
         return localizeString.replace("-", `- ${Math.abs(value)} `);
+    }
+    /// If fallen this far and contains a + value, just split and give the value
+    else if (localizeString.includes("+")) {
+        return localizeString.replace("+", `+ ${Math.abs(value)} `);
     }
     return localizeString;
 }
@@ -68,9 +73,9 @@ class ItemTooltip extends Component {
         let goldIconSize = 20;
 
         let itemStats = getItemStatistics(this.state.itemInfo);
-        let loreString = getLocalizedString(this.state.abilityStrings, `DOTA_Tooltip_ability_${this.state.itemName}_Lore`);
+        let loreString = getFuzzyTooltipAbilityString(this.state.abilityStrings, `${this.state.itemName}_Lore`);
         /// Get localized string and filter it to correct html
-        let descString = getLocalizedString(this.state.abilityStrings, `DOTA_Tooltip_ability_${this.state.itemName}_Description`);
+        let descString = getFuzzyTooltipAbilityString(this.state.abilityStrings, `${this.state.itemName}_Description`);
         let descFiltered = convertItemDescToHtml(descString, this.state.itemName, this.state.itemInfo);
         return (
             <div className="item-tooltip">
@@ -82,7 +87,7 @@ class ItemTooltip extends Component {
                     </div>
                     <div>
                         <h4>
-                            { getLocalizedString(this.state.abilityStrings, `DOTA_Tooltip_Ability_${this.state.itemName}`) }
+                            { getFuzzyTooltipAbilityString(this.state.abilityStrings, `${this.state.itemName}`) }
                         </h4>
                         {
                             //If has an item cost and is more than 0
@@ -112,7 +117,8 @@ class ItemTooltip extends Component {
                                 { 
                                     itemStats.map((value) => {
                                         /// attempt to get localized string and display
-                                        let string = getLocalizedString(this.state.abilityStrings, `DOTA_Tooltip_ability_${this.state.itemName}_${value.key}`);
+                                        let string = getFuzzyTooltipAbilityString(this.state.abilityStrings, `${this.state.itemName}_${value.key}`);
+                                        
                                         if (string) {
                                             /// Check if item stat is a generic one that can be applied to most items and replace variable with localized string
                                             let genericKeys = [

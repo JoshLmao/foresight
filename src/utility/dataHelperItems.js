@@ -10,7 +10,7 @@ import { faClock } from '@fortawesome/free-solid-svg-icons';
 import { tryParseAbilitySpecialValue } from "./dataHelperAbilities";
 import { 
     getLocalizedString, 
-    getEngAnilityLocalizedString 
+    getFuzzyEngAbilityLocalizedString 
 } from "./data-helpers/language";
 
 export function getItemInfoFromName (itemName) {
@@ -155,33 +155,47 @@ export function replaceStringWithDataValues (string, itemInfo) {
         return null;
     }
 
-    let replaceRegex = /(%.*?%)/;
-    
+    let replaceRegex = /%\w*?%/;
+    // special character to use in placeholder of replacing in final string with ?
+    let REPLACE_CHAR = "~";
+
     while (string.match(replaceRegex)?.length > 0) {
         let phrase = string.match(replaceRegex)[0];
         if (phrase) {
             let infoKey = phrase.split("%").join("");
-            let specialAbilityValue = "?";
+            let specialAbilityValue = null;
             // no characters inbetween, needs to be a normal percentage sign
             if (infoKey === "") {
-                /// use ~ for now, replace later
-                specialAbilityValue = "~";
+                /// use the special REPLACE_CHAR
+                specialAbilityValue = REPLACE_CHAR;
             }
             // if is an AbilitySpecial key as all contain a '_' 
             else if (infoKey.includes("_")) {
                 specialAbilityValue = getItemSpecialAbilityValue(itemInfo, infoKey);
             }
-            // is a key on the main ItemInfo object 
             else {
+                // Check if infoKey is a key on the main itemInfo object
                 specialAbilityValue = tryGetItemInfoValue(itemInfo, infoKey);
+
+                // could be AbilitySpecial key that contains no _
+                if (!specialAbilityValue) {
+                    specialAbilityValue = getItemSpecialAbilityValue(itemInfo, infoKey);
+                }
             }
             
+            // If not able to find a data value, use a question mark
+            if (!specialAbilityValue) {
+                specialAbilityValue = "?";
+            }
+            // Replace and set
             string = string.replace(phrase, specialAbilityValue);
         }
     }
 
-    /// replace ! with actual percentage sign
-    string = string.replace(/[~]/g, "%");
+
+    /// replace REPLACE_CHAR with actual percentage sign
+    let regexExp = new RegExp(REPLACE_CHAR, "g");
+    string = string.replace(regexExp, "%");
     
     return string;
 }
@@ -208,13 +222,14 @@ export function tryGetItemInfoValue (itemInfo, itemInfoKey) {
 
 /// Converts a item description localized string into the correct displayable HTML
 export function convertItemDescToHtml(itemDescString, itemName, itemInfo) {
+    /// Replace active/passive item ability with the data values inside the itemInfo
     let dataString = replaceStringWithDataValues(itemDescString, itemInfo);
     if (!dataString) {
         return null;
     }
 
     /// Get english string to be able to check for "Active:" phrase
-    let engDataString = getEngAnilityLocalizedString(`DOTA_Tooltip_ability_${itemName}_Description`);
+    let engDataString = getFuzzyEngAbilityLocalizedString(`${itemName}_Description`);
     let engSplitString = engDataString.split("\\n");
 
     /// Also split localized string to iterate over
@@ -225,6 +240,7 @@ export function convertItemDescToHtml(itemDescString, itemName, itemInfo) {
         let section = localizedSplit[i];
         let isActive = engSplitString[i].includes("Active:");
         if (isActive) {
+            // Return HTML for an active ability on item
             totalHtmlSections.push(
                 <div className="my-3 item-active" key={i}>
                     <div
@@ -257,6 +273,7 @@ export function convertItemDescToHtml(itemDescString, itemName, itemInfo) {
                 </div>
             )
         } else {
+            /// HTML for passive ability on item
             totalHtmlSections.push(
                 <div
                     key={i} 
@@ -277,20 +294,25 @@ export function getItemStatistics (itemInfo) {
     }
 
     let statistics = [];
+    // Array of phrases/keys to include check on AbilitySpecial keys
+    let itemStatIncludePhrases = [
+        "bonus", "spell", "attack", "multiplier", "regen",
+        "resistance", "night_vision"
+    ];
 
     for (let i = 0; i < itemInfo.AbilitySpecial.length; i++) {
         let keys = Object.keys(itemInfo.AbilitySpecial[i]);
+        // Iterate over each AbilitySpecial key and take 
+        // matching keys in phrase array
         for(let key of keys) {
-            if (key.includes("bonus") || 
-                key.includes("spell") || 
-                key.includes("multiplier") || 
-                key.includes("regen") || 
-                key.includes("resistance") ) {
-                let val = tryParseAbilitySpecialValue(itemInfo.AbilitySpecial[i], itemInfo.AbilitySpecial[i][key]);
-                statistics.push({
-                    key: key,
-                    value: val,
-                });
+            for(let phrase of itemStatIncludePhrases) {
+                if (key.includes(phrase)) {
+                    let val = tryParseAbilitySpecialValue(itemInfo.AbilitySpecial[i], itemInfo.AbilitySpecial[i][key]);
+                    statistics.push({
+                        key: key,
+                        value: val,
+                    });
+                }
             }
         }
     }
@@ -339,4 +361,13 @@ export function getNeutralTierLayout () {
         return DOTANeutralsTierList;
     }
     return null;
+}
+
+/// Attempts to get a DOTA_Tooltip_[Aa]bility_{tooltipKey} string in the 
+export function getFuzzyTooltipAbilityString (abilityStrings, key) {
+    let str = getLocalizedString(abilityStrings, `DOTA_Tooltip_ability_${key}`);
+    if (!str) {
+        str = getLocalizedString(abilityStrings, `DOTA_Tooltip_Ability_${key}`);
+    }
+    return str;
 }

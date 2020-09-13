@@ -274,6 +274,11 @@ export function calculateHealthRegen(hero, heroLevel, items, neutral, abilities,
     }
 
     if (neutral) {
+        let healthRegen = tryGetNeutralSpecialValue(neutral, "hp_regen");
+        if (healthRegen) {
+            totalHpRegen += healthRegen;
+        }
+
         let bonusHealthRegen = tryGetNeutralSpecialValue(neutral, "bonus_health_regen");
         if (bonusHealthRegen) {
             totalHpRegen += bonusHealthRegen;
