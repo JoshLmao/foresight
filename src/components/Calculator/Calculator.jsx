@@ -101,6 +101,11 @@ class Calculator extends Component {
                             this.props.dispatch({ type: SELECTED_TALENT, value: talent });
                         }
                     }
+                    if (build?.heroAbilityLevels) {
+                        for (let abilLevel of build.heroAbilityLevels) {
+                            this.props.dispatch({ type: SELECTED_ABILITY_LEVEL, value: abilLevel });
+                        }
+                    }
                     if (build?.items) {
                         for (let item of build.items) {
                             if (item.item) {
@@ -123,6 +128,7 @@ class Calculator extends Component {
             build: {
                 selectedHeroName: this.props.selectedHeroName,
                 heroAbilities: this.props.heroAbilities,
+                heroAbilityLevels: this.props.heroAbilityLevels,
                 heroTalents: this.props.heroTalents,
                 heroLevel: this.props.heroLevel,
 
@@ -135,7 +141,7 @@ class Calculator extends Component {
         let str = JSON.stringify(buildObject);
         let encoded = Base64.encode(str);
         // set clipboard
-        copy(`localhost:3000/#/app?build=${encoded}`);
+        copy(`${window.location.href}?build=${encoded}`);
     }
 
     onHeroSelected(heroName) {

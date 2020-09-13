@@ -60,7 +60,7 @@ class TalentRow extends Component {
     }
 
     onSelectTalent(e) {
-        var selectedTalent = e.target.dataset.talent;
+        let selectedTalent = e.target.dataset.talent;
         // if clicked twice, unselect the talent
         if (isTalentSelected(this.state.selectedTalents, selectedTalent)) {
             this.state.onTalentUnselected(selectedTalent);

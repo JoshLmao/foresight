@@ -58,9 +58,9 @@ class ItemsBar extends Component {
     }
 
     render() {
-        var itemsColWidth = 5;
-        var backpackColWidth = 5;
-        var neutralColWidth = 2;
+        let itemsColWidth = 5;
+        let backpackColWidth = 5;
+        let neutralColWidth = 2;
         return (
             <div>
                 <Row>

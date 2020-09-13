@@ -23,9 +23,9 @@ import {
 
 function getItemsByQuality(itemsArray, matchArray) {
     return itemsArray.filter((itemInfo) => {
-        var quality = itemInfo.item.ItemQuality;
+        let quality = itemInfo.item.ItemQuality;
         if (quality) { //(quality === "consumable" || quality === "component" || quality === "secret_shop")) {
-            for(var i = 0; i < matchArray.length; i++) {
+            for(let i = 0; i < matchArray.length; i++) {
                 if (quality === matchArray[i]) {
                     return itemInfo;
                 }

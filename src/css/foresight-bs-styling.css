@@ -13,8 +13,8 @@
     /* Focus content/Active color */
     --active-color: #354c58;
     
-
     --primary-txt-color: white;
+    --muted-txt-color: rgb(200, 200, 225);
 }
 
 /** 
@@ -62,6 +62,14 @@ input.foresight-input-control.form-control {
     background: var(--primary-color);
     border-color: var(--active-color);
     color: var(--primary-txt-color);
+}
+/* Input disabled */
+input.foresight-input-control.form-control-plaintext {
+    background-color: var(--secondary-color);
+    color: var(--muted-txt-color);
+    border-color: var(--active-color);
+    border-radius: 5px;
+    padding-left: 0.5rem;
 }
 
 /**

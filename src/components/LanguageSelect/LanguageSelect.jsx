@@ -6,7 +6,7 @@ import { LANGUAGE_CHANGED } from "../../constants/actionTypes";
 import { ELanguages } from "../../enums/languages";
 
 function getSupportedLanguages() {
-    var langs = Object.values(ELanguages);
+    let langs = Object.values(ELanguages);
     return langs.map((value) => {
         return (
             <option value={value} key={value}>{value}</option>

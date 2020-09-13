@@ -37,7 +37,7 @@ class TalentTree extends Component {
 
     findSelectedTalent(leftTalent, rightTalent) {
         if (this.state.selectedTalents && this.state.selectedTalents.length > 0) {
-            var matchTalent = this.state.selectedTalents.find((val) => {
+            let matchTalent = this.state.selectedTalents.find((val) => {
                 if (val.name === leftTalent) {
                     return leftTalent;
                 } else if (val.name === rightTalent) {
