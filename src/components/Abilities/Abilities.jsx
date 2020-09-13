@@ -54,7 +54,7 @@ function getLevelInfo (abilities) {
             return { ability: index, level: 1 };
         });
     }
-    return [ ];
+    return null;
 }
 
 /// Max amount of abilities to show in one row
@@ -64,40 +64,35 @@ class Abilities extends Component {
     constructor(props) {
         super(props);
         
-        var abils = this.filterAbilities(props.abilities);
-        var abilLevels = getLevelInfo(abils);
-
         this.state = {
             heroName: props.heroName,
-            abilities: abils,
-            abilityLevels: abilLevels,
             items: props.items,
             neutral: props.neutral,
             selectedTalents: props.selectedTalents,
+            displayDamage: props.displayDamage,
 
             abilityStrings: props.abilityStrings,
             dotaStrings: props.dotaStrings,
 
-            displayDamage: props.displayDamage,
+            abilities: props.abilities,
+            abilityLevels: props.abilityLevels,
+
+            onAbilityLevelChanged: props.onAbilityLevelChanged,
         };
 
         this.onLevelChanged = this.onLevelChanged.bind(this);
-        this.filterAbilities = this.filterAbilities.bind(this);
     }
 
     componentDidUpdate(prevProps) {
         if (prevProps.heroName !== this.props.heroName) {
-            this.setState({
-                heroName: this.props.heroName,
-            });
+            this.setState({ heroName: this.props.heroName });
         }
 
         if (prevProps.abilities !== this.props.abilities) {
-            var abils = this.filterAbilities(this.props.abilities);
-            this.setState({
-                abilities: abils,
-                abilityLevels: getLevelInfo(abils),
-            });
+            this.setState({ abilities: this.props.abilities });
+        }
+        if (prevProps.abilityLevels !== this.props.abilityLevels) {
+            this.setState({ abilityLevels: this.props.abilityLevels });
         }
 
         if (prevProps.items !== this.props.items) {
@@ -117,17 +112,6 @@ class Abilities extends Component {
             this.setState({ dotaStrings: this.props.dotaStrings });
         }
     }
-    
-    // Remove any undefined, hidden abilities
-    filterAbilities(abils) {
-        if (abils) {
-            return abils.filter(function (val) {
-                return val && val !== "generic_hidden";
-            });
-        } else {
-            return null;
-        }
-    }
 
     onLevelChanged(e) {
         // If click on inner element
@@ -135,19 +119,17 @@ class Abilities extends Component {
             e.target = e.target.parentElement;
         }
 
-        var levelIndex = parseInt(e.target.dataset.lvlindex);
-        var abilities = this.state.abilityLevels;
-        var targetLevel = parseInt(e.target.dataset.btnindex) + 1;
+        let abilityIndex = parseInt(e.target.dataset.lvlindex);
+        let abilities = this.state.abilityLevels;
+        let targetLevel = parseInt(e.target.dataset.btnindex) + 1;
         // Clicked same level, set to 0
-        if (abilities[levelIndex].level === targetLevel) {
-            abilities[levelIndex].level = 0;
-        } else {
-            // Set Level's new value to which btn was pressed
-            abilities[levelIndex].level = targetLevel;
+        if (abilities[abilityIndex].level === targetLevel) {
+            targetLevel = 0;
         }
 
-        this.setState({
-            abilityLevels: abilities,
+        this.state.onAbilityLevelChanged({
+            ability: abilityIndex,
+            level: targetLevel
         });
     }
 

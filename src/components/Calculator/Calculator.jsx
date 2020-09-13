@@ -20,7 +20,7 @@ import {
     SELECTED_TALENT,
     UNSELECTED_TALENT,
     NEW_HERO_LEVEL,
-    ENEMY_SELECTED_TALENT
+    ENEMY_SELECTED_TALENT, SELECTED_ABILITY_LEVEL
 } from "../../constants/actionTypes";
 
 import { 
@@ -62,6 +62,7 @@ class Calculator extends Component {
         this.onTalentSelected = this.onTalentSelected.bind(this);
         this.onTalentUnselected = this.onTalentUnselected.bind(this);
         this.onHeroLevelChanged = this.onHeroLevelChanged.bind(this);
+        this.onAbilityLevelChanged = this.onAbilityLevelChanged.bind(this);
 
         this.onShareBuild = this.onShareBuild.bind(this);
         this.onBuildNameChanged = this.onBuildNameChanged.bind(this);
@@ -180,6 +181,11 @@ class Calculator extends Component {
         this.props.dispatch({ type: NEW_HERO_LEVEL, value: newLevel });
     }
 
+    onAbilityLevelChanged (abilLvlInfo) {
+        console.log(`${SELECTED_ABILITY_LEVEL}: Ability: ${abilLvlInfo.ability} Level: ${abilLvlInfo.level}`);
+        this.props.dispatch({ type: SELECTED_ABILITY_LEVEL, value: abilLvlInfo });
+    }
+
     onBuildNameChanged(e) {
         this.setState({ buildName: e.target.value });
     }
@@ -279,8 +285,10 @@ class Calculator extends Component {
 
                     {/* Abilities */}
                     <Abilities 
+                        onAbilityLevelChanged={this.onAbilityLevelChanged}
                         heroName={this.props.selectedHeroName}
                         abilities={this.props.heroAbilities}
+                        abilityLevels={this.props.heroAbilityLevels}
                         items={this.props.items}
                         neutral={this.props.neutralItem} 
                         selectedTalents={this.props.selectedTalents} 
@@ -375,6 +383,8 @@ const mapStateToProps = (state) => ({
     selectedHeroName: state.hero.selectedHeroName,
     
     heroAbilities: state.hero.heroAbilities,
+    heroAbilityLevels: state.hero.heroAbilityLevels,
+
     heroTalents: state.hero.heroTalents,
     heroLevel: state.hero.heroLevel,
 

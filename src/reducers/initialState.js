@@ -17,6 +17,12 @@ const initialState = {
     selectedHeroName: "npc_dota_hero_abaddon",
     /// Array of abilities of the selectedHero
     heroAbilities: getAllHeroAbilities(DOTAHeroes.npc_dota_hero_abaddon),
+    heroAbilityLevels: getAllHeroAbilities(DOTAHeroes.npc_dota_hero_abaddon).map((val, index) => {
+        return {
+            ability: index,
+            level: 1,
+        };
+    }),
     /// Array of talents of the selectedHero
     heroTalents: getHeroTalents(DOTAHeroes.npc_dota_hero_abaddon),
     /// Array of talents selected by the user

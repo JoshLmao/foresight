@@ -8,6 +8,7 @@ import {
     SELECTED_TALENT,
     UNSELECTED_TALENT,
     NEW_HERO_LEVEL,
+    SELECTED_ABILITY_LEVEL
 } from "../constants/actionTypes";
 
 import {
@@ -16,11 +17,26 @@ import {
 
 import {
     getAllHeroAbilities,
+    getHeroAbilityLevels,
     getHeroTalents,
 } from "../utility/dataHelperHero";
 
 /* DotA 2 Import Data */
 import { DOTAHeroes } from "../data/dota2/json/npc_heroes.json";
+
+function replaceUpdatedAbilityLevel (abilityLevelArray, newAbilityLevel) {
+    let newArray = abilityLevelArray.filter((val) => {
+        if (val.ability !== newAbilityLevel.ability) {
+            return val;
+        }
+    });
+    newArray.push({
+        ability: newAbilityLevel.ability,
+        level: newAbilityLevel.level,
+    });
+    newArray.sort((a, b) => (a.ability > b.ability) ? 1 : -1);
+    return newArray;
+}
 
 /// Takes the existing itemArray and removes the current slot item and
 /// replaces with the newItem
@@ -63,13 +79,20 @@ function reducer(state = initialState, action) {
         case SELECTED_HERO:
             console.log(action);
             let heroInfo = DOTAHeroes[action.value];
+            let allHeroAbilities = getAllHeroAbilities(heroInfo)
             return {
                 ...state,
                 selectedHero: heroInfo,
                 selectedHeroName: action.value,
-                heroAbilities: getAllHeroAbilities(heroInfo),
+                heroAbilities: allHeroAbilities,
                 heroTalents: getHeroTalents(heroInfo),
-                
+                heroAbilityLevels: allHeroAbilities.map((abil, index) => {
+                    return {
+                        ability: index,
+                        level: 1,
+                    };
+                }),
+
                 // reset selected talents when new hero selected
                 selectedTalents: [ ],
             };
@@ -93,15 +116,20 @@ function reducer(state = initialState, action) {
                 ...state,
                selectedTalents: getNewTalentArray(state.selectedTalents, action.value),
             }
-            case UNSELECTED_TALENT:
-                return {
-                    ...state,
-                    selectedTalents: removeTalent(state.selectedTalents, action.value),
-                }
+        case UNSELECTED_TALENT:
+            return {
+                ...state,
+                selectedTalents: removeTalent(state.selectedTalents, action.value),
+            }
         case NEW_HERO_LEVEL:
             return {
                 ...state,
                 heroLevel: action.value,
+            };
+        case SELECTED_ABILITY_LEVEL:
+            return {
+                ...state,
+                heroAbilityLevels: replaceUpdatedAbilityLevel(state.heroAbilityLevels, action.value),
             };
         default:
             return state;
