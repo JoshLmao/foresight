@@ -22,6 +22,8 @@ export const EAbilityBehaviour = {
 export const ESpellImmunityType = {
     YES: "SPELL_IMMUNITY_ENEMIES_YES",
     NO: "SPELL_IMMUNITY_ENEMIES_NO",
+    ALLIES_YES_ENEMIES_NO: "SPELL_IMMUNITY_ALLIES_YES_ENEMIES_NO",
+    ALLIES_NO: "SPELL_IMMUNITY_ALLIES_NO",
 }
 
 // Enum of all special bonus operations inside AbilityInfo AbilitySpecials

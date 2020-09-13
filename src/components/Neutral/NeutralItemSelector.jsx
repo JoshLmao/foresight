@@ -11,7 +11,6 @@ import {
     getAllNeutrals, getItemInfoFromName, getNeutralTierLayout, itemAliasIncludes,
 } from "../../utility/dataHelperItems";
 
-import "./NeutralItemSelector.css";
 import { getItemIcon } from '../../utility/spriteHelper';
 import { 
     getLocalizedString, 
@@ -169,7 +168,7 @@ class NeutralItemSelector extends Component {
                                                         itemName={itemInfo.item}
                                                         onClick={this.onNeutralSelected}  />
                                                     <h6 className="mx-1 my-auto" data-neutral={itemInfo.item}>
-                                                        { localizedName }
+                                                        { localizedName ?? itemInfo.item }
                                                     </h6>
                                                 </div>
                                             </ListGroup.Item>

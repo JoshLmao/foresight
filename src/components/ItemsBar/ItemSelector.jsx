@@ -15,10 +15,11 @@ import {
     getItemIcon
 } from "../../utility/spriteHelper";
 
-import "./ItemSelector.css";
 import "../../css/dota_items.css";
-import { itemAliasIncludes, getAllItems } from '../../utility/dataHelperItems';
-
+import { 
+    itemAliasIncludes, 
+    getAllItems 
+} from '../../utility/dataHelperItems';
 
 function getItemsByQuality(itemsArray, matchArray) {
     return itemsArray.filter((itemInfo) => {
@@ -152,7 +153,7 @@ class ItemSelector extends Component {
                     </div>
                 </div>
                 <div className="item-card content">
-                    <div className="">
+                    <div className="p-1">
                         {
                             this.state.queryItems && 
                             <div style={{ color: "white" }}>
@@ -183,7 +184,7 @@ class ItemSelector extends Component {
                                                             scale={searchIconScale}/>
 
                                                         <h6 className="mx-1 my-auto" data-item={item.name}>
-                                                            { localizedName }
+                                                            { localizedName ?? itmName }
                                                         </h6>
                                                     </div>
                                                 </ListGroup.Item>

@@ -252,7 +252,11 @@ export function getAbilityBehaviours(abilityInfo) {
                 pierceValue = "DOTA_ToolTip_PiercesSpellImmunity_Yes";
                 break;
             case ESpellImmunityType.NO:
+            case ESpellImmunityType.ALLIES_NO:
                 pierceValue = "DOTA_ToolTip_PiercesSpellImmunity_No";
+                break;
+            case ESpellImmunityType.ALLIES_YES_ENEMIES_NO:
+                pierceValue = "DOTA_ToolTip_PiercesSpellImmunity_AlliesYesEnemiesNo";
                 break;
             default:
                 pierceValue = "Unknown";

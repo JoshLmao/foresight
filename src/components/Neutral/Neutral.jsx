@@ -86,6 +86,7 @@ class Neutral extends Component {
                     className="foresight-tooltip"
                     contentStyle={{
                         width: "350px",
+                        height: "450px"
                     }}>
                         <NeutralItemSelector 
                             onNeutralSelected={this.onNeutralSelected}
