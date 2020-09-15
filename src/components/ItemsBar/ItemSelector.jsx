@@ -38,7 +38,7 @@ function ItemIcon(props) {
     return (
             <div 
                 key={props.keyName} 
-                title={props.itemName} 
+                title={props.localizedName} 
                 onClick={props.onClick}
                 data-item={props.itemName}
                 className="m-1" 
@@ -180,6 +180,7 @@ class ItemSelector extends Component {
                                                     <div className="d-flex" data-item={item.name}>
                                                         <ItemIcon 
                                                             itemName={item.name}
+                                                            localizedName={localizedName}
                                                             onClick={this.onSearchItemSelected} 
                                                             scale={searchIconScale}/>
 
@@ -216,10 +217,12 @@ class ItemSelector extends Component {
                                         <div className="d-flex flex-wrap">
                                             {
                                                 this.state.basicItems && this.state.basicItems.map((item) => {
+                                                    let localizedName = getLocalizedString(this.state.abilityStrings, `DOTA_Tooltip_Ability_${item.name}`);
                                                     return (
                                                         <ItemIcon 
                                                             key={item.item.ID}
                                                             itemName={item.name}
+                                                            localizedName={localizedName}
                                                             onClick={this.onShopItemSelected} 
                                                             scale={scale} />
                                                     )
@@ -233,10 +236,12 @@ class ItemSelector extends Component {
                                         <div className="d-flex flex-wrap">
                                             {
                                                 this.state.upgradesItems && this.state.upgradesItems.map((item) => {
+                                                    let localizedName = getLocalizedString(this.state.abilityStrings, `DOTA_Tooltip_Ability_${item.name}`);
                                                     return (
                                                         <ItemIcon 
                                                             key={item.item.ID}
                                                             itemName={item.name}
+                                                            localizedName={localizedName}
                                                             onClick={this.onShopItemSelected} 
                                                             scale={scale} />
                                                     );

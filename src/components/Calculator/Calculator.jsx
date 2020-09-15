@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Redirect, Link } from 'react-router-dom';
 import {
     Container,
     Row,
@@ -42,8 +43,6 @@ import "../../css/dota_attributes.css";
 import "../../css/dota_items.css";
 import "../../css/dota_hero_icons_big.css";
 import "./Calculator.css";
-import { Redirect, Link } from 'react-router-dom';
-
 
 class Calculator extends Component {
     constructor(props) {

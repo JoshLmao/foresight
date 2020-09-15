@@ -77,7 +77,6 @@ function reducer(state = initialState, action) {
     switch(action.type)
     {
         case SELECTED_HERO:
-            console.log(action);
             let heroInfo = DOTAHeroes[action.value];
             let allHeroAbilities = getAllHeroAbilities(heroInfo)
             return {

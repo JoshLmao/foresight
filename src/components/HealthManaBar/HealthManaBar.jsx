@@ -57,12 +57,13 @@ class HealthManaBar extends Component {
     }
 
     render() {
+        let healthRegenInfo = calculateHealthRegen(this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents);
         return (
             <div>
                 <div className="bar health d-flex">
                     <h6 className="max-health-text my-auto mx-auto">{this.state.maxHealth} / {this.state.maxHealth}</h6>
                     <div className="health-bar-regen my-auto mr-1">
-                        { "+" + calculateHealthRegen(this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents) }
+                        { "+" + (healthRegenInfo.total + healthRegenInfo.additional).toFixed(1) }
                     </div>
                 </div>
                 <div className="bar mana d-flex">

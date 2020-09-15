@@ -15,7 +15,8 @@ import {
     calculateRightClickDamage,
     calculateAttackTime,
     calculateMoveSpeed,
-    calculateAttackRange
+    calculateAttackRange,
+    calculateTotalLifesteal
 } from "../../utility/calculate";
 import {
     getLocalizedString
@@ -83,6 +84,20 @@ function formatArmor (armorInfo) {
     }
 
     return str;
+}
+
+function formatTotalAdditional (total, additional, toFixedAmt = 2) {
+    if (total == null || additional == null) {
+        return null;
+    }
+
+    let val = total.toFixed(toFixedAmt);
+    if (additional) {
+        val += " ";
+        val += `${additional > 0 ? "+" : "-"} ${Math.abs(additional.toFixed(toFixedAmt))}`;
+    }
+
+    return val;
 }
 
 class Statistics extends Component {
@@ -172,81 +187,97 @@ class Statistics extends Component {
             manaRegen: calculateManaRegen(this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents),
 
             // Defence
-            armor: formatArmor(armorInfo),
+            armor: formatTotalAdditional(armorInfo?.armor, armorInfo?.additional),
             physicalResist: physResist,
             magicResist: calculateMagicResist(this.state.items, this.state.neutral, this.state.abilities),
             statusResist: calculateStatusResist(this.state.items, this.state.neutral),
-            evasion: calculateEvasion(this.state.items, this.state.neutrak, this.state.abilities , this.state.talents),
+            evasion: calculateEvasion(this.state.items, this.state.neutral, this.state.abilities , this.state.talents),
             healthRegen: calculateHealthRegen(this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents),
+
+            // Other
+            totalLifesteal: calculateTotalLifesteal(this.state.items, this.state.neutral, this.state.abilities, this.state.talents),
         });
     }
 
     render() {
         return (
-            <Row>
-                {
-                    this.state.hero &&
-                    <Col md={6}>
-                        <StatArray title={getLocalizedString(this.state.dotaStrings, "DOTA_HUD_Attack")} stats={[
-                            { 
-                                name: getLocalizedString(this.state.dotaStrings, "DOTA_HUD_AttackSpeed"),
-                                value: this.state.attackSpeed
+            <div>
+                <Row>
+                    {
+                        this.state.hero &&
+                        <Col md={6}>
+                            <StatArray title={getLocalizedString(this.state.dotaStrings, "DOTA_HUD_Attack")} stats={[
+                                { 
+                                    name: getLocalizedString(this.state.dotaStrings, "DOTA_HUD_AttackSpeed"),
+                                    value: this.state.attackSpeed
+                                },
+                                { 
+                                    name: getLocalizedString(this.state.dotaStrings, "DOTA_HUD_Damage"), 
+                                    value: this.state.damage 
+                                },
+                                { 
+                                    name: getLocalizedString(this.state.dotaStrings, "DOTA_HUD_AttackRange"), 
+                                    value: this.state.attackRange 
+                                },
+                                { 
+                                    name: getLocalizedString(this.state.dotaStrings, "DOTA_HUD_MoveSpeed"), 
+                                    value: this.state.moveSpeed 
+                                },
+                                { 
+                                    name: getLocalizedString(this.state.dotaStrings, "DOTA_HUD_SpellAmp"), 
+                                    value: this.state.spellAmp + "%" 
+                                },
+                                { 
+                                    name: getLocalizedString(this.state.dotaStrings, "DOTA_HUD_ManaRegenDetail"), 
+                                    value: this.state.manaRegen 
+                                },
+                            ]} />
+                        </Col>
+                    }   
+                    {
+                        this.state.hero &&
+                        <Col md={6}>
+                            <StatArray title={getLocalizedString(this.state.dotaStrings, "DOTA_HUD_Defense")} stats={[
+                                { 
+                                    name: getLocalizedString(this.state.dotaStrings, "DOTA_HUD_Armor"), 
+                                    value: this.state.armor,
+                                },
+                                { 
+                                    name: getLocalizedString(this.state.dotaStrings, "DOTA_HUD_PhysicalResist"), 
+                                    value: this.state.physicalResist + "%" 
+                                },
+                                { 
+                                    name: getLocalizedString(this.state.dotaStrings, "DOTA_HUD_MagicResist"), 
+                                    value: this.state.magicResist + "%" 
+                                },
+                                { 
+                                    name: getLocalizedString(this.state.dotaStrings, "DOTA_HUD_StatusResist"), 
+                                    value: this.state.statusResist + "%" 
+                                },
+                                { 
+                                    name: getLocalizedString(this.state.dotaStrings, "DOTA_HUD_Evasion"), 
+                                    value: this.state.evasion + "%" 
+                                },
+                                { 
+                                    name: getLocalizedString(this.state.dotaStrings, "DOTA_HUD_HealthRegenDetail"), 
+                                    value: formatTotalAdditional(this.state.healthRegen?.total, this.state.healthRegen?.additional, 2),
+                                },
+                            ]}/>
+                        </Col>
+                    }
+                </Row>
+                <Row className="my-1">
+                    <Col>
+                        <StatArray title={getLocalizedString(this.state.dotaStrings, "DOTA_OtherType").toUpperCase()} stats={[
+                            {
+                                name: getLocalizedString(this.state.dotaStrings, "DOTA_SHOP_TAG_LIFESTEAL"),
+                                value: this.state.totalLifesteal + "%",
                             },
-                            { 
-                                name: getLocalizedString(this.state.dotaStrings, "DOTA_HUD_Damage"), 
-                                value: this.state.damage 
-                            },
-                            { 
-                                name: getLocalizedString(this.state.dotaStrings, "DOTA_HUD_AttackRange"), 
-                                value: this.state.attackRange 
-                            },
-                            { 
-                                name: getLocalizedString(this.state.dotaStrings, "DOTA_HUD_MoveSpeed"), 
-                                value: this.state.moveSpeed 
-                            },
-                            { 
-                                name: getLocalizedString(this.state.dotaStrings, "DOTA_HUD_SpellAmp"), 
-                                value: this.state.spellAmp + "%" 
-                            },
-                            { 
-                                name: getLocalizedString(this.state.dotaStrings, "DOTA_HUD_ManaRegenDetail"), 
-                                value: this.state.manaRegen 
-                            },
-                        ]} />
+                        ]} 
+                        />
                     </Col>
-                }   
-                {
-                    this.state.hero &&
-                    <Col md={6}>
-                        <StatArray title={getLocalizedString(this.state.dotaStrings, "DOTA_HUD_Defense")} stats={[
-                            { 
-                                name: getLocalizedString(this.state.dotaStrings, "DOTA_HUD_Armor"), 
-                                value: this.state.armor,
-                            },
-                            { 
-                                name: getLocalizedString(this.state.dotaStrings, "DOTA_HUD_PhysicalResist"), 
-                                value: this.state.physicalResist + "%" 
-                            },
-                            { 
-                                name: getLocalizedString(this.state.dotaStrings, "DOTA_HUD_MagicResist"), 
-                                value: this.state.magicResist + "%" 
-                            },
-                            { 
-                                name: getLocalizedString(this.state.dotaStrings, "DOTA_HUD_StatusResist"), 
-                                value: this.state.statusResist + "%" 
-                            },
-                            { 
-                                name: getLocalizedString(this.state.dotaStrings, "DOTA_HUD_Evasion"), 
-                                value: this.state.evasion + "%" 
-                            },
-                            { 
-                                name: getLocalizedString(this.state.dotaStrings, "DOTA_HUD_HealthRegenDetail"), 
-                                value: this.state.healthRegen 
-                            },
-                        ]}/>
-                    </Col>
-                }
-            </Row>
+                </Row>
+            </div>
         );
     }
 }

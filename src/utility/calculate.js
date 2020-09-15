@@ -36,6 +36,7 @@ import {
 
 import { EAttributes } from "../enums/attributes";
 import { EAttackCapabilities } from "../enums/hero";
+import { EAbilityBehaviour } from "../enums/abilities";
 
 import { DOTAHeroes } from "../data/dota2/json/npc_heroes.json";
 import { DOTAAbilities } from "../data/dota2/json/npc_abilities.json";
@@ -254,11 +255,28 @@ export function calculateHealthRegen(hero, heroLevel, items, neutral, abilities,
         totalHpRegen += parseFloat(hero.StatusHealthRegen);
     }
 
+    // total additional hp regen from sources that provide flat hp regen
+    let additionalHpRegen = 0;
+    // total from sources that give hp regen amplification
+    let allHpRegenAmpSources = [];
+    // total from sources that provide max health regen
+    let totalMaxHealthRegenPercent = 0;
+
     if (items && items.length > 0) {
         for(let item of items) {
             let regenAmt = tryGetItemSpecialValue(item, "bonus_health_regen");
             if (regenAmt) {
-                totalHpRegen += regenAmt;
+                additionalHpRegen += regenAmt;
+            }
+
+            let bonusRegen = tryGetItemSpecialValue(item, "bonus_regen");
+            if (bonusRegen) {
+                additionalHpRegen += bonusRegen;
+            }
+
+            let healthRegen = tryGetNeutralSpecialValue(item, "hp_regen");
+            if (healthRegen) {
+                additionalHpRegen += healthRegen;
             }
 
             let bonusStr = tryGetItemSpecialValue(item, "bonus_strength");
@@ -270,18 +288,33 @@ export function calculateHealthRegen(hero, heroLevel, items, neutral, abilities,
             if (bonusAllStats) {
                 totalHpRegen += bonusAllStats * HP_REGEN_PER_STRENGTH;
             }
+
+            let regenAmp = tryGetItemSpecialValue(item, "hp_regen_amp");
+            if (regenAmp) {
+                allHpRegenAmpSources.push(regenAmp);
+            }
+
+            let healthRegenPct = tryGetItemSpecialValue(item, "health_regen_pct");
+            if (healthRegenPct) {
+                totalMaxHealthRegenPercent = healthRegenPct;
+            }
         }
     }
 
     if (neutral) {
         let healthRegen = tryGetNeutralSpecialValue(neutral, "hp_regen");
         if (healthRegen) {
-            totalHpRegen += healthRegen;
+            additionalHpRegen += healthRegen;
         }
 
         let bonusHealthRegen = tryGetNeutralSpecialValue(neutral, "bonus_health_regen");
         if (bonusHealthRegen) {
-            totalHpRegen += bonusHealthRegen;
+            additionalHpRegen += bonusHealthRegen;
+        }
+
+        let bonusHpRegen = tryGetNeutralSpecialValue(neutral, "bonus_hp_regen");
+        if (bonusHpRegen) {
+            additionalHpRegen += bonusHpRegen;
         }
 
         let bonusStr = tryGetNeutralSpecialValue(neutral, "bonus_strength");
@@ -292,6 +325,11 @@ export function calculateHealthRegen(hero, heroLevel, items, neutral, abilities,
         let bonusAllStats = tryGetNeutralSpecialValue(neutral, "bonus_all_stats");
         if (bonusAllStats) {
             totalHpRegen += bonusAllStats * HP_REGEN_PER_STRENGTH;
+        }
+
+        let regenAmp = tryGetNeutralSpecialValue(neutral, "hp_regen_amp");
+        if (regenAmp) {
+            allHpRegenAmpSources.push(regenAmp);
         }
     } 
 
@@ -310,7 +348,7 @@ export function calculateHealthRegen(hero, heroLevel, items, neutral, abilities,
             if (talent.includes("bonus_hp_regen")) {
                 let bonusRegen = tryGetTalentSpecialAbilityValue(talent, "value");
                 if (bonusRegen) {
-                    totalHpRegen += bonusRegen;
+                    additionalHpRegen += bonusRegen;
                 }
             } else if(talent.includes("bonus_strength")) {
                 let bonusStr = tryGetTalentSpecialAbilityValue(talent, "value");
@@ -326,7 +364,27 @@ export function calculateHealthRegen(hero, heroLevel, items, neutral, abilities,
         }
     }
 
-    return totalHpRegen.toFixed(1);
+    let totalMaxHpRegen = 0;
+    if (totalMaxHealthRegenPercent > 0) {
+        let totalHealth = parseFloat(calculateHealth(hero, heroLevel, items, neutral, abilities, talents));
+        totalMaxHpRegen = (totalHealth / 100) * totalMaxHealthRegenPercent;
+    }
+
+    // Merge all stacked amp sources
+    let regenAmpTotalPercent = calculateMultipleSourcesTotal(allHpRegenAmpSources);
+
+    // Finally apply hp regen amp to total and additional
+    let ampedHpRegen = 0;
+    if (regenAmpTotalPercent > 0) {
+        ampedHpRegen = ((totalHpRegen + totalMaxHpRegen) / 100) * regenAmpTotalPercent;
+    }
+
+    // Add up additional sources from item hp regen, max hp regen & hp regen amp
+    let finalAdditional = additionalHpRegen + totalMaxHpRegen + ampedHpRegen;
+    return {
+        total: totalHpRegen,
+        additional: finalAdditional,
+    };
 }
 
 /* Each point of intelligence increases the hero's mana regeneration by 0.05.
@@ -1607,4 +1665,80 @@ export function calculateItemSellCost (itemInfo) {
         return Math.floor(cost / 2);
     }
     return 0;
+}
+
+export function calculateTotalLifesteal (items, neutral, abilities, talents) {
+    
+    let totalLifestealPercent = 0;
+    let totalLifestealAmp = 0;
+
+    if (items && items.length > 0) {
+        for (let item of items) {
+            let lifestealPercent = tryGetItemSpecialValue(item, "lifesteal_percent");
+            if (lifestealPercent) {
+                totalLifestealPercent += lifestealPercent;
+            }
+
+            let lifestealAmp = tryGetItemSpecialValue(item, "hp_regen_amp");
+            if (lifestealAmp) {
+                totalLifestealAmp += lifestealAmp;
+            }
+        }
+    }
+
+    if (neutral) {
+        let bonusLifesteal = tryGetNeutralSpecialValue(neutral, "bonus_lifesteal");
+        if (bonusLifesteal) {
+            totalLifestealPercent += bonusLifesteal;
+        }
+    }
+
+    // if (abilities && abilities.length > 0) {
+    //     for (let ability of abilities) {
+    //         let abilityInfo = getAbilityInfoFromName(ability);
+    //         // If ability is passive, add lifesteal depending on lvl
+    //         if (isAbilityBehaviour(abilityInfo.isAbilityBehaviour, EAbilityBehaviour.PASSIVE)) {
+                
+    //         }
+    //     }
+    // }
+
+    if (talents && talents.length > 0) {
+        for(let talent of talents) {
+            if (talent.includes("lifesteal")) {
+                let bonusLifesteal = tryGetNeutralSpecialValue(neutral, "value");
+                if (bonusLifesteal) {
+                    totalLifestealPercent += bonusLifesteal;
+                }
+            }
+        }
+    }
+    
+    // Take total amp by the total lifesteal % to get actual amp percentage
+    let lifestealPercentAmp = totalLifestealPercent / 100 * totalLifestealAmp;
+    return totalLifestealPercent + lifestealPercentAmp;
+}
+
+/// Adds together stacked multiple sources as percentages to get their actual total as a percent
+/// 1 - (1 - sourceOne) * (1 - sourceTwo) * (1 - sourceThree) ...etc
+export function calculateMultipleSourcesTotal(allStackedSources) {
+    if (!allStackedSources || (allStackedSources && allStackedSources.length <= 0)) {
+        return 0;
+    }
+
+    // Divide original value into 0.x and minus from 1 to get the reverse
+    let decimals = []
+    for(let source of allStackedSources) {
+        decimals.push(1 - (source / 100));
+    }
+
+    // multiply them all together 
+    let total = decimals[0];
+    for(let i = 1; i < decimals.length; i++) {
+        total *= decimals[i];
+    }
+ 
+    // then minus from 1, and multiply by 100 to get value as a percentage
+    let percent = (1 - total) * 100;
+    return percent;
 }
