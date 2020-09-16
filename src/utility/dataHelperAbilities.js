@@ -57,7 +57,7 @@ export function getAbilitySpecialAbilityValue(abilityInfo, specialAbilityKey, ab
                 }
 
                 /// If wanting it for it's value, correctly convert and return
-                if (matchingKey.includes("value") && specialAbilityInfo.var_type) {
+                if (matchingKey.includes("value") || specialAbilityInfo.var_type) {
                     if (specialAbilityInfo.var_type === "FIELD_INTEGER") {
                         return parseInt(dataValue);
                     } 

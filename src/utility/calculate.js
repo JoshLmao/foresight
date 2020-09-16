@@ -34,6 +34,10 @@ import {
     isHeroAttackCapability
 } from "./dataHelperHero";
 
+import {
+    calculateMultiplicativeStackingTotal
+} from "./generalMath";
+
 import { EAttributes } from "../enums/attributes";
 import { EAttackCapabilities } from "../enums/hero";
 import { EAbilityBehaviour } from "../enums/abilities";
@@ -371,7 +375,7 @@ export function calculateHealthRegen(hero, heroLevel, items, neutral, abilities,
     }
 
     // Merge all stacked amp sources
-    let regenAmpTotalPercent = calculateMultipleSourcesTotal(allHpRegenAmpSources);
+    let regenAmpTotalPercent = calculateMultiplicativeStackingTotal(allHpRegenAmpSources);
 
     // Finally apply hp regen amp to total and additional
     let ampedHpRegen = 0;
@@ -751,20 +755,8 @@ export function calculateMagicResist (items, neutral, abilities) {
         }
     }
 
-    // Divide original value into 0.x and minus from 1 to get the reverse
-    let edited = []
-    for(let i = 0; i < resistanceBonuses.length; i++) {
-        edited.push(1 - (resistanceBonuses[i] / 100));
-    }
-
-    // multiply them all together 
-    let total = edited[0];
-    for(let i = 1; i < edited.length; i++) {
-        total *= edited[i];
-    }
-
-    // then minus from 1, and multiply by 100 to get value as a percentage
-    let percent = (1 - total) * 100;
+    // magic resistance stacks multiplicatively
+    let percent = calculateMultiplicativeStackingTotal(resistanceBonuses);
     return percent.toFixed(2);
 }
 
@@ -1719,26 +1711,127 @@ export function calculateTotalLifesteal (items, neutral, abilities, talents) {
     return totalLifestealPercent + lifestealPercentAmp;
 }
 
-/// Adds together stacked multiple sources as percentages to get their actual total as a percent
-/// 1 - (1 - sourceOne) * (1 - sourceTwo) * (1 - sourceThree) ...etc
-export function calculateMultipleSourcesTotal(allStackedSources) {
-    if (!allStackedSources || (allStackedSources && allStackedSources.length <= 0)) {
+/// Calculates the total cleave damage percentage
+export function calculateTotalCleaveDmgPercent(heroInfo, items, neutral, abilities, talents) {
+    if (!heroInfo) {
         return 0;
     }
 
-    // Divide original value into 0.x and minus from 1 to get the reverse
-    let decimals = []
-    for(let source of allStackedSources) {
-        decimals.push(1 - (source / 100));
+    // No cleave on ranged heroes
+    if ( isHeroAttackCapability(heroInfo, EAttackCapabilities.RANGED) ) {
+        return 0;
     }
 
-    // multiply them all together 
-    let total = decimals[0];
-    for(let i = 1; i < decimals.length; i++) {
-        total *= decimals[i];
+    let totalCleaveDmgPercent = 0;
+
+    if (items && items.length > 0) {
+        for (let item of items) {
+            let cleaveDmgPercent = tryGetItemSpecialValue(item, "cleave_damage_percent");
+            if (cleaveDmgPercent) {
+                totalCleaveDmgPercent += cleaveDmgPercent;
+            }
+        }
     }
- 
-    // then minus from 1, and multiply by 100 to get value as a percentage
-    let percent = (1 - total) * 100;
-    return percent;
+
+    if (abilities && abilities.length > 0) {
+        for (let ability of abilities) {
+            let cleaveDmg = tryGetAbilitySpecialAbilityValue(ability, "cleave_damage");
+            if (cleaveDmg) {
+                totalCleaveDmgPercent += cleaveDmg;
+            }
+
+            let greatCleaveDmg = tryGetAbilitySpecialAbilityValue(ability, "great_cleave_damage", 1);
+            if (greatCleaveDmg) {
+                totalCleaveDmgPercent += greatCleaveDmg;
+            }
+        }
+    }
+
+    if (talents && talents.length > 0) {
+        for (let talent of talents) {
+            if (talent.includes("cleave")) {
+                let cleavePercent = tryGetTalentSpecialAbilityValue(talent,  "value");
+                if (cleavePercent) {
+                    totalCleaveDmgPercent += cleavePercent;
+                }
+            }
+        }
+    }
+
+    return totalCleaveDmgPercent;
+}
+
+export function calculateCritPercent (items, neutral, abilities, talents) {
+    let totalCritPercent = 0;
+    
+    if (items && items.length > 0) {
+        for (let item of items) {
+            let critMultiplier = tryGetItemSpecialValue(item, "crit_multiplier");
+            if (critMultiplier) {
+                totalCritPercent += critMultiplier;
+            }
+        }
+    }
+
+    if (abilities && abilities.length > 0) {
+        for (let ability of abilities) {
+            let abilityLevel = 1;
+            let critBonus = tryGetAbilitySpecialAbilityValue(ability, "crit_bonus", abilityLevel);
+            if (critBonus) {
+                totalCritPercent+= critBonus;
+            }
+        }
+    }
+
+    // if (talents && talents.length > 0) {
+    //     for (let talent of talents) {
+    //         if (talent.includes("pl crit talent")) {
+    //         }
+    //     }
+    // }
+
+    return totalCritPercent;
+}
+
+export function calculateTotalSpellLifesteal (items, neutral, abilities, talents) {
+    let totalAllPercent = 0;
+    let totalHeroLsPerc = 0;
+    let totalCreepLsPerc = 0;
+
+    if (items && items.length > 0) {
+        for (let item of items) {
+            let heroLifesteal = tryGetItemSpecialValue(item, "hero_lifesteal");
+            if (heroLifesteal) {
+                totalHeroLsPerc += heroLifesteal;
+            }
+
+            let creepLifesteal = tryGetItemSpecialValue(item, "creep_lifesteal");
+            if (creepLifesteal) {
+                totalCreepLsPerc += creepLifesteal;
+            }
+        }
+    }
+
+    if (neutral) {
+        let spellLifesteal = tryGetNeutralSpecialValue(neutral, "spell_lifesteal");
+        if (spellLifesteal) {
+            totalAllPercent += spellLifesteal;
+        }
+    }
+
+    if (talents && talents.length > 0) {
+        for (let talent of talents) {
+            if (talent.includes("spell_lifesteal")) {
+                let spellLifesteal = tryGetNeutralSpecialValue(neutral, "value");
+                if (spellLifesteal) {
+                    totalAllPercent += spellLifesteal;
+                }
+            }
+        }
+    }
+
+    return {
+        heroLifesteal: totalAllPercent + totalHeroLsPerc,
+        creepLifesteal: totalAllPercent + totalCreepLsPerc,
+    };
 }

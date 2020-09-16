@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import {
     Row, Col
 } from "react-bootstrap";
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import {
     calculateHealthRegen,
@@ -16,7 +18,10 @@ import {
     calculateAttackTime,
     calculateMoveSpeed,
     calculateAttackRange,
-    calculateTotalLifesteal
+    calculateTotalLifesteal,
+    calculateTotalCleaveDmgPercent,
+    calculateCritPercent,
+    calculateTotalSpellLifesteal
 } from "../../utility/calculate";
 import {
     getLocalizedString
@@ -114,9 +119,12 @@ class Statistics extends Component {
 
             dotaStrings: props.dotaStrings,
             abilityStrings: props.abilityStrings,
+
+            otherOpen: false,
         };
 
         this.updateStatistics = this.updateStatistics.bind(this);
+        this.onToggleOtherDetails = this.onToggleOtherDetails.bind(this);
     }
 
     componentDidMount() {
@@ -174,6 +182,12 @@ class Statistics extends Component {
         }
     }
 
+    onToggleOtherDetails () {
+        this.setState({
+            otherOpen: !this.state.otherOpen,
+        });
+    }
+
     updateStatistics() {
         let armorInfo =  calculateMainArmor(this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents);
         let physResist = calculatePhysicalResist(armorInfo.armor + armorInfo.additional);
@@ -196,6 +210,10 @@ class Statistics extends Component {
 
             // Other
             totalLifesteal: calculateTotalLifesteal(this.state.items, this.state.neutral, this.state.abilities, this.state.talents),
+            totalSpellLifesteal: calculateTotalSpellLifesteal(this.state.items, this.state.neutral, this.state.abilities, this.state.talents),
+            totalCleaveAmount: calculateTotalCleaveDmgPercent(this.state.hero, this.state.items, this.state.neutral, this.state.abilities, this.state.talents),
+            totalCritPercent: calculateCritPercent(this.state.items, this.state.neutral, this.state.abilities, this.state.talents),
+            totalCooldownAmount: 0,
         });
     }
 
@@ -266,13 +284,33 @@ class Statistics extends Component {
                         </Col>
                     }
                 </Row>
+                <FontAwesomeIcon 
+                        icon={this.state.otherOpen ? faEyeSlash : faEye} 
+                        onClick={this.onToggleOtherDetails} />
                 <Row className="my-1">
-                    <Col>
+                    <Col className={!this.state.otherOpen ? "collapse" : ""}>
                         <StatArray title={getLocalizedString(this.state.dotaStrings, "DOTA_OtherType").toUpperCase()} stats={[
                             {
                                 name: getLocalizedString(this.state.dotaStrings, "DOTA_SHOP_TAG_LIFESTEAL"),
                                 value: this.state.totalLifesteal + "%",
                             },
+                            {
+                                name: getLocalizedString(this.state.abilityStrings, "DOTA_Tooltip_ability_special_bonus_spell_lifesteal_6").split("% ")[1],
+                                value: `${getLocalizedString(this.state.dotaStrings, "DOTA_Scoreboard_Header_Hero")}: ${this.state.totalSpellLifesteal?.heroLifesteal + "%"}
+                                        ${getLocalizedString(this.state.dotaStrings, "npc_dota_creep")}: ${this.state.totalSpellLifesteal?.creepLifesteal + "%"}`,
+                            },
+                            {
+                                name: "Critical Strike Amount",
+                                value: this.state.totalCritPercent + "%",
+                            },
+                            {
+                                name: "Cleave Damage Amount",
+                                value: this.state.totalCleaveAmount + "%",
+                            },
+                            {
+                                name: "Total Cooldown Amount",
+                                value: this.state.totalCooldownAmount + "%",
+                            }
                         ]} 
                         />
                     </Col>
