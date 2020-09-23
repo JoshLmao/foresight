@@ -50,7 +50,7 @@ class Home extends Component {
                             {/* Sub text & action */}
                             <div>
                                 <h6 className="py-2">
-                                    Web application for calculating damage output for heroes in DotA 2 
+                                    app for calculating damage output for heroes in DotA 2 
                                 </h6>
                                 <Button
                                     className="mx-auto mt-2"

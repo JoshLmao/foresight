@@ -661,6 +661,11 @@ export function calculateTotalSpellAmp (talents, items, neutral) {
                 //console.log(`Item ${items[i].item} provides ${spellAmpAmt}% spell amp`);
             }
 
+            let bonusSpellAmp = tryGetItemSpecialValue(item, "bonus_spell_amp");
+            if (bonusSpellAmp) {
+                totalSpellAmp += bonusSpellAmp;
+            }
+
             let ampPerCharge = tryGetItemSpecialValue(item, "amp_per_charge");
             if (item.extra?.charges && ampPerCharge) {
                 let bloodstoneCharges = item.extra.charges;
@@ -1229,7 +1234,7 @@ export function calculateAbilityCooldown(abilityName, abilityInfo, abilityLevel,
                 if (itemInfo) {
                     let bonusCooldown = getItemSpecialAbilityValue(itemInfo, "bonus_cooldown");
                     if (bonusCooldown) {
-                        allReductions.push({ amount: bonusCooldown, source: item.item });
+                        allReductions.push(bonusCooldown);
                     }
                 }
             }
@@ -1241,7 +1246,7 @@ export function calculateAbilityCooldown(abilityName, abilityInfo, abilityLevel,
         if (neutralInfo) {
             let bonusCooldown = getItemSpecialAbilityValue(neutralInfo, "bonus_cooldown");
             if (bonusCooldown) {
-                allReductions.push({ amount: bonusCooldown, source: neutral });
+                allReductions.push(bonusCooldown);
             } 
         }
     }
@@ -1252,7 +1257,7 @@ export function calculateAbilityCooldown(abilityName, abilityInfo, abilityLevel,
             if (talent.includes("cooldown_reduction")) {
                 let reduction = tryGetTalentSpecialAbilityValue(talent, "value");
                 if (reduction) {
-                    allReductions.push({ amount: reduction, source: talent });
+                    allReductions.push(reduction);
                 }
             }
             else if (talent.includes("special_bonus_unique")) {
@@ -1275,7 +1280,7 @@ export function calculateAbilityCooldown(abilityName, abilityInfo, abilityLevel,
 
     let sourceOfReductions = [];
     for(let reduction of allReductions) {
-        let decimal = reduction.amount / 100;
+        let decimal = reduction / 100;
         sourceOfReductions.push((1 - decimal));
     }
 
@@ -1761,14 +1766,16 @@ export function calculateTotalCleaveDmgPercent(heroInfo, items, neutral, abiliti
     return totalCleaveDmgPercent;
 }
 
+/// Calculates the current highest crit percent the hero can do
+/// Crit will only take the highest crit damage percent
 export function calculateCritPercent (items, neutral, abilities, talents) {
-    let totalCritPercent = 0;
+    let highestCritPercent = 0;
     
     if (items && items.length > 0) {
         for (let item of items) {
             let critMultiplier = tryGetItemSpecialValue(item, "crit_multiplier");
-            if (critMultiplier) {
-                totalCritPercent += critMultiplier;
+            if (critMultiplier && critMultiplier > highestCritPercent) {
+                highestCritPercent = critMultiplier;
             }
         }
     }
@@ -1777,8 +1784,13 @@ export function calculateCritPercent (items, neutral, abilities, talents) {
         for (let ability of abilities) {
             let abilityLevel = 1;
             let critBonus = tryGetAbilitySpecialAbilityValue(ability, "crit_bonus", abilityLevel);
-            if (critBonus) {
-                totalCritPercent+= critBonus;
+            if (critBonus && critBonus > highestCritPercent) {
+                highestCritPercent = critBonus;
+            }
+
+            let bladeDanceCrit = tryGetAbilitySpecialAbilityValue(ability, "blade_dance_crit_mult", abilityLevel);
+            if (bladeDanceCrit && bladeDanceCrit > highestCritPercent) {
+                highestCritPercent = bladeDanceCrit;
             }
         }
     }
@@ -1790,7 +1802,38 @@ export function calculateCritPercent (items, neutral, abilities, talents) {
     //     }
     // }
 
-    return totalCritPercent;
+    return highestCritPercent;
+}
+
+/// Calculates the percent chance to crit on attack, stacks with other crit chances
+export function calculateCritChancePercent (items, neutral, abilities, talents) {
+    let totalCritChancePercent = 0;
+
+    if (items && items.length > 0) {
+        for (let item of items) {
+            let critChance = tryGetItemSpecialValue(item, "crit_chance");
+            if (critChance) {
+                totalCritChancePercent += critChance;
+            }
+        }
+    }
+
+    if (abilities && abilities.length > 0) {
+        for (let ability of abilities) {
+            let abilityLevel = 1;
+            let critChance = tryGetAbilitySpecialAbilityValue(ability, "crit_chance", abilityLevel);
+            if (critChance) {
+                totalCritChancePercent += critChance;
+            }
+
+            let bladeDanceCritChance = tryGetAbilitySpecialAbilityValue(ability, "blade_dance_crit_chance", abilityLevel);
+            if (bladeDanceCritChance) {
+                totalCritChancePercent += bladeDanceCritChance;
+            }
+        }
+    }
+
+    return totalCritChancePercent;
 }
 
 export function calculateTotalSpellLifesteal (items, neutral, abilities, talents) {
@@ -1798,8 +1841,17 @@ export function calculateTotalSpellLifesteal (items, neutral, abilities, talents
     let totalHeroLsPerc = 0;
     let totalCreepLsPerc = 0;
 
+    let octarineCount = 0;
     if (items && items.length > 0) {
         for (let item of items) {
+            //Check for multiple octarines and only add one
+            if (item.item === "item_octarine_core") {
+                octarineCount++;
+                if (octarineCount > 1) {
+                    continue;
+                }
+            }
+
             let heroLifesteal = tryGetItemSpecialValue(item, "hero_lifesteal");
             if (heroLifesteal) {
                 totalHeroLsPerc += heroLifesteal;

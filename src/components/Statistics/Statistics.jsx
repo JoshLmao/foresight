@@ -21,7 +21,8 @@ import {
     calculateTotalLifesteal,
     calculateTotalCleaveDmgPercent,
     calculateCritPercent,
-    calculateTotalSpellLifesteal
+    calculateTotalSpellLifesteal,
+    calculateCritChancePercent
 } from "../../utility/calculate";
 import {
     getLocalizedString
@@ -77,20 +78,8 @@ function formatAttackTime(hero, lvl, items, neutral, abilities, talents) {
     return `${attackInfo.attackSpeed} (${attackInfo.attackTime} s)`;
 }
 
-function formatArmor (armorInfo) {
-    if (!armorInfo || !armorInfo?.armor) {
-        return null;
-    }
-
-    let str = armorInfo.armor.toFixed(1);
-    if (armorInfo.additional) {
-        str += " ";
-        str += `${armorInfo.additional > 0 ? "+" : "-"} ${Math.abs(armorInfo.additional)}`;
-    }
-
-    return str;
-}
-
+/// Format a total value and additional value into a string,
+/// hiding and displaying the correct sign if additional value is +/- or 0
 function formatTotalAdditional (total, additional, toFixedAmt = 2) {
     if (total == null || additional == null) {
         return null;
@@ -213,6 +202,7 @@ class Statistics extends Component {
             totalSpellLifesteal: calculateTotalSpellLifesteal(this.state.items, this.state.neutral, this.state.abilities, this.state.talents),
             totalCleaveAmount: calculateTotalCleaveDmgPercent(this.state.hero, this.state.items, this.state.neutral, this.state.abilities, this.state.talents),
             totalCritPercent: calculateCritPercent(this.state.items, this.state.neutral, this.state.abilities, this.state.talents),
+            totalCritChancePercent: calculateCritChancePercent(this.state.items, this.state.neutral, this.state.abilities, this.state.talents),
             totalCooldownAmount: 0,
         });
     }
@@ -304,13 +294,17 @@ class Statistics extends Component {
                                 value: this.state.totalCritPercent + "%",
                             },
                             {
+                                name: "Critical Strike Chance",
+                                value: this.state.totalCritChancePercent + "%",
+                            },
+                            {
                                 name: "Cleave Damage Amount",
                                 value: this.state.totalCleaveAmount + "%",
                             },
-                            {
-                                name: "Total Cooldown Amount",
-                                value: this.state.totalCooldownAmount + "%",
-                            }
+                            // {
+                            //     name: "Total Cooldown Amount",
+                            //     value: this.state.totalCooldownAmount + "%",
+                            // }
                         ]} 
                         />
                     </Col>

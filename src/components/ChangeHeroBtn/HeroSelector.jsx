@@ -82,9 +82,11 @@ class HeroSelector extends Component {
                     <div className="d-flex flex-wrap">
                         {
                             this.state.filteredHeroes && this.state.filteredHeroes.map((value) => {
+                                let localizedName = getLocalizedString(this.state.dotaStrings, `npc_dota_hero_${value.name}`)
                                 return (
                                     <div
                                         key={value.name}  
+                                        title={localizedName}
                                         onClick={this.state.onSelectedHero}
                                         className="m-1"
                                         style={{ 
