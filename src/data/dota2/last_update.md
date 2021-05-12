@@ -1,3 +1,5 @@
 # Vdf/JSON Files
 
-Last times files were converted: 05/08/20
+Updated: 12/05/21
+
+DoTA Version: 7.29c
