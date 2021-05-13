@@ -30,3 +30,7 @@ You will need [GCFScape](https://developer.valvesoftware.com/wiki/GCFScape) to a
 #### "root/panarama/images/heroes"
 
 - npc_dota_hero_*_png
+
+#### "root/panarama/images/items"
+
+- *_png.vtex_c

@@ -19,7 +19,7 @@ export function getItemIcon (itemName, width, height, scale) {
     // Width and height of each item in item_stylesheet
     if (item) {
         return <span 
-                    className={ 'sprite sprite-' + item + '_png '} 
+                    className={ 'dota-item dota-item-' + item + '_png '} 
                     alt={item} 
                     data-item={itemName} 
                     style={{ transform: `scale(${scale}, ${scale})`, transformOrigin: "top left" }} />

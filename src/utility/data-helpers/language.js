@@ -47,8 +47,8 @@ export function tryGetTalentLocalizedString(languageStrings, stringKey) {
     }
 }
 
-/// Quick method for retrieving localized string
-/// Main fast method to retrieve an exact key from strings
+/// Quick method for retrieving localized string.
+/// Main fast method to retrieve an exact key from strings. Requires case sensitive match of 'key' otherwise will fail
 export function getLocalizedString(localeStrings, key) {
     let string = localeStrings.Tokens[key];
     return string ?? null;

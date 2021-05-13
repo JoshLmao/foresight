@@ -1,1901 +1,2231 @@
-.sprite {
+.dota-item {
     background-image: url("/images/dota2/items_sheet.png");
     background-repeat: no-repeat;
     display: block;
 }
 
-.sprite-abyssal_blade_png {
+.dota-item-abyssal_blade_png {
     width: 88px;
     height: 64px;
-    background-position: -5px -5px;
+    background-position: 0 0;
 }
 
-.sprite-aegis_png {
+.dota-item-aegis_png {
     width: 88px;
     height: 64px;
-    background-position: -103px -5px;
+    background-position: -88px 0;
 }
 
-.sprite-aeon_disk_png {
+.dota-item-aeon_disk_png {
     width: 88px;
     height: 64px;
-    background-position: -201px -5px;
+    background-position: -176px 0;
 }
 
-.sprite-aether_lens_png {
+.dota-item-aether_lens_png {
     width: 88px;
     height: 64px;
-    background-position: -299px -5px;
+    background-position: -264px 0;
 }
 
-.sprite-ancient_janggo_png {
+.dota-item-aghanims_shard_png {
     width: 88px;
     height: 64px;
-    background-position: -397px -5px;
+    background-position: -352px 0;
 }
 
-.sprite-apex_png {
+.dota-item-aghanims_shard_roshan_png {
     width: 88px;
     height: 64px;
-    background-position: -495px -5px;
+    background-position: -440px 0;
 }
 
-.sprite-arcane_boots2_png {
+.dota-item-ancient_janggo_png {
     width: 88px;
     height: 64px;
-    background-position: -593px -5px;
+    background-position: -528px 0;
 }
 
-.sprite-arcane_boots_png {
+.dota-item-ancient_perseverance_png {
     width: 88px;
     height: 64px;
-    background-position: -691px -5px;
+    background-position: -616px 0;
 }
 
-.sprite-arcane_ring_png {
+.dota-item-apex_png {
     width: 88px;
     height: 64px;
-    background-position: -789px -5px;
+    background-position: -704px 0;
 }
 
-.sprite-armlet_active_png {
+.dota-item-arcane_blink_png {
     width: 88px;
     height: 64px;
-    background-position: -887px -5px;
+    background-position: -792px 0;
 }
 
-.sprite-armlet_png {
+.dota-item-arcane_boots2_png {
     width: 88px;
     height: 64px;
-    background-position: -985px -5px;
+    background-position: -880px 0;
 }
 
-.sprite-assault_png {
+.dota-item-arcane_boots_png {
     width: 88px;
     height: 64px;
-    background-position: -1083px -5px;
+    background-position: -968px 0;
 }
 
-.sprite-ballista_png {
+.dota-item-arcane_ring_png {
     width: 88px;
     height: 64px;
-    background-position: -1181px -5px;
+    background-position: -1056px 0;
 }
 
-.sprite-band_of_elvenskin_png {
+.dota-item-armlet_active_png {
     width: 88px;
     height: 64px;
-    background-position: -1279px -5px;
+    background-position: -1144px 0;
 }
 
-.sprite-basher_png {
+.dota-item-armlet_png {
     width: 88px;
     height: 64px;
-    background-position: -1377px -5px;
+    background-position: -1232px 0;
 }
 
-.sprite-belt_of_strength_png {
+.dota-item-assault_png {
     width: 88px;
     height: 64px;
-    background-position: -5px -79px;
+    background-position: -1320px 0;
 }
 
-.sprite-bfury_png {
+.dota-item-ballista_png {
     width: 88px;
     height: 64px;
-    background-position: -103px -79px;
+    background-position: 0 -64px;
 }
 
-.sprite-black_king_bar_png {
+.dota-item-band_of_elvenskin_png {
     width: 88px;
     height: 64px;
-    background-position: -201px -79px;
+    background-position: -88px -64px;
 }
 
-.sprite-blade_mail_axe_pw_png {
+.dota-item-basher_png {
     width: 88px;
     height: 64px;
-    background-position: -299px -79px;
+    background-position: -176px -64px;
 }
 
-.sprite-blade_mail_png {
+.dota-item-belt_of_strength_png {
     width: 88px;
     height: 64px;
-    background-position: -397px -79px;
+    background-position: -264px -64px;
 }
 
-.sprite-blade_of_alacrity_png {
+.dota-item-bfury_png {
     width: 88px;
     height: 64px;
-    background-position: -495px -79px;
+    background-position: -352px -64px;
 }
 
-.sprite-blades_of_attack_png {
+.dota-item-black_king_bar_png {
     width: 88px;
     height: 64px;
-    background-position: -593px -79px;
+    background-position: -440px -64px;
 }
 
-.sprite-blight_stone_png {
+.dota-item-blade_mail_axe_pw_png {
     width: 88px;
     height: 64px;
-    background-position: -691px -79px;
+    background-position: -528px -64px;
 }
 
-.sprite-blink_png {
+.dota-item-blade_mail_png {
     width: 88px;
     height: 64px;
-    background-position: -789px -79px;
+    background-position: -616px -64px;
 }
 
-.sprite-bloodstone_png {
+.dota-item-blade_of_alacrity_png {
     width: 88px;
     height: 64px;
-    background-position: -887px -79px;
+    background-position: -704px -64px;
 }
 
-.sprite-bloodthorn_png {
+.dota-item-blades_of_attack_png {
     width: 88px;
     height: 64px;
-    background-position: -985px -79px;
+    background-position: -792px -64px;
 }
 
-.sprite-boots_of_elves_png {
+.dota-item-blight_stone_png {
+    width: 88px;
+    height: 64px;
+    background-position: -880px -64px;
+}
+
+.dota-item-blink_png {
+    width: 88px;
+    height: 64px;
+    background-position: -968px -64px;
+}
+
+.dota-item-blitz_knuckles_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1056px -64px;
+}
+
+.dota-item-bloodstone_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1144px -64px;
+}
+
+.dota-item-bloodthorn_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1232px -64px;
+}
+
+.dota-item-book_of_shadows_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1320px -64px;
+}
+
+.dota-item-boots_of_elves_png {
     width: 86px;
     height: 64px;
-    background-position: -1083px -79px;
+    background-position: 0 -128px;
 }
 
-.sprite-boots_png {
+.dota-item-boots_png {
     width: 88px;
     height: 64px;
-    background-position: -1179px -79px;
+    background-position: -86px -128px;
 }
 
-.sprite-bottle_arcane_png {
+.dota-item-bottle4_png {
     width: 88px;
     height: 64px;
-    background-position: -1277px -79px;
+    background-position: -174px -128px;
 }
 
-.sprite-bottle_bounty_png {
+.dota-item-bottle_arcane_png {
     width: 88px;
     height: 64px;
-    background-position: -1375px -79px;
+    background-position: -262px -128px;
 }
 
-.sprite-bottle_doubledamage_png {
+.dota-item-bottle_bounty_png {
+    width: 88px;
+    height: 64px;
+    background-position: -350px -128px;
+}
+
+.dota-item-bottle_doubledamage_png {
     width: 90px;
     height: 64px;
-    background-position: -5px -153px;
+    background-position: -438px -128px;
 }
 
-.sprite-bottle_empty_png {
+.dota-item-bottle_empty_png {
     width: 88px;
     height: 64px;
-    background-position: -105px -153px;
+    background-position: -528px -128px;
 }
 
-.sprite-bottle_haste_png {
+.dota-item-bottle_haste_png {
     width: 88px;
     height: 64px;
-    background-position: -203px -153px;
+    background-position: -616px -128px;
 }
 
-.sprite-bottle_illusion_png {
+.dota-item-bottle_illusion_png {
     width: 88px;
     height: 64px;
-    background-position: -301px -153px;
+    background-position: -704px -128px;
 }
 
-.sprite-bottle_invisibility_png {
+.dota-item-bottle_invisibility_png {
     width: 88px;
     height: 64px;
-    background-position: -399px -153px;
+    background-position: -792px -128px;
 }
 
-.sprite-bottle_medium_png {
+.dota-item-bottle_medium_png {
     width: 88px;
     height: 64px;
-    background-position: -497px -153px;
+    background-position: -880px -128px;
 }
 
-.sprite-bottle_png {
+.dota-item-bottle_png {
     width: 88px;
     height: 64px;
-    background-position: -595px -153px;
+    background-position: -968px -128px;
 }
 
-.sprite-bottle_regeneration_png {
+.dota-item-bottle_regeneration_png {
     width: 88px;
     height: 64px;
-    background-position: -693px -153px;
+    background-position: -1056px -128px;
 }
 
-.sprite-bottle_small_png {
+.dota-item-bottle_small_png {
     width: 89px;
     height: 64px;
-    background-position: -791px -153px;
+    background-position: -1144px -128px;
 }
 
-.sprite-bracer_png {
+.dota-item-bottle_water_png {
     width: 88px;
     height: 64px;
-    background-position: -890px -153px;
+    background-position: -1233px -128px;
 }
 
-.sprite-branches_png {
+.dota-item-bracer_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1321px -128px;
+}
+
+.dota-item-branches_png {
     width: 87px;
     height: 64px;
-    background-position: -988px -153px;
+    background-position: 0 -192px;
 }
 
-.sprite-broadsword_png {
+.dota-item-broadsword_png {
     width: 88px;
     height: 64px;
-    background-position: -1085px -153px;
+    background-position: -87px -192px;
 }
 
-.sprite-broom_handle_png {
+.dota-item-broom_handle_png {
     width: 88px;
     height: 64px;
-    background-position: -1183px -153px;
+    background-position: -175px -192px;
 }
 
-.sprite-buckler_active_png {
+.dota-item-buckler_active_png {
     width: 88px;
     height: 64px;
-    background-position: -1281px -153px;
+    background-position: -263px -192px;
 }
 
-.sprite-buckler_png {
+.dota-item-buckler_png {
     width: 88px;
     height: 64px;
-    background-position: -1379px -153px;
+    background-position: -351px -192px;
 }
 
-.sprite-butterfly_png {
+.dota-item-bullwhip_png {
     width: 88px;
     height: 64px;
-    background-position: -5px -227px;
+    background-position: -439px -192px;
 }
 
-.sprite-chainmail_png {
+.dota-item-butterfly_png {
+    width: 88px;
+    height: 64px;
+    background-position: -527px -192px;
+}
+
+.dota-item-ceremonial_robe_png {
+    width: 88px;
+    height: 64px;
+    background-position: -615px -192px;
+}
+
+.dota-item-chainmail_png {
     width: 85px;
     height: 64px;
-    background-position: -103px -227px;
+    background-position: -703px -192px;
 }
 
-.sprite-cheese_png {
+.dota-item-cheese_png {
     width: 88px;
     height: 64px;
-    background-position: -198px -227px;
+    background-position: -788px -192px;
 }
 
-.sprite-circlet_png {
+.dota-item-chipped_vest_png {
+    width: 86px;
+    height: 62px;
+    background-position: -876px -192px;
+}
+
+.dota-item-circlet_png {
     width: 88px;
     height: 64px;
-    background-position: -296px -227px;
+    background-position: -962px -192px;
 }
 
-.sprite-clarity_png {
+.dota-item-clarity_png {
     width: 88px;
     height: 64px;
-    background-position: -394px -227px;
+    background-position: -1050px -192px;
 }
 
-.sprite-claymore_png {
+.dota-item-claymore_png {
     width: 88px;
     height: 64px;
-    background-position: -492px -227px;
+    background-position: -1138px -192px;
 }
 
-.sprite-cloak_png {
+.dota-item-cloak_of_flames_png {
     width: 88px;
     height: 64px;
-    background-position: -590px -227px;
+    background-position: -1226px -192px;
 }
 
-.sprite-clumsy_net_png {
+.dota-item-cloak_png {
     width: 88px;
     height: 64px;
-    background-position: -688px -227px;
+    background-position: -1314px -192px;
 }
 
-.sprite-combo_breaker_png {
+.dota-item-clumsy_net_png {
     width: 88px;
     height: 64px;
-    background-position: -786px -227px;
+    background-position: 0 -256px;
 }
 
-.sprite-courier_dire_flying_png {
+.dota-item-combo_breaker_png {
     width: 88px;
     height: 64px;
-    background-position: -884px -227px;
+    background-position: -88px -256px;
 }
 
-.sprite-courier_dire_png {
+.dota-item-courier_dire_flying_png {
     width: 88px;
     height: 64px;
-    background-position: -982px -227px;
+    background-position: -176px -256px;
 }
 
-.sprite-courier_png {
+.dota-item-courier_dire_png {
     width: 88px;
     height: 64px;
-    background-position: -1080px -227px;
+    background-position: -264px -256px;
 }
 
-.sprite-courier_radiant_flying_png {
+.dota-item-courier_png {
     width: 88px;
     height: 64px;
-    background-position: -1178px -227px;
+    background-position: -352px -256px;
 }
 
-.sprite-courier_radiant_png {
+.dota-item-courier_radiant_flying_png {
     width: 88px;
     height: 64px;
-    background-position: -1276px -227px;
+    background-position: -440px -256px;
 }
 
-.sprite-craggy_coat_png {
+.dota-item-courier_radiant_png {
     width: 88px;
     height: 64px;
-    background-position: -1374px -227px;
+    background-position: -528px -256px;
 }
 
-.sprite-crimson_guard_png {
+.dota-item-craggy_coat_png {
+    width: 88px;
+    height: 64px;
+    background-position: -616px -256px;
+}
+
+.dota-item-crimson_guard_png {
     width: 86px;
     height: 64px;
-    background-position: -5px -301px;
+    background-position: -704px -256px;
 }
 
-.sprite-crimson_robe_png {
+.dota-item-crimson_robe_png {
     width: 86px;
     height: 64px;
-    background-position: -101px -301px;
+    background-position: -790px -256px;
 }
 
-.sprite-crown_png {
+.dota-item-crown_png {
     width: 88px;
     height: 64px;
-    background-position: -197px -301px;
+    background-position: -876px -256px;
 }
 
-.sprite-cyclone_2_png {
+.dota-item-cyclone_2_png {
     width: 88px;
     height: 64px;
-    background-position: -295px -301px;
+    background-position: -964px -256px;
 }
 
-.sprite-cyclone_png {
+.dota-item-cyclone_png {
     width: 88px;
     height: 64px;
-    background-position: -393px -301px;
+    background-position: -1052px -256px;
 }
 
-.sprite-dagon_2_png {
+.dota-item-cyclone_wr_arcana_alt_png {
     width: 88px;
     height: 64px;
-    background-position: -491px -301px;
+    background-position: -1140px -256px;
 }
 
-.sprite-dagon_3_png {
+.dota-item-cyclone_wr_arcana_png {
     width: 88px;
     height: 64px;
-    background-position: -589px -301px;
+    background-position: -1228px -256px;
 }
 
-.sprite-dagon_4_png {
+.dota-item-dagon_2_png {
     width: 88px;
     height: 64px;
-    background-position: -687px -301px;
+    background-position: -1316px -256px;
 }
 
-.sprite-dagon_5_png {
+.dota-item-dagon_3_png {
     width: 88px;
     height: 64px;
-    background-position: -785px -301px;
+    background-position: 0 -320px;
 }
 
-.sprite-dagon_png {
+.dota-item-dagon_4_png {
     width: 88px;
     height: 64px;
-    background-position: -883px -301px;
+    background-position: -88px -320px;
 }
 
-.sprite-default_png {
+.dota-item-dagon_5_png {
     width: 88px;
     height: 64px;
-    background-position: -981px -301px;
+    background-position: -176px -320px;
 }
 
-.sprite-demon_edge_png {
+.dota-item-dagon_png {
     width: 88px;
     height: 64px;
-    background-position: -1079px -301px;
+    background-position: -264px -320px;
 }
 
-.sprite-demonicon_png {
+.dota-item-default_png {
     width: 88px;
     height: 64px;
-    background-position: -1177px -301px;
+    background-position: -352px -320px;
 }
 
-.sprite-desolator_2_png {
+.dota-item-demon_edge_png {
     width: 88px;
     height: 64px;
-    background-position: -1275px -301px;
+    background-position: -440px -320px;
 }
 
-.sprite-desolator_png {
+.dota-item-demonicon_png {
     width: 88px;
     height: 64px;
-    background-position: -1373px -301px;
+    background-position: -528px -320px;
 }
 
-.sprite-diffusal_blade_png {
+.dota-item-desolator_2_png {
     width: 88px;
     height: 64px;
-    background-position: -5px -375px;
+    background-position: -616px -320px;
 }
 
-.sprite-dimensional_doorway_png {
+.dota-item-desolator_png {
     width: 88px;
     height: 64px;
-    background-position: -103px -375px;
+    background-position: -704px -320px;
 }
 
-.sprite-dragon_lance_png {
+.dota-item-diffusal_blade_png {
     width: 88px;
     height: 64px;
-    background-position: -201px -375px;
+    background-position: -792px -320px;
 }
 
-.sprite-dragon_scale_png {
+.dota-item-dimensional_doorway_png {
     width: 88px;
     height: 64px;
-    background-position: -299px -375px;
+    background-position: -880px -320px;
 }
 
-.sprite-dust_png {
+.dota-item-dragon_lance_png {
     width: 88px;
     height: 64px;
-    background-position: -397px -375px;
+    background-position: -968px -320px;
 }
 
-.sprite-eagle_png {
+.dota-item-dragon_scale_png {
     width: 88px;
     height: 64px;
-    background-position: -495px -375px;
+    background-position: -1056px -320px;
 }
 
-.sprite-echo_sabre_png {
+.dota-item-dust_png {
     width: 88px;
     height: 64px;
-    background-position: -593px -375px;
+    background-position: -1144px -320px;
 }
 
-.sprite-elixer1_png {
+.dota-item-eagle_png {
     width: 88px;
     height: 64px;
-    background-position: -691px -375px;
+    background-position: -1232px -320px;
 }
 
-.sprite-elixer2_png {
+.dota-item-echo_sabre_png {
     width: 88px;
     height: 64px;
-    background-position: -789px -375px;
+    background-position: -1320px -320px;
 }
 
-.sprite-elixer3_png {
+.dota-item-elixer1_png {
     width: 88px;
     height: 64px;
-    background-position: -887px -375px;
+    background-position: 0 -384px;
 }
 
-.sprite-elixer4_png {
+.dota-item-elixer2_png {
     width: 88px;
     height: 64px;
-    background-position: -985px -375px;
+    background-position: -88px -384px;
 }
 
-.sprite-elixer_png {
+.dota-item-elixer3_png {
     width: 88px;
     height: 64px;
-    background-position: -1083px -375px;
+    background-position: -176px -384px;
 }
 
-.sprite-emptyitembg_png {
+.dota-item-elixer4_png {
+    width: 88px;
+    height: 64px;
+    background-position: -264px -384px;
+}
+
+.dota-item-elixer_png {
+    width: 88px;
+    height: 64px;
+    background-position: -352px -384px;
+}
+
+.dota-item-elven_tunic_png {
+    width: 88px;
+    height: 64px;
+    background-position: -440px -384px;
+}
+
+.dota-item-emptyitembg_png {
     width: 87px;
     height: 64px;
-    background-position: -1181px -375px;
+    background-position: -528px -384px;
 }
 
-.sprite-enchanted_mango_png {
+.dota-item-enchanted_mango_png {
     width: 88px;
     height: 64px;
-    background-position: -1278px -375px;
+    background-position: -615px -384px;
 }
 
-.sprite-enchanted_quiver_png {
+.dota-item-enchanted_quiver_png {
     width: 88px;
     height: 64px;
-    background-position: -1376px -375px;
+    background-position: -703px -384px;
 }
 
-.sprite-energy_booster_png {
+.dota-item-energy_booster_png {
     width: 88px;
     height: 64px;
-    background-position: -5px -449px;
+    background-position: -791px -384px;
 }
 
-.sprite-es_arcana_blink_png {
+.dota-item-es_arcana_blink_png {
     width: 88px;
     height: 64px;
-    background-position: -103px -449px;
+    background-position: -879px -384px;
 }
 
-.sprite-es_arcana_blink_ult2_png {
+.dota-item-es_arcana_blink_ult2_png {
     width: 88px;
     height: 64px;
-    background-position: -201px -449px;
+    background-position: -967px -384px;
 }
 
-.sprite-essence_ring_png {
+.dota-item-essence_ring_png {
     width: 88px;
     height: 64px;
-    background-position: -299px -449px;
+    background-position: -1055px -384px;
 }
 
-.sprite-ethereal_blade_png {
+.dota-item-eternal_shroud_png {
     width: 88px;
     height: 64px;
-    background-position: -397px -449px;
+    background-position: -1143px -384px;
 }
 
-.sprite-ex_machina_png {
+.dota-item-ethereal_blade_png {
     width: 88px;
     height: 64px;
-    background-position: -495px -449px;
+    background-position: -1231px -384px;
 }
 
-.sprite-faded_broach_png {
+.dota-item-ex_machina_png {
     width: 88px;
     height: 64px;
-    background-position: -593px -449px;
+    background-position: -1319px -384px;
 }
 
-.sprite-faerie_fire_png {
+.dota-item-faded_broach_png {
+    width: 88px;
+    height: 64px;
+    background-position: 0 -448px;
+}
+
+.dota-item-faerie_fire_png {
     width: 88px;
     height: 62px;
-    background-position: -691px -449px;
+    background-position: -88px -448px;
 }
 
-.sprite-fallen_sky_png {
+.dota-item-falcon_blade_png {
     width: 88px;
     height: 64px;
-    background-position: -789px -449px;
+    background-position: -176px -448px;
 }
 
-.sprite-firecrackers_png {
+.dota-item-fallen_sky_png {
+    width: 88px;
+    height: 64px;
+    background-position: -264px -448px;
+}
+
+.dota-item-firecrackers_png {
     width: 86px;
     height: 64px;
-    background-position: -887px -449px;
+    background-position: -352px -448px;
 }
 
-.sprite-firework_mine_png {
+.dota-item-firework_mine_png {
     width: 86px;
     height: 64px;
-    background-position: -983px -449px;
+    background-position: -438px -448px;
 }
 
-.sprite-flask2_png {
+.dota-item-flask2_png {
     width: 87px;
     height: 64px;
-    background-position: -1079px -449px;
+    background-position: -524px -448px;
 }
 
-.sprite-flask_png {
+.dota-item-flask_png {
     width: 87px;
     height: 64px;
-    background-position: -1176px -449px;
+    background-position: -611px -448px;
 }
 
-.sprite-flicker_png {
+.dota-item-flicker_png {
     width: 88px;
     height: 64px;
-    background-position: -1273px -449px;
+    background-position: -698px -448px;
 }
 
-.sprite-flying_courier_png {
+.dota-item-fluffy_hat_png {
     width: 88px;
     height: 64px;
-    background-position: -1371px -449px;
+    background-position: -786px -448px;
 }
 
-.sprite-force_boots_png {
+.dota-item-flying_courier_png {
     width: 88px;
     height: 64px;
-    background-position: -5px -523px;
+    background-position: -874px -448px;
 }
 
-.sprite-force_staff_png {
+.dota-item-force_boots_png {
     width: 88px;
     height: 64px;
-    background-position: -103px -523px;
+    background-position: -962px -448px;
 }
 
-.sprite-fusion_rune_png {
+.dota-item-force_staff_png {
     width: 88px;
     height: 64px;
-    background-position: -201px -523px;
+    background-position: -1050px -448px;
 }
 
-.sprite-gauntlets_png {
+.dota-item-force_staff_wr_arcana_alt_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1138px -448px;
+}
+
+.dota-item-force_staff_wr_arcana_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1226px -448px;
+}
+
+.dota-item-fusion_rune_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1314px -448px;
+}
+
+.dota-item-gauntlets_png {
     width: 81px;
     height: 64px;
-    background-position: -299px -523px;
+    background-position: 0 -512px;
 }
 
-.sprite-gem_of_true_sight_png {
+.dota-item-gem_of_true_sight_png {
     width: 88px;
     height: 64px;
-    background-position: -390px -523px;
+    background-position: -81px -512px;
 }
 
-.sprite-gem_png {
+.dota-item-gem_png {
     width: 88px;
     height: 64px;
-    background-position: -488px -523px;
+    background-position: -169px -512px;
 }
 
-.sprite-ghost_png {
+.dota-item-ghost_png {
     width: 86px;
     height: 64px;
-    background-position: -586px -523px;
+    background-position: -257px -512px;
 }
 
-.sprite-ghost_scepter_png {
+.dota-item-ghost_scepter_png {
     width: 88px;
     height: 64px;
-    background-position: -682px -523px;
+    background-position: -343px -512px;
 }
 
-.sprite-glimmer_cape_png {
+.dota-item-giants_ring_png {
+    width: 88px;
+    height: 64px;
+    background-position: -431px -512px;
+}
+
+.dota-item-gladiator_helm_png {
+    width: 88px;
+    height: 64px;
+    background-position: -519px -512px;
+}
+
+.dota-item-glimmer_cape_png {
     width: 88px;
     height: 62px;
-    background-position: -780px -523px;
+    background-position: -607px -512px;
 }
 
-.sprite-gloves_of_haste_png {
+.dota-item-gloves_of_haste_png {
     width: 88px;
     height: 64px;
-    background-position: -878px -523px;
+    background-position: -695px -512px;
 }
 
-.sprite-gloves_png {
+.dota-item-gloves_of_travel_png {
     width: 86px;
     height: 64px;
-    background-position: -976px -523px;
+    background-position: -783px -512px;
 }
 
-.sprite-greater_clarity_png {
-    width: 87px;
-    height: 64px;
-    background-position: -1072px -523px;
-}
-
-.sprite-greater_crit_png {
-    width: 88px;
-    height: 64px;
-    background-position: -1169px -523px;
-}
-
-.sprite-greater_faerie_fire_png {
-    width: 88px;
-    height: 64px;
-    background-position: -1267px -523px;
-}
-
-.sprite-greater_mango_png {
-    width: 88px;
-    height: 64px;
-    background-position: -1365px -523px;
-}
-
-.sprite-greater_salve_png {
-    width: 87px;
-    height: 64px;
-    background-position: -5px -597px;
-}
-
-.sprite-grove_bow_png {
-    width: 88px;
-    height: 64px;
-    background-position: -102px -597px;
-}
-
-.sprite-guardian_greaves_png {
-    width: 88px;
-    height: 64px;
-    background-position: -200px -597px;
-}
-
-.sprite-hand_of_midas_ogre_arcana_png {
-    width: 88px;
-    height: 64px;
-    background-position: -298px -597px;
-}
-
-.sprite-hand_of_midas_png {
-    width: 88px;
-    height: 64px;
-    background-position: -396px -597px;
-}
-
-.sprite-havoc_hammer_png {
-    width: 88px;
-    height: 64px;
-    background-position: -494px -597px;
-}
-
-.sprite-headdress_png {
-    width: 88px;
-    height: 64px;
-    background-position: -592px -597px;
-}
-
-.sprite-heart_png {
-    width: 88px;
-    height: 64px;
-    background-position: -690px -597px;
-}
-
-.sprite-heavens_halberd_png {
-    width: 88px;
-    height: 64px;
-    background-position: -788px -597px;
-}
-
-.sprite-helm_of_iron_will_png {
-    width: 88px;
-    height: 64px;
-    background-position: -886px -597px;
-}
-
-.sprite-helm_of_the_dominator_png {
-    width: 88px;
-    height: 64px;
-    background-position: -984px -597px;
-}
-
-.sprite-helm_of_the_undying_png {
-    width: 88px;
-    height: 64px;
-    background-position: -1082px -597px;
-}
-
-.sprite-holy_locket_enemy_png {
+.dota-item-gloves_png {
     width: 86px;
-    height: 62px;
-    background-position: -1180px -597px;
+    height: 64px;
+    background-position: -869px -512px;
 }
 
-.sprite-holy_locket_png {
+.dota-item-grandmasters_glaive_agi_png {
     width: 88px;
     height: 64px;
-    background-position: -1276px -597px;
+    background-position: -955px -512px;
 }
 
-.sprite-hood_of_defiance_png {
+.dota-item-grandmasters_glaive_int_png {
     width: 88px;
     height: 64px;
-    background-position: -1374px -597px;
+    background-position: -1043px -512px;
 }
 
-.sprite-horizon_png {
+.dota-item-grandmasters_glaive_png {
     width: 88px;
     height: 64px;
-    background-position: -5px -671px;
+    background-position: -1131px -512px;
 }
 
-.sprite-hurricane_pike_png {
+.dota-item-grandmasters_glaive_str_png {
     width: 88px;
     height: 64px;
-    background-position: -103px -671px;
+    background-position: -1219px -512px;
 }
 
-.sprite-hyperstone_png {
-    width: 88px;
-    height: 64px;
-    background-position: -201px -671px;
-}
-
-.sprite-illusionsts_cape_png {
-    width: 88px;
-    height: 64px;
-    background-position: -299px -671px;
-}
-
-.sprite-imp_claw_png {
-    width: 88px;
-    height: 64px;
-    background-position: -397px -671px;
-}
-
-.sprite-infused_raindrop_png {
-    width: 88px;
-    height: 64px;
-    background-position: -495px -671px;
-}
-
-.sprite-invis_sword_png {
-    width: 88px;
-    height: 64px;
-    background-position: -593px -671px;
-}
-
-.sprite-iron_talon_png {
-    width: 88px;
-    height: 64px;
-    background-position: -691px -671px;
-}
-
-.sprite-ironwood_tree_png {
-    width: 88px;
-    height: 64px;
-    background-position: -789px -671px;
-}
-
-.sprite-javelin_png {
-    width: 88px;
-    height: 64px;
-    background-position: -887px -671px;
-}
-
-.sprite-kaya_and_sange_png {
-    width: 88px;
-    height: 64px;
-    background-position: -985px -671px;
-}
-
-.sprite-kaya_png {
-    width: 88px;
-    height: 64px;
-    background-position: -1083px -671px;
-}
-
-.sprite-keen_optic_png {
-    width: 88px;
-    height: 64px;
-    background-position: -1181px -671px;
-}
-
-.sprite-lesser_crit_png {
-    width: 88px;
-    height: 64px;
-    background-position: -1279px -671px;
-}
-
-.sprite-lifesteal_png {
-    width: 88px;
-    height: 64px;
-    background-position: -1377px -671px;
-}
-
-.sprite-lotus_orb_png {
-    width: 88px;
-    height: 64px;
-    background-position: -5px -745px;
-}
-
-.sprite-maelstrom_png {
-    width: 88px;
-    height: 64px;
-    background-position: -103px -745px;
-}
-
-.sprite-magic_stick_png {
-    width: 88px;
-    height: 64px;
-    background-position: -201px -745px;
-}
-
-.sprite-magic_wand_png {
-    width: 88px;
-    height: 64px;
-    background-position: -299px -745px;
-}
-
-.sprite-mango_tree_png {
-    width: 88px;
-    height: 64px;
-    background-position: -397px -745px;
-}
-
-.sprite-manta_png {
-    width: 88px;
-    height: 64px;
-    background-position: -495px -745px;
-}
-
-.sprite-mantle_png {
+.dota-item-greater_clarity_png {
     width: 87px;
     height: 64px;
-    background-position: -593px -745px;
+    background-position: -1307px -512px;
 }
 
-.sprite-mask_of_madness_png {
+.dota-item-greater_crit_png {
     width: 88px;
     height: 64px;
-    background-position: -690px -745px;
+    background-position: 0 -576px;
 }
 
-.sprite-medallion_of_courage_png {
+.dota-item-greater_faerie_fire_png {
     width: 88px;
     height: 64px;
-    background-position: -788px -745px;
+    background-position: -88px -576px;
 }
 
-.sprite-mekansm_png {
+.dota-item-greater_mango_png {
     width: 88px;
     height: 64px;
-    background-position: -886px -745px;
+    background-position: -176px -576px;
 }
 
-.sprite-meteor_hammer_png {
+.dota-item-greater_salve_png {
+    width: 87px;
+    height: 64px;
+    background-position: -264px -576px;
+}
+
+.dota-item-grove_bow_png {
+    width: 88px;
+    height: 64px;
+    background-position: -351px -576px;
+}
+
+.dota-item-guardian_greaves_png {
+    width: 88px;
+    height: 64px;
+    background-position: -439px -576px;
+}
+
+.dota-item-gungir_png {
+    width: 88px;
+    height: 64px;
+    background-position: -527px -576px;
+}
+
+.dota-item-hand_of_midas_ogre_arcana_png {
+    width: 88px;
+    height: 64px;
+    background-position: -615px -576px;
+}
+
+.dota-item-hand_of_midas_png {
+    width: 88px;
+    height: 64px;
+    background-position: -703px -576px;
+}
+
+.dota-item-havoc_hammer_png {
+    width: 88px;
+    height: 64px;
+    background-position: -791px -576px;
+}
+
+.dota-item-headdress_png {
+    width: 88px;
+    height: 64px;
+    background-position: -879px -576px;
+}
+
+.dota-item-heart_png {
+    width: 88px;
+    height: 64px;
+    background-position: -967px -576px;
+}
+
+.dota-item-heavens_halberd_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1055px -576px;
+}
+
+.dota-item-helm_of_iron_will_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1143px -576px;
+}
+
+.dota-item-helm_of_the_dominator_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1231px -576px;
+}
+
+.dota-item-helm_of_the_overlord_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1319px -576px;
+}
+
+.dota-item-helm_of_the_undying_png {
+    width: 88px;
+    height: 64px;
+    background-position: 0 -640px;
+}
+
+.dota-item-holy_locket_enemy_png {
     width: 86px;
     height: 62px;
-    background-position: -984px -745px;
+    background-position: -88px -640px;
 }
 
-.sprite-mind_breaker_png {
+.dota-item-holy_locket_png {
     width: 88px;
     height: 64px;
-    background-position: -1080px -745px;
+    background-position: -174px -640px;
 }
 
-.sprite-minotaur_horn_png {
+.dota-item-hood_of_defiance_png {
     width: 88px;
     height: 64px;
-    background-position: -1178px -745px;
+    background-position: -262px -640px;
 }
 
-.sprite-mirror_shield_png {
+.dota-item-horizon_png {
     width: 88px;
     height: 64px;
-    background-position: -1276px -745px;
+    background-position: -350px -640px;
 }
 
-.sprite-mithril_hammer_png {
+.dota-item-hurricane_pike_png {
+    width: 88px;
+    height: 64px;
+    background-position: -438px -640px;
+}
+
+.dota-item-hyperstone_png {
+    width: 88px;
+    height: 64px;
+    background-position: -526px -640px;
+}
+
+.dota-item-illusionsts_cape_png {
+    width: 88px;
+    height: 64px;
+    background-position: -614px -640px;
+}
+
+.dota-item-imp_claw_png {
+    width: 88px;
+    height: 64px;
+    background-position: -702px -640px;
+}
+
+.dota-item-infused_raindrop_png {
+    width: 88px;
+    height: 64px;
+    background-position: -790px -640px;
+}
+
+.dota-item-invis_sword_png {
+    width: 88px;
+    height: 64px;
+    background-position: -878px -640px;
+}
+
+.dota-item-iron_talon_png {
+    width: 88px;
+    height: 64px;
+    background-position: -966px -640px;
+}
+
+.dota-item-ironwood_tree_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1054px -640px;
+}
+
+.dota-item-javelin_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1142px -640px;
+}
+
+.dota-item-kaya_and_sange_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1230px -640px;
+}
+
+.dota-item-kaya_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1318px -640px;
+}
+
+.dota-item-keen_optic_png {
+    width: 88px;
+    height: 64px;
+    background-position: 0 -704px;
+}
+
+.dota-item-lesser_crit_png {
+    width: 88px;
+    height: 64px;
+    background-position: -88px -704px;
+}
+
+.dota-item-lifesteal_png {
+    width: 88px;
+    height: 64px;
+    background-position: -176px -704px;
+}
+
+.dota-item-lotus_orb_png {
+    width: 88px;
+    height: 64px;
+    background-position: -264px -704px;
+}
+
+.dota-item-maelstrom_png {
+    width: 88px;
+    height: 64px;
+    background-position: -352px -704px;
+}
+
+.dota-item-mage_slayer_png {
+    width: 88px;
+    height: 64px;
+    background-position: -440px -704px;
+}
+
+.dota-item-magic_stick_png {
+    width: 88px;
+    height: 64px;
+    background-position: -528px -704px;
+}
+
+.dota-item-magic_wand_png {
+    width: 88px;
+    height: 64px;
+    background-position: -616px -704px;
+}
+
+.dota-item-mango_tree_png {
+    width: 88px;
+    height: 64px;
+    background-position: -704px -704px;
+}
+
+.dota-item-manta_png {
+    width: 88px;
+    height: 64px;
+    background-position: -792px -704px;
+}
+
+.dota-item-mantle_png {
     width: 87px;
     height: 64px;
-    background-position: -1374px -745px;
+    background-position: -880px -704px;
 }
 
-.sprite-mjollnir_arc-000_png {
-    width: 128px;
-    height: 128px;
-    background-position: -5px -819px;
-}
-
-.sprite-mjollnir_arc-001_png {
-    width: 128px;
-    height: 128px;
-    background-position: -143px -819px;
-}
-
-.sprite-mjollnir_arc-002_png {
-    width: 128px;
-    height: 128px;
-    background-position: -281px -819px;
-}
-
-.sprite-mjollnir_png {
+.dota-item-mask_of_madness_png {
     width: 88px;
     height: 64px;
-    background-position: -419px -819px;
+    background-position: -967px -704px;
 }
 
-.sprite-monkey_king_bar_png {
+.dota-item-medallion_of_courage_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1055px -704px;
+}
+
+.dota-item-mekansm_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1143px -704px;
+}
+
+.dota-item-meteor_hammer_png {
+    width: 86px;
+    height: 62px;
+    background-position: -1231px -704px;
+}
+
+.dota-item-mind_breaker_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1317px -704px;
+}
+
+.dota-item-minotaur_horn_png {
+    width: 88px;
+    height: 64px;
+    background-position: 0 -768px;
+}
+
+.dota-item-mirror_shield_png {
+    width: 88px;
+    height: 64px;
+    background-position: -88px -768px;
+}
+
+.dota-item-mithril_hammer_png {
+    width: 87px;
+    height: 64px;
+    background-position: -176px -768px;
+}
+
+.dota-item-mjollnir_arc-000_png {
+    width: 128px;
+    height: 128px;
+    background-position: -263px -768px;
+}
+
+.dota-item-mjollnir_arc-001_png {
+    width: 128px;
+    height: 128px;
+    background-position: -391px -768px;
+}
+
+.dota-item-mjollnir_arc-002_png {
+    width: 128px;
+    height: 128px;
+    background-position: -519px -768px;
+}
+
+.dota-item-mjollnir_png {
+    width: 88px;
+    height: 64px;
+    background-position: -647px -768px;
+}
+
+.dota-item-monkey_king_bar_png {
     width: 84px;
     height: 64px;
-    background-position: -517px -819px;
+    background-position: -735px -768px;
 }
 
-.sprite-moon_shard_png {
+.dota-item-moon_shard_png {
     width: 88px;
     height: 64px;
-    background-position: -611px -819px;
+    background-position: -819px -768px;
 }
 
-.sprite-mutation_tombstone_png {
+.dota-item-mutation_tombstone_png {
     width: 88px;
     height: 64px;
-    background-position: -709px -819px;
+    background-position: -907px -768px;
 }
 
-.sprite-mystic_staff_png {
+.dota-item-mysterious_hat_png {
     width: 88px;
     height: 64px;
-    background-position: -807px -819px;
+    background-position: -995px -768px;
 }
 
-.sprite-necronomicon_2_png {
+.dota-item-mystic_staff_png {
     width: 88px;
     height: 64px;
-    background-position: -905px -819px;
+    background-position: -1083px -768px;
 }
 
-.sprite-necronomicon_3_png {
+.dota-item-necronomicon_2_png {
     width: 88px;
     height: 64px;
-    background-position: -1003px -819px;
+    background-position: -1171px -768px;
 }
 
-.sprite-necronomicon_png {
+.dota-item-necronomicon_3_png {
     width: 88px;
     height: 64px;
-    background-position: -1101px -819px;
+    background-position: -1259px -768px;
 }
 
-.sprite-nether_shawl_png {
+.dota-item-necronomicon_png {
     width: 88px;
     height: 64px;
-    background-position: -1199px -819px;
+    background-position: -1347px -768px;
 }
 
-.sprite-neutral_png {
+.dota-item-nether_shawl_png {
     width: 88px;
     height: 64px;
-    background-position: -1297px -819px;
+    background-position: 0 -832px;
 }
 
-.sprite-nian_flag_trap_png {
+.dota-item-neutral_png {
+    width: 88px;
+    height: 64px;
+    background-position: -88px -832px;
+}
+
+.dota-item-nian_flag_trap_png {
     width: 86px;
     height: 64px;
-    background-position: -1395px -819px;
+    background-position: -176px -832px;
 }
 
-.sprite-ninja_gear_png {
+.dota-item-ninja_gear_png {
     width: 88px;
     height: 64px;
-    background-position: -419px -893px;
+    background-position: -647px -832px;
 }
 
-.sprite-null_talisman_png {
+.dota-item-null_talisman_png {
     width: 88px;
     height: 64px;
-    background-position: -517px -893px;
+    background-position: -735px -832px;
 }
 
-.sprite-nullifier_png {
-    width: 86px;
-    height: 62px;
-    background-position: -615px -893px;
-}
-
-.sprite-oblivion_staff_png {
-    width: 88px;
-    height: 64px;
-    background-position: -711px -893px;
-}
-
-.sprite-ocean_heart_png {
-    width: 88px;
-    height: 64px;
-    background-position: -809px -893px;
-}
-
-.sprite-octarine_core_png {
-    width: 88px;
-    height: 64px;
-    background-position: -907px -893px;
-}
-
-.sprite-ogre_axe_png {
-    width: 88px;
-    height: 64px;
-    background-position: -1005px -893px;
-}
-
-.sprite-orb_of_destruction_png {
-    width: 88px;
-    height: 64px;
-    background-position: -1103px -893px;
-}
-
-.sprite-orb_of_venom_png {
-    width: 88px;
-    height: 64px;
-    background-position: -1201px -893px;
-}
-
-.sprite-orchid_png {
-    width: 88px;
-    height: 64px;
-    background-position: -1299px -893px;
-}
-
-.sprite-paladin_sword_png {
-    width: 88px;
-    height: 64px;
-    background-position: -1397px -893px;
-}
-
-.sprite-panic_button_png {
-    width: 88px;
-    height: 64px;
-    background-position: -5px -967px;
-}
-
-.sprite-pers_png {
-    width: 88px;
-    height: 64px;
-    background-position: -103px -967px;
-}
-
-.sprite-phase_boots_png {
-    width: 88px;
-    height: 64px;
-    background-position: -201px -967px;
-}
-
-.sprite-philosophers_stone_png {
-    width: 88px;
-    height: 64px;
-    background-position: -299px -967px;
-}
-
-.sprite-phoenix_ash_png {
-    width: 88px;
-    height: 64px;
-    background-position: -397px -967px;
-}
-
-.sprite-pipe_png {
-    width: 88px;
-    height: 64px;
-    background-position: -495px -967px;
-}
-
-.sprite-pirate_hat_png {
-    width: 88px;
-    height: 64px;
-    background-position: -593px -967px;
-}
-
-.sprite-place_building_png {
-    width: 74px;
-    height: 64px;
-    background-position: -691px -967px;
-}
-
-.sprite-platemail_png {
-    width: 88px;
-    height: 64px;
-    background-position: -775px -967px;
-}
-
-.sprite-pocket_roshan_png {
-    width: 88px;
-    height: 64px;
-    background-position: -873px -967px;
-}
-
-.sprite-pocket_tower_png {
-    width: 74px;
-    height: 64px;
-    background-position: -971px -967px;
-}
-
-.sprite-point_booster_png {
-    width: 88px;
-    height: 64px;
-    background-position: -1055px -967px;
-}
-
-.sprite-poor_mans_shield_png {
-    width: 88px;
-    height: 64px;
-    background-position: -1153px -967px;
-}
-
-.sprite-power_treads_agi_colorblind_png {
-    width: 88px;
-    height: 64px;
-    background-position: -1251px -967px;
-}
-
-.sprite-power_treads_agi_png {
-    width: 88px;
-    height: 64px;
-    background-position: -1349px -967px;
-}
-
-.sprite-power_treads_int_png {
-    width: 88px;
-    height: 64px;
-    background-position: -5px -1041px;
-}
-
-.sprite-power_treads_png {
-    width: 88px;
-    height: 64px;
-    background-position: -103px -1041px;
-}
-
-.sprite-power_treads_str_png {
-    width: 88px;
-    height: 64px;
-    background-position: -201px -1041px;
-}
-
-.sprite-princes_knife_png {
-    width: 88px;
-    height: 64px;
-    background-position: -299px -1041px;
-}
-
-.sprite-pupils_gift_png {
-    width: 88px;
-    height: 64px;
-    background-position: -397px -1041px;
-}
-
-.sprite-quarterstaff_png {
-    width: 88px;
-    height: 64px;
-    background-position: -495px -1041px;
-}
-
-.sprite-quelling_blade_png {
-    width: 88px;
-    height: 64px;
-    background-position: -593px -1041px;
-}
-
-.sprite-quickening_charm_png {
-    width: 88px;
-    height: 64px;
-    background-position: -691px -1041px;
-}
-
-.sprite-radiance_inactive_png {
-    width: 88px;
-    height: 64px;
-    background-position: -789px -1041px;
-}
-
-.sprite-radiance_png {
-    width: 88px;
-    height: 64px;
-    background-position: -887px -1041px;
-}
-
-.sprite-rapier_png {
-    width: 88px;
-    height: 64px;
-    background-position: -985px -1041px;
-}
-
-.sprite-reaver_png {
-    width: 88px;
-    height: 64px;
-    background-position: -1083px -1041px;
-}
-
-.sprite-recipe_opacity_mask_nopurchase_psd {
-    width: 88px;
-    height: 64px;
-    background-position: -1181px -1041px;
-}
-
-.sprite-recipe_opacity_mask_png {
-    width: 88px;
-    height: 64px;
-    background-position: -1279px -1041px;
-}
-
-.sprite-recipe_png {
-    width: 88px;
-    height: 64px;
-    background-position: -1377px -1041px;
-}
-
-.sprite-recipe_scroll_png {
-    width: 98px;
-    height: 64px;
-    background-position: -5px -1115px;
-}
-
-.sprite-refresher_png {
-    width: 88px;
-    height: 64px;
-    background-position: -113px -1115px;
-}
-
-.sprite-refresher_shard_png {
-    width: 88px;
-    height: 64px;
-    background-position: -211px -1115px;
-}
-
-.sprite-relic_png {
-    width: 88px;
-    height: 64px;
-    background-position: -309px -1115px;
-}
-
-.sprite-repair_kit_png {
-    width: 88px;
-    height: 64px;
-    background-position: -407px -1115px;
-}
-
-.sprite-ring_of_aquila_active_png {
-    width: 88px;
-    height: 64px;
-    background-position: -505px -1115px;
-}
-
-.sprite-ring_of_aquila_png {
-    width: 88px;
-    height: 64px;
-    background-position: -603px -1115px;
-}
-
-.sprite-ring_of_basilius_active_png {
-    width: 88px;
-    height: 64px;
-    background-position: -701px -1115px;
-}
-
-.sprite-ring_of_basilius_png {
-    width: 88px;
-    height: 64px;
-    background-position: -799px -1115px;
-}
-
-.sprite-ring_of_health_png {
-    width: 88px;
-    height: 64px;
-    background-position: -897px -1115px;
-}
-
-.sprite-ring_of_protection_png {
-    width: 88px;
-    height: 64px;
-    background-position: -995px -1115px;
-}
-
-.sprite-ring_of_regen_png {
-    width: 88px;
-    height: 64px;
-    background-position: -1093px -1115px;
-}
-
-.sprite-ring_of_tarrasque_png {
-    width: 88px;
-    height: 64px;
-    background-position: -1191px -1115px;
-}
-
-.sprite-river_painter2_png {
+.dota-item-nullifier_png {
     width: 86px;
     height: 62px;
-    background-position: -1289px -1115px;
+    background-position: -823px -832px;
 }
 
-.sprite-river_painter3_png {
-    width: 86px;
-    height: 62px;
-    background-position: -1385px -1115px;
-}
-
-.sprite-river_painter4_png {
-    width: 86px;
-    height: 62px;
-    background-position: -1289px -1187px;
-}
-
-.sprite-river_painter5_png {
-    width: 86px;
-    height: 62px;
-    background-position: -1385px -1187px;
-}
-
-.sprite-river_painter6_png {
-    width: 86px;
-    height: 62px;
-    background-position: -5px -1259px;
-}
-
-.sprite-river_painter7_png {
-    width: 86px;
-    height: 62px;
-    background-position: -101px -1259px;
-}
-
-.sprite-river_painter_png {
-    width: 86px;
-    height: 62px;
-    background-position: -197px -1259px;
-}
-
-.sprite-robe_png {
-    width: 88px;
-    height: 64px;
-    background-position: -293px -1259px;
-}
-
-.sprite-rod_of_atos_png {
-    width: 88px;
-    height: 64px;
-    background-position: -391px -1259px;
-}
-
-.sprite-royal_jelly1_png {
-    width: 88px;
-    height: 64px;
-    background-position: -489px -1259px;
-}
-
-.sprite-royal_jelly2_png {
-    width: 88px;
-    height: 64px;
-    background-position: -587px -1259px;
-}
-
-.sprite-royal_jelly_png {
-    width: 88px;
-    height: 64px;
-    background-position: -685px -1259px;
-}
-
-.sprite-salve_png {
-    width: 88px;
-    height: 64px;
-    background-position: -783px -1259px;
-}
-
-.sprite-sange_and_yasha_png {
-    width: 88px;
-    height: 64px;
-    background-position: -881px -1259px;
-}
-
-.sprite-sange_png {
-    width: 88px;
-    height: 64px;
-    background-position: -979px -1259px;
-}
-
-.sprite-satanic_png {
-    width: 87px;
-    height: 64px;
-    background-position: -1077px -1259px;
-}
-
-.sprite-seer_stone_png {
-    width: 88px;
-    height: 64px;
-    background-position: -1174px -1259px;
-}
-
-.sprite-shadow_amulet_png {
-    width: 86px;
-    height: 62px;
-    background-position: -1272px -1259px;
-}
-
-.sprite-sheepstick_png {
-    width: 88px;
-    height: 64px;
-    background-position: -1368px -1259px;
-}
-
-.sprite-shivas_guard_png {
-    width: 88px;
-    height: 64px;
-    background-position: -5px -1333px;
-}
-
-.sprite-silver_edge_png {
-    width: 88px;
-    height: 64px;
-    background-position: -103px -1333px;
-}
-
-.sprite-skadi_png {
-    width: 88px;
-    height: 64px;
-    background-position: -201px -1333px;
-}
-
-.sprite-slippers_of_halcyon_png {
-    width: 88px;
-    height: 64px;
-    background-position: -299px -1333px;
-}
-
-.sprite-slippers_png {
-    width: 88px;
-    height: 64px;
-    background-position: -397px -1333px;
-}
-
-.sprite-smoke_of_deceit_png {
-    width: 88px;
-    height: 64px;
-    background-position: -495px -1333px;
-}
-
-.sprite-sobi_mask_png {
-    width: 88px;
-    height: 64px;
-    background-position: -593px -1333px;
-}
-
-.sprite-solar_crest_png {
-    width: 88px;
-    height: 64px;
-    background-position: -691px -1333px;
-}
-
-.sprite-soul_booster_png {
-    width: 88px;
-    height: 64px;
-    background-position: -789px -1333px;
-}
-
-.sprite-soul_ring_png {
-    width: 88px;
-    height: 64px;
-    background-position: -887px -1333px;
-}
-
-.sprite-spell_prism_png {
-    width: 88px;
-    height: 64px;
-    background-position: -985px -1333px;
-}
-
-.sprite-sphere_png {
-    width: 88px;
-    height: 64px;
-    background-position: -1083px -1333px;
-}
-
-.sprite-spider_legs_png {
-    width: 88px;
-    height: 64px;
-    background-position: -1181px -1333px;
-}
-
-.sprite-spirit_vessel_png {
-    width: 86px;
-    height: 62px;
-    background-position: -1279px -1333px;
-}
-
-.sprite-spy_gadget_png {
-    width: 88px;
-    height: 64px;
-    background-position: -1375px -1333px;
-}
-
-.sprite-staff_of_wizardry_png {
-    width: 88px;
-    height: 64px;
-    background-position: -5px -1407px;
-}
-
-.sprite-stout_shield_png {
-    width: 88px;
-    height: 64px;
-    background-position: -103px -1407px;
-}
-
-.sprite-super_blink_png {
-    width: 88px;
-    height: 64px;
-    background-position: -201px -1407px;
-}
-
-.sprite-talisman_of_evasion_png {
-    width: 88px;
-    height: 64px;
-    background-position: -299px -1407px;
-}
-
-.sprite-tango_png {
-    width: 88px;
-    height: 64px;
-    background-position: -397px -1407px;
-}
-
-.sprite-tango_single_png {
-    width: 88px;
-    height: 64px;
-    background-position: -495px -1407px;
-}
-
-.sprite-the_leveller_png {
-    width: 88px;
-    height: 64px;
-    background-position: -593px -1407px;
-}
-
-.sprite-third_eye_png {
-    width: 88px;
-    height: 64px;
-    background-position: -691px -1407px;
-}
-
-.sprite-timeless_relic_png {
-    width: 88px;
-    height: 64px;
-    background-position: -789px -1407px;
-}
-
-.sprite-titan_sliver_png {
-    width: 88px;
-    height: 64px;
-    background-position: -887px -1407px;
-}
-
-.sprite-tombstone_png {
-    width: 88px;
-    height: 64px;
-    background-position: -985px -1407px;
-}
-
-.sprite-tome_of_aghanim_png {
-    width: 88px;
-    height: 64px;
-    background-position: -1083px -1407px;
-}
-
-.sprite-tome_of_knowledge_png {
-    width: 88px;
-    height: 64px;
-    background-position: -1181px -1407px;
-}
-
-.sprite-tpscroll_png {
-    width: 88px;
-    height: 64px;
-    background-position: -1279px -1407px;
-}
-
-.sprite-tranquil_boots_active_png {
-    width: 88px;
-    height: 64px;
-    background-position: -1377px -1407px;
-}
-
-.sprite-tranquil_boots_png {
-    width: 88px;
-    height: 64px;
-    background-position: -1475px -5px;
-}
-
-.sprite-travel_boots_2_png {
-    width: 88px;
-    height: 64px;
-    background-position: -1473px -79px;
-}
-
-.sprite-travel_boots_png {
-    width: 88px;
-    height: 64px;
-    background-position: -1477px -153px;
-}
-
-.sprite-travel_boots_tinker_png {
-    width: 93px;
-    height: 64px;
-    background-position: -1472px -227px;
-}
-
-.sprite-travel_slippers_png {
+.dota-item-oakheart_png {
     width: 99px;
     height: 64px;
-    background-position: -1471px -301px;
+    background-position: -909px -832px;
 }
 
-.sprite-trident_png {
+.dota-item-oblivion_staff_png {
     width: 88px;
     height: 64px;
-    background-position: -1474px -375px;
+    background-position: -1008px -832px;
 }
 
-.sprite-trusty_shovel_png {
+.dota-item-ocean_heart_png {
     width: 88px;
     height: 64px;
-    background-position: -1469px -449px;
+    background-position: -1096px -832px;
 }
 
-.sprite-ultimate_orb_png {
+.dota-item-octarine_core_png {
     width: 88px;
     height: 64px;
-    background-position: -1463px -523px;
+    background-position: -1184px -832px;
 }
 
-.sprite-ultimate_scepter_2_png {
+.dota-item-ogre_axe_png {
     width: 88px;
     height: 64px;
-    background-position: -1472px -597px;
+    background-position: -1272px -832px;
 }
 
-.sprite-ultimate_scepter_png {
+.dota-item-orb_of_corrosion_png {
     width: 88px;
     height: 64px;
-    background-position: -1475px -671px;
+    background-position: -1360px -832px;
 }
 
-.sprite-urn_of_shadows_png {
+.dota-item-orb_of_destruction_png {
     width: 88px;
     height: 64px;
-    background-position: -1471px -745px;
+    background-position: 0 -896px;
 }
 
-.sprite-vambrace_agi_png {
+.dota-item-orb_of_venom_png {
     width: 88px;
     height: 64px;
-    background-position: -1491px -819px;
+    background-position: -88px -896px;
 }
 
-.sprite-vambrace_int_png {
+.dota-item-orchid_png {
     width: 88px;
     height: 64px;
-    background-position: -1495px -893px;
+    background-position: -176px -896px;
 }
 
-.sprite-vambrace_png {
+.dota-item-overflowing_elixir_png {
     width: 88px;
     height: 64px;
-    background-position: -1447px -967px;
+    background-position: -264px -896px;
 }
 
-.sprite-vambrace_str_png {
+.dota-item-overwhelming_blink_png {
     width: 88px;
     height: 64px;
-    background-position: -1475px -1041px;
+    background-position: -352px -896px;
 }
 
-.sprite-vampire_fangs_png {
+.dota-item-paladin_sword_png {
     width: 88px;
     height: 64px;
-    background-position: -1481px -1115px;
+    background-position: -440px -896px;
 }
 
-.sprite-vanguard_png {
+.dota-item-panic_button_png {
+    width: 88px;
+    height: 64px;
+    background-position: -528px -896px;
+}
+
+.dota-item-penta_edged_sword_png {
+    width: 88px;
+    height: 64px;
+    background-position: -616px -896px;
+}
+
+.dota-item-pers_png {
+    width: 88px;
+    height: 64px;
+    background-position: -704px -896px;
+}
+
+.dota-item-phase_boots_png {
+    width: 88px;
+    height: 64px;
+    background-position: -792px -896px;
+}
+
+.dota-item-philosophers_stone_png {
+    width: 88px;
+    height: 64px;
+    background-position: -880px -896px;
+}
+
+.dota-item-phoenix_ash_png {
+    width: 88px;
+    height: 64px;
+    background-position: -968px -896px;
+}
+
+.dota-item-pipe_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1056px -896px;
+}
+
+.dota-item-pirate_hat_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1144px -896px;
+}
+
+.dota-item-place_building_png {
+    width: 74px;
+    height: 64px;
+    background-position: -1232px -896px;
+}
+
+.dota-item-platemail_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1306px -896px;
+}
+
+.dota-item-pocket_roshan_png {
+    width: 88px;
+    height: 64px;
+    background-position: 0 -960px;
+}
+
+.dota-item-pocket_tower_png {
+    width: 74px;
+    height: 64px;
+    background-position: -88px -960px;
+}
+
+.dota-item-point_booster_png {
+    width: 88px;
+    height: 64px;
+    background-position: -162px -960px;
+}
+
+.dota-item-poor_mans_shield_png {
+    width: 88px;
+    height: 64px;
+    background-position: -250px -960px;
+}
+
+.dota-item-possessed_mask_png {
+    width: 86px;
+    height: 62px;
+    background-position: -338px -960px;
+}
+
+.dota-item-power_treads_agi_colorblind_png {
+    width: 88px;
+    height: 64px;
+    background-position: -424px -960px;
+}
+
+.dota-item-power_treads_agi_png {
+    width: 88px;
+    height: 64px;
+    background-position: -512px -960px;
+}
+
+.dota-item-power_treads_int_png {
+    width: 88px;
+    height: 64px;
+    background-position: -600px -960px;
+}
+
+.dota-item-power_treads_png {
+    width: 88px;
+    height: 64px;
+    background-position: -688px -960px;
+}
+
+.dota-item-power_treads_str_png {
+    width: 88px;
+    height: 64px;
+    background-position: -776px -960px;
+}
+
+.dota-item-princes_knife_png {
+    width: 88px;
+    height: 64px;
+    background-position: -864px -960px;
+}
+
+.dota-item-psychic_headband_png {
+    width: 88px;
+    height: 64px;
+    background-position: -952px -960px;
+}
+
+.dota-item-pupils_gift_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1040px -960px;
+}
+
+.dota-item-quarterstaff_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1128px -960px;
+}
+
+.dota-item-quelling_blade_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1216px -960px;
+}
+
+.dota-item-quickening_charm_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1304px -960px;
+}
+
+.dota-item-quicksilver_amulet_png {
+    width: 88px;
+    height: 64px;
+    background-position: 0 -1024px;
+}
+
+.dota-item-radiance_inactive_png {
+    width: 88px;
+    height: 64px;
+    background-position: -88px -1024px;
+}
+
+.dota-item-radiance_png {
+    width: 88px;
+    height: 64px;
+    background-position: -176px -1024px;
+}
+
+.dota-item-rapier_png {
+    width: 88px;
+    height: 64px;
+    background-position: -264px -1024px;
+}
+
+.dota-item-reaver_png {
+    width: 88px;
+    height: 64px;
+    background-position: -352px -1024px;
+}
+
+.dota-item-recipe_opacity_mask_nopurchase_psd {
+    width: 88px;
+    height: 64px;
+    background-position: -440px -1024px;
+}
+
+.dota-item-recipe_opacity_mask_png {
+    width: 88px;
+    height: 64px;
+    background-position: -528px -1024px;
+}
+
+.dota-item-recipe_png {
+    width: 88px;
+    height: 64px;
+    background-position: -616px -1024px;
+}
+
+.dota-item-recipe_scroll_png {
+    width: 98px;
+    height: 64px;
+    background-position: -704px -1024px;
+}
+
+.dota-item-refresher_png {
+    width: 88px;
+    height: 64px;
+    background-position: -802px -1024px;
+}
+
+.dota-item-refresher_shard_png {
+    width: 88px;
+    height: 64px;
+    background-position: -890px -1024px;
+}
+
+.dota-item-relic_png {
+    width: 88px;
+    height: 64px;
+    background-position: -978px -1024px;
+}
+
+.dota-item-repair_kit_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1066px -1024px;
+}
+
+.dota-item-ring_of_aquila_active_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1154px -1024px;
+}
+
+.dota-item-ring_of_aquila_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1242px -1024px;
+}
+
+.dota-item-ring_of_basilius_active_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1330px -1024px;
+}
+
+.dota-item-ring_of_basilius_png {
+    width: 88px;
+    height: 64px;
+    background-position: 0 -1088px;
+}
+
+.dota-item-ring_of_health_png {
+    width: 88px;
+    height: 64px;
+    background-position: -88px -1088px;
+}
+
+.dota-item-ring_of_protection_png {
+    width: 88px;
+    height: 64px;
+    background-position: -176px -1088px;
+}
+
+.dota-item-ring_of_regen_png {
+    width: 88px;
+    height: 64px;
+    background-position: -264px -1088px;
+}
+
+.dota-item-ring_of_tarrasque_png {
+    width: 88px;
+    height: 64px;
+    background-position: -352px -1088px;
+}
+
+.dota-item-river_painter2_png {
+    width: 86px;
+    height: 62px;
+    background-position: -440px -1088px;
+}
+
+.dota-item-river_painter3_png {
+    width: 86px;
+    height: 62px;
+    background-position: -526px -1088px;
+}
+
+.dota-item-river_painter4_png {
+    width: 86px;
+    height: 62px;
+    background-position: -612px -1088px;
+}
+
+.dota-item-river_painter5_png {
+    width: 86px;
+    height: 62px;
+    background-position: -698px -1088px;
+}
+
+.dota-item-river_painter6_png {
+    width: 86px;
+    height: 62px;
+    background-position: -784px -1088px;
+}
+
+.dota-item-river_painter7_png {
+    width: 86px;
+    height: 62px;
+    background-position: -870px -1088px;
+}
+
+.dota-item-river_painter_png {
+    width: 86px;
+    height: 62px;
+    background-position: -956px -1088px;
+}
+
+.dota-item-robe_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1042px -1088px;
+}
+
+.dota-item-rod_of_atos_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1130px -1088px;
+}
+
+.dota-item-royal_jelly1_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1218px -1088px;
+}
+
+.dota-item-royal_jelly2_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1306px -1088px;
+}
+
+.dota-item-royal_jelly_png {
+    width: 88px;
+    height: 64px;
+    background-position: 0 -1152px;
+}
+
+.dota-item-salve_png {
+    width: 88px;
+    height: 64px;
+    background-position: -88px -1152px;
+}
+
+.dota-item-sange_and_yasha_png {
+    width: 88px;
+    height: 64px;
+    background-position: -176px -1152px;
+}
+
+.dota-item-sange_png {
+    width: 88px;
+    height: 64px;
+    background-position: -264px -1152px;
+}
+
+.dota-item-satanic_png {
     width: 87px;
     height: 64px;
-    background-position: -1481px -1189px;
+    background-position: -352px -1152px;
 }
 
-.sprite-veil_of_discord_png {
-    width: 88px;
-    height: 64px;
-    background-position: -1473px -1263px;
-}
-
-.sprite-vitality_booster_png {
-    width: 88px;
-    height: 64px;
-    background-position: -1475px -1337px;
-}
-
-.sprite-vladmir_png {
-    width: 88px;
-    height: 64px;
-    background-position: -1475px -1411px;
-}
-
-.sprite-void_stone_png {
-    width: 88px;
-    height: 64px;
-    background-position: -5px -1485px;
-}
-
-.sprite-ward_dispenser_png {
-    width: 88px;
-    height: 64px;
-    background-position: -103px -1485px;
-}
-
-.sprite-ward_dispenser_sentry_png {
-    width: 88px;
-    height: 64px;
-    background-position: -201px -1485px;
-}
-
-.sprite-ward_observer_png {
-    width: 88px;
-    height: 64px;
-    background-position: -299px -1485px;
-}
-
-.sprite-ward_sentry_png {
-    width: 88px;
-    height: 64px;
-    background-position: -397px -1485px;
-}
-
-.sprite-wind_lace_png {
-    width: 88px;
-    height: 64px;
-    background-position: -495px -1485px;
-}
-
-.sprite-winter_coal_png {
+.dota-item-satchel_png {
     width: 86px;
     height: 62px;
-    background-position: -593px -1485px;
+    background-position: -439px -1152px;
 }
 
-.sprite-winter_snowball_png {
+.dota-item-seer_stone_png {
+    width: 88px;
+    height: 64px;
+    background-position: -525px -1152px;
+}
+
+.dota-item-shadow_amulet_png {
     width: 86px;
     height: 62px;
-    background-position: -689px -1485px;
+    background-position: -613px -1152px;
 }
 
-.sprite-winter_woolies_png {
+.dota-item-sheepstick_png {
+    width: 88px;
+    height: 64px;
+    background-position: -699px -1152px;
+}
+
+.dota-item-shivas_guard_png {
+    width: 88px;
+    height: 64px;
+    background-position: -787px -1152px;
+}
+
+.dota-item-silver_edge_png {
+    width: 88px;
+    height: 64px;
+    background-position: -875px -1152px;
+}
+
+.dota-item-skadi_png {
+    width: 88px;
+    height: 64px;
+    background-position: -963px -1152px;
+}
+
+.dota-item-slippers_of_halcyon_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1051px -1152px;
+}
+
+.dota-item-slippers_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1139px -1152px;
+}
+
+.dota-item-smoke_of_deceit_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1227px -1152px;
+}
+
+.dota-item-sobi_mask_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1315px -1152px;
+}
+
+.dota-item-solar_crest_png {
+    width: 88px;
+    height: 64px;
+    background-position: 0 -1216px;
+}
+
+.dota-item-soul_booster_png {
+    width: 88px;
+    height: 64px;
+    background-position: -88px -1216px;
+}
+
+.dota-item-soul_ring_png {
+    width: 88px;
+    height: 64px;
+    background-position: -176px -1216px;
+}
+
+.dota-item-spell_prism_png {
+    width: 88px;
+    height: 64px;
+    background-position: -264px -1216px;
+}
+
+.dota-item-sphere_png {
+    width: 88px;
+    height: 64px;
+    background-position: -352px -1216px;
+}
+
+.dota-item-spider_legs_png {
+    width: 88px;
+    height: 64px;
+    background-position: -440px -1216px;
+}
+
+.dota-item-spirit_vessel_png {
     width: 86px;
     height: 62px;
-    background-position: -785px -1485px;
+    background-position: -528px -1216px;
 }
 
-.sprite-witless_shako_png {
+.dota-item-spy_gadget_png {
     width: 88px;
     height: 64px;
-    background-position: -881px -1485px;
+    background-position: -614px -1216px;
 }
 
-.sprite-woodland_striders_png {
+.dota-item-staff_of_wizardry_png {
     width: 88px;
     height: 64px;
-    background-position: -979px -1485px;
+    background-position: -702px -1216px;
 }
 
-.sprite-wraith_band_png {
+.dota-item-star_mace_png {
     width: 88px;
     height: 64px;
-    background-position: -1077px -1485px;
+    background-position: -790px -1216px;
 }
 
-.sprite-yasha_and_kaya_png {
+.dota-item-stormcrafter_png {
     width: 88px;
     height: 64px;
-    background-position: -1175px -1485px;
+    background-position: -878px -1216px;
 }
 
-.sprite-yasha_png {
+.dota-item-stout_shield_png {
     width: 88px;
     height: 64px;
-    background-position: -1273px -1485px;
+    background-position: -966px -1216px;
+}
+
+.dota-item-super_blink_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1054px -1216px;
+}
+
+.dota-item-swift_blink_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1142px -1216px;
+}
+
+.dota-item-talisman_of_evasion_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1230px -1216px;
+}
+
+.dota-item-tango_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1318px -1216px;
+}
+
+.dota-item-tango_single_png {
+    width: 88px;
+    height: 64px;
+    background-position: 0 -1280px;
+}
+
+.dota-item-the_leveller_png {
+    width: 88px;
+    height: 64px;
+    background-position: -88px -1280px;
+}
+
+.dota-item-third_eye_png {
+    width: 88px;
+    height: 64px;
+    background-position: -176px -1280px;
+}
+
+.dota-item-timeless_relic_png {
+    width: 88px;
+    height: 64px;
+    background-position: -264px -1280px;
+}
+
+.dota-item-titan_sliver_png {
+    width: 88px;
+    height: 64px;
+    background-position: -352px -1280px;
+}
+
+.dota-item-tombstone_png {
+    width: 88px;
+    height: 64px;
+    background-position: -440px -1280px;
+}
+
+.dota-item-tome_of_aghanim_png {
+    width: 88px;
+    height: 64px;
+    background-position: -528px -1280px;
+}
+
+.dota-item-tome_of_knowledge_png {
+    width: 88px;
+    height: 64px;
+    background-position: -616px -1280px;
+}
+
+.dota-item-tpscroll_png {
+    width: 88px;
+    height: 64px;
+    background-position: -704px -1280px;
+}
+
+.dota-item-tranquil_boots_active_png {
+    width: 88px;
+    height: 64px;
+    background-position: -792px -1280px;
+}
+
+.dota-item-tranquil_boots_png {
+    width: 88px;
+    height: 64px;
+    background-position: -880px -1280px;
+}
+
+.dota-item-travel_boots_2_png {
+    width: 88px;
+    height: 64px;
+    background-position: -968px -1280px;
+}
+
+.dota-item-travel_boots_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1056px -1280px;
+}
+
+.dota-item-travel_boots_tinker_png {
+    width: 93px;
+    height: 64px;
+    background-position: -1144px -1280px;
+}
+
+.dota-item-travel_slippers_png {
+    width: 99px;
+    height: 64px;
+    background-position: -1237px -1280px;
+}
+
+.dota-item-trickster_cloak_png {
+    width: 88px;
+    height: 63px;
+    background-position: -1336px -1280px;
+}
+
+.dota-item-trident_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1336px -1343px;
+}
+
+.dota-item-trusty_shovel_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1408px 0;
+}
+
+.dota-item-ultimate_orb_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1408px -64px;
+}
+
+.dota-item-ultimate_scepter_2_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1409px -128px;
+}
+
+.dota-item-ultimate_scepter_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1402px -192px;
+}
+
+.dota-item-ultimate_scepter_roshan_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1404px -256px;
+}
+
+.dota-item-ultimate_scepter_tease2_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1408px -320px;
+}
+
+.dota-item-ultimate_scepter_tease_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1407px -384px;
+}
+
+.dota-item-urn_of_shadows_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1402px -448px;
+}
+
+.dota-item-vambrace_agi_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1394px -512px;
+}
+
+.dota-item-vambrace_int_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1407px -576px;
+}
+
+.dota-item-vambrace_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1406px -640px;
+}
+
+.dota-item-vambrace_str_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1405px -704px;
+}
+
+.dota-item-vampire_fangs_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1435px -768px;
+}
+
+.dota-item-vanguard_png {
+    width: 87px;
+    height: 64px;
+    background-position: -1448px -832px;
+}
+
+.dota-item-veil_of_discord_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1394px -896px;
+}
+
+.dota-item-vengeances_shadow_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1392px -960px;
+}
+
+.dota-item-venom_gland_png {
+    width: 86px;
+    height: 62px;
+    background-position: -1418px -1024px;
+}
+
+.dota-item-vitality_booster_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1418px -1086px;
+}
+
+.dota-item-vladmir_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1403px -1150px;
+}
+
+.dota-item-void_stone_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1406px -1214px;
+}
+
+.dota-item-voodoo_mask_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1424px -1278px;
+}
+
+.dota-item-ward_dispenser_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1424px -1342px;
+}
+
+.dota-item-ward_dispenser_sentry_png {
+    width: 88px;
+    height: 64px;
+    background-position: 0 -1406px;
+}
+
+.dota-item-ward_observer_png {
+    width: 88px;
+    height: 64px;
+    background-position: -88px -1406px;
+}
+
+.dota-item-ward_sentry_png {
+    width: 88px;
+    height: 64px;
+    background-position: -176px -1406px;
+}
+
+.dota-item-warhammer_png {
+    width: 88px;
+    height: 64px;
+    background-position: -264px -1406px;
+}
+
+.dota-item-wind_lace_png {
+    width: 88px;
+    height: 64px;
+    background-position: -352px -1406px;
+}
+
+.dota-item-wind_waker_png {
+    width: 88px;
+    height: 64px;
+    background-position: -440px -1406px;
+}
+
+.dota-item-winter_coal_png {
+    width: 86px;
+    height: 62px;
+    background-position: -528px -1406px;
+}
+
+.dota-item-winter_snowball_png {
+    width: 86px;
+    height: 62px;
+    background-position: -614px -1406px;
+}
+
+.dota-item-winter_woolies_png {
+    width: 86px;
+    height: 62px;
+    background-position: -700px -1406px;
+}
+
+.dota-item-witch_blade_active_png {
+    width: 88px;
+    height: 64px;
+    background-position: -786px -1406px;
+}
+
+.dota-item-witch_blade_png {
+    width: 88px;
+    height: 64px;
+    background-position: -874px -1406px;
+}
+
+.dota-item-witless_shako_png {
+    width: 88px;
+    height: 64px;
+    background-position: -962px -1406px;
+}
+
+.dota-item-wizard_glass_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1050px -1406px;
+}
+
+.dota-item-woodland_striders_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1138px -1406px;
+}
+
+.dota-item-wraith_band_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1226px -1406px;
+}
+
+.dota-item-yasha_and_kaya_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1424px -1406px;
+}
+
+.dota-item-yasha_png {
+    width: 88px;
+    height: 64px;
+    background-position: -1496px 0;
 }

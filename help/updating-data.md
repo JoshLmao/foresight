@@ -39,6 +39,18 @@ Steps to update hero spritesheet in foresight
 }
 ```
 
+## Updating Item Sprites
+
+Follow the same steps as "Updating Hero Sprites" but extract all items located inside ```pak01_dir.vpk``` at ```root/panarama/images/items/```. However, set the **Style Prefix:** to ```dota-item```.
+Also replace the top ```.dota-item``` in the CSS file with
+```
+.dota-item {
+    background-image: url("/images/dota2/items_sheet.png");
+    background-repeat: no-repeat;
+    display: block;
+}
+```
+
 ## Update UI DotA Version
 
 Update the ```dotaVersion``` property in ```package.json``` once finished updating.

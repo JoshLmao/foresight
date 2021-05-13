@@ -72,12 +72,28 @@ class TalentRow extends Component {
     getTalentDisplayName (talent) {
         let talentInfo = getTalentInfoFromName(talent);
         if (!talentInfo) {
-            return "Unknown Talent";
+            return "Unknown";
         }
 
-        let displayName = getLocalizedString(this.state.abilityStrings, "DOTA_Tooltip_ability_" + talent); 
+        // Prefix can be either DOTA_Tooltip_[Aa]bility.
+        // Newer ones seem to use 'A' instead of 'a'
+        let prefixPossibilities = [
+            "DOTA_Tooltip_ability_",
+            "DOTA_Tooltip_Ability_"
+        ];
+        let displayName;
+        for (let prefix of prefixPossibilities) {
+            displayName = getLocalizedString(this.state.abilityStrings, prefix + talent); 
+            if (displayName) {
+                break;  // Stop once successful
+            }
+        }
+        // Insert value into displayName is successful, else set to 'Unknown'
         if (displayName && talentInfo && talentInfo.AbilitySpecial) {
             displayName = replaceStringValue(displayName, talentInfo.AbilitySpecial[0].value)
+        }
+        else {
+            displayName = "Unknown";
         }
 
         return displayName;
