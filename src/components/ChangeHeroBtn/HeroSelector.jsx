@@ -82,7 +82,7 @@ class HeroSelector extends Component {
                     <div className="d-flex flex-wrap">
                         {
                             this.state.filteredHeroes && this.state.filteredHeroes.map((value) => {
-                                let localizedName = getLocalizedString(this.state.dotaStrings, `npc_dota_hero_${value.name}`)
+                                let localizedName = getLocalizedString(this.state.dotaStrings, value.name)
                                 return (
                                     <div
                                         key={value.name}  
@@ -97,7 +97,8 @@ class HeroSelector extends Component {
                                             className={`hero-icon-big hero-icon-big-${value.name}_png`} 
                                             style={{ transformOrigin: "top left", transform: `scale(${iconScale}, ${iconScale})` }}
                                             data-heroname={value.displayName}
-                                            data-hero={value.name} />
+                                            data-hero={value.name} 
+                                            title={localizedName}/>
                                     </div>
                                 )
                             })

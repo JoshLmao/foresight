@@ -1,8 +1,11 @@
 /*
     Converts the Valve VDF format to a usable JSON file format.
+    Able to convert:
+    npc_abilities, npc_heroes, npc_units, abilities_{language}, dota_{langauge}
     Also converts the AbilitySpecial property in npc_abilities.txt to a JSON array.
 
     Configure the config paths before executing!
+    Note: All config paths that are folder paths require a '/' at the end to indicate its a path
 */
 
 
@@ -21,13 +24,21 @@ let npc_files = [
     "npc_units"
 ];
 
-// Folder path of the extracted 'neutral_items.txt' vdf from inside "{DotA Root}/game/dota/Pak01_dir.vdf"
-// Open with GCFScape, then navigate to "/root/scripts/npc/neutral_items.txt"
-// https://developer.valvesoftware.com/wiki/GCFScape
-let neutralItemsFolderPath = "D:/";
+// Folder path of extracted localized VDF's from in pak01_dir.vpk
+let languageFolderPath = "D:/foresight-extracts/";
+// Languages after dota_{language} or abilities_{language} in file name
+let languages = [
+    "english",
+    "schinese"
+];
 
-// Output folder to create/replace converted JSON files
-let foresightFolderPath = "/src/data/dota2/json/";
+// Folder path which contans the extracted 'neutral_items.txt' file
+let neutralItemsFolderPath = "D:/foresight-extracts/";
+
+// Output folder in repository to create/replace converted JSON files
+let foresightFolderPath = process.cwd() + "/src/data/dota2/json/";
+// Output folder in repository to create/replace language locale files
+let foresightLocaleFolderPath = process.cwd() + "/src/data/dota2/languages/";
 
 /*** END CONFIG ***/
 
@@ -125,15 +136,54 @@ for (let fileName of npc_files)
         }
 
         // Combine paths of current directory, plus folder path and name
-        let jsonPath = process.cwd() + foresightFolderPath + fileName + ".json";
+        let jsonPath = foresightFolderPath + fileName + ".json";
         // Stringify with 4 spaces as separator
-        let stringified = stringifyJsonObj(jsonData, null, '    ');
+        let stringified = stringifyJsonObj(jsonData);
         // Write stringify'd JSON to file
         writeSingleFile(jsonPath, stringified);
 
         console.log("Successfully converted file to location: " + jsonPath);
     }
 }
+
+console.log("Completed conversion of npc files");
+
+console.log("-----");
+
+console.log("Beginning conversion of localized files...");
+
+//languageFolderPath
+let localizedFiles = [
+    "dota_",
+    "abilities_"
+];
+for(let lang of languages)
+{
+    for(let locFile of localizedFiles) 
+    {
+        // Build full path - Root folder path + dota_ + language + .txt
+        let localeFileName = `${locFile}${lang}`;
+        let currentFilePath = `${languageFolderPath}${localeFileName}.txt`;
+        // Get content and attempt JSON parse
+        let fileContents = readSingleFile(currentFilePath);
+        let jsonObject = vdf.parse(fileContents);
+        if (jsonObject) {
+            // Build output file path, stringify and write
+            let outputFilePath = `${foresightLocaleFolderPath}${localeFileName}.json`;
+            let stringified = stringifyJsonObj(jsonObject);
+            writeSingleFile(outputFilePath, stringified);
+
+            console.log(`Successfully converted localized file '${localeFileName}'`);
+        }
+        else {
+            console.error(`ERROR: ${localeFileName} - unable to parse VDF`);
+        }
+    }
+}
+
+console.log("Completed conversion of localized files!")
+
+console.log("-----");
 
 console.log("Converting neutral_items.txt");
 
@@ -158,7 +208,7 @@ if (itmsText) {
             return;
         }
 
-        let itmsJsonPath = process.cwd() + foresightFolderPath + neutralItemsFileName + ".json";
+        let itmsJsonPath = foresightFolderPath + neutralItemsFileName + ".json";
         let stringified = stringifyJsonObj(itmsJSONObject);
         // Write stringify'd JSON to file
         writeSingleFile(itmsJsonPath, stringified);

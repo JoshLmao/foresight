@@ -78,19 +78,23 @@ function reducer(state = initialState, action) {
     {
         case SELECTED_HERO:
             let heroInfo = DOTAHeroes[action.value];
-            let allHeroAbilities = getAllHeroAbilities(heroInfo)
+            let allHeroAbilities = getAllHeroAbilities(heroInfo);
+            // If retrieved abilities, map them to index and level
+            if (allHeroAbilities) {
+                allHeroAbilities = allHeroAbilities.map((abil, index) => {
+                    return {
+                        ability: index,
+                        level: 1,
+                    };
+                });
+            }
             return {
                 ...state,
                 selectedHero: heroInfo,
                 selectedHeroName: action.value,
                 heroAbilities: allHeroAbilities,
                 heroTalents: getHeroTalents(heroInfo),
-                heroAbilityLevels: allHeroAbilities.map((abil, index) => {
-                    return {
-                        ability: index,
-                        level: 1,
-                    };
-                }),
+                heroAbilityLevels: allHeroAbilities,
 
                 // reset selected talents when new hero selected
                 selectedTalents: [ ],

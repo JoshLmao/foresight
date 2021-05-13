@@ -54,11 +54,15 @@ export function getHeroTalents (heroInfo) {
     // All abilities are stored in npc_heroes.json as "Ability?", where ? is a number. 
     // Not always in numberical order like 1, 2, 3
 
-    var keys = Object.keys(heroInfo);
-    var talents = [];
-    for(var i = 0; i < keys.length; i++) {
+    if (!heroInfo) {
+        return null;
+    }
+
+    let keys = Object.keys(heroInfo);
+    let talents = [];
+    for(let i = 0; i < keys.length; i++) {
         if (keys[i].includes("Ability") && !keys[i].includes("AbilityDraft")) {
-            var ability = heroInfo[keys[i]];
+            let ability = heroInfo[keys[i]];
             if (ability && typeof ability === "string") {
                 if (ability !== "generic_hidden" && ability.includes("special_bonus")) {
                     talents.push(ability);
@@ -68,9 +72,9 @@ export function getHeroTalents (heroInfo) {
     }
 
     // sort into nice list
-    var mappedTalents = [];
-    var lvlRow = 0;
-    for (i = 0 ; i < talents.length; i += 2) {
+    let mappedTalents = [];
+    let lvlRow = 0;
+    for (let i = 0 ; i < talents.length; i += 2) {
         mappedTalents.push({
             lvl: 10 + (5 * lvlRow),
             rightTalent: talents[i],
@@ -88,11 +92,15 @@ export function getHeroTalents (heroInfo) {
 
 /// Gets all hero abilities from a hero info
 export function getAllHeroAbilities (heroInfo) {
-    var keys = Object.keys(heroInfo);
-    var abilities = [];
-    for(var i = 0; i < keys.length; i++) {
+    if (!heroInfo) {
+        return null;
+    }
+
+    let keys = Object.keys(heroInfo);
+    let abilities = [];
+    for(let i = 0; i < keys.length; i++) {
         if (keys[i].includes("Ability") && !keys[i].includes("AbilityDraft")) {
-            var ability = heroInfo[keys[i]];
+            let ability = heroInfo[keys[i]];
             if (ability && typeof ability === "string") {
                 if (ability !== "generic_hidden" && !ability.includes("special_bonus")) {
                     abilities.push(ability);

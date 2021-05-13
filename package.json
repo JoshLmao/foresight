@@ -32,7 +32,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "convert-npc-vdfs": "node ./scripts/convert-npc-vdfs.js"
+    "convert-dota-vdfs": "node ./scripts/convert-dota-vdfs.js"
   },
   "eslintConfig": {
     "extends": "react-app"
