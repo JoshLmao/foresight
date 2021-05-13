@@ -38,3 +38,7 @@ Steps to update hero spritesheet in foresight
     display: block;
 }
 ```
+
+## Update UI DotA Version
+
+Update the ```dotaVersion``` property in ```package.json``` once finished updating.

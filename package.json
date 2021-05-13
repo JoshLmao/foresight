@@ -1,7 +1,7 @@
 {
   "name": "foresight",
   "version": "0.0.10",
-  "dotaVersion": "7.23c",
+  "dotaVersion": "7.29c",
   "homepage": "https://foresight.joshlmao.com",
   "private": true,
   "dependencies": {

@@ -159,7 +159,7 @@ class Abilities extends Component {
                                 <img
                                     className="h-100 align-self-center"
                                     style={{ maxWidth: "90px", maxHeight: "90px" }}
-                                    src={`http://cdn.dota2.com/apps/dota2/images/abilities/${value}_hp1.png`} 
+                                    src={`https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/abilities/${value}.png`} 
                                     alt={ `${ability.ID}-${value}` } />
                                 <Row className="px-4">
                                     <Col md={6}>
