@@ -16,6 +16,7 @@ import Cooldown from "./Cooldown";
 import ManaCost from "./ManaCost";
 import AbilityDetails from "./AbilityDetails";
 import "./Abilities.css";
+import { getAbilityIconURL } from './abilities-helper';
 
 /// Returns array of html elements to represent the levels of the ability
 function getAbilityLevelHtml (levelInfo, abilityIndex, abilityInfo, onLevelChanged) {
@@ -70,6 +71,7 @@ class Abilities extends Component {
             neutral: props.neutral,
             selectedTalents: props.selectedTalents,
             displayDamage: props.displayDamage,
+            shard: props.shard,
 
             abilityStrings: props.abilityStrings,
             dotaStrings: props.dotaStrings,
@@ -103,6 +105,9 @@ class Abilities extends Component {
         }
         if (prevProps.selectedTalents !== this.props.selectedTalents) {
             this.setState({ selectedTalents: this.props.selectedTalents });
+        }
+        if (prevProps.shard !== this.props.shard) {
+            this.setState({ shard: this.props.shard });
         }
 
         if (prevProps.abilityStrings !== this.props.abilityStrings) {
@@ -154,12 +159,17 @@ class Abilities extends Component {
                         if (ability && ability.IsGrantedByScepter && !itemsContainsScepter(this.state.items)) {
                             return;
                         }
+                        // Ignore Shard ability if shard isn't enabled
+                        if (ability && ability.IsGrantedByShard && !this.state.shard) {
+                            return;
+                        }
+
                         return (
                             <Col key={ability.ID} className="d-flex flex-column justify-content-top">
                                 <img
                                     className="h-100 align-self-center"
                                     style={{ maxWidth: "90px", maxHeight: "90px" }}
-                                    src={`https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/abilities/${value}.png`} 
+                                    src={ getAbilityIconURL(value) } 
                                     alt={ `${ability.ID}-${value}` } />
                                 <Row className="px-4">
                                     <Col md={6}>

@@ -47,6 +47,8 @@ const initialState = {
     ],
     /// Current neutral item selected by user
     neutralItem: { item: "" },
+    /// Is Aghanims Shard enabled for the current hero?
+    shard: false,
 
     // Current code of the selected UI language
     lang: "en",

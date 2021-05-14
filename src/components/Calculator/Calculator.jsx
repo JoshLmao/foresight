@@ -21,7 +21,9 @@ import {
     SELECTED_TALENT,
     UNSELECTED_TALENT,
     NEW_HERO_LEVEL,
-    ENEMY_SELECTED_TALENT, SELECTED_ABILITY_LEVEL
+    ENEMY_SELECTED_TALENT, 
+    SELECTED_ABILITY_LEVEL,
+    SHARD_SET,
 } from "../../constants/actionTypes";
 
 import { 
@@ -37,6 +39,9 @@ import TalentTree from "../TalentTree";
 import HealthManaBar from "../HealthManaBar";
 import LevelSelector from "../LevelSelector";
 import EnemyHero from '../EnemyHero';
+import { 
+    AghanimsShard
+} from '../Aghanims';
 
 import "../../css/dota_hero_icons.css";
 import "../../css/dota_attributes.css";
@@ -62,6 +67,7 @@ class Calculator extends Component {
         this.onTalentUnselected = this.onTalentUnselected.bind(this);
         this.onHeroLevelChanged = this.onHeroLevelChanged.bind(this);
         this.onAbilityLevelChanged = this.onAbilityLevelChanged.bind(this);
+        this.onShardSet = this.onShardSet.bind(this);
 
         this.onShareBuild = this.onShareBuild.bind(this);
         this.onBuildNameChanged = this.onBuildNameChanged.bind(this);
@@ -199,6 +205,11 @@ class Calculator extends Component {
         this.setState({ buildCreator: e.target.value });
     }
 
+    onShardSet(isSet) {
+        console.log(`${SHARD_SET}: Set: ${isSet}`)
+        this.props.dispatch({ type: SHARD_SET, value: isSet });
+    }
+
     render() {
         return (
             <div className="foresite-app-container">
@@ -248,7 +259,7 @@ class Calculator extends Component {
 
                     {/* Health/Mana and Hero Lvl  */}
                     <Row className="my-2 py-2">
-                        <Col md={8}>
+                        <Col md={7}>
                             <HealthManaBar 
                                 hero={this.props.selectedHero} 
                                 heroLevel={this.props.heroLevel}
@@ -262,6 +273,17 @@ class Calculator extends Component {
                                 heroLevel={ this.props.heroLevel } 
                                 onHeroLevelChanged={ this.onHeroLevelChanged }
                                 dotaStrings={this.props.dotaStrings} />
+                        </Col>
+                        <Col md={1}>
+                            <AghanimsShard
+                                hero={this.props.selectedHero} 
+                                abilities={this.props.heroAbilities}
+                                items={this.props.items}
+
+                                abilityStrings={this.props.abilityStrings}
+                                
+                                onShardSet={this.onShardSet}
+                                />
                         </Col>
                     </Row>
 
@@ -290,17 +312,23 @@ class Calculator extends Component {
 
                     {/* Abilities */}
                     <Abilities 
-                        onAbilityLevelChanged={this.onAbilityLevelChanged}
+                        displayDamage={true}
+
                         heroName={this.props.selectedHeroName}
                         abilities={this.props.heroAbilities}
                         abilityLevels={this.props.heroAbilityLevels}
                         items={this.props.items}
                         neutral={this.props.neutralItem} 
                         selectedTalents={this.props.selectedTalents} 
+                        shard={this.props.shard}
+
                         abilityStrings={this.props.abilityStrings}
                         dotaStrings={this.props.dotaStrings} 
-                        displayDamage={true} />
 
+                        onAbilityLevelChanged={this.onAbilityLevelChanged}
+                        />
+
+                    {/* Share Build */}
                     <div className="pb-4">
                         <Button 
                             className="d-flex py-2"
@@ -397,6 +425,8 @@ const mapStateToProps = (state) => ({
     backpack: state.hero.backpack,
     neutralItem: state.hero.neutralItem,
     selectedTalents: state.hero.selectedTalents,
+
+    shard: state.hero.shard,
 
     abilityStrings: state.language.stringsAbilities,
     dotaStrings: state.language.stringsDota,

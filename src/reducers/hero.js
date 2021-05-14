@@ -8,7 +8,8 @@ import {
     SELECTED_TALENT,
     UNSELECTED_TALENT,
     NEW_HERO_LEVEL,
-    SELECTED_ABILITY_LEVEL
+    SELECTED_ABILITY_LEVEL,
+    SHARD_SET
 } from "../constants/actionTypes";
 
 import {
@@ -134,6 +135,11 @@ function reducer(state = initialState, action) {
             return {
                 ...state,
                 heroAbilityLevels: replaceUpdatedAbilityLevel(state.heroAbilityLevels, action.value),
+            };
+        case SHARD_SET:
+            return {
+                ...state,
+                shard: action.value,
             };
         default:
             return state;
