@@ -280,6 +280,7 @@ class Calculator extends Component {
                                 abilities={this.props.heroAbilities}
                                 items={this.props.items}
 
+                                dotaStrings={this.props.dotaStrings}
                                 abilityStrings={this.props.abilityStrings}
                                 
                                 onShardSet={this.onShardSet}

@@ -1,0 +1,54 @@
+/* Master container for a single aghanim shard/scepter */
+.aghanim-container {
+    border: 2px solid black;
+}
+
+/* Separator div between scepter and shard content */
+.tooltip-aghs-separator {
+    background-color: #111312;
+    height: 0.5rem;
+}
+
+/* Main title bar div inside scepter/shard */
+.descriptor-title-bar {
+    background-color: #212e34;
+    height: 40px;
+}
+
+/* Text title inside Aghanim's tooltip title bar */
+.descriptor-title-bar .aghanims-title {
+    color: #98a5e9;
+}
+
+/* Parent box that contains Scepter/Shard titles */
+.descriptor-title-box {
+    text-transform: uppercase;
+}
+
+/* Main title in the Aghanims hover (Scepter or Shard) */
+.descriptor-title-box .title {
+    font-size: 1.25rem;
+}
+/* Small titles after main title describing scepter/shard type */
+.upgrade-title {
+    background-color: #364c7c;
+}
+.ability-title {
+    background-color: #394f7d;
+}
+
+/* Parent container for description */
+.description-container {
+    font-size: 0.8rem;
+}
+/* Ability specific container that adds rounded corner and different bg color */
+.description-container.ability {
+    background-color: #293743;
+    border-radius: 0.5rem;
+}
+
+/* Ability icon for shard/scepter */
+.aghanim-ability-icon {
+    border: 1px solid black;
+    border-radius: 0.25rem;
+}

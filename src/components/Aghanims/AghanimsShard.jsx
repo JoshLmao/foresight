@@ -18,25 +18,25 @@ function determineScepterShardAbilities (heroAbilities) {
                 // Ability is granted to hero with shard/scepter
                 if (abilityInfo.IsGrantedByShard === '1') {
                     shardAbility = {
-                        abilityName: shardAbility,
-                        type: "ability",
+                        abilityName: abilityName,
+                        type: "DOTA_AbilityTooltip_Aghs_New_Ability",
                     };
                 } else if (abilityInfo.IsGrantedByScepter === '1') {
                     scepterAbility = {
                         abilityName: abilityName,
-                        type: "ability",
+                        type: "DOTA_AbilityTooltip_Aghs_New_Ability",
                     };
                 }
                 // Ability has upgrade applied with shard/scepter
                 if (abilityInfo.HasShardUpgrade === '1') {
                     shardAbility = {
                         abilityName: abilityName,
-                        type: "upgrade",
+                        type: "DOTA_AbilityTooltip_Upgrade",
                     };
                 } else if (abilityInfo.HasScepterUpgrade === '1') {
                     scepterAbility = {
                         abilityName: abilityName,
-                        type: "upgrade",
+                        type: "DOTA_AbilityTooltip_Upgrade",
                     };
                 }
             }
@@ -56,10 +56,11 @@ class AghanimsShard extends Component {
         // Determine shard/scepter abilities
         
         let scepterShardAbils = determineScepterShardAbilities(props.abilities);
+        let containsScepter = itemsContainsScepter(props.items);
         this.state = {
             shardOn: false,
             shardAbility: scepterShardAbils.shard,
-            scepterOn: itemsContainsScepter(props.items),
+            scepterOn: containsScepter,
             scepterAbility: scepterShardAbils.scepter,
             tooltipDisabled: false,
 
@@ -67,6 +68,7 @@ class AghanimsShard extends Component {
             abilities: props.abilities,
             items: props.items,
 
+            dotaStrings: props.dotaStrings,
             abilityStrings: props.abilityStrings,
 
             onShardSet: props.onShardSet,
@@ -82,9 +84,10 @@ class AghanimsShard extends Component {
             });
         }
         if (this.props.items != prevProps.items) {
+            let containsScepter = itemsContainsScepter(this.props.items);
             this.setState({
                 items: this.props.items,
-                scepterOn: itemsContainsScepter(this.props.items),
+                scepterOn: containsScepter,
             });
         }
         if (this.props.abilities != prevProps.abilities) {
@@ -98,6 +101,11 @@ class AghanimsShard extends Component {
         if (this.props.abilityStrings != prevProps.abilityStrings) {
             this.setState({
                 abilityStrings: this.props.abilityStrings,
+            });
+        }
+        if (this.props.dotaStrings != prevProps.dotaStrings) {
+            this.setState({
+                dotaStrings: this.props.dotaStrings,
             });
         }
     }
@@ -130,11 +138,15 @@ class AghanimsShard extends Component {
                             </div>
                         </div>
                     )}
-                    position="right"
+                    position="bottom"
                     closeOnDocumentClick
                     closeOnEscape
                     disabled={this.state.tooltipDisabled}
                     className="foresight-tooltip"
+                    contentStyle={{ 
+                        width: "450px",
+                        height: "auto"
+                    }}
                     >
                     <AghanimsDescriptorTooltip
                         shardOn={this.state.shardOn}
@@ -142,6 +154,7 @@ class AghanimsShard extends Component {
                         scepterOn={this.state.scepterOn}
                         scepterAbility={this.state.scepterAbility}
                         hero={this.state.hero}
+                        dotaStrings={this.state.dotaStrings}
                         abilityStrings={this.state.abilityStrings}
                         />
                 </Popup>

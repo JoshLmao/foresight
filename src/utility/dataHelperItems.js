@@ -140,12 +140,13 @@ export function primaryAttributeToItemBonusKey(primaryAttr) {
 
 /// Checks if the items array contains an aghanims scepter
 export function itemsContainsScepter (allItems) {
-    allItemsContainsSpecific(allItems, "ultimate_scepter")
+    return itemsIncludesItem(allItems, "ultimate_scepter");
 }
 
-export function allItemsContainsSpecific (allItems, item) {
+/// Checks if allItems contains an item by performing .include() with "itemName" on each item's name
+export function itemsIncludesItem (allItems, itemName) {
     for (let item of allItems) {
-        if (item.item && item.item.includes(item)) {
+        if (item.item && item.item.includes(itemName)) {
             return true;
         }
     }
