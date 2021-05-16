@@ -7,7 +7,13 @@ import { EAttributes } from "../enums/attributes";
 import React from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock } from '@fortawesome/free-solid-svg-icons';
+
 import { tryParseAbilitySpecialValue } from "./dataHelperAbilities";
+import { 
+    getAbilitySpecialValue, 
+    insertLocaleStringDataValues, 
+    tryGetInfoValue 
+} from "./dataHelperGeneric";
 import { 
     getLocalizedString, 
     getFuzzyEngAbilityLocalizedString 
@@ -20,29 +26,11 @@ export function getItemInfoFromName (itemName) {
         return null;
 }
 
-/// Gets the value of an item's AbilitySpecial array
-export function getItemSpecialAbilityValue (itemInfo, specialAbilityValueKey) {
-    if (itemInfo && itemInfo.AbilitySpecial) {
-        for(let i = 0; i < itemInfo.AbilitySpecial.length; i++) {
-            let keys = Object.keys(itemInfo.AbilitySpecial[i]);
-            let matchingKey = keys.find(element => {
-                return element === specialAbilityValueKey;
-            });
-
-            if (matchingKey) {
-                let specialAbilityInfo = itemInfo.AbilitySpecial[i];
-                return tryParseAbilitySpecialValue(specialAbilityInfo, specialAbilityInfo[matchingKey], 1);
-            }
-        }
-    }
-    return null;
-}
-
 /// Try Gets a item info and sepcial value from it's item's Ability Special array
 export function tryGetItemSpecialValue (item, specialAbilityValueKey) {
     let itemInfo = getItemInfoFromName(item.item);
     if (itemInfo) {
-        var specialValue = getItemSpecialAbilityValue(itemInfo, specialAbilityValueKey);
+        var specialValue = getAbilitySpecialValue(itemInfo.AbilitySpecial, specialAbilityValueKey);
         if (specialValue) {
             return specialValue;
         }
@@ -54,7 +42,7 @@ export function tryGetItemSpecialValue (item, specialAbilityValueKey) {
 export function tryGetNeutralSpecialValue (neutral, specialValueKey) {
     let foundNeutralInfo = getItemInfoFromName(neutral.item);
     if (foundNeutralInfo) {
-        var specialValue = getItemSpecialAbilityValue(foundNeutralInfo, specialValueKey);
+        var specialValue = getAbilitySpecialValue(foundNeutralInfo.AbilitySpecial, specialValueKey);
         if (specialValue) {
             return specialValue;
         }
@@ -160,10 +148,12 @@ export function replaceStringWithDataValues (string, itemInfo) {
         return null;
     }
 
+    // Regex to find a "%word_word%" phrase
     let replaceRegex = /%\w*?%/;
     // special character to use in placeholder of replacing in final string with ?
     let REPLACE_CHAR = "~";
 
+    // Loop through all matches of the regex in the string
     while (string.match(replaceRegex)?.length > 0) {
         let phrase = string.match(replaceRegex)[0];
         if (phrase) {
@@ -176,15 +166,15 @@ export function replaceStringWithDataValues (string, itemInfo) {
             }
             // if is an AbilitySpecial key as all contain a '_' 
             else if (infoKey.includes("_")) {
-                specialAbilityValue = getItemSpecialAbilityValue(itemInfo, infoKey);
+                specialAbilityValue = getAbilitySpecialValue(itemInfo.AbilitySpecial, infoKey);
             }
             else {
                 // Check if infoKey is a key on the main itemInfo object
-                specialAbilityValue = tryGetItemInfoValue(itemInfo, infoKey);
+                specialAbilityValue = tryGetInfoValue(itemInfo, infoKey);
 
                 // could be AbilitySpecial key that contains no _
                 if (!specialAbilityValue) {
-                    specialAbilityValue = getItemSpecialAbilityValue(itemInfo, infoKey);
+                    specialAbilityValue = getAbilitySpecialValue(itemInfo.AbilitySpecial, infoKey);
                 }
             }
             
@@ -205,30 +195,10 @@ export function replaceStringWithDataValues (string, itemInfo) {
     return string;
 }
 
-/// Try Get's a ItemInfo value on the original object from a key
-export function tryGetItemInfoValue (itemInfo, itemInfoKey) {
-    if (itemInfo) {
-        let keys = Object.keys(itemInfo);
-        let matchingKey = keys.find(element => {
-            return element.toLowerCase() === itemInfoKey.toLowerCase();
-        });
-
-        if (matchingKey) {
-            let infoValue = itemInfo[matchingKey];
-            if (infoValue.includes(".")) {
-                return parseFloat(infoValue);
-            } else {
-                return parseInt(infoValue);
-            }
-        }
-    }
-    return null;
-}
-
 /// Converts a item description localized string into the correct displayable HTML
 export function convertItemDescToHtml(itemDescString, itemName, itemInfo) {
     /// Replace active/passive item ability with the data values inside the itemInfo
-    let dataString = replaceStringWithDataValues(itemDescString, itemInfo);
+    let dataString = insertLocaleStringDataValues(itemDescString, itemInfo, itemInfo.AbilitySpecial);
     if (!dataString) {
         return null;
     }

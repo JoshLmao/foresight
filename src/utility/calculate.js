@@ -1,6 +1,9 @@
+import {
+    getAbilitySpecialValue
+} from "./dataHelperGeneric";
+
 import { 
     getItemInfoFromName,
-    getItemSpecialAbilityValue,
     tryGetItemSpecialValue,
     tryGetNeutralSpecialValue,
     primaryAttributeToItemBonusKey,
@@ -644,7 +647,7 @@ export function calculateTotalSpellAmp (talents, items, neutral) {
     if (neutral) {
         let foundNeutral = getItemInfoFromName(neutral.item);
         if (foundNeutral) {
-            let spellAmpAmount = getItemSpecialAbilityValue(foundNeutral, "spell_amp");
+            let spellAmpAmount = getAbilitySpecialValue(foundNeutral, "spell_amp");
             if (spellAmpAmount) {
                 totalSpellAmp += spellAmpAmount;
                 //console.log(`Neutral ${neutral.item} provides ${spellAmpAmount}% spell amp`);
@@ -686,7 +689,7 @@ export function calculateStatusResist(items, neutral) {
             if (items[i].item) {
                 let itemInfo = getItemInfoFromName(items[i].item);
                 if (itemInfo) {
-                    let statusResistAmount = getItemSpecialAbilityValue(itemInfo, "status_resistance");
+                    let statusResistAmount = getAbilitySpecialValue(itemInfo.AbilitySpecial, "status_resistance");
                     if (statusResistAmount) {
                         totalStatusResist += statusResistAmount;
                     }
@@ -721,17 +724,17 @@ export function calculateMagicResist (items, neutral, abilities) {
         for(let i = 0; i < items.length; i++) {
             let itemInfo = getItemInfoFromName(items[i].item);
             if (itemInfo) {
-                let magicResistAmount = getItemSpecialAbilityValue(itemInfo, "bonus_magic_resistance");
+                let magicResistAmount = getAbilitySpecialValue(itemInfo.AbilitySpecial, "bonus_magic_resistance");
                 if (magicResistAmount) {
                     resistanceBonuses.push(magicResistAmount);
                 }
 
-                magicResistAmount = getItemSpecialAbilityValue(itemInfo, "magic_resistance");
+                magicResistAmount = getAbilitySpecialValue(itemInfo.AbilitySpecial, "magic_resistance");
                 if (magicResistAmount) {
                     resistanceBonuses.push(magicResistAmount);
                 }
 
-                magicResistAmount = getItemSpecialAbilityValue(itemInfo, "bonus_magical_armor");
+                magicResistAmount = getAbilitySpecialValue(itemInfo.AbilitySpecial, "bonus_magical_armor");
                 if (magicResistAmount) {
                     resistanceBonuses.push(magicResistAmount);
                 }
@@ -804,7 +807,7 @@ export function calculateEvasion(items, neutral, abilities, talents) {
             if (items[i].item) {
                 let itemInfo = getItemInfoFromName(items[i].item);
                 if (itemInfo) {
-                    let evasionAmount = getItemSpecialAbilityValue(itemInfo, "bonus_evasion");
+                    let evasionAmount = getAbilitySpecialValue(itemInfo.AbilitySpecial, "bonus_evasion");
                     if (evasionAmount) {
                         totalEvasion += evasionAmount;
                     }
@@ -1159,7 +1162,7 @@ export function calculateManaCost(abilityInfo, abilityLevel, items, neutral, tal
         for(let item of items) {
             let itemInfo = getItemInfoFromName(item.item);
             if(itemInfo) {
-                let manaCostReduceAmount = getItemSpecialAbilityValue(itemInfo, "manacost_reduction");
+                let manaCostReduceAmount = getAbilitySpecialValue(itemInfo.AbilitySpecial, "manacost_reduction");
                 if(manaCostReduceAmount) {
                     totalManaCostReducePercent += manaCostReduceAmount;
                 }
@@ -1170,7 +1173,7 @@ export function calculateManaCost(abilityInfo, abilityLevel, items, neutral, tal
     if (neutral) {
         let neutralInfo = getItemInfoFromName(neutral.item);
         if (neutralInfo) {
-            let costReductionAmount = getItemSpecialAbilityValue(neutralInfo, "manacost_reduction");
+            let costReductionAmount = getAbilitySpecialValue(neutralInfo.AbilitySpecial, "manacost_reduction");
             if (costReductionAmount) {
                 totalManaCostReducePercent += costReductionAmount;
             }
@@ -1232,7 +1235,7 @@ export function calculateAbilityCooldown(abilityName, abilityInfo, abilityLevel,
             if (item && item.item) {
                 let itemInfo = getItemInfoFromName(item.item);
                 if (itemInfo) {
-                    let bonusCooldown = getItemSpecialAbilityValue(itemInfo, "bonus_cooldown");
+                    let bonusCooldown = getAbilitySpecialValue(itemInfo.AbilitySpecial, "bonus_cooldown");
                     if (bonusCooldown) {
                         allReductions.push(bonusCooldown);
                     }
@@ -1244,7 +1247,7 @@ export function calculateAbilityCooldown(abilityName, abilityInfo, abilityLevel,
     if (neutral) {
         let neutralInfo = getItemInfoFromName(neutral.item);
         if (neutralInfo) {
-            let bonusCooldown = getItemSpecialAbilityValue(neutralInfo, "bonus_cooldown");
+            let bonusCooldown = getAbilitySpecialValue(neutralInfo.AbilitySpecial, "bonus_cooldown");
             if (bonusCooldown) {
                 allReductions.push(bonusCooldown);
             } 

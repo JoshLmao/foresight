@@ -11,12 +11,25 @@ import {
 } from './aghs-helper';
 
 import "./Aghanims.css";
+import { getAbilityInfoFromName } from '../../utility/dataHelperAbilities';
+import {
+    insertLocaleStringDataValues
+} from "../../utility/dataHelperGeneric";
 
 /// Single descriptor for the aghanim's scepter/shard tooltip
 function AghanimDescriptor(props) {
     let iconWidth = "35px", iconHeight = "30px";
     let isScepter = props.descriptorType === "scepter";
     let isUpgrade = props.type === "DOTA_AbilityTooltip_Upgrade";
+
+    // Get locale string, ability info
+    let descLocaleString = getTooltipAbilityString(props.abilityStrings, props.description);
+    let abilInfo = getAbilityInfoFromName(props.ability);
+    // Replace locale string's data values with data
+    descLocaleString = insertLocaleStringDataValues(descLocaleString, abilInfo, abilInfo.AbilitySpecial);
+    // Replace new line char with HTML break
+    descLocaleString = descLocaleString.split("\\n").join("<br/>");
+
     return (
         <div className="aghanim-container">
             {/* Title Bar */}
@@ -68,7 +81,9 @@ function AghanimDescriptor(props) {
                     </div>
                     {/* Descriptive body */}
                     <div className="m-1">
-                        { props.description }
+                        <div dangerouslySetInnerHTML={{ __html: descLocaleString }}>
+
+                        </div>
                     </div>
                 </div>
             </div>
@@ -144,13 +159,13 @@ class AghanimsDescriptorTooltip extends Component {
                     titleName={ getLocalizedString(this.state.dotaStrings, "DOTA_AbilityTooltip_Aghs_Scepter") }
                     ability={this.state.scepterAbility?.abilityName}
                     title={ this.state.scepterAbility ? getTooltipAbilityString(this.state.abilityStrings, this.state.scepterAbility.abilityName) : "?" }
-                    description={ this.state.scepterAbility ? getTooltipAbilityString(this.state.abilityStrings, this.state.scepterAbility.abilityName + "_Description") : "?" }
+                    description={ this.state.scepterAbility ? this.state.scepterAbility.abilityName + "_Description" : "?" }
                     type={ this.state.scepterAbility ? this.state.scepterAbility.type : "?" }
 
                     dotaStrings={this.state.dotaStrings}
+                    abilityStrings={this.state.abilityStrings}
                     />
                 
-
                 {/* Separator */}
                 <div className="tooltip-aghs-separator">
                 </div>
@@ -162,10 +177,11 @@ class AghanimsDescriptorTooltip extends Component {
                     titleName={ getLocalizedString(this.state.dotaStrings, "DOTA_AbilityTooltip_Aghs_Shard") }
                     ability={ this.state.shardAbility?.abilityName }
                     title={ this.state.shardAbility ? getTooltipAbilityString(this.state.abilityStrings, this.state.shardAbility.abilityName) : "?" }
-                    description={ this.state.shardAbility ? getTooltipAbilityString(this.state.abilityStrings, this.state.shardAbility.abilityName + "_Description") : "?" }
+                    description={ this.state.shardAbility ? this.state.shardAbility.abilityName + "_Description" : "?" }
                     type={ this.state.shardAbility ? this.state.shardAbility.type : "?" }
 
                     dotaStrings={this.state.dotaStrings}
+                    abilityStrings={this.state.abilityStrings}
                     />
             </div>
         );
