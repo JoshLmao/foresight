@@ -40,7 +40,7 @@ import HealthManaBar from "../HealthManaBar";
 import LevelSelector from "../LevelSelector";
 import EnemyHero from '../EnemyHero';
 import { 
-    AghanimsShard
+    AghanimsUpgrades
 } from '../Aghanims';
 
 import "../../css/dota_hero_icons.css";
@@ -275,7 +275,7 @@ class Calculator extends Component {
                                 dotaStrings={this.props.dotaStrings} />
                         </Col>
                         <Col md={1}>
-                            <AghanimsShard
+                            <AghanimsUpgrades
                                 hero={this.props.selectedHero} 
                                 abilities={this.props.heroAbilities}
                                 items={this.props.items}

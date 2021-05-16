@@ -13,6 +13,8 @@ import {
     getLocalizedString
 } from "../../utility/data-helpers/language";
 
+import "./Talents.css";
+
 function isTalentSelected (selectedTalents, talent) {
     return selectedTalents?.includes(talent);
 }
@@ -101,16 +103,21 @@ class TalentRow extends Component {
 
     render() {
         return (
-            <Row className="my-1 py-2" style={{ backgroundColor: "rgb(24, 30, 33)"}}>
+            <Row 
+                className="my-1 py-2" 
+                    style={{ 
+                        backgroundColor: "rgb(24, 30, 33)",
+                    }}>
                 {/* Left Talent */}
                 <Col 
                     md={5}
-                    className="text-center"
+                    className="text-center single-talent"
                     style={{ 
                         color: isTalentSelected(this.state.selectedTalents, this.state.leftTalent) ? "#c4a66f" : "white",
-                        userSelect: "none",
                     }}>
-                    <div onClick={this.onSelectTalent} data-talent={this.state.leftTalent}>
+                    <div 
+                        onClick={this.onSelectTalent} 
+                        data-talent={this.state.leftTalent}>
                         {
                             this.getTalentDisplayName(this.state.leftTalent)
                         }
@@ -127,12 +134,13 @@ class TalentRow extends Component {
                 {/* Right Talent */}
                 <Col 
                     md={5}
-                    className="text-center"
+                    className="text-center single-talent"
                     style={{ 
                         color: isTalentSelected(this.state.selectedTalents, this.state.rightTalent) ? "#c4a66f" : "white",
-                        userSelect: "none",
                     }}>
-                    <div onClick={this.onSelectTalent} data-talent={this.state.rightTalent}>
+                    <div 
+                        onClick={this.onSelectTalent} 
+                        data-talent={this.state.rightTalent}>
                         {
                             this.getTalentDisplayName(this.state.rightTalent)
                         }

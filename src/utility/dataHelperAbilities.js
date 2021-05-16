@@ -401,7 +401,7 @@ export function getAbilitySpecialExtraValues (abilityName, abilityInfo, abilityL
             // If AbilitySpecial has special bonus modifier and is selected
             if ( talentsInclude(selectedTalents, currentAbilitySpecialObject.specialBonus) ) {
                 let specialBonusValue = tryGetTalentSpecialAbilityValue(currentAbilitySpecialObject.specialBonus, "value");
-               
+
                 /// Apply bonus operation to value
                 if (currentAbilitySpecialObject.specialBonusOperation) {
                     switch (currentAbilitySpecialObject.specialBonusOperation) {
@@ -420,9 +420,9 @@ export function getAbilitySpecialExtraValues (abilityName, abilityInfo, abilityL
                             break;
                     };
                 } else {
-                    /// If no special bonus operation, just replace new values on original
+                    /// If no special bonus operation, add new value on original
                     if (specialBonusValue) {
-                        value = specialBonusValue;
+                        value += specialBonusValue;
                     }
                 }
             }

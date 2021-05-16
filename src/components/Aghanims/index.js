@@ -1,7 +1,7 @@
-import AghanimsShard from "./AghanimsShard.jsx";
+import AghanimsUpgrades from "./AghanimsUpgrades.jsx";
 import AghanimsDescriptorTooltip from "./AghanimsDescriptorTooltip";
 
 export {
-    AghanimsShard,
+    AghanimsUpgrades,
     AghanimsDescriptorTooltip
 }

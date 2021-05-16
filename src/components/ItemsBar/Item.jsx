@@ -142,7 +142,10 @@ class Item extends Component {
         let height = "64px";
         return (
             // Relative to make positioning work on children
-            <div style={{ position:"relative" }}>
+            <div style={{ 
+                position:"relative",
+                cursor: "pointer",
+                }}>
                 {
                     // Hover popup for Item information tooltip
                     this.state.item &&

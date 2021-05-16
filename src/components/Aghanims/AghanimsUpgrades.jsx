@@ -5,7 +5,7 @@ import { itemsContainsScepter } from '../../utility/dataHelperItems';
 
 import { 
     AghanimsDescriptorTooltip
-} from '../Aghanims';
+} from '.';
 import { getScepterIconPath, getShardIconPath } from './aghs-helper';
 
 function determineScepterShardAbilities (heroAbilities) {
@@ -52,7 +52,7 @@ function determineScepterShardAbilities (heroAbilities) {
     }
 }
 
-class AghanimsShard extends Component {
+class AghanimsUpgrades extends Component {
     constructor(props) {
         super(props);
         
@@ -168,4 +168,4 @@ class AghanimsShard extends Component {
     }
 }
 
-export default AghanimsShard;
+export default AghanimsUpgrades;
