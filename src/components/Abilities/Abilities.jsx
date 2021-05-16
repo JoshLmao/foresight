@@ -17,6 +17,8 @@ import ManaCost from "./ManaCost";
 import AbilityDetails from "./AbilityDetails";
 import "./Abilities.css";
 import { getAbilityIconURL } from './abilities-helper';
+import { isAbilityBehaviour } from '../../utility/dataHelperAbilities';
+import { EAbilityBehaviour } from '../../enums/abilities';
 
 /// Returns array of html elements to represent the levels of the ability
 function getAbilityLevelHtml (levelInfo, abilityIndex, abilityInfo, onLevelChanged) {
@@ -143,24 +145,32 @@ class Abilities extends Component {
             <Row 
                 md={this.state.abilities?.length > ABILITY_ROW_MAX ? ABILITY_ROW_MAX : 0}>
                 {
-                    this.state.abilities && this.state.abilityLevels && this.state.abilities.map((value, index) => {
-                        // Info about the ability
-                        let ability = DOTAAbilities[value];
+                    this.state.abilities && this.state.abilityLevels && this.state.abilities.map((abilName, index) => {
+                        // Get ability info from name
+                        let ability = DOTAAbilities[abilName];
                         if (!ability) {
-                            console.log(`Unable to find info on ability '${value}'`);
+                            console.log(`Unable to find info on ability '${abilName}'`);
+                            return (<div key={abilName}>?</div>);
                         }
-                        // Current level of the ability
+
+                        // Get current level information of the ability
                         let levelInfo = this.state.abilityLevels.find(abilVal => abilVal.ability === index);
-                        if (!ability && value) {
-                            return <div key={value}>?</div>
+                        if (!levelInfo) {
+                            console.error(`Unable to find levelInfo for ${abilName}`);
+                            return;
+                        }
+
+                        // Hide Ability if AbiltyBehaviour contains HIDDEN and isn't scepter/shard given
+                        if ( isAbilityBehaviour(ability.AbilityBehavior, [ EAbilityBehaviour.HIDDEN ]) && (!ability.IsGrantedByScepter && !ability.IsGrantedByShard)) {
+                            return;
                         }
 
                         // Dont add any scepter abilities unless hero has scepter
-                        if (ability && ability.IsGrantedByScepter && !itemsContainsScepter(this.state.items)) {
+                        if (ability.IsGrantedByScepter && !itemsContainsScepter(this.state.items)) {
                             return;
                         }
                         // Ignore Shard ability if shard isn't enabled
-                        if (ability && ability.IsGrantedByShard && !this.state.shard) {
+                        if (ability.IsGrantedByShard && !this.state.shard) {
                             return;
                         }
 
@@ -169,13 +179,13 @@ class Abilities extends Component {
                                 <img
                                     className="h-100 align-self-center"
                                     style={{ maxWidth: "90px", maxHeight: "90px" }}
-                                    src={ getAbilityIconURL(value) } 
-                                    alt={ `${ability.ID}-${value}` } />
+                                    src={ getAbilityIconURL(abilName) } 
+                                    alt={ `${ability.ID}-${abilName}` } />
                                 <Row className="px-4">
                                     <Col md={6}>
                                         {/* Cooldown */}
                                         <Cooldown 
-                                            ability={value} 
+                                            ability={abilName} 
                                             abilityInfo={ability}
                                             abilityLevel={levelInfo.level} 
                                             cooldown={ability.AbilityCooldown}
@@ -203,7 +213,7 @@ class Abilities extends Component {
                                     {
                                         this.state.displayDamage && 
                                             <DamageOutput 
-                                                ability={value}
+                                                ability={abilName}
                                                 abilityInfo={ability} 
                                                 levelInfo={levelInfo}
                                                 items={this.state.items}
@@ -215,7 +225,7 @@ class Abilities extends Component {
                                 </div>
                                 <div className="py-1">
                                     <AbilityDetails 
-                                        ability={value}
+                                        ability={abilName}
                                         abilityInfo={ability} 
                                         levelInfo={levelInfo}
                                         items={this.state.items}

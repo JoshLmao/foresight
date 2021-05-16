@@ -52,3 +52,8 @@
     border: 1px solid black;
     border-radius: 0.25rem;
 }
+
+/* Container around no upgrade/new ability text */
+.no-upgrade-container {
+    color: #585952;
+}

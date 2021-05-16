@@ -16,12 +16,14 @@ function determineScepterShardAbilities (heroAbilities) {
             // Check Shard/Scepter is an ability when bought
             if (abilityInfo) {
                 // Ability is granted to hero with shard/scepter
+                // Single IF checks since one ability can be upgraded by both scepter/shard
                 if (abilityInfo.IsGrantedByShard === '1') {
                     shardAbility = {
                         abilityName: abilityName,
                         type: "DOTA_AbilityTooltip_Aghs_New_Ability",
                     };
-                } else if (abilityInfo.IsGrantedByScepter === '1') {
+                } 
+                if (abilityInfo.IsGrantedByScepter === '1') {
                     scepterAbility = {
                         abilityName: abilityName,
                         type: "DOTA_AbilityTooltip_Aghs_New_Ability",
@@ -33,7 +35,8 @@ function determineScepterShardAbilities (heroAbilities) {
                         abilityName: abilityName,
                         type: "DOTA_AbilityTooltip_Upgrade",
                     };
-                } else if (abilityInfo.HasScepterUpgrade === '1') {
+                }
+                if (abilityInfo.HasScepterUpgrade === '1') {
                     scepterAbility = {
                         abilityName: abilityName,
                         type: "DOTA_AbilityTooltip_Upgrade",
@@ -111,10 +114,11 @@ class AghanimsShard extends Component {
     }
 
     onShardClicked(e) {
+        // Toggle shard state and trigger event
         this.setState({
             shardOn: !this.state.shardOn,
         }, () => {
-            this.state.onShardSet(this.state.on);
+            this.state.onShardSet(this.state.shardOn);
         });
     }
 
@@ -143,6 +147,7 @@ class AghanimsShard extends Component {
                     closeOnEscape
                     disabled={this.state.tooltipDisabled}
                     className="foresight-tooltip"
+                    on="hover"
                     contentStyle={{ 
                         width: "450px",
                         height: "auto"

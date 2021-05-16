@@ -16,19 +16,47 @@ import {
     insertLocaleStringDataValues
 } from "../../utility/dataHelperGeneric";
 
+/// Builds the JSON key used in 'abilities_{language}.json' locale files to get the relevant locale string
+function buildDescriptionLocaleKey (upgradeInfo, scepterShard) {
+    if (upgradeInfo)
+    {
+        let key = upgradeInfo.abilityName;
+        if (upgradeInfo.type === "DOTA_AbilityTooltip_Upgrade") {
+            if (scepterShard === "shard") {
+                key += "_shard";
+            } else {
+                key += "_scepter";
+            }
+            key += "_description";
+        } else {
+            // New Ability JSON key has upper case d
+            key += "_Description";
+        }
+        return key;
+    }
+    else
+    {
+        return "?";
+    }
+}
+
 /// Single descriptor for the aghanim's scepter/shard tooltip
 function AghanimDescriptor(props) {
     let iconWidth = "35px", iconHeight = "30px";
     let isScepter = props.descriptorType === "scepter";
-    let isUpgrade = props.type === "DOTA_AbilityTooltip_Upgrade";
+    let isAbility = props.type === "DOTA_AbilityTooltip_Aghs_New_Ability";
+    // Does this scepter/shard upgrade give an upgrade/ability (Could be empty, Dawnbreaker initial release)
+    let hasUpgrade = props.ability;
 
     // Get locale string, ability info
     let descLocaleString = getTooltipAbilityString(props.abilityStrings, props.description);
-    let abilInfo = getAbilityInfoFromName(props.ability);
-    // Replace locale string's data values with data
-    descLocaleString = insertLocaleStringDataValues(descLocaleString, abilInfo, abilInfo.AbilitySpecial);
-    // Replace new line char with HTML break
-    descLocaleString = descLocaleString.split("\\n").join("<br/>");
+    if (descLocaleString && props.ability) {
+        let abilInfo = getAbilityInfoFromName(props.ability);
+        // Replace locale string's data values with data
+        descLocaleString = insertLocaleStringDataValues(descLocaleString, abilInfo, abilInfo.AbilitySpecial);
+        // Replace new line char with HTML break
+        descLocaleString = descLocaleString.split("\\n").join("<br/>");
+    }
 
     return (
         <div className="aghanim-container">
@@ -50,42 +78,51 @@ function AghanimDescriptor(props) {
                 </h6>
             </div>
             {/* Main Body */}
-            <div className={`d-flex m-2 description-container ${ !isUpgrade ? "ability" : "" }`}>
-                {/* Icon */}
-                <div>
-                    <img 
-                        className="m-1 aghanim-ability-icon"
-                        src={ getAbilityIconURL(props.ability) }
-                        style={{
-                            height: iconWidth,
-                            width: iconWidth, 
-                        }}
-                        />
-                </div>
-                <div>
-                    <div className="d-flex m-1 descriptor-title-box">
-                        {/* Main title */}
-                        <h6 className="my-0 title">
-                            { props.title }
-                        </h6>
-                        {/* Type that is given with shard/scepter (Upgrade or Ability) */}
-                        <div className={`align-self-start mx-3 upgrade-type ${ isUpgrade ? "upgrade-title" : "ability-title" }`}>
-                            <h6 
-                                className="mx-2 my-1"
+            <div className={`d-flex m-2 description-container ${ isAbility ? "ability" : "" }`}>
+                {
+                    // If scepter/shard gives an upgrade or new ability display normally, else display none found
+                    hasUpgrade 
+                    ?
+                    <div className="d-flex">
+                        {/* Icon */}
+                        <div>
+                            <img 
+                                className="m-1 aghanim-ability-icon"
+                                src={ getAbilityIconURL(props.ability) }
                                 style={{
-                                    fontSize: "0.5rem",
-                                }}>
-                                { getLocalizedString(props.dotaStrings, props.type) }
-                            </h6>
+                                    height: iconWidth,
+                                    width: iconWidth, 
+                                }}
+                                />
+                        </div>
+                        <div>
+                            <div className="d-flex m-1 descriptor-title-box">
+                                {/* Main title */}
+                                <h6 className="my-0 title">
+                                    { props.title }
+                                </h6>
+                                {/* Type that is given with shard/scepter (Upgrade or Ability) */}
+                                <div className={`align-self-start mx-3 upgrade-type ${ isAbility ? "ability-title"  : "upgrade-title" }`}>
+                                    <h6 
+                                        className="mx-2 my-1"
+                                        style={{
+                                            fontSize: "0.5rem",
+                                        }}>
+                                        { getLocalizedString(props.dotaStrings, props.type) }
+                                    </h6>
+                                </div>
+                            </div>
+                            {/* Descriptive body */}
+                            <div className="m-1">
+                                <div dangerouslySetInnerHTML={{ __html: descLocaleString }} />
+                            </div>
                         </div>
                     </div>
-                    {/* Descriptive body */}
-                    <div className="m-1">
-                        <div dangerouslySetInnerHTML={{ __html: descLocaleString }}>
-
-                        </div>
+                    :
+                    <div className="no-upgrade-container">
+                        { getLocalizedString(props.dotaStrings, "DOTA_AbilityTooltip_No_Aghs_Upgrade_Found") }
                     </div>
-                </div>
+                }
             </div>
         </div>
     );
@@ -159,8 +196,8 @@ class AghanimsDescriptorTooltip extends Component {
                     titleName={ getLocalizedString(this.state.dotaStrings, "DOTA_AbilityTooltip_Aghs_Scepter") }
                     ability={this.state.scepterAbility?.abilityName}
                     title={ this.state.scepterAbility ? getTooltipAbilityString(this.state.abilityStrings, this.state.scepterAbility.abilityName) : "?" }
-                    description={ this.state.scepterAbility ? this.state.scepterAbility.abilityName + "_Description" : "?" }
-                    type={ this.state.scepterAbility ? this.state.scepterAbility.type : "?" }
+                    description={ buildDescriptionLocaleKey(this.state.scepterAbility, "scepter") }
+                    type={ this.state.scepterAbility?.type ?? "?" }
 
                     dotaStrings={this.state.dotaStrings}
                     abilityStrings={this.state.abilityStrings}
@@ -177,8 +214,8 @@ class AghanimsDescriptorTooltip extends Component {
                     titleName={ getLocalizedString(this.state.dotaStrings, "DOTA_AbilityTooltip_Aghs_Shard") }
                     ability={ this.state.shardAbility?.abilityName }
                     title={ this.state.shardAbility ? getTooltipAbilityString(this.state.abilityStrings, this.state.shardAbility.abilityName) : "?" }
-                    description={ this.state.shardAbility ? this.state.shardAbility.abilityName + "_Description" : "?" }
-                    type={ this.state.shardAbility ? this.state.shardAbility.type : "?" }
+                    description={ buildDescriptionLocaleKey(this.state.shardAbility, "shard") }
+                    type={ this.state.shardAbility?.type ?? "?" }
 
                     dotaStrings={this.state.dotaStrings}
                     abilityStrings={this.state.abilityStrings}

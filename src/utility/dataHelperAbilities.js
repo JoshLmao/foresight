@@ -326,8 +326,9 @@ export function isTalent (talent, lowerCasePhrase) {
 /// see if it contains all EBehaviours in array
 export function isAbilityBehaviour (abilityBehaviour, ebehaviours) {
     if (abilityBehaviour) {
+        // Split behaviours if contains " | "
         let splitBehaviours = abilityBehaviour.split(' | ');
-        
+        // Determine if it contains
         let contains = splitBehaviours.some((b) => ebehaviours.includes(b));
         return contains;
     }
