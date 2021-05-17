@@ -266,7 +266,8 @@ class Calculator extends Component {
                                 talents={this.props.selectedTalents}
                                 items={this.props.items}
                                 neutral={this.props.neutralItem} 
-                                abilities={this.props.heroAbilities} />
+                                abilities={this.props.heroAbilities}
+                                abilityLevels={this.props.heroAbilityLevels} />
                         </Col>
                         <Col md={4}>
                             <LevelSelector 

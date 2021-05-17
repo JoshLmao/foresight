@@ -38,7 +38,9 @@ export function tryGetAbilitySpecialAbilityValue (ability, specialValueKey, abil
     return null;
 }
 
-export function getAbilitySpecialAbilityValue(abilityInfo, specialAbilityKey, abilityLevel = 1) {
+/// Searches through the AbilitySpecial array for the matching "specialAbilityKey" and 
+/// attempts to parse the value from its "var_type" property if set in 
+export function getAbilitySpecialAbilityValue(abilityInfo, specialAbilityKey, abilityLevel = 1, shouldTryParse = true) {
     if (abilityInfo && abilityInfo.AbilitySpecial) {
         for(let i = 0; i < abilityInfo.AbilitySpecial.length; i++) {
             let keys = Object.keys(abilityInfo.AbilitySpecial[i]);
@@ -52,12 +54,12 @@ export function getAbilitySpecialAbilityValue(abilityInfo, specialAbilityKey, ab
                 // If value contains a space, it can be levelled up needs to be split up
                 let dataValue = specialAbilityInfo[matchingKey];
                 if (typeof dataValue === "string" && dataValue.includes(' ')) {
-                    let split = specialAbilityInfo[matchingKey].split(' ');
+                    let split = dataValue.split(' ');
                     dataValue = split[abilityLevel - 1];
                 }
 
                 /// If wanting it for it's value, correctly convert and return
-                if (matchingKey.includes("value") || specialAbilityInfo.var_type) {
+                if (shouldTryParse && specialAbilityInfo.var_type) { //matchingKey.includes("value") || specialAbilityInfo.var_type
                     if (specialAbilityInfo.var_type === "FIELD_INTEGER") {
                         return parseInt(dataValue);
                     } 
@@ -65,11 +67,8 @@ export function getAbilitySpecialAbilityValue(abilityInfo, specialAbilityKey, ab
                         return parseFloat(dataValue);
                     }
                 } 
-                /// else return whatever the value is
-                else {
-                    return dataValue;
-                }
-                
+
+                return dataValue;
             }
         }
     }

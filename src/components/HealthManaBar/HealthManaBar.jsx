@@ -21,6 +21,7 @@ class HealthManaBar extends Component {
             talents: props.talents,
             neutral: props.neutral,
             abilities: props.abilities,
+            abilityLevels: props.abilityLevels,
 
             maxHealth: 0,
             maxMana: 0,
@@ -42,6 +43,7 @@ class HealthManaBar extends Component {
                 talents: this.props.talents,
                 neutral: this.props.neutral,
                 abilities: this.props.abilities,
+                abilityLevels: this.props.abilityLevels,
 
                 maxHealth: 0,
                 maxMana: 0,
@@ -52,7 +54,7 @@ class HealthManaBar extends Component {
     updateBar() {
         this.setState({
             maxHealth: calculateHealth(this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents),
-            maxMana: calculateMana(this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents),
+            maxMana: calculateMana(this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.abilityLevels, this.state.talents),
         });
     }
 

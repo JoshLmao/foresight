@@ -27,6 +27,7 @@ import {
 import {
     getTalentInfoFromName,
     tryGetTalentSpecialAbilityValue,
+    tryGetTalentValueInclude,
 } from "./dataHelperTalents";
 
 import {
@@ -140,7 +141,7 @@ export function calculateHealth(hero, heroLevel, items, neutral, abilities, tale
 
 /// Calculates the mana pool of a hero
 /// https://dota2.gamepedia.com/Mana
-export function calculateMana(hero, heroLevel, items, neutral, abilities, talents) {
+export function calculateMana(hero, heroLevel, items, neutral, abilities, abilityLevels, talents) {
     if (!hero) {
         return "?";
     }    
@@ -204,18 +205,22 @@ export function calculateMana(hero, heroLevel, items, neutral, abilities, talent
     }
 
     if (abilities && abilities.length > 0) {
-        for(let ability of abilities) {
-            let bonusMana = tryGetAbilitySpecialAbilityValue(ability, "bonus_mana");
+        for(let abilityIndex in abilities) {
+            // Get name and level of ability
+            let ability = abilities[abilityIndex];
+            let abilityLevel = abilityLevels[abilityIndex]?.level ?? 1;
+            
+            let bonusMana = tryGetAbilitySpecialAbilityValue(ability, "bonus_mana", abilityLevel);
             if (bonusMana) {
                 totalMana += bonusMana;
             }
 
-            let bonusInt = tryGetAbilitySpecialAbilityValue(ability, "bonus_intellect");
+            let bonusInt = tryGetAbilitySpecialAbilityValue(ability, "bonus_intellect", abilityLevel);
             if (bonusInt) {
                 totalMana += bonusInt * MANA_PER_INT_POINT;
             }
 
-            let bonusAllStats = tryGetAbilitySpecialAbilityValue(ability, "bonus_all_stats");
+            let bonusAllStats = tryGetAbilitySpecialAbilityValue(ability, "bonus_all_stats", abilityLevel);
             if (bonusAllStats) {
                 totalMana += bonusAllStats * MANA_PER_INT_POINT;
             }
@@ -224,21 +229,17 @@ export function calculateMana(hero, heroLevel, items, neutral, abilities, talent
 
     if (talents && talents.length > 0) {
         for(let talent of talents) {
-            if (talent.includes("bonus_mp")) {
-                let bonusMana = tryGetTalentSpecialAbilityValue(talent, "value");
-                if (bonusMana) {
-                    totalMana += bonusMana;
-                }
-            } else if (talent.includes("bonus_intelligence")) {
-                let bonusInt = tryGetTalentSpecialAbilityValue(talent, "value");
-                if (bonusInt) {
-                    totalMana += bonusInt * MANA_PER_INT_POINT;
-                }
-            } else if (talent.includes("bonus_all_stats")) {
-                let bonusAllStats = tryGetTalentSpecialAbilityValue(talent, "value");
-                if (bonusAllStats) {
-                    totalMana += bonusAllStats * MANA_PER_INT_POINT;
-                }
+            let bonusMana = tryGetTalentValueInclude(talent, "bonus_mp");
+            if (bonusMana) {
+                totalMana += bonusMana;
+            }
+            let bonusInt = tryGetTalentValueInclude(talent, "bonus_intelligence");
+            if (bonusInt) {
+                totalMana += bonusInt * MANA_PER_INT_POINT;
+            }
+            let bonusAllStats = tryGetTalentValueInclude(talent, "bonus_all_stats");
+            if (bonusAllStats) {
+                totalMana += bonusAllStats * MANA_PER_INT_POINT;
             }
         }
     }
@@ -1002,19 +1003,19 @@ export function calculateAttackTime(hero, level, items, neutral, abilities, tale
 
     if (talents && talents.length > 0) {
         for(let talent of talents) {
-            let bonusAttackSpeed = tryGetTalentSpecialAbilityValue(talent, "bonus_attack_speed");
+            let bonusAttackSpeed = tryGetTalentValueInclude (talent, "bonus_attack_speed");
             if (bonusAttackSpeed) {
                 totalAttackSpeed += bonusAttackSpeed;
             }
 
-            let bonusAgility = tryGetTalentSpecialAbilityValue(talent, "bonus_agility");
+            let bonusAgility = tryGetTalentValueInclude(talent, "bonus_all_stats");
             if (bonusAgility) {
                 totalAgi += bonusAgility;
             }
 
-            let bonusAllStats = tryGetTalentSpecialAbilityValue(talent, "bonus_all_stats");
-            if (bonusAllStats) {
-                totalAgi += bonusAllStats;
+            bonusAgility = tryGetTalentValueInclude(talent, "bonus_agility");
+            if (bonusAgility) {
+                totalAgi += bonusAgility;
             }
         }
     }
@@ -1265,7 +1266,7 @@ export function calculateAbilityCooldown(abilityName, abilityInfo, abilityLevel,
             }
             else if (talent.includes("special_bonus_unique")) {
                 if (isCooldownTalent(talent)) {
-                    let linkedAbility = tryGetTalentSpecialAbilityValue(talent, "ad_linked_ability");
+                    let linkedAbility = tryGetTalentSpecialAbilityValue(talent, "ad_linked_ability", 1, false);
                     if (linkedAbility === abilityName) {
                         let value = tryGetTalentSpecialAbilityValue(talent, "value");
                         if (value) {
