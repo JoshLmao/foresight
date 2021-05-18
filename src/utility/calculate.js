@@ -117,21 +117,19 @@ export function calculateHealth(hero, heroLevel, items, neutral, abilities, tale
 
     if (talents && talents.length > 0) {
         for(let talent of talents) {
-            if (talent.includes("bonus_hp")) {
-                let bonusHealth = tryGetTalentSpecialAbilityValue(talent, "value");
-                if (bonusHealth) {
-                    totalHealth += bonusHealth;
-                }
-            } else if (talent.includes("bonus_strength")) {
-                let bonusStr = tryGetTalentSpecialAbilityValue(talent, "value");
-                if (bonusStr) {
-                    totalHealth += bonusStr * HEALTH_PER_STRENGTH_POINT;
-                }
-            } else if (talent.includes("bonus_all_stats")) {
-                let bonusAllStats = tryGetTalentSpecialAbilityValue(talent, "value");
-                if (bonusAllStats) {
-                    totalHealth += bonusAllStats * HEALTH_PER_STRENGTH_POINT;
-                }
+            let bonusHealth = tryGetTalentValueInclude(talent, "bonus_hp");
+            if (bonusHealth) {
+                totalHealth += bonusHealth;
+            }
+
+            let bonusStr = tryGetTalentValueInclude(talent, "bonus_strength");
+            if (bonusStr) {
+                totalHealth += bonusStr * HEALTH_PER_STRENGTH_POINT;
+            }
+
+            let bonusAllStats = tryGetTalentSpecialAbilityValue(talent, "bonus_all_stats");
+            if (bonusAllStats) {
+                totalHealth += bonusAllStats * HEALTH_PER_STRENGTH_POINT;
             }
         }
     }
@@ -141,7 +139,7 @@ export function calculateHealth(hero, heroLevel, items, neutral, abilities, tale
 
 /// Calculates the mana pool of a hero
 /// https://dota2.gamepedia.com/Mana
-export function calculateMana(hero, heroLevel, items, neutral, abilities, abilityLevels, talents) {
+export function calculateMana(hero, heroLevel, items, neutral, abilities, talents, abilityLevels) {
     if (!hero) {
         return "?";
     }    
@@ -205,10 +203,10 @@ export function calculateMana(hero, heroLevel, items, neutral, abilities, abilit
     }
 
     if (abilities && abilities.length > 0) {
-        for(let abilityIndex in abilities) {
+        for(let i in abilities) {
             // Get name and level of ability
-            let ability = abilities[abilityIndex];
-            let abilityLevel = abilityLevels[abilityIndex]?.level ?? 1;
+            let ability = abilities[i];
+            let abilityLevel = abilityLevels[i]?.level ?? 1;
             
             let bonusMana = tryGetAbilitySpecialAbilityValue(ability, "bonus_mana", abilityLevel);
             if (bonusMana) {
@@ -249,7 +247,7 @@ export function calculateMana(hero, heroLevel, items, neutral, abilities, abilit
 
 /* Hero gains +0.1 regen per each point of strength
 * https://dota2.gamepedia.com/Health_regeneration */
-export function calculateHealthRegen(hero, heroLevel, items, neutral, abilities, talents) {
+export function calculateHealthRegen(hero, heroLevel, items, neutral, abilities, talents, abilityLevels) {
     if(!hero) {
         return "?";
     }
@@ -341,14 +339,18 @@ export function calculateHealthRegen(hero, heroLevel, items, neutral, abilities,
         }
     } 
 
-    // if (abilities && abilities.length > 0) {
-    //     for (let ability of abilities) {
-    //         let bonusRegen = tryGetAbilitySpecialAbilityValue(ability, "bonus_health_regen", 1);
-    //         if (bonusRegen) {
-    //             totalHpRegen += bonusRegen;
-    //         }
-    //     }
-    // }
+    if (abilities && abilities.length > 0 && abilityLevels) {
+        for (let i in abilities) {
+            // Determine ability & level
+            let ability = abilities[i];
+            let abilityLevel = abilityLevels[i]?.level ?? 1;
+            
+            let bonusRegen = tryGetAbilitySpecialAbilityValue(ability, "bonus_health_regen", abilityLevel);
+            if (bonusRegen) {
+                totalHpRegen += bonusRegen;
+            }
+        }
+    }
 
     if (talents && talents.length > 0) {
         for (let talent of talents) {
@@ -512,7 +514,7 @@ export function calculateManaRegen(hero, heroLevel, items, neutral, abilities, t
 
 // Calculates the main armor of the hero
 // Each point of agility increases a hero's armor by 0.167 (1/6) https://dota2.gamepedia.com/Armor
-export function calculateMainArmor(hero, level, items, neutral, abilities, talents) {
+export function calculateMainArmor(hero, level, items, neutral, abilities, talents, abilityLevels) {
     if (!hero) {
         return "?";
     }
@@ -580,20 +582,23 @@ export function calculateMainArmor(hero, level, items, neutral, abilities, talen
         }
     }
 
-    /// ToDo: If abilities active, add active ability armor
-    /// or if ability is passive, apply bonus
-    // if (abilities && abilities.length > 0) {
-    //     for(let ability of abilities) {
-    //         /// if a passive, add armor depending on ability level
-    //         let abilInfo = getAbilityInfoFromName(ability);
-    //         if (isAbilityBehaviour(abilInfo.AbilityBehavior, [ EAbilityBehaviour.PASSIVE ])) {
-    //             let bonusArmor = tryGetAbilitySpecialAbilityValue(ability, "bonus_armor");
-    //             if (bonusArmor) {
-    //                 totalArmor += bonusArmor;
-    //             }
-    //         }
-    //     }
-    // }
+    if (abilities && abilities.length > 0 && abilityLevels) {
+        for(let i in abilities) {
+            // Determine ability & level
+            let ability = abilities[i];
+            let abilityLevel = abilityLevels[i]?.level ?? 1;
+
+            /// if a passive, add as bonus armor depending on ability level
+            let abilInfo = getAbilityInfoFromName(ability);
+            if (isAbilityBehaviour(abilInfo.AbilityBehavior, [ EAbilityBehaviour.PASSIVE ])) {
+                // Get bonus_armor value with abilityLevel
+                let bonusArmor = tryGetAbilitySpecialAbilityValue(ability, "bonus_armor", abilityLevel);
+                if (bonusArmor) {
+                    totalBonusArmor += bonusArmor;
+                }
+            }
+        }
+    }
 
     if(talents && talents.length > 0) {
         for(let talent of talents) {
@@ -709,7 +714,7 @@ export function calculateStatusResist(items, neutral) {
     return totalStatusResist;
 }
 
-export function calculateMagicResist (items, neutral, abilities) {
+export function calculateMagicResist (items, neutral, abilities, abilityLevels) {
     // Formula from Wiki
     // Total magic resistance = 1 − ((1 − natural resistance) × (1 − first resistance bonus) × (1 − second resistance bonus) × (1 + first resistance reduction) × (1 + second resistance reduction))
     
@@ -750,14 +755,17 @@ export function calculateMagicResist (items, neutral, abilities) {
         }
     }
 
-    if (abilities && abilities.length > 0) { 
-        for(let ability of abilities) {
-            // let magicResistAmount = tryGetAbilitySpecialAbilityValue(ability, "magic_resistance");
-            // if (magicResistAmount) {
-            //     resistanceBonuses.push(magicResistAmount);
-            // }
+    if (abilities && abilities.length > 0 && abilityLevels) { 
+        for(let i in abilities) {
+            let abilityName = abilities[i];
+            let abilityLevel = abilityLevels[i]?.level ?? 1;
+
+            let magicResistAmount = tryGetAbilitySpecialAbilityValue(abilityName, "magic_resistance", abilityLevel);
+            if (magicResistAmount) {
+                resistanceBonuses.push(magicResistAmount);
+            }
             
-            let magicResistAmount = tryGetAbilitySpecialAbilityValue(ability, "bonus_magic_resistance");
+            magicResistAmount = tryGetAbilitySpecialAbilityValue(abilityName, "bonus_magic_resistance", abilityLevel);
             if (magicResistAmount) {
                 resistanceBonuses.push(magicResistAmount);
             }
@@ -779,26 +787,27 @@ export function calculatePhysicalResist (totalArmor) {
     return percent < 0 ? 0 : percent.toFixed(0);
 }
 
-/// Calculates evasion
-export function calculateEvasion(items, neutral, abilities, talents) {
-    let totalEvasion = 0.0;
+/// Calculates evasion. Every instance stacks multiplicatively
+export function calculateEvasion(items, neutral, abilities, talents, abilityLevels) {
+    let evasionInstances = [];
 
-    if (abilities && abilities.length > 0) {
-        for(let ability of abilities) {
-            let bonusEvasion = tryGetAbilitySpecialAbilityValue(ability, "bonus_evasion");
-            if (bonusEvasion) {
-                totalEvasion += bonusEvasion;
+    if (abilities && abilities.length > 0 && abilityLevels) {
+        for (let i in abilities) {
+            let abilityName = abilities[i];
+            let abilityLevel = abilityLevels[i]?.level ?? 1;
+
+            let evasionBonus = tryGetAbilitySpecialAbilityValue(abilityName, "bonus_evasion", abilityLevel);
+            if (evasionBonus) {
+                evasionInstances.push(evasionBonus);
             }
         }
     }
 
     if (talents && talents.length > 0) {
         for(let talent of talents) {
-            if (talent.includes("bonus_evasion")) {
-                let bonusEvasion = tryGetTalentSpecialAbilityValue(talent, "value");
-                if (bonusEvasion) {
-                    totalEvasion += bonusEvasion;
-                }
+            let bonusEvasion = tryGetTalentValueInclude(talent, "bonus_evasion");
+            if (bonusEvasion) {
+                evasionInstances.push(bonusEvasion);
             }
         }
     }
@@ -810,14 +819,23 @@ export function calculateEvasion(items, neutral, abilities, talents) {
                 if (itemInfo) {
                     let evasionAmount = getAbilitySpecialValue(itemInfo.AbilitySpecial, "bonus_evasion");
                     if (evasionAmount) {
-                        totalEvasion += evasionAmount;
+                        evasionInstances.push(evasionAmount);
                     }
                 }
             }
         }
     }
 
-    return totalEvasion;
+    if (neutral) {
+        let evasion = tryGetNeutralSpecialValue(neutral, "evasion");
+        if (evasion) {
+            evasionInstances.push(evasion);
+        }
+    }
+
+    // Calculate multiplicative stacking calculation
+    let actualEvasion = calculateMultiplicativeStackingTotal(evasionInstances);
+    return actualEvasion.toFixed(2);
 }
 
 /// Returns the minimum and maximum right click damage of a hero
@@ -1430,7 +1448,7 @@ export function calculateAttackRange (hero, level, items, neutral, abilities, ta
 }
 
 /// Calculates the correct attribute stats for a given hero
-export function calculateAttribute(attribute, hero, level, items, neutral, abilities, talents) {
+export function calculateAttribute(attribute, hero, level, items, neutral, abilities, talents, abilityLevels) {
     if (!hero) {
         return "?";
     }
@@ -1530,6 +1548,27 @@ export function calculateAttribute(attribute, hero, level, items, neutral, abili
             let primaryStat = tryGetNeutralSpecialValue(neutral, "primary_stat");
             if (primaryStat) {
                 additionalAttribute += primaryStat;
+            }
+        }
+    }
+
+    if (abilities && abilities.length > 0 && abilityLevels) {
+        for (let i in abilities) {
+            let abilityName = abilities[i];
+            let abilityLevel = abilityLevels[i]?.level ?? 1;
+
+            switch(attribute) {
+                case EAttributes.ATTR_STRENGTH:
+                    {
+                        // Only add flesh heap str bonus per stack.
+                        let bonusStr = tryGetAbilitySpecialAbilityValue(abilityName, "flesh_heap_strength_buff_amount", abilityLevel);
+                        let fleshHeapStacks = 0;
+                        if (bonusStr) {
+                            additionalAttribute += (bonusStr * fleshHeapStacks);
+                        }
+                    }
+                default:
+                    break;
             }
         }
     }

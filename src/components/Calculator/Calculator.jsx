@@ -240,6 +240,8 @@ class Calculator extends Component {
                                 items={this.props.items}
                                 neutral={this.props.neutralItem} 
                                 abilities={this.props.heroAbilities} 
+                                abilityLevels={this.props.heroAbilityLevels}
+                                
                                 abilityStrings={this.props.abilityStrings}
                                 dotaStrings={this.props.dotaStrings}/>
                         </Col>
@@ -252,6 +254,8 @@ class Calculator extends Component {
                                 items={this.props.items}
                                 neutral={this.props.neutralItem} 
                                 abilities={this.props.heroAbilities} 
+                                abilityLevels={this.props.heroAbilityLevels}
+
                                 abilityStrings={this.props.abilityStrings}
                                 dotaStrings={this.props.dotaStrings}  />
                         </Col>

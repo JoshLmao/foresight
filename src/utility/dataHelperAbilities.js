@@ -316,6 +316,8 @@ export function isCastRangeTalent (talent) {
     return isTalent(talent, "cast range");
 }
 
+// Checks if the given talent includes the given lower case phrase.
+// For example, talent="special_bonus_attack_damage_45" lowerCasePhrase="damage" is true
 export function isTalent (talent, lowerCasePhrase) {
     let abilityString = DOTAEngAbilityStrings.Tokens["DOTA_Tooltip_ability_" + talent];
     return abilityString && abilityString.toLowerCase().includes(lowerCasePhrase);

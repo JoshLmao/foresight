@@ -54,12 +54,12 @@ class HealthManaBar extends Component {
     updateBar() {
         this.setState({
             maxHealth: calculateHealth(this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents),
-            maxMana: calculateMana(this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.abilityLevels, this.state.talents),
+            maxMana: calculateMana(this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents, this.state.abilityLevels),
         });
     }
 
     render() {
-        let healthRegenInfo = calculateHealthRegen(this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents);
+        let healthRegenInfo = calculateHealthRegen(this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents, this.state.abilityLevels);
         return (
             <div>
                 <div className="bar health d-flex">

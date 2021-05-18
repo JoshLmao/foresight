@@ -58,6 +58,7 @@ class Attributes extends Component {
                 talents: this.props.talents,
                 neutral: this.props.neutral,
                 abilities: this.props.abilities,
+                abilityLevels: this.props.abilityLevels,
 
                 dotaStrings: this.props.dotaStrings,
                 abilityStrings: this.props.abilityStrings,
@@ -66,9 +67,9 @@ class Attributes extends Component {
     }
 
     render() {
-        let strengthStats = calculateAttribute(EAttributes.ATTR_STRENGTH, this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents);
-        let agilityStats = calculateAttribute(EAttributes.ATTR_AGILITY, this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents);
-        let intStats = calculateAttribute(EAttributes.ATTR_INTELLIGENCE, this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents);
+        let strengthStats = calculateAttribute(EAttributes.ATTR_STRENGTH, this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents, this.state.abilityLevels);
+        let agilityStats = calculateAttribute(EAttributes.ATTR_AGILITY, this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents, this.state.abilityLevels);
+        let intStats = calculateAttribute(EAttributes.ATTR_INTELLIGENCE, this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents, this.state.abilityLevels);
         return (
             <div>
                 <h5>{getLocalizedString(this.state.dotaStrings, "DOTA_Tooltip_topbar_stats")}</h5>

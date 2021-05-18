@@ -105,6 +105,7 @@ class Statistics extends Component {
             items: props.items,
             neutral: props.neutral,
             abilities: props.abilities,
+            abilityLevels: props.abilityLevels,
 
             dotaStrings: props.dotaStrings,
             abilityStrings: props.abilityStrings,
@@ -163,6 +164,13 @@ class Statistics extends Component {
                 this.updateStatistics();
             });
         }
+        if (prevProps.abilityLevels !== this.props.abilityLevels) {
+            this.setState({ 
+                abilityLevels: this.props.abilityLevels, 
+            }, () => {
+                this.updateStatistics();
+            });
+        }
         if (prevProps.dotaStrings !== this.props.dotaStrings) {
             this.setState({ dotaStrings: this.props.dotaStrings });
         }
@@ -178,7 +186,7 @@ class Statistics extends Component {
     }
 
     updateStatistics() {
-        let armorInfo =  calculateMainArmor(this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents);
+        let armorInfo =  calculateMainArmor(this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents, this.state.abilityLevels);
         let physResist = calculatePhysicalResist(armorInfo.armor + armorInfo.additional);
         this.setState({
             // Attack
@@ -192,9 +200,9 @@ class Statistics extends Component {
             // Defence
             armor: formatTotalAdditional(armorInfo?.armor, armorInfo?.additional),
             physicalResist: physResist,
-            magicResist: calculateMagicResist(this.state.items, this.state.neutral, this.state.abilities),
+            magicResist: calculateMagicResist(this.state.items, this.state.neutral, this.state.abilities, this.state.abilityLevels),
             statusResist: calculateStatusResist(this.state.items, this.state.neutral),
-            evasion: calculateEvasion(this.state.items, this.state.neutral, this.state.abilities , this.state.talents),
+            evasion: calculateEvasion(this.state.items, this.state.neutral, this.state.abilities , this.state.talents, this.state.abilityLevels),
             healthRegen: calculateHealthRegen(this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents),
 
             // Other

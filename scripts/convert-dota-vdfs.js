@@ -1,7 +1,7 @@
 /*
     Converts the Valve VDF format to a usable JSON file format.
     Able to convert:
-    npc_abilities, npc_heroes, npc_units, abilities_{language}, dota_{langauge}
+    npc_abilities, npc_heroes, npc_units, items.json, abilities_{language}, dota_{langauge}
     Also converts the AbilitySpecial property in npc_abilities.txt to a JSON array.
 
     Configure the config paths before executing!
@@ -32,8 +32,8 @@ let languages = [
     "schinese"
 ];
 
-// Folder path which contans the extracted 'neutral_items.txt' file
-let neutralItemsFolderPath = "D:/foresight-extracts/";
+// Folder path which contans all extracted files from pak01_dir.vpk
+let pakExtractsFolderPath = "D:/foresight-extracts/";
 
 // Output folder in repository to create/replace converted JSON files
 let foresightFolderPath = process.cwd() + "/src/data/dota2/json/";
@@ -46,18 +46,14 @@ let foresightLocaleFolderPath = process.cwd() + "/src/data/dota2/languages/";
 
 // Require VDF to JSON converter
 vdf = require('simple-vdf');
-const fs = require('fs')
+const fs = require('fs');
 
 // Reads a single file at the path and returns the content
 function readSingleFile(filePath) {
     if (!filePath) {
       return;
     }
-    
-    let content;
-    content = fs.readFileSync(filePath, 'utf8')
-    
-    return content;
+    return fs.readFileSync(filePath, 'utf8');
 }
 
 // Writes the content to a file, replacing if one exists
@@ -65,8 +61,14 @@ function writeSingleFile (filePath, content) {
     if (!filePath || !content) {
         return;
     }
-    
     let success = fs.writeFileSync(filePath, content, { encoding: 'utf8', flag: 'w'});
+}
+// Checks if a file exists
+function fileExists(filePath) {
+    if (!filePath) {
+        return false;
+    }
+    return fs.existsSync(filePath);
 }
 
 // Convert the AbilitySpecial array ( which uses VDF array keys like "00": value, "01": value, etc)
@@ -121,6 +123,10 @@ for (let fileName of npc_files)
 {
     // Build path
     let filePath = npcFolderPath + fileName + ".txt";
+    if (!fileExists(filePath)) {
+        console.error(`File '${filePath}' doesn't exists. Skipping...`);
+        continue;
+    }
     console.log("Converting file: " + filePath);
     // Read in VDF file contents
     let vdfContent = readSingleFile(filePath);
@@ -129,7 +135,6 @@ for (let fileName of npc_files)
 
     // Check JSON is valid before proceeding
     if(jsonData) {
-        
         // Convert AbilitySpecial for npc_abilities file
         if (fileName === "npc_abilities") {
             jsonData = convertAbilitySpecialArray(jsonData);
@@ -164,6 +169,11 @@ for(let lang of languages)
         // Build full path - Root folder path + dota_ + language + .txt
         let localeFileName = `${locFile}${lang}`;
         let currentFilePath = `${languageFolderPath}${localeFileName}.txt`;
+        if (!fileExists(currentFilePath)) {
+            console.error(`File '${currentFilePath}' doesn't exists. Skipping...`);
+            continue;
+        }
+
         // Get content and attempt JSON parse
         let fileContents = readSingleFile(currentFilePath);
         let jsonObject = vdf.parse(fileContents);
@@ -185,34 +195,72 @@ console.log("Completed conversion of localized files!")
 
 console.log("-----");
 
+console.log("Converting items.json");
+
+let itemsFileName = "items";
+let itemsFilePath = pakExtractsFolderPath + itemsFileName + ".txt";
+// Check file exists
+if (fileExists(itemsFilePath)) {
+    // Parse file for text
+    let vdfText = readSingleFile(itemsFilePath);
+    if (vdfText) {
+        // Convert VDF text to json object
+        let itemsJSONObject = vdf.parse(vdfText);
+        if (itemsJSONObject) {
+            // Convert AbilitySpecial of items to JSON array
+            itemsJSONObject = convertAbilitySpecialArray(itemsJSONObject);
+            // Build output path and stringify
+            let jsonPath = foresightFolderPath + itemsFileName + ".json";
+            let stringified = stringifyJsonObj(itemsJSONObject);
+            // Write stringify'd JSON to file
+            writeSingleFile(jsonPath, stringified);
+
+            console.log("Successfully converted items.json");
+        }
+    }
+} else {
+    console.error(`File '${itemsFilePath}' doesn't exists. Skipping...`);
+}
+
+console.log("Completed conversion of items.json");
+
+console.log("-----");
+
 console.log("Converting neutral_items.txt");
 
+// Build file path to neutral_items.json extracted from pak01_dir.vpk
 let neutralItemsFileName = "neutral_items";
-let neutralItemsPath = neutralItemsFolderPath + neutralItemsFileName + ".txt";
-// Read in neutral_items text
-let itmsText = readSingleFile(neutralItemsPath);
-if (itmsText) {
-    // Convert from text VDF to JSON
-    let itmsJSONObject = vdf.parse(itmsText);
-    if (itmsJSONObject) {
-        // Convert VDF array to JSON array 
-        try 
-        {
-            itmsJSONObject.neutral_items = Object.entries(itmsJSONObject.neutral_items)
-                    .filter(([key, value]) => Number(key)) // Filter non numeric keys
-                    .map(([, value]) => value); // We only keep the value, not the key
-        } 
-        catch (err)
-        {
-            console.log(`ERROR: ${neutralItemsFileName}: ${err.message}`);
-            return;
-        }
+let neutralItemsPath = pakExtractsFolderPath + neutralItemsFileName + ".txt";
 
-        let itmsJsonPath = foresightFolderPath + neutralItemsFileName + ".json";
-        let stringified = stringifyJsonObj(itmsJSONObject);
-        // Write stringify'd JSON to file
-        writeSingleFile(itmsJsonPath, stringified);
+// Check file exists before continuing...
+if (fileExists(neutralItemsPath)) {
+    // Read in neutral_items text
+    let itmsText = readSingleFile(neutralItemsPath);
+    if (itmsText) {
+        // Convert from text VDF to JSON
+        let itmsJSONObject = vdf.parse(itmsText);
+        if (itmsJSONObject) {
+            // Convert VDF array to JSON array 
+            try 
+            {
+                itmsJSONObject.neutral_items = Object.entries(itmsJSONObject.neutral_items)
+                        .filter(([key, value]) => Number(key)) // Filter non numeric keys
+                        .map(([, value]) => value); // We only keep the value, not the key
+            } 
+            catch (err)
+            {
+                console.log(`ERROR: ${neutralItemsFileName}: ${err.message}`);
+                return;
+            }
+
+            let itmsJsonPath = foresightFolderPath + neutralItemsFileName + ".json";
+            let stringified = stringifyJsonObj(itmsJSONObject);
+            // Write stringify'd JSON to file
+            writeSingleFile(itmsJsonPath, stringified);
+        }
     }
+} else {
+    console.error(`File '${neutralItemsPath}' doesn't exists. Skipping...`);
 }
 
 console.log("Completed conversion.");
