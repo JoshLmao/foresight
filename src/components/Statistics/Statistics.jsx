@@ -58,8 +58,8 @@ function StatArray(props) {
 }
 
 /// Gets the attack min/max and formats it for display in UI
-function formatAttackMinMax(hero, lvl, items, neutral, abilities, talents) {
-    let standardAtkDmg = calculateRightClickDamage(hero, lvl, items, neutral, abilities, talents);
+function formatAttackMinMax(hero, lvl, items, neutral, abilities, talents, abilityLevels) {
+    let standardAtkDmg = calculateRightClickDamage(hero, lvl, items, neutral, abilities, talents, abilityLevels);
     
     // Range string
     //let dmgString = `${standardAtkDmg.min} - ${standardAtkDmg.max}`;
@@ -191,7 +191,7 @@ class Statistics extends Component {
         this.setState({
             // Attack
             attackSpeed: formatAttackTime(this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents),
-            damage: formatAttackMinMax(this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents),
+            damage: formatAttackMinMax(this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents, this.state.abilityLevels),
             attackRange: calculateAttackRange(this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents),
             moveSpeed: calculateMoveSpeed(this.state.hero, this.state.items, this.state.neutral, this.state.abilities, this.state.talents),
             spellAmp: calculateTotalSpellAmp(this.state.talents, this.state.items, this.state.neutral),
@@ -200,7 +200,7 @@ class Statistics extends Component {
             // Defence
             armor: formatTotalAdditional(armorInfo?.armor, armorInfo?.additional),
             physicalResist: physResist,
-            magicResist: calculateMagicResist(this.state.items, this.state.neutral, this.state.abilities, this.state.abilityLevels),
+            magicResist: calculateMagicResist(this.state.items, this.state.neutral, this.state.abilities, this.state.talents, this.state.abilityLevels),
             statusResist: calculateStatusResist(this.state.items, this.state.neutral),
             evasion: calculateEvasion(this.state.items, this.state.neutral, this.state.abilities , this.state.talents, this.state.abilityLevels),
             healthRegen: calculateHealthRegen(this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents),

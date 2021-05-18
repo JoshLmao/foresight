@@ -465,3 +465,13 @@ export function tryGetAbilityInfoValueFromKey (abilityInfo, key) {
     }
     return null;
 }
+
+// Returns if the ability is a passive ability
+export function isAbilityPassive (abilityName) {
+    let info = getAbilityInfoFromName(abilityName);
+    if (info) {
+        return isAbilityBehaviour(info.AbilityBehavior, [ EAbilityBehaviour.PASSIVE ]);
+    } else {
+        return false;
+    }
+}

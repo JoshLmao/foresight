@@ -21,7 +21,8 @@ import {
     isCastRangeTalent,
     getAbilitySpecialCastRangeValue,
     getIncludesAbilitySpecialAbilityValue,
-    isAbilityBehaviour
+    isAbilityBehaviour,
+    isAbilityPassive
 } from "./dataHelperAbilities";
 
 import {
@@ -714,7 +715,7 @@ export function calculateStatusResist(items, neutral) {
     return totalStatusResist;
 }
 
-export function calculateMagicResist (items, neutral, abilities, abilityLevels) {
+export function calculateMagicResist (items, neutral, abilities, talents, abilityLevels) {
     // Formula from Wiki
     // Total magic resistance = 1 − ((1 − natural resistance) × (1 − first resistance bonus) × (1 − second resistance bonus) × (1 + first resistance reduction) × (1 + second resistance reduction))
     
@@ -768,6 +769,15 @@ export function calculateMagicResist (items, neutral, abilities, abilityLevels) 
             magicResistAmount = tryGetAbilitySpecialAbilityValue(abilityName, "bonus_magic_resistance", abilityLevel);
             if (magicResistAmount) {
                 resistanceBonuses.push(magicResistAmount);
+            }
+        }
+    }
+
+    if (talents) {
+        for (let talent of talents) {
+            let magicResist = tryGetTalentValueInclude(talent, "magic_resistance");
+            if (magicResist) {
+                resistanceBonuses.push(magicResist);
             }
         }
     }
@@ -840,7 +850,7 @@ export function calculateEvasion(items, neutral, abilities, talents, abilityLeve
 
 /// Returns the minimum and maximum right click damage of a hero
 // atkMin, atkMax, primaryAttributeStats, heroLevel = 1
-export function calculateRightClickDamage(hero, level, items, neutral, abilities, talents) {
+export function calculateRightClickDamage(hero, level, items, neutral, abilities, talents, abilityLevels) {
     if (!hero) {
         return "?";
     }
@@ -896,6 +906,19 @@ export function calculateRightClickDamage(hero, level, items, neutral, abilities
                 if (bonusRangedDmg) {
                     totalAdditional += bonusRangedDmg;
                 }
+            }
+        }
+    }
+
+    if (abilities && abilities.length > 0 && abilityLevels) {
+        for (let i in abilities) {
+            let abilityName = abilities[i];
+            let abilityLevel = abilityLevels[i]?.level ?? 1;
+
+            // Add ability dmg if is a passive ability
+            let dmg = tryGetAbilitySpecialAbilityValue(abilityName, "bonus_damage", abilityLevel);
+            if (isAbilityPassive(abilityName) && dmg) {
+                totalAdditional += dmg;
             }
         }
     }
