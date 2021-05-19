@@ -80,15 +80,27 @@ function formatAttackTime(hero, lvl, items, neutral, abilities, talents) {
 
 /// Format a total value and additional value into a string,
 /// hiding and displaying the correct sign if additional value is +/- or 0
-function formatTotalAdditional (total, additional, toFixedAmt = 2) {
-    if (total == null || additional == null) {
+function formatTotalAdditional (total, additional, toFixedAmt = -1) {
+    if (total == null) {
         return null;
     }
 
-    let val = total.toFixed(toFixedAmt);
-    if (additional) {
+    let val = total;
+    // Convert to fixed decimal place if value given
+    if (toFixedAmt >= 0) {
+        val = total.toFixed(toFixedAmt)
+    }
+    // If additional value, append "+{value}"
+    if (additional && additional > 0) {
+        let additionalValue = additional;
+        // If to fixed decimal place, do it
+        if (toFixedAmt >= 0) {
+            additionalValue = Math.abs(additionalValue.toFixed(toFixedAmt));
+        }
+
+        // Append space with formatting
         val += " ";
-        val += `${additional > 0 ? "+" : "-"} ${Math.abs(additional.toFixed(toFixedAmt))}`;
+        val += `${additional > 0 ? "+" : "-"} ${additionalValue}`;
     }
 
     return val;
@@ -188,17 +200,18 @@ class Statistics extends Component {
     updateStatistics() {
         let armorInfo =  calculateMainArmor(this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents, this.state.abilityLevels);
         let physResist = calculatePhysicalResist(armorInfo.armor + armorInfo.additional);
+        let moveSpeedInfo = calculateMoveSpeed(this.state.hero, this.state.items, this.state.neutral, this.state.abilities, this.state.talents);
         this.setState({
             // Attack
             attackSpeed: formatAttackTime(this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents),
             damage: formatAttackMinMax(this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents, this.state.abilityLevels),
             attackRange: calculateAttackRange(this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents),
-            moveSpeed: calculateMoveSpeed(this.state.hero, this.state.items, this.state.neutral, this.state.abilities, this.state.talents),
+            moveSpeed: formatTotalAdditional(moveSpeedInfo?.baseSpeed, moveSpeedInfo?.additional),
             spellAmp: calculateTotalSpellAmp(this.state.talents, this.state.items, this.state.neutral),
             manaRegen: calculateManaRegen(this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents),
 
             // Defence
-            armor: formatTotalAdditional(armorInfo?.armor, armorInfo?.additional),
+            armor: formatTotalAdditional(armorInfo?.armor, armorInfo?.additional, 2),
             physicalResist: physResist,
             magicResist: calculateMagicResist(this.state.items, this.state.neutral, this.state.abilities, this.state.talents, this.state.abilityLevels),
             statusResist: calculateStatusResist(this.state.items, this.state.neutral),

@@ -1415,8 +1415,20 @@ export function calculateMoveSpeed (hero, items, neutral, abilities, talents) {
         }
     }
 
-    let total = baseSpeed + flatBonus;
-    return total;
+    let additional = flatBonus;
+    // Calculate base plus flat bonuses
+    let combinedMS = baseSpeed + flatBonus;
+    // If have any percentaged based ms increases
+    if (percentageBasedBonuses > 0) {
+        // Determine percentage bonus and add to existing flat bonus
+        // Convert value to 0.00 something to get percentage
+        let decimalPercent = (percentageBasedBonuses / 100);
+        additional += combinedMS * decimalPercent;
+    }
+    return {
+        baseSpeed: baseSpeed,
+        additional: additional,
+    };
 }
 
 export function calculateAttackRange (hero, level, items, neutral, abilities, talents) {

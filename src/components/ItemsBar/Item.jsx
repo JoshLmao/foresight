@@ -173,8 +173,7 @@ class Item extends Component {
         return (
             // Relative to make positioning work on children
             <div style={{ 
-                position:"relative",
-                cursor: "pointer",
+                position:"relative"
                 }}>
                 {
                     // Hover popup for Item information tooltip
@@ -205,7 +204,12 @@ class Item extends Component {
                     trigger={isOpen => (
                         // Item icon
                         <div className="m-1">
-                            <div style={{ width: `calc(${width} * ${scale})`, height: `calc(${height} * ${scale})` }}>
+                            <div 
+                                style={{ 
+                                    cursor: "pointer",
+                                    width: `calc(${width} * ${scale})`, 
+                                    height: `calc(${height} * ${scale})` 
+                                }}>
                                 {  getItemIcon(this.state.item, width, height, 0.7) }
                             </div>
                         </div>

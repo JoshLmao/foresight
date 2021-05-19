@@ -79,7 +79,11 @@ class Neutral extends Component {
                 }
                 <Popup
                     trigger={isOpen => {
-                        return getItemIcon(this.state.neutralItem.item, "88px", "64px", this.state.iconScale);
+                        return (<div style={{
+                            cursor: "pointer",
+                        }}>
+                            { getItemIcon(this.state.neutralItem.item, "88px", "64px", this.state.iconScale) }
+                        </div>)
                     }}
                     position="right center"
                     disabled={this.state.neutralSelectorDisabled}
