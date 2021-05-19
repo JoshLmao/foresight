@@ -84,7 +84,7 @@ class Item extends Component {
     }
 
     onItemUpdated (newItem = null, callback) {
-        if (newItem.includes("item_dagon")) {
+        if (newItem && newItem.includes("item_dagon")) {
             let split = newItem.split("_");
             // Lowest dagon is level 1 (item_dagon). If higher one, parse level (item_dagon_{level})
             let dagonLvl = 1;
@@ -92,16 +92,18 @@ class Item extends Component {
                 dagonLvl = parseInt(split[2]);
             }
             this.setState({
+                item: newItem,
                 itemExtra: {
                     level: dagonLvl,
                 },
             }, () => {
                 callback();
             });
-        } else if (newItem === "item_bloodstone") {
+        } else if (newItem && newItem === "item_bloodstone") {
             /// Set inital charges of bloodstone
             let itemInfo = getItemInfoFromName(newItem);
             this.setState({
+                item: newItem,
                 itemExtra: {
                     charges: itemInfo?.ItemInitialCharges ?? 0,
                 },
@@ -111,8 +113,13 @@ class Item extends Component {
                 callback();
             });
         } else {
-            // No item extra to add, just call callback
-            callback();
+            // No item & item extra to add, clear itemExtra and callback
+            this.setState({
+                item: null,
+                itemExtra: null,
+            }, () => {
+                callback();
+            })
         }
     }
 
