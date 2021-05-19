@@ -27,10 +27,10 @@ export function getItemInfoFromName (itemName) {
 }
 
 /// Try Gets a item info and sepcial value from it's item's Ability Special array
-export function tryGetItemSpecialValue (item, specialAbilityValueKey) {
+export function tryGetItemSpecialValue (item, specialAbilityValueKey, itemLvl = 1) {
     let itemInfo = getItemInfoFromName(item.item);
     if (itemInfo) {
-        var specialValue = getAbilitySpecialValue(itemInfo.AbilitySpecial, specialAbilityValueKey);
+        var specialValue = getAbilitySpecialValue(itemInfo.AbilitySpecial, specialAbilityValueKey, itemLvl);
         if (specialValue) {
             return specialValue;
         }
@@ -263,7 +263,7 @@ export function convertItemDescToHtml(itemDescString, itemName, itemInfo) {
 }
 
 /// Gets all bonuses the item provides, returning a key value list
-export function getItemStatistics (itemInfo) {
+export function getItemStatistics (itemInfo, itemExtras) {
     if (!itemInfo || !itemInfo?.AbilitySpecial) {
         return null;
     }
@@ -275,6 +275,11 @@ export function getItemStatistics (itemInfo) {
         "resistance", "night_vision"
     ];
 
+    let itmLevel = 1;
+    if (itemExtras && itemExtras.level) {
+        itmLevel = itemExtras.level;
+    }
+
     for (let i = 0; i < itemInfo.AbilitySpecial.length; i++) {
         let keys = Object.keys(itemInfo.AbilitySpecial[i]);
         // Iterate over each AbilitySpecial key and take 
@@ -282,7 +287,7 @@ export function getItemStatistics (itemInfo) {
         for(let key of keys) {
             for(let phrase of itemStatIncludePhrases) {
                 if (key.includes(phrase)) {
-                    let val = tryParseAbilitySpecialValue(itemInfo.AbilitySpecial[i], itemInfo.AbilitySpecial[i][key]);
+                    let val = tryParseAbilitySpecialValue(itemInfo.AbilitySpecial[i], itemInfo.AbilitySpecial[i][key], itmLevel);
                     statistics.push({
                         key: key,
                         value: val,

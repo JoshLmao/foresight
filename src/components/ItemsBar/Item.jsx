@@ -43,42 +43,18 @@ class Item extends Component {
         this.onSelectedItem = this.onSelectedItem.bind(this);
         this.onBloodstoneChargesChanged = this.onBloodstoneChargesChanged.bind(this);
         this.setCharges = this.setCharges.bind(this);
+        this.onItemUpdated = this.onItemUpdated.bind(this);
+        this.triggerOnItemChangedEvent = this.triggerOnItemChangedEvent.bind(this);
     }
 
     componentDidMount() {
-        if (this.state.item === "item_bloodstone") {
-            /// Set inital charges of bloodstone
-            let itemInfo = getItemInfoFromName(this.state.item);
-            this.setState({
-                itemExtra: {
-                    ...this.state.itemExtra,
-                    charges: itemInfo?.ItemInitialCharges ?? 0,
-                },
-            }, () => {
-                /// Update state to new init value
-                this.setCharges(this.state.itemExtra.charges);
-            });
-        }
-    }
-
-    onSelectedItem (item) {
-        // Close item selector popup by disabling
-        this.setState({
-            itemSelectorDisabled: true,
-        });
-        
-        // Trigger onItemChanged event
-        this.state.onItemChanged({ 
-            slot: this.state.slot, 
-            item: item,
-            extra: this.state.itemExtra,
-            isBackpack: this.state.isBackpack ? true : false,
-        });
     }
 
     componentDidUpdate(prevProps) {
         if (prevProps.item !== this.props.item) {
-            this.setState({ item: this.props.item, });
+            this.setState({ 
+                item: this.props.item, 
+            });
         }
 
         if (prevProps.slot !== this.props.slot) {
@@ -96,6 +72,60 @@ class Item extends Component {
         if (prevProps.dotaStrings !== this.props.dotaStrings) {
             this.setState({ dotaStrings: this.props.dotaStrings });
         }
+    }
+
+    triggerOnItemChangedEvent (item = null) {
+        this.state.onItemChanged({ 
+            slot: this.state.slot, 
+            item: item ?? this.state.item,
+            extra: this.state.itemExtra,
+            isBackpack: this.state.isBackpack ? true : false,
+        });
+    }
+
+    onItemUpdated (newItem = null, callback) {
+        if (newItem.includes("item_dagon")) {
+            let split = newItem.split("_");
+            // Lowest dagon is level 1 (item_dagon). If higher one, parse level (item_dagon_{level})
+            let dagonLvl = 1;
+            if (split.length > 2) {
+                dagonLvl = parseInt(split[2]);
+            }
+            this.setState({
+                itemExtra: {
+                    level: dagonLvl,
+                },
+            }, () => {
+                callback();
+            });
+        } else if (newItem === "item_bloodstone") {
+            /// Set inital charges of bloodstone
+            let itemInfo = getItemInfoFromName(newItem);
+            this.setState({
+                itemExtra: {
+                    charges: itemInfo?.ItemInitialCharges ?? 0,
+                },
+            }, () => {
+                /// Update state to new init value
+                this.setCharges(this.state.itemExtra.charges);
+                callback();
+            });
+        } else {
+            // No item extra to add, just call callback
+            callback();
+        }
+    }
+
+    onSelectedItem (item) {
+        // Close item selector popup by disabling
+        this.setState({
+            itemSelectorDisabled: true,
+        });
+
+        // Update item locally, then trigger itemChanged event
+        this.onItemUpdated(item, () => {
+            this.triggerOnItemChangedEvent(item);
+        });
     }
 
     onBloodstoneChargesChanged (e) {
@@ -121,13 +151,6 @@ class Item extends Component {
                 ...this.state.itemExtra,
                 charges: newChargeAmt,
             },
-        }, () => {
-            this.state.onItemChanged({
-                slot: this.state.slot, 
-                item: this.state.item,
-                extra: this.state.itemExtra,
-                isBackpack: this.state.isBackpack ? true : false,
-            });
         });
     }
 
@@ -164,6 +187,7 @@ class Item extends Component {
                             contentStyle={{ width: "350px" }}>
                                 <ItemTooltip
                                     itemName={this.state.item}
+                                    itemExtra={this.state.itemExtra}
                                     dotaStrings={this.state.dotaStrings}
                                     abilityStrings={this.state.abilityStrings}
                                     />

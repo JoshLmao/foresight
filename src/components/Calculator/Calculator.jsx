@@ -162,7 +162,8 @@ class Calculator extends Component {
         }
         else
         {
-            console.log(`${SELECTED_ITEM}: Slot: ${item.slot} Item: ${item.item}`);
+            let extraString = JSON.stringify(item.extra);
+            console.log(`${SELECTED_ITEM}: Slot: ${item.slot} Item: ${item.item} ${ extraString !== "{}" ? `Extra: ${extraString}` : "" }`);
             this.props.dispatch({ type: SELECTED_ITEM, value: item });
         }
     }

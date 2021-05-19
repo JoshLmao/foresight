@@ -48,6 +48,7 @@ class ItemTooltip extends Component {
 
         this.state = {
             itemName: props.itemName,
+            itemExtra: props.itemExtra,
             dotaStrings: props.dotaStrings,
             abilityStrings: props.abilityStrings,
 
@@ -59,6 +60,7 @@ class ItemTooltip extends Component {
         if (prevProps !== this.props) {
             this.setState({
                 itemName: this.props.itemName,
+                itemExtra: this.props.itemExtra,
                 dotaStrings: this.props.dotaStrings,
                 abilityStrings: this.props.abilityStrings,
                 itemInfo: getItemInfoFromName(this.props.itemName),  
@@ -72,7 +74,7 @@ class ItemTooltip extends Component {
         let height = "64px";
         let goldIconSize = 20;
 
-        let itemStats = getItemStatistics(this.state.itemInfo);
+        let itemStats = getItemStatistics(this.state.itemInfo, this.state.itemExtra);
         let loreString = getFuzzyTooltipAbilityString(this.state.abilityStrings, `${this.state.itemName}_Lore`);
         /// Get localized string and filter it to correct html
         let descString = getFuzzyTooltipAbilityString(this.state.abilityStrings, `${this.state.itemName}_Description`);

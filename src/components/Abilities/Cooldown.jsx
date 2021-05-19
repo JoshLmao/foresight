@@ -11,7 +11,7 @@ class Cooldown extends Component {
         super(props);
         
         this.state = {
-            abilityLevel: props.abilityLevel,
+            abilityLevels: props.abilityLevels,
             abilityCooldown: props.cooldown,
 
             ability: props.ability,

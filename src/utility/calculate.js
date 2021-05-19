@@ -73,12 +73,19 @@ export function calculateHealth(hero, heroLevel, items, neutral, abilities, tale
 
     if (items && items.length > 0) {
         for(let item of items) {
+            let itmLevel = item.extra?.level ?? 1;
+
             let bonusHealth = tryGetItemSpecialValue(item, "bonus_health");
             if (bonusHealth) {
                 totalHealth += bonusHealth;
             }
 
             let bonusStr = tryGetItemSpecialValue(item, "bonus_strength");
+            if (bonusStr) {
+                totalHealth += bonusStr * HEALTH_PER_STRENGTH_POINT;
+            }
+
+            bonusStr = tryGetItemSpecialValue(item, "bonus_str", itmLevel);
             if (bonusStr) {
                 totalHealth += bonusStr * HEALTH_PER_STRENGTH_POINT;
             }
@@ -161,12 +168,19 @@ export function calculateMana(hero, heroLevel, items, neutral, abilities, talent
 
     if (items && items.length > 0) {
         for(let item of items) {
+            let itmLevel = item.extra?.level ?? 1;
+            
             let bonusMana = tryGetItemSpecialValue(item, "bonus_mana");
             if (bonusMana) {
                 totalMana += bonusMana;
             }
 
             let bonusInt = tryGetItemSpecialValue(item, "bonus_intellect");
+            if (bonusInt) {
+                totalMana += bonusInt * MANA_PER_INT_POINT;
+            }
+
+            bonusInt = tryGetItemSpecialValue(item, "bonus_int", itmLevel);
             if (bonusInt) {
                 totalMana += bonusInt * MANA_PER_INT_POINT;
             }
@@ -1485,10 +1499,17 @@ export function calculateAttribute(attribute, hero, level, items, neutral, abili
 
     if (items && items.length > 0) {
         for(let item of items) {
+            let itmLevel = item.extra?.level ?? 1;
+
             switch(attribute) {
                 case EAttributes.ATTR_STRENGTH:
                     {
                         let bonusStr = tryGetItemSpecialValue(item, "bonus_strength");
+                        if (bonusStr) {
+                            additionalAttribute += bonusStr;
+                        }
+
+                        bonusStr = tryGetItemSpecialValue(item, "bonus_str", itmLevel);
                         if (bonusStr) {
                             additionalAttribute += bonusStr;
                         }
@@ -1497,6 +1518,11 @@ export function calculateAttribute(attribute, hero, level, items, neutral, abili
                 case EAttributes.ATTR_AGILITY:
                     {
                         let bonusAgi = tryGetItemSpecialValue(item, "bonus_agility");
+                        if (bonusAgi) {
+                            additionalAttribute += bonusAgi;
+                        }
+
+                        bonusAgi = tryGetItemSpecialValue(item, "bonus_agi", itmLevel);
                         if (bonusAgi) {
                             additionalAttribute += bonusAgi;
                         }
@@ -1510,6 +1536,11 @@ export function calculateAttribute(attribute, hero, level, items, neutral, abili
                         }
 
                         let bonusInt = tryGetItemSpecialValue(item, "bonus_intelligence");
+                        if (bonusInt) {
+                            additionalAttribute += bonusInt;
+                        }
+
+                        bonusInt = tryGetItemSpecialValue(item, "bonus_int", itmLevel);
                         if (bonusInt) {
                             additionalAttribute += bonusInt;
                         }
