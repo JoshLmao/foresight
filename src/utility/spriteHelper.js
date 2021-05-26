@@ -12,7 +12,7 @@ export function filterItemName (name) {
 }
 
 /// Gets an item icon from it's name. For exmaple "item_mango_tree"
-export function getItemIcon (itemName, width, height, scale) {
+export function getItemIcon (itemName, width, height, scale, bgImg = "") {
     // Remove 'item_' prefix, split by _, remove "item" and join again
     let item = filterItemName(itemName);
 
@@ -25,6 +25,17 @@ export function getItemIcon (itemName, width, height, scale) {
                     style={{ transform: `scale(${scale}, ${scale})`, transformOrigin: "top left" }} />
     } else {
         return <span 
-                style={{ backgroundColor: "#212121", width: width, height: height, transform: `scale(${scale}, ${scale})`, display: "block", transformOrigin: "top left" }} />
+                style={{ 
+                    backgroundColor: "#232323",
+                    backgroundImage: `url(${bgImg}`,
+                    backgroundPosition: "center",
+                    backgroundRepeat: "no-repeat",
+                    cursor: "pointer",
+                    width: width, 
+                    height: height, 
+                    transform: `scale(${scale}, ${scale})`, 
+                    display: "block", 
+                    transformOrigin: "top left"
+                }} />
     }
 }

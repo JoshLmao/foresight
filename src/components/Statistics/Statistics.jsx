@@ -64,7 +64,7 @@ function formatAttackMinMax(hero, lvl, items, neutral, abilities, talents, abili
     // Range string
     //let dmgString = `${standardAtkDmg.min} - ${standardAtkDmg.max}`;
     // Average damage inbetween range value
-    let dmgString = standardAtkDmg.min + ((standardAtkDmg.max - standardAtkDmg.min) / 2);
+    let dmgString = standardAtkDmg.average;
     if (standardAtkDmg.additional) {
         dmgString += " ";
         dmgString += `${ standardAtkDmg.additional >= 0 ? "+" : "-" } ${Math.abs(standardAtkDmg.additional)}`;
@@ -73,8 +73,8 @@ function formatAttackMinMax(hero, lvl, items, neutral, abilities, talents, abili
 }
 
 /// Gets the atk time and formats it to display in UI
-function formatAttackTime(hero, lvl, items, neutral, abilities, talents) {
-    let attackInfo = calculateAttackTime(hero, lvl, items, neutral, abilities, talents);
+function formatAttackTime(hero, lvl, items, neutral, abilities, talents, abilityLevels) {
+    let attackInfo = calculateAttackTime(hero, lvl, items, neutral, abilities, talents, abilityLevels);
     return `${attackInfo.attackSpeed} (${attackInfo.attackTime} s)`;
 }
 
@@ -203,12 +203,12 @@ class Statistics extends Component {
         let moveSpeedInfo = calculateMoveSpeed(this.state.hero, this.state.items, this.state.neutral, this.state.abilities, this.state.talents);
         this.setState({
             // Attack
-            attackSpeed: formatAttackTime(this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents),
+            attackSpeed: formatAttackTime(this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents, this.state.abilityLevels),
             damage: formatAttackMinMax(this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents, this.state.abilityLevels),
-            attackRange: calculateAttackRange(this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents),
+            attackRange: calculateAttackRange(this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents, this.state.abilityLevels),
             moveSpeed: formatTotalAdditional(moveSpeedInfo?.baseSpeed, moveSpeedInfo?.additional),
             spellAmp: calculateTotalSpellAmp(this.state.talents, this.state.items, this.state.neutral),
-            manaRegen: calculateManaRegen(this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents),
+            manaRegen: calculateManaRegen(this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents, this.state.abilityLevels),
 
             // Defence
             armor: formatTotalAdditional(armorInfo?.armor, armorInfo?.additional, 2),

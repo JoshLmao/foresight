@@ -364,6 +364,11 @@ export function calculateHealthRegen(hero, heroLevel, items, neutral, abilities,
             if (bonusRegen) {
                 totalHpRegen += bonusRegen;
             }
+
+            bonusRegen = tryGetAbilitySpecialAbilityValue(ability, "bonus_hp_regen", abilityLevel);
+            if (bonusRegen) {
+                totalHpRegen += bonusRegen;
+            }
         }
     }
 
@@ -414,7 +419,7 @@ export function calculateHealthRegen(hero, heroLevel, items, neutral, abilities,
 
 /* Each point of intelligence increases the hero's mana regeneration by 0.05.
  * https://dota2.gamepedia.com/Mana_regeneration */
-export function calculateManaRegen(hero, heroLevel, items, neutral, abilities, talents) {
+export function calculateManaRegen(hero, heroLevel, items, neutral, abilities, talents, abilityLevels) {
     if(!hero) {
         return "?";
     }
@@ -492,11 +497,20 @@ export function calculateManaRegen(hero, heroLevel, items, neutral, abilities, t
         }
     }
 
-    if(abilities && abilities.length > 0) {
-        for (let ability of abilities) {
-            let manaRegen = tryGetAbilitySpecialAbilityValue(ability, "mana_regen", 1);
+    if(abilities && abilities.length > 0 && abilityLevels) {
+        for (let i in abilities) {
+            let abilityName = abilities[i];
+            let abilLevel = abilityLevels[i]?.level ?? 1;
+
+            // Check for mana regen and self factor. Multiply if exists
+            let manaRegen = tryGetAbilitySpecialAbilityValue(abilityName, "mana_regen", abilLevel);
+            let selfFactor = tryGetAbilitySpecialAbilityValue(abilityName, "self_factor", abilLevel);
             if (manaRegen) {
-                totalManaRegen += manaRegen;
+                if (selfFactor) {
+                    totalManaRegen += manaRegen * selfFactor;
+                } else {
+                    totalManaRegen += manaRegen;
+                }
             }
         }
     }
@@ -605,7 +619,7 @@ export function calculateMainArmor(hero, level, items, neutral, abilities, talen
 
             /// if a passive, add as bonus armor depending on ability level
             let abilInfo = getAbilityInfoFromName(ability);
-            if (isAbilityBehaviour(abilInfo.AbilityBehavior, [ EAbilityBehaviour.PASSIVE ])) {
+            if (abilInfo && isAbilityBehaviour(abilInfo?.AbilityBehavior, [ EAbilityBehaviour.PASSIVE ])) {
                 // Get bonus_armor value with abilityLevel
                 let bonusArmor = tryGetAbilitySpecialAbilityValue(ability, "bonus_armor", abilityLevel);
                 if (bonusArmor) {
@@ -881,10 +895,12 @@ export function calculateRightClickDamage(hero, level, items, neutral, abilities
     let totalPrimaryAttribute = primaryAttributeStats.base + (primaryAttributeStats.perLevel * (level - 1));
     // Calc additional damage from sources
     let totalAdditional = 0;
+    // Percentage bonus damage increase, calculated at end
+    let totalPercentIncrease = 0;
 
     /* Iterate over all items, neutral, abilities and talents to
         get all primary attribute and all stat bonuses
-        */
+    */
     if (items && items.length > 0) {
         for(let item of items) {
             let allAttrKeys = primaryAttributeToItemBonusKey(heroMainAttribute);
@@ -929,10 +945,21 @@ export function calculateRightClickDamage(hero, level, items, neutral, abilities
             let abilityName = abilities[i];
             let abilityLevel = abilityLevels[i]?.level ?? 1;
 
-            // Add ability dmg if is a passive ability
+            // Array of ability names that provide percentage bonus damage, not raw value
+            let percentageBonusDmgAbilNames = [
+                "lycan_feral_impulse",
+            ];
+
             let dmg = tryGetAbilitySpecialAbilityValue(abilityName, "bonus_damage", abilityLevel);
-            if (isAbilityPassive(abilityName) && dmg) {
-                totalAdditional += dmg;
+            // Add ability dmg if is a passive ability
+            if (isAbilityPassive(abilityName) && dmg) 
+            {
+                // If current ability name is an ability that provide percentage bonus dmg
+                if (percentageBonusDmgAbilNames.includes(abilityName)) {
+                    totalPercentIncrease += dmg;
+                } else {
+                    totalAdditional += dmg;
+                }
             }
         }
     }
@@ -994,21 +1021,34 @@ export function calculateRightClickDamage(hero, level, items, neutral, abilities
     let min = atkMin + totalPrimaryAttribute;
     let max = atkMax + totalPrimaryAttribute;
 
+    // Determine average attack damage from min/max
+    let averageAttackDamage = (max + min) / 2;
+    // Determine percentage increase, only affects base damage.
+    let percentageAdditional = 0;
+    if (totalPercentIncrease > 0) {
+        percentageAdditional = averageAttackDamage * (totalPercentIncrease / 100);
+    }
+    // Add percentage additional as an additional damage source
+    totalAdditional += percentageAdditional;
+
     return {
         /// minimum attack damage of the hero
         min: Math.floor(min),
         /// maximum attack damage of the hero
         max: Math.floor(max),
-        additional: totalAdditional,
+        // Average attack damage
+        average: Math.floor(averageAttackDamage),
+        // Additional damage from sources
+        additional: Math.floor(totalAdditional),
     };
 }
 
 /// Returns info on the attack time of the hero
-export function calculateAttackTime(hero, level, items, neutral, abilities, talents) {
+export function calculateAttackTime(hero, level, items, neutral, abilities, talents, abilityLevels) {
     if (!hero) {
         return "?";
     }
-    
+    // Maximum attack speed a hero can reach
     let MAX_ATTACK_SPEED = 700;
 
     // Check if hero has different attack rate or attack speed than base hero
@@ -1053,8 +1093,17 @@ export function calculateAttackTime(hero, level, items, neutral, abilities, tale
     }
 
     // Only actives that gives attack speed bonuses
-    // if (abilities && abilities.length > 0) {
-    // }
+    if (abilities && abilities.length > 0 && abilityLevels) {
+        for (let i in abilities) {
+            let abilityName = abilities[i];
+            let abilLevel = abilityLevels[i]?.level ?? 1;
+
+            let bonusAttackSpeed = tryGetAbilitySpecialAbilityValue(abilityName, "bonus_attack_speed", abilLevel);
+            if (bonusAttackSpeed) {
+                totalAttackSpeed += bonusAttackSpeed;
+            }
+        }
+    }
 
     if (talents && talents.length > 0) {
         for(let talent of talents) {
@@ -1431,7 +1480,7 @@ export function calculateMoveSpeed (hero, items, neutral, abilities, talents) {
     };
 }
 
-export function calculateAttackRange (hero, level, items, neutral, abilities, talents) {
+export function calculateAttackRange (hero, level, items, neutral, abilities, talents, abilityLevels) {
     if (!hero) {
         return "?";
     }
@@ -1465,8 +1514,11 @@ export function calculateAttackRange (hero, level, items, neutral, abilities, ta
         }
 
         if (abilities && abilities.length > 0) {
-            for(let ability of abilities) {
-                let bonusAttackRange = tryGetAbilitySpecialAbilityValue(ability, "bonus_attack_range", 1);
+            for(let i in abilities) {
+                let abilityName = abilities[i];
+                let abilLevel = abilityLevels[i]?.level ?? 1;
+
+                let bonusAttackRange = tryGetAbilitySpecialAbilityValue(abilityName, "bonus_attack_range", abilLevel);
                 if (bonusAttackRange) {
                     totalAttackRange += bonusAttackRange;
                 }

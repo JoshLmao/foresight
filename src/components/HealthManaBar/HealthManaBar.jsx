@@ -71,7 +71,7 @@ class HealthManaBar extends Component {
                 <div className="bar mana d-flex">
                     <h6 className="max-mana-text my-auto mx-auto">{this.state.maxMana} / {this.state.maxMana}</h6>
                     <div className="mana-bar-regen my-auto mr-1">
-                        { "+" + calculateManaRegen(this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents) }
+                        { "+" + calculateManaRegen(this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents, this.state.abilityLevels) }
                     </div>
                 </div>
             </div>

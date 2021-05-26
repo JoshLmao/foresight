@@ -206,7 +206,6 @@ class Item extends Component {
                         <div className="m-1">
                             <div 
                                 style={{ 
-                                    cursor: "pointer",
                                     width: `calc(${width} * ${scale})`, 
                                     height: `calc(${height} * ${scale})` 
                                 }}>
