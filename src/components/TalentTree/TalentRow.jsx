@@ -8,12 +8,11 @@ import {
     getTalentInfoFromName,
 } from "../../utility/dataHelperTalents";
 import { 
-    tryGetTalentLocalizedString,
-    replaceStringValue,
     getLocalizedString
 } from "../../utility/data-helpers/language";
 
 import "./Talents.css";
+import { insertLocaleStringWithAbilSpecialVals } from '../../utility/data-helpers/language';
 
 function isTalentSelected (selectedTalents, talent) {
     return selectedTalents?.includes(talent);
@@ -92,7 +91,7 @@ class TalentRow extends Component {
         }
         // Insert value into displayName is successful, else set to 'Unknown'
         if (displayName && talentInfo && talentInfo.AbilitySpecial) {
-            displayName = replaceStringValue(displayName, talentInfo.AbilitySpecial[0].value)
+            displayName = insertLocaleStringWithAbilSpecialVals(displayName, talentInfo.AbilitySpecial);
         }
         else {
             displayName = "Unknown";

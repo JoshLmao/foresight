@@ -1,4 +1,5 @@
 import { lang as DOTAEngAbilityStrings } from "../../data/dota2/languages/abilities_english.json";
+import { getAbilitySpecialValue } from "../dataHelperGeneric";
 import { getFuzzyTooltipAbilityString } from "../dataHelperItems";
 
 /// Searches the passed strings file for the related string
@@ -105,4 +106,30 @@ export function getEngAbilityLocalizedString (key) {
 /// Gets the english localized DOTA_Tooltip_[Aa]bility_{key} string
 export function getFuzzyEngAbilityLocalizedString (key) {
     return getFuzzyTooltipAbilityString(DOTAEngAbilityStrings, key);
+}
+
+// Replace locale string that contains {s:crit_chance} with the value inside AbilitySpecial with the same key ("crit_chance")
+export function insertLocaleStringWithAbilSpecialVals (localeString, abilitySpecialValues) {
+    if (!localeString || !abilitySpecialValues) {
+        return "?";
+    }
+
+    // Regex to find an occurance of "{s:str_val}" two curly brackets, an opening and closing
+    let replaceRegex = /{.*?}/;
+    // Iterate through whole string until no "{s:str_val}" occurs
+    while (localeString.match(replaceRegex)?.length > 0) {
+        let phrase = localeString.match(replaceRegex)[0];
+        if (phrase) {
+            // Remove '{' and '}', split by colon and get key
+            let abilSpecialKey = phrase.replace('{', "").replace("}", "").split(':')[1];
+            // Attempt to get value inside AbilitySpecial from the parsed key
+            let abilitySpecialValue = getAbilitySpecialValue(abilitySpecialValues, abilSpecialKey, 1);
+            if (abilitySpecialValue) {
+                // if success, replace
+                localeString = localeString.replace(phrase, abilitySpecialValue);
+            }
+        }
+    }
+
+    return localeString;
 }

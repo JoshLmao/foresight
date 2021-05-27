@@ -26,7 +26,7 @@ export function tryGetTalentValueInclude (talentName, includePhrase) {
 /// Tries to cast it to the "var_type" property if "shouldTryParseValue" is true
 export function tryGetTalentSpecialAbilityValue (talent, specialValueKey, level = 1, shouldTryParseValue = true) {
     let talentInfo = getAbilityInfoFromName(talent);
-    if(talentInfo) {
+    if (talentInfo) {
         let specialValue = getAbilitySpecialAbilityValue(talentInfo, specialValueKey, level, shouldTryParseValue);
         if (specialValue) {
             return specialValue;

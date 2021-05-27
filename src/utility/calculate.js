@@ -1825,7 +1825,8 @@ export function calculateItemSellCost (itemInfo) {
     return 0;
 }
 
-export function calculateTotalLifesteal (items, neutral, abilities, talents) {
+/// Calculates the total normal lifesteal the hero has
+export function calculateTotalLifesteal (items, neutral, abilities, talents, abilityLevels) {
     
     let totalLifestealPercent = 0;
     let totalLifestealAmp = 0;
@@ -1851,15 +1852,21 @@ export function calculateTotalLifesteal (items, neutral, abilities, talents) {
         }
     }
 
-    // if (abilities && abilities.length > 0) {
-    //     for (let ability of abilities) {
-    //         let abilityInfo = getAbilityInfoFromName(ability);
-    //         // If ability is passive, add lifesteal depending on lvl
-    //         if (isAbilityBehaviour(abilityInfo.isAbilityBehaviour, EAbilityBehaviour.PASSIVE)) {
-                
-    //         }
-    //     }
-    // }
+    if (abilities && abilities.length > 0 && abilityLevels) {
+        for (let i in abilities) {
+            let abilityName = abilities[i];
+            let abilLevel = abilityLevels[i]?.level ?? 1;
+
+            let abilityInfo = getAbilityInfoFromName(abilityName);
+            // If ability is passive, add lifesteal depending on lvl
+            if (isAbilityBehaviour(abilityInfo?.AbilityBehavior, [ EAbilityBehaviour.PASSIVE, EAbilityBehaviour.NO_TARGET ])) {
+                let lifesteal = tryGetAbilitySpecialAbilityValue(abilityName, "vampiric_aura", abilLevel);
+                if (lifesteal) {
+                    totalLifestealPercent += lifesteal;
+                }
+            }
+        }
+    }
 
     if (talents && talents.length > 0) {
         for(let talent of talents) {
@@ -1929,45 +1936,64 @@ export function calculateTotalCleaveDmgPercent(heroInfo, items, neutral, abiliti
 
 /// Calculates the current highest crit percent the hero can do
 /// Crit will only take the highest crit damage percent
-export function calculateCritPercent (items, neutral, abilities, talents) {
-    let highestCritPercent = 0;
-    
+export function calculateCritPercent (items, neutral, abilities, talents, abilityLevels) {
+    let allCritPercentages = [];
+
     if (items && items.length > 0) {
         for (let item of items) {
             let critMultiplier = tryGetItemSpecialValue(item, "crit_multiplier");
-            if (critMultiplier && critMultiplier > highestCritPercent) {
-                highestCritPercent = critMultiplier;
+            if (critMultiplier) {
+                allCritPercentages.push(critMultiplier);
             }
         }
     }
 
-    if (abilities && abilities.length > 0) {
-        for (let ability of abilities) {
-            let abilityLevel = 1;
-            let critBonus = tryGetAbilitySpecialAbilityValue(ability, "crit_bonus", abilityLevel);
-            if (critBonus && critBonus > highestCritPercent) {
-                highestCritPercent = critBonus;
+    if (abilities && abilities.length > 0 && abilityLevels) {
+        for (let i in abilities) {
+            let abilityName = abilities[i];
+            let abilityLevel = abilityLevels[i]?.level ?? 1;
+
+            let critMultiplier = tryGetAbilitySpecialAbilityValue(abilityName, "crit_mult", abilityLevel);
+            if (critMultiplier) {
+                allCritPercentages.push(critMultiplier);
             }
 
-            let bladeDanceCrit = tryGetAbilitySpecialAbilityValue(ability, "blade_dance_crit_mult", abilityLevel);
-            if (bladeDanceCrit && bladeDanceCrit > highestCritPercent) {
-                highestCritPercent = bladeDanceCrit;
+            let critBonus = tryGetAbilitySpecialAbilityValue(abilityName, "crit_bonus", abilityLevel);
+            if (critBonus) {
+                allCritPercentages.push(critBonus)
+            }
+
+            let bladeDanceCrit = tryGetAbilitySpecialAbilityValue(abilityName, "blade_dance_crit_mult", abilityLevel);
+            if (bladeDanceCrit) {
+                allCritPercentages.push(bladeDanceCrit)
             }
         }
     }
 
-    // if (talents && talents.length > 0) {
-    //     for (let talent of talents) {
-    //         if (talent.includes("pl crit talent")) {
-    //         }
-    //     }
-    // }
+    if (talents && talents.length > 0) {
+        for (let talent of talents) {
+            // Crit talent
+            if (talent.includes("_crit_")) {
+                let critAmount = tryGetTalentSpecialAbilityValue(talent, "crit_multiplier");
+                if (critAmount) {
+                    allCritPercentages.push(critAmount);
+                }
+            }
+        }
+    }
+
+    // Get highest crit percent
+    let highestCritPercent = 0;
+    let arrayHighest = Math.max.apply(null, allCritPercentages);
+    if (allCritPercentages && arrayHighest > highestCritPercent) {
+        highestCritPercent = arrayHighest;
+    }
 
     return highestCritPercent;
 }
 
 /// Calculates the percent chance to crit on attack, stacks with other crit chances
-export function calculateCritChancePercent (items, neutral, abilities, talents) {
+export function calculateCritChancePercent (items, neutral, abilities, talents, abilityLevels) {
     let totalCritChancePercent = 0;
 
     if (items && items.length > 0) {
@@ -1979,17 +2005,31 @@ export function calculateCritChancePercent (items, neutral, abilities, talents) 
         }
     }
 
-    if (abilities && abilities.length > 0) {
-        for (let ability of abilities) {
-            let abilityLevel = 1;
-            let critChance = tryGetAbilitySpecialAbilityValue(ability, "crit_chance", abilityLevel);
+    if (abilities && abilities.length > 0 && abilityLevels) {
+        for (let i in abilities) {
+            let abilityName = abilities[i];
+            let abilityLevel = abilityLevels[i]?.level ?? 1;
+
+            let critChance = tryGetAbilitySpecialAbilityValue(abilityName, "crit_chance", abilityLevel);
             if (critChance) {
                 totalCritChancePercent += critChance;
             }
 
-            let bladeDanceCritChance = tryGetAbilitySpecialAbilityValue(ability, "blade_dance_crit_chance", abilityLevel);
+            let bladeDanceCritChance = tryGetAbilitySpecialAbilityValue(abilityName, "blade_dance_crit_chance", abilityLevel);
             if (bladeDanceCritChance) {
                 totalCritChancePercent += bladeDanceCritChance;
+            }
+        }
+    }
+
+    if (talents && talents.length > 0) {
+        for (let talent of talents) {
+            // Crit talent
+            if (talent.includes("_crit_")) {
+                let critAmount = tryGetTalentSpecialAbilityValue(talent, "crit_chance");
+                if (critAmount) {
+                    totalCritChancePercent += critAmount;
+                }
             }
         }
     }

@@ -219,11 +219,11 @@ class Statistics extends Component {
             healthRegen: calculateHealthRegen(this.state.hero, this.state.level, this.state.items, this.state.neutral, this.state.abilities, this.state.talents),
 
             // Other
-            totalLifesteal: calculateTotalLifesteal(this.state.items, this.state.neutral, this.state.abilities, this.state.talents),
+            totalLifesteal: calculateTotalLifesteal(this.state.items, this.state.neutral, this.state.abilities, this.state.talents, this.state.abilityLevels),
             totalSpellLifesteal: calculateTotalSpellLifesteal(this.state.items, this.state.neutral, this.state.abilities, this.state.talents),
             totalCleaveAmount: calculateTotalCleaveDmgPercent(this.state.hero, this.state.items, this.state.neutral, this.state.abilities, this.state.talents),
-            totalCritPercent: calculateCritPercent(this.state.items, this.state.neutral, this.state.abilities, this.state.talents),
-            totalCritChancePercent: calculateCritChancePercent(this.state.items, this.state.neutral, this.state.abilities, this.state.talents),
+            totalCritPercent: calculateCritPercent(this.state.items, this.state.neutral, this.state.abilities, this.state.talents, this.state.abilityLevels),
+            totalCritChancePercent: calculateCritChancePercent(this.state.items, this.state.neutral, this.state.abilities, this.state.talents, this.state.abilityLevels),
             totalCooldownAmount: 0,
         });
     }
